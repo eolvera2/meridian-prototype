@@ -116,7 +116,9 @@ export function useOrderManagement({
       !isPronounReplacement &&
       !isDraftingReferralLetter
     ) {
-      const numOrders = Math.floor(Math.random() * 6) + 3;
+      // For task1, always generate exactly 5 orders; otherwise random 3-8
+      const isTask1 = window.location.hash.includes("task1");
+      const numOrders = isTask1 ? 5 : Math.floor(Math.random() * 6) + 3;
       const shuffled = [...AI_ORDER_POOL].sort(() => Math.random() - 0.5);
       const selectedOrders = shuffled.slice(0, numOrders);
 
