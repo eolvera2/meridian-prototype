@@ -4,6 +4,8 @@ import react from "@vitejs/plugin-react";
 // Production-specific Vite config
 export default defineConfig({
   plugins: [react()],
+  // Ensure staticwebapp.config.json is copied to dist folder
+  publicDir: "public",
   build: {
     outDir: "dist",
     sourcemap: false,
