@@ -1,0 +1,81 @@
+/* Responsive app shell */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: #ffffff;
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  min-height: 0;
+  height: calc(100vh - var(--title-bar-height));
+}
+
+@media (max-width: 768px) {
+  .app-body {
+    flex-direction: column;
+  }
+}
+
+/* Loading screen overlay */
+.loading-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: var(--title-bar-height);
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  z-index: 2000; /* above everything */
+  transition: opacity 600ms ease, visibility 600ms ease;
+  opacity: 1;
+  visibility: visible;
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-logo {
+  width: 120px;
+  height: 120px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-bottom: 32px;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--colorNeutralForeground2);
+  font-size: 16px;
+}
+
+.loading-bottom {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ms-logo {
+  width: 84px;
+  height: auto;
+  opacity: 0.9;
+}

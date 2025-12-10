@@ -1,0 +1,13 @@
+/* Force drawer to be relative on desktop for inline positioning - scoped to specific drawer contexts */
+@media (min-width: 769px) {
+  [class*="drawerArea"] .fui-Drawer,
+  [class*="desktopContentArea"] .fui-Drawer {
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+  }
+}
+
+[data-settings-documents="true"].fui-Drawer > .fui-DrawerHeader {
+  display: none;
+}
