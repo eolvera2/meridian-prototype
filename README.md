@@ -121,28 +121,28 @@ Dragon Copilot is a sophisticated desktop application prototype that demonstrate
 
 The application uses `HashRouter` for navigation. All routes are prefixed with `#/` (e.g., `http://localhost:5173/#/task1-home`).
 
-| Route | Component | Description |
-|-------|-----------|-------------|
-| `/` | — | Redirects to `/home` |
-| `/home` | `App` | Main application with full patient dashboard |
-| `/task1-home` | `AppTask1` | Task 1: Ambient recording with success navigation |
-| `/task1-start` | `Task1Wrapper` | Task 1: Narrow view (iframe wrapper) |
-| `/task2-home` | `AppTask2Start` | Task 2: Documents pre-generated with content |
-| `/task2-start` | `Task2StartWrapper` | Task 2: Narrow view (iframe wrapper) |
-| `/task3-home` | `AppTask3Start` | Task 3 configuration |
-| `/task3-start` | `Task3StartWrapper` | Task 3: Narrow view (iframe wrapper) |
-| `/task4-home` | `AppTask4Start` | Task 4 configuration |
-| `/task4-start` | `Task4StartWrapper` | Task 4: Narrow view (iframe wrapper) |
-| `/task5-home` | `AppTask5Start` | Task 5 configuration |
-| `/task5-start` | `Task5StartWrapper` | Task 5: Narrow view (iframe wrapper) |
-| `/task6-home` | `AppTask6Start` | Task 6 configuration |
-| `/task6-start` | `Task6StartWrapper` | Task 6: Narrow view (iframe wrapper) |
-| `/task7-home` | `AppTask7Start` | Task 7 configuration |
-| `/task7-start` | `Task7StartWrapper` | Task 7: Narrow view (iframe wrapper) |
-| `/task8-home` | `AppTask8Start` | Task 8 configuration |
-| `/task8-start` | `Task8StartWrapper` | Task 8: Narrow view (iframe wrapper) |
-| `/task9-start` | `Task9` | Task 9: Standalone task component |
-| `/narrow` | `NarrowViewWrapper` | Generic narrow view wrapper |
+| Route          | Component           | Description                                       |
+| -------------- | ------------------- | ------------------------------------------------- |
+| `/`            | —                   | Redirects to `/home`                              |
+| `/home`        | `App`               | Main application with full patient dashboard      |
+| `/task1-home`  | `AppTask1`          | Task 1: Ambient recording with success navigation |
+| `/task1-start` | `Task1Wrapper`      | Task 1: Narrow view (iframe wrapper)              |
+| `/task2-home`  | `AppTask2Start`     | Task 2: Documents pre-generated with content      |
+| `/task2-start` | `Task2StartWrapper` | Task 2: Narrow view (iframe wrapper)              |
+| `/task3-home`  | `AppTask3Start`     | Task 3 configuration                              |
+| `/task3-start` | `Task3StartWrapper` | Task 3: Narrow view (iframe wrapper)              |
+| `/task4-home`  | `AppTask4Start`     | Task 4 configuration                              |
+| `/task4-start` | `Task4StartWrapper` | Task 4: Narrow view (iframe wrapper)              |
+| `/task5-home`  | `AppTask5Start`     | Task 5 configuration                              |
+| `/task5-start` | `Task5StartWrapper` | Task 5: Narrow view (iframe wrapper)              |
+| `/task6-home`  | `AppTask6Start`     | Task 6 configuration                              |
+| `/task6-start` | `Task6StartWrapper` | Task 6: Narrow view (iframe wrapper)              |
+| `/task7-home`  | `AppTask7Start`     | Task 7 configuration                              |
+| `/task7-start` | `Task7StartWrapper` | Task 7: Narrow view (iframe wrapper)              |
+| `/task8-home`  | `AppTask8Start`     | Task 8 configuration                              |
+| `/task8-start` | `Task8StartWrapper` | Task 8: Narrow view (iframe wrapper)              |
+| `/task9-start` | `Task9`             | Task 9: Standalone task component                 |
+| `/narrow`      | `NarrowViewWrapper` | Generic narrow view wrapper                       |
 
 ### Route Patterns
 
