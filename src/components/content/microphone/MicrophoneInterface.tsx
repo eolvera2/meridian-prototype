@@ -82,8 +82,10 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
   useEffect(() => {
     if (controlledDictationEnabled !== undefined) return;
     if (documentVisible) {
+      // In Document view, allow user to toggle
       setInternalDictationEnabled(false);
     } else {
+      // In Home view, force Dictation mode ON
       setInternalDictationEnabled(true);
     }
   }, [documentVisible, controlledDictationEnabled]);
@@ -321,6 +323,7 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
               handleDictationCheckboxChange(!!data.checked)
             }
             className={styles.dictationCheckbox}
+            disabled={!documentVisible}
           />
         </div>
 

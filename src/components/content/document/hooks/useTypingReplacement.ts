@@ -50,24 +50,21 @@ export const useTypingReplacement = (
       return false;
     }
 
-    const { textToSelect } = autoSelectText;
-    const replacementText = "46-year"; // The text to type as replacement
+    const { textToSelect, documentId, sectionId } = autoSelectText;
 
-    // Find the textarea with the selected text
-    let targetTextarea: HTMLTextAreaElement | null = null;
-    const allTextareas = document.querySelectorAll("textarea");
+    // The replacement text is the same as textToSelect - we're typing the entire content
+    const replacementText = textToSelect;
 
-    for (const ta of allTextareas) {
-      const value = ta.value || "";
-      if (value.includes(textToSelect)) {
-        targetTextarea = ta as HTMLTextAreaElement;
-        break;
-      }
-    }
+    // Find the textarea for the specific document and section
+    const sectionKey = `${documentId}-${sectionId}`;
+    const targetTextarea = document.querySelector(
+      `textarea[data-section="${sectionKey}"]`
+    ) as HTMLTextAreaElement;
 
     if (!targetTextarea) {
       console.log(
-        "[TypingSimulation] Could not find textarea with target text"
+        "[TypingSimulation] Could not find textarea for section",
+        sectionKey
       );
       return false;
     }
@@ -81,27 +78,11 @@ export const useTypingReplacement = (
     setTooltipVisible(false);
     isSimulatingRef.current = true;
 
-    const textContent = targetTextarea.value;
-    const startIndex = textContent.indexOf(textToSelect);
+    // Get the document and section IDs
+    const docId = documentId;
+    const secId = sectionId;
 
-    if (startIndex === -1) {
-      console.log("[TypingSimulation] Text not found in textarea");
-      isSimulatingRef.current = false;
-      return false;
-    }
-
-    const endIndex = startIndex + textToSelect.length;
-
-    // First, delete the selected text by setting selection and replacing with empty
-    const beforeText = textContent.substring(0, startIndex);
-    const afterText = textContent.substring(endIndex);
-
-    // Get the document and section from the textarea's data attribute
-    const sectionKey = targetTextarea.getAttribute("data-section") || "";
-    const [docId, ...sectionParts] = sectionKey.split("-");
-    const secId = sectionParts.join("-");
-
-    // Clear the selected text first
+    // Clear the content first
     setDocuments((prevDocuments) =>
       prevDocuments.map((doc) => {
         if (doc.id === docId) {
@@ -109,9 +90,7 @@ export const useTypingReplacement = (
             ...doc,
             sections:
               doc.sections?.map((section) =>
-                section.id === secId
-                  ? { ...section, content: beforeText + afterText }
-                  : section
+                section.id === secId ? { ...section, content: "" } : section
               ) || [],
           };
         }
@@ -119,74 +98,112 @@ export const useTypingReplacement = (
       })
     );
 
-    // Now simulate typing the replacement text character by character
-    let charIndex = 0;
-    const typingSpeed = 200; // milliseconds per character (slower for better visibility)
+    // Wait for DOM to update, then focus and scroll before starting typing
+    setTimeout(() => {
+      const ta = document.querySelector(
+        `textarea[data-section="${sectionKey}"]`
+      ) as HTMLTextAreaElement;
+      if (ta) {
+        // First, find the section container (parent elements) to scroll into view
+        // Look for the section's accordion item or card
+        const sectionContainer =
+          ta.closest('[class*="section"]') || ta.parentElement?.parentElement;
 
-    // Clear any existing replacement interval
-    if (replacementIntervalRef.current) {
-      clearInterval(replacementIntervalRef.current);
-    }
-
-    replacementIntervalRef.current = window.setInterval(() => {
-      if (charIndex <= replacementText.length) {
-        const currentTypedText = replacementText.substring(0, charIndex);
-        const newContent = beforeText + currentTypedText + afterText;
-
-        setDocuments((prevDocuments) =>
-          prevDocuments.map((doc) => {
-            if (doc.id === docId) {
-              return {
-                ...doc,
-                sections:
-                  doc.sections?.map((section) =>
-                    section.id === secId
-                      ? { ...section, content: newContent }
-                      : section
-                  ) || [],
-              };
-            }
-            return doc;
-          })
-        );
-
-        // Update cursor position in textarea
-        setTimeout(() => {
-          const ta = document.querySelector(
-            `textarea[data-section="${sectionKey}"]`
-          ) as HTMLTextAreaElement;
-          if (ta) {
-            const cursorPos = startIndex + charIndex;
-            ta.focus();
-            ta.setSelectionRange(cursorPos, cursorPos);
-          }
-        }, 0);
-
-        charIndex++;
-      } else {
-        // Typing complete
-        console.log("[TypingSimulation] Typing simulation complete");
-        if (replacementIntervalRef.current) {
-          clearInterval(replacementIntervalRef.current);
-          replacementIntervalRef.current = null;
+        // Scroll the section container into view first
+        if (sectionContainer && sectionContainer instanceof HTMLElement) {
+          sectionContainer.scrollIntoView({
+            behavior: "instant",
+            block: "start",
+          });
         }
-        isSimulatingRef.current = false;
 
-        // Select the newly typed text
+        // Small delay to let the scroll settle
         setTimeout(() => {
-          const ta = document.querySelector(
-            `textarea[data-section="${sectionKey}"]`
-          ) as HTMLTextAreaElement;
-          if (ta) {
-            ta.focus();
-            ta.setSelectionRange(
-              startIndex,
-              startIndex + replacementText.length
-            );
-          }
+          // Focus the textarea
+          ta.focus();
+
+          // Scroll the textarea itself to ensure it's centered
+          ta.scrollIntoView({ behavior: "instant", block: "center" });
+
+          // Wait for everything to settle before starting typing
+          setTimeout(() => {
+            startTypingAnimation();
+          }, 300);
         }, 100);
+      } else {
+        console.log("[TypingSimulation] Could not find textarea:", sectionKey);
       }
-    }, typingSpeed);
+    }, 100);
+
+    // Function to start the typing animation
+    const startTypingAnimation = () => {
+      // Now simulate typing the replacement text character by character
+      let charIndex = 0;
+      const typingSpeed = 17; // milliseconds per character (3x faster than 50ms)
+
+      // Clear any existing replacement interval
+      if (replacementIntervalRef.current) {
+        clearInterval(replacementIntervalRef.current);
+      }
+
+      replacementIntervalRef.current = window.setInterval(() => {
+        if (charIndex <= replacementText.length) {
+          const currentTypedText = replacementText.substring(0, charIndex);
+
+          setDocuments((prevDocuments) =>
+            prevDocuments.map((doc) => {
+              if (doc.id === docId) {
+                return {
+                  ...doc,
+                  sections:
+                    doc.sections?.map((section) =>
+                      section.id === secId
+                        ? { ...section, content: currentTypedText }
+                        : section
+                    ) || [],
+                };
+              }
+              return doc;
+            })
+          );
+
+          // Update cursor position in textarea
+          setTimeout(() => {
+            const ta = document.querySelector(
+              `textarea[data-section="${sectionKey}"]`
+            ) as HTMLTextAreaElement;
+            if (ta) {
+              ta.focus();
+              ta.setSelectionRange(charIndex, charIndex);
+            }
+          }, 0);
+
+          charIndex++;
+        } else {
+          // Typing complete
+          console.log("[TypingSimulation] Typing simulation complete");
+          if (replacementIntervalRef.current) {
+            clearInterval(replacementIntervalRef.current);
+            replacementIntervalRef.current = null;
+          }
+          isSimulatingRef.current = false;
+
+          // Place cursor at the end
+          setTimeout(() => {
+            const ta = document.querySelector(
+              `textarea[data-section="${sectionKey}"]`
+            ) as HTMLTextAreaElement;
+            if (ta) {
+              ta.focus();
+              ta.setSelectionRange(
+                replacementText.length,
+                replacementText.length
+              );
+            }
+          }, 100);
+        }
+      }, typingSpeed);
+    };
 
     return true;
   }, [autoSelectText, isSimulatingRef, setDocuments, setTooltipVisible]);

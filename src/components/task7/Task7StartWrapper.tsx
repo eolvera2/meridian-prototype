@@ -1,24 +1,11 @@
 /**
  * Task7StartWrapper Component
- *
- * Narrow view wrapper for Task 7 that renders via iframe to /task7-home.
- * Using iframe ensures dialogs overlay properly outside the narrow container.
- *
+ * Narrow view wrapper for Task 7 - renders via iframe to /task7-home.
  * Task 7: Start with Note expanded, success when user completes pronoun replacement.
  */
 
-export const Task7StartWrapper = () => {
-  return (
-    <div className="narrow-view-background">
-      <div className="narrow-view-container">
-        <iframe
-          src="#/task7-home"
-          title="Task 7 Narrow View"
-          className="narrow-view-iframe"
-        />
-      </div>
-    </div>
-  );
-};
+import { TaskWrapper } from "../shared/TaskWrapper";
+
+export const Task7StartWrapper = () => <TaskWrapper taskNumber={7} />;
 
 export default Task7StartWrapper;

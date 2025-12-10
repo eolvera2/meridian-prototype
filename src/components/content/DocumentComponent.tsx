@@ -295,7 +295,95 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
     if (isFullyStoppedFromRecording) {
       setAmbientRecordingStarted(false);
       setAmbientRecordingStopped(true);
-      triggerSkeletonGeneration({ duration: 6000, toastDelay: 3000 });
+
+      // Add Orders document BEFORE skeleton animation starts
+      setDocuments((prev) => {
+        const hasOrders = prev.some((doc) => doc.type === "orders");
+        if (!hasOrders) {
+          // Add Orders document with empty timestamp to show skeleton
+          const ordersDoc: DocumentItem = {
+            id: "orders-1",
+            name: "Orders",
+            created: "",
+            type: "orders",
+            sections: [
+              {
+                id: "orders-section",
+                title: "Orders",
+                content: "",
+                checked: false,
+                orderItems: [],
+              },
+            ],
+            isExpanded: true,
+          };
+
+          // Return Orders first, then other documents
+          return [ordersDoc, ...prev];
+        }
+        return prev;
+      });
+
+      // Set expanded documents to include Orders
+      setExpandedDocuments((prev) => new Set([...prev, "orders-1"]));
+
+      // Start skeleton animation
+      triggerSkeletonGeneration({
+        duration: 6000,
+        toastDelay: 3000,
+        afterComplete: () => {
+          // After skeleton animation, populate Orders and update timestamps
+          setDocuments((prev) => {
+            return prev.map((doc) => {
+              if (doc.type === "orders") {
+                return {
+                  ...doc,
+                  created: "12:00 PM",
+                  sections: [
+                    {
+                      id: "orders-section",
+                      title: "Orders",
+                      content: "",
+                      checked: false,
+                      orderItems: [
+                        {
+                          id: "1",
+                          text: "Start spironolactone 25 mg daily.",
+                          code: "150.33",
+                        },
+                        {
+                          id: "2",
+                          text: "Continue metoprolol succinate 50 mg daily.",
+                        },
+                        {
+                          id: "3",
+                          text: "Increase lisinopril to 20 mg daily.",
+                        },
+                        {
+                          id: "4",
+                          text: "Order echocardiogram.",
+                          code: "93306",
+                        },
+                        {
+                          id: "5",
+                          text: "Schedule follow-up in 2 weeks.",
+                        },
+                      ],
+                    },
+                  ],
+                  isExpanded: true,
+                };
+              } else if (doc.type === "progress-note") {
+                return { ...doc, isExpanded: false, created: "12:00 PM" };
+              }
+              return doc;
+            });
+          });
+
+          // Set expanded documents to only include Orders
+          setExpandedDocuments(new Set(["orders-1"]));
+        },
+      });
     } else if (micMode === "ambient" && isRecording && !wasRecording) {
       // Ambient recording just started
       setAmbientRecordingStarted(true);
@@ -328,6 +416,14 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
         toastDelay: 3000,
         afterComplete: () => {
           setIsPronounReplacement(false);
+          // Update Note and Referral Letter modified timestamps after pronoun replacement completes
+          setDocuments((prev) =>
+            prev.map((doc) =>
+              doc.type === "progress-note" || doc.type === "referral-letter"
+                ? { ...doc, modified: "12:25 PM" }
+                : doc
+            )
+          );
           onPronounReplacementComplete?.();
         },
       });
@@ -352,16 +448,10 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
 
       if (!referralLetter) {
         // Create a new referral letter document
-        const today = new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        });
-
         const newReferralLetter: DocumentItem = {
           id: `doc-${Date.now()}`,
           name: "Referral Letter",
-          created: today,
+          created: "12:20 PM",
           type: "referral-letter",
           sections: [
             {
@@ -458,10 +548,9 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
     });
   }, []);
 
-  // Sync with prop changes
-  useEffect(() => {
-    setDocuments(propDocuments);
-  }, [propDocuments]);
+  // Note: Document syncing with propDocuments is handled by the useEffect at lines 127-137
+  // which only resets when the reference actually changes (e.g., new patient selected)
+  // We don't want to reset on every propDocuments change as it would lose user-added documents
 
   const handleAddNotes = (noteTypes: string[]) => {
     console.log("handleAddNotes received:", noteTypes);

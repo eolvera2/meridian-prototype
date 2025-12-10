@@ -60,6 +60,10 @@ export const TooltipProvider: React.FC<TooltipProviderProps> = ({
   const focusDelayTimeoutRef = useRef<number | null>(null);
   const isTypingRef = useRef(false);
   const isSimulatingRef = useRef(false);
+  const lastCaretPositionRef = useRef<{
+    selectionStart: number;
+    selectionEnd: number;
+  } | null>(null);
 
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState<TooltipPosition>({
@@ -133,6 +137,11 @@ export const TooltipProvider: React.FC<TooltipProviderProps> = ({
         // Double-check the field is still focused
         if (focusedFieldRef.current === targetField) {
           updateTooltipFromCaret(targetField);
+          // Initialize caret position tracking
+          lastCaretPositionRef.current = {
+            selectionStart: targetField.selectionStart || 0,
+            selectionEnd: targetField.selectionEnd || 0,
+          };
         }
       });
     },
@@ -182,8 +191,27 @@ export const TooltipProvider: React.FC<TooltipProviderProps> = ({
 
   const handleFieldClick = useCallback(
     (event: React.MouseEvent<TextFieldElement>) => {
-      if (activeFieldRef.current === event.currentTarget) {
-        updateTooltipFromCaret(event.currentTarget);
+      const target = event.currentTarget;
+      if (activeFieldRef.current === target) {
+        // Check if caret position changed
+        const currentPos = {
+          selectionStart: target.selectionStart || 0,
+          selectionEnd: target.selectionEnd || 0,
+        };
+
+        const lastPos = lastCaretPositionRef.current;
+        const caretMoved =
+          !lastPos ||
+          lastPos.selectionStart !== currentPos.selectionStart ||
+          lastPos.selectionEnd !== currentPos.selectionEnd;
+
+        if (caretMoved) {
+          // Hide tooltip when caret moves
+          setTooltipVisible(false);
+          lastCaretPositionRef.current = currentPos;
+        }
+
+        updateTooltipFromCaret(target);
       }
     },
     [updateTooltipFromCaret]
@@ -210,6 +238,11 @@ export const TooltipProvider: React.FC<TooltipProviderProps> = ({
         "CapsLock",
       ].includes(event.key);
 
+      // Hide tooltip when caret moves (arrow keys, etc.)
+      if (isNavigationKey && !isModifierKey) {
+        setTooltipVisible(false);
+      }
+
       if (isModifierKey || isNavigationKey) return;
 
       if (!isTypingRef.current) {
@@ -229,8 +262,15 @@ export const TooltipProvider: React.FC<TooltipProviderProps> = ({
     (event: React.KeyboardEvent<TextFieldElement>) => {
       if (isSimulatingRef.current) return;
 
-      if (activeFieldRef.current === event.currentTarget) {
-        updateTooltipFromCaret(event.currentTarget);
+      const target = event.currentTarget;
+      if (activeFieldRef.current === target) {
+        updateTooltipFromCaret(target);
+
+        // Update caret position tracking
+        lastCaretPositionRef.current = {
+          selectionStart: target.selectionStart || 0,
+          selectionEnd: target.selectionEnd || 0,
+        };
       }
 
       if (isTypingRef.current) {

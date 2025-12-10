@@ -1,24 +1,11 @@
 /**
  * Task8StartWrapper Component
- *
- * Narrow view wrapper for Task 8 that renders via iframe to /task8-home.
- * Using iframe ensures dialogs overlay properly outside the narrow container.
- *
+ * Narrow view wrapper for Task 8 - renders via iframe to /task8-home.
  * Task 8: Start with Note expanded, success when user opens the Copilot Panel.
  */
 
-export const Task8StartWrapper = () => {
-  return (
-    <div className="narrow-view-background">
-      <div className="narrow-view-container">
-        <iframe
-          src="#/task8-home"
-          title="Task 8 Narrow View"
-          className="narrow-view-iframe"
-        />
-      </div>
-    </div>
-  );
-};
+import { TaskWrapper } from "../shared/TaskWrapper";
+
+export const Task8StartWrapper = () => <TaskWrapper taskNumber={8} />;
 
 export default Task8StartWrapper;

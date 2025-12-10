@@ -37,6 +37,7 @@ export const MainContent: React.FC<MainContentProps> = ({
   onAmbientRecordingStop,
   onDictationModeChange,
   initialMicMode = "ambient",
+  initialDictationState = "off",
   onReferralLetterAdd,
   onOrderDelete,
   initialDocuments,
@@ -52,7 +53,9 @@ export const MainContent: React.FC<MainContentProps> = ({
   const { tooltipVisible, tooltipPosition } = useTooltipContext();
 
   // New state machine for microphone modes
-  const [dictationState, setDictationState] = useState<DictationState>("off");
+  const [dictationState, setDictationState] = useState<DictationState>(
+    initialDictationState
+  );
   const [ambientState, setAmbientState] = useState<AmbientState>("stop");
   const [scriptChecked, setScriptChecked] = useState(false);
   const [libraryChecked, setLibraryChecked] = useState(false);
@@ -156,6 +159,14 @@ export const MainContent: React.FC<MainContentProps> = ({
   // Compute documentVisible early so we can use it in effects
   const worklistCollapsed = externalWorklistCollapsed ?? false;
   const documentVisible = worklistCollapsed && !!selectedPatient;
+
+  // Force Dictation mode when in Home view (not in document view)
+  useEffect(() => {
+    if (!documentVisible) {
+      // In Home view, force Dictation mode
+      setMicTooltipMode("dictation");
+    }
+  }, [documentVisible]);
 
   // Note: mic mode (dictation/ambient) is now fully user-controlled
   // No automatic mode switching occurs when navigating between views

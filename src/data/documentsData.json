@@ -1,44 +1,5 @@
 [
   {
-    "id": "orders-1",
-    "name": "Orders",
-    "created": "11/1 at 1:30 PM",
-    "type": "orders",
-    "sections": [
-      {
-        "id": "orders-section",
-        "title": "Orders",
-        "content": "",
-        "checked": false,
-        "orderItems": [
-          {
-            "id": "1",
-            "text": "Start spironolactone 25 mg daily.",
-            "code": "150.33"
-          },
-          {
-            "id": "2",
-            "text": "Continue metoprolol succinate 50 mg daily."
-          },
-          {
-            "id": "3",
-            "text": "Increase lisinopril to 20 mg daily."
-          },
-          {
-            "id": "4",
-            "text": "Order echocardiogram.",
-            "code": "93306"
-          },
-          {
-            "id": "5",
-            "text": "Schedule follow-up in 2 weeks."
-          }
-        ]
-      }
-    ],
-    "isExpanded": false
-  },
-  {
     "id": "1",
     "name": "Note",
     "created": "--",
@@ -47,25 +8,25 @@
       {
         "id": "history",
         "title": "History of Present Illness",
-        "content": "Mr. Brown is a 45-year-old male with a history of type 2 diabetes mellitus and hypertension who presents today with complaints of frequent headaches over the past 3 months. He describes the headaches as bilateral, pressure-like, occurring 3-4 times per week, and lasting several hours. He denies visual changes, nausea, or vomiting. He reports stress at work and poor sleep quality. His blood glucose has been well controlled on current medications.",
+        "content": "",
         "checked": false
       },
       {
         "id": "physical",
         "title": "Physical Exam",
-        "content": "Vitals: BP 138/88 mmHg, HR 72 bpm, Temp 98.6°F, SpO2 98% on room air\nGeneral: Alert and oriented, no acute distress\nHEENT: Normocephalic, atraumatic, pupils equal and reactive, no papilledema\nNeck: Supple, no lymphadenopathy, no thyromegaly\nCardiovascular: Regular rate and rhythm, no murmurs, rubs, or gallops\nLungs: Clear to auscultation bilaterally\nAbdomen: Soft, non-tender, non-distended\nExtremities: No edema, pulses 2+ bilaterally\nNeurological: Cranial nerves II-XII intact, strength 5/5 throughout",
+        "content": "",
         "checked": false
       },
       {
         "id": "results",
         "title": "Results",
-        "content": "Recent Labs (dated 10/15):\n- HbA1c: 6.8% (improved from 7.2%)\n- Fasting glucose: 118 mg/dL\n- BMP: Within normal limits, Cr 0.9\n- Lipid panel: Total cholesterol 195, LDL 110, HDL 52, TG 165\n- CBC: WNL\n\nEKG: Normal sinus rhythm, no ST changes",
+        "content": "",
         "checked": false
       },
       {
         "id": "assessment",
         "title": "Assessment & Plan",
-        "content": "1. Tension-type headaches - likely related to stress and poor sleep\n   - Recommend stress management techniques\n   - Trial of OTC acetaminophen or ibuprofen as needed\n   - Sleep hygiene counseling provided\n   - Follow up if headaches worsen or change in character\n\n2. Type 2 Diabetes Mellitus - well controlled\n   - Continue current regimen\n   - HbA1c at goal\n\n3. Hypertension - slightly elevated today\n   - Continue current medications\n   - Dietary counseling on sodium restriction\n   - Recheck BP in 2 weeks",
+        "content": "",
         "checked": false
       }
     ],
@@ -76,6 +37,6 @@
         "type": "transcript"
       }
     ],
-    "isExpanded": false
+    "isExpanded": true
   }
 ]

@@ -3,8 +3,8 @@
  *
  * Task7 variant of the app that:
  * - Starts with Ellis Turner's document view already open
- * - Has the Referral Letter and Orders pre-populated
- * - Has the Note document expanded
+ * - Starts with task6 state (same as task5 success): Referral Letter, Orders (4 items), and Note
+ * - Scrolls to the Note document on load
  * - Navigates to success page when user completes pronoun replacement via Library
  */
 
@@ -20,24 +20,22 @@ import "./styles/tokens.css";
 import "./styles/globals.css";
 import "./App.css";
 
-// Referral letter content (same as used in Library flow)
+// Referral letter content for Ellis Turner's STEMI case
 const REFERRAL_LETTER_CONTENT = `Dear Dr. Johnson,
 
-I am writing to refer my patient, Angel Brown, a 45-year-old male, for evaluation and management of their chronic headaches and cardiovascular concerns.
+I am writing to refer my patient, Ellis Turner, a 55-year-old male, for cardiology evaluation and follow-up management of his recent ST-elevation myocardial infarction (STEMI).
 
-Mr. Brown has a history of diabetes mellitus type 2 and hypertension, both of which are currently managed with oral medications. They have been experiencing frequent headaches over the past several months, which have become increasingly bothersome and are affecting their quality of life.
-
-Recent vital signs:
-- Blood pressure: 142/88 mmHg
-- Heart rate: 78 bpm
-- Temperature: 98.6°F
+Mr. Turner presented to the emergency department with acute chest pain and was diagnosed with an inferior wall STEMI. He underwent successful cardiac catheterization and is currently stable on medical management.
 
 Current medications:
-- Metformin 1000 mg twice daily
+- Aspirin 81 mg daily
+- Clopidogrel 75 mg daily
+- Metoprolol succinate 50 mg daily
 - Lisinopril 20 mg daily
-- Atorvastatin 40 mg at bedtime
+- Atorvastatin 80 mg at bedtime
+- Spironolactone 25 mg daily
 
-I would appreciate your expert evaluation and recommendations for further management. Please feel free to contact my office if you require any additional information.
+I would appreciate your expert evaluation for ongoing cardiac rehabilitation and long-term management recommendations.
 
 Thank you for your assistance in the care of this patient.
 
@@ -84,20 +82,14 @@ function AppTask7Start() {
     navigateToSuccess();
   };
 
-  // Create initial documents with pre-populated Referral Letter
-  const initialDocuments: DocumentItem[] = useMemo(() => {
-    const today = new Date().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-
-    return [
-      // Referral Letter at the top with content
+  // Task 7: Start with task6 state (same as task5 success) - scrolled to Note
+  const initialDocuments: DocumentItem[] = useMemo(
+    () => [
+      // Referral Letter at the top (from task4/task5)
       {
         id: "referral-task7",
         name: "Referral Letter",
-        created: today,
+        created: "12:20 PM",
         type: "referral-letter",
         sections: [
           {
@@ -107,13 +99,14 @@ function AppTask7Start() {
             checked: false,
           },
         ],
-        isExpanded: false,
+        isExpanded: true,
       },
-      // Orders document
+      // Orders document (4 items - one deleted in task5)
       {
         id: "orders-1",
         name: "Orders",
-        created: "11/1 at 1:30 PM",
+        created: "12:00 PM",
+        modified: "12:23 PM",
         type: "orders",
         sections: [
           {
@@ -140,48 +133,45 @@ function AppTask7Start() {
                 text: "Order echocardiogram.",
                 code: "93306",
               },
-              {
-                id: "5",
-                text: "Schedule follow-up in 2 weeks.",
-              },
             ],
           },
         ],
-        isExpanded: false,
+        isExpanded: true,
       },
-      // Note document - expanded by default for this task
+      // Note document with Ellis Turner STEMI content
       {
         id: "1",
         name: "Note",
-        created: "--",
+        created: "12:00 PM",
+        modified: "12:23 PM",
         type: "progress-note",
         sections: [
           {
             id: "history",
             title: "History of Present Illness",
             content:
-              "Mr. Brown is a 45-year-old male with a history of type 2 diabetes mellitus and hypertension who presents today with complaints of frequent headaches over the past 3 months. He describes the headaches as bilateral, pressure-like, occurring 3-4 times per week, and lasting several hours. He denies visual changes, nausea, or vomiting. He reports stress at work and poor sleep quality. His blood glucose has been well controlled on current medications.",
+              "Mr. Turner is a 55-year-old male presenting to the emergency department with chest pain that began approximately 2 hours ago. He describes the pain as substernal, pressure-like, radiating to his left arm and jaw. The pain is moderate to severe in intensity (7/10) and is not relieved by rest. He denies any recent trauma or exertion prior to symptom onset. Associated symptoms include mild shortness of breath and diaphoresis. He denies nausea, vomiting, or palpitations.\n\nPast medical history is significant for hypertension and hyperlipidemia, both managed with medications. He has no known history of coronary artery disease or prior cardiac events. Family history is notable for a father who had a myocardial infarction at age 60. Patient is a former smoker, quit 10 years ago with a 20 pack-year history.",
             checked: false,
           },
           {
             id: "physical",
             title: "Physical Exam",
             content:
-              "Vitals: BP 138/88 mmHg, HR 72 bpm, Temp 98.6°F, SpO2 98% on room air\nGeneral: Alert and oriented, no acute distress\nHEENT: Normocephalic, atraumatic, pupils equal and reactive, no papilledema\nNeck: Supple, no lymphadenopathy, no thyromegaly\nCardiovascular: Regular rate and rhythm, no murmurs, rubs, or gallops\nLungs: Clear to auscultation bilaterally\nAbdomen: Soft, non-tender, non-distended\nExtremities: No edema, pulses 2+ bilaterally\nNeurological: Cranial nerves II-XII intact, strength 5/5 throughout",
+              "Vitals: BP 145/92 mmHg, HR 88 bpm, RR 18/min, Temp 98.4°F, SpO2 97% on room air\nGeneral: Alert and oriented, appears uncomfortable but in no acute distress\nHEENT: Normocephalic, atraumatic, pupils equal and reactive to light\nNeck: No jugular venous distension, no carotid bruits\nCardiovascular: Regular rate and rhythm, no murmurs, rubs, or gallops, S1 and S2 normal\nLungs: Clear to auscultation bilaterally, no wheezes, rales, or rhonchi\nAbdomen: Soft, non-tender, non-distended, normal bowel sounds\nExtremities: No edema, pulses 2+ and equal bilaterally\nNeurological: Cranial nerves II-XII intact, strength 5/5 in all extremities",
             checked: false,
           },
           {
             id: "results",
             title: "Results",
             content:
-              "Recent Labs (dated 10/15):\n- HbA1c: 6.8% (improved from 7.2%)\n- Fasting glucose: 118 mg/dL\n- BMP: Within normal limits, Cr 0.9\n- Lipid panel: Total cholesterol 195, LDL 110, HDL 52, TG 165\n- CBC: WNL\n\nEKG: Normal sinus rhythm, no ST changes",
+              "EKG: Normal sinus rhythm at 85 bpm. ST-segment elevations in leads II, III, and aVF consistent with inferior wall MI. No Q waves present.\n\nTroponin I: 2.3 ng/mL (elevated, normal <0.04 ng/mL)\nCK-MB: 45 U/L (elevated)\nBMP: Na 138, K 4.2, Cl 102, CO2 24, BUN 18, Cr 1.0, Glucose 110\nCBC: WBC 11.2, Hgb 14.5, Hct 43%, Platelets 245,000\n\nChest X-ray: No acute cardiopulmonary process, normal cardiac silhouette",
             checked: false,
           },
           {
             id: "assessment",
             title: "Assessment & Plan",
             content:
-              "1. Tension-type headaches - likely related to stress and poor sleep\n   - Recommend stress management techniques\n   - Trial of OTC acetaminophen or ibuprofen as needed\n   - Sleep hygiene counseling provided\n   - Follow up if headaches worsen or change in character\n\n2. Type 2 Diabetes Mellitus - well controlled\n   - Continue current regimen\n   - HbA1c at goal\n\n3. Hypertension - slightly elevated today\n   - Continue current medications\n   - Dietary counseling on sodium restriction\n   - Recheck BP in 2 weeks",
+              "55-year-old male with acute ST-elevation myocardial infarction (STEMI) - inferior wall\n\nPlan:\n1. Cardiology consultation for urgent cardiac catheterization\n2. Administer aspirin 325 mg, loading dose of clopidogrel 600 mg\n3. Start heparin drip per protocol\n4. Beta-blocker therapy (metoprolol) once hemodynamically stable\n5. Statin therapy (atorvastatin 80 mg)\n6. Admit to CCU for continuous cardiac monitoring\n7. Serial troponins and EKGs\n8. Patient and family education regarding cardiac event and lifestyle modifications",
             checked: false,
           },
         ],
@@ -194,11 +184,15 @@ function AppTask7Start() {
         ],
         isExpanded: true,
       },
-    ];
-  }, []);
+    ],
+    []
+  );
 
-  // Expand only Note by default
-  const initialExpandedDocuments = useMemo(() => new Set(["1"]), []);
+  // Expand all documents, but put Note first to scroll to it
+  const initialExpandedDocuments = useMemo(
+    () => new Set(["1", "referral-task7", "orders-1"]),
+    []
+  );
 
   return (
     <FluentProvider theme={webLightTheme}>

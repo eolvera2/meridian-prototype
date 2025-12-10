@@ -38,6 +38,8 @@ export interface MainContentProps {
   onDictationModeChange?: (isDictationActive: boolean) => void;
   /** Initial microphone mode (dictation or ambient) */
   initialMicMode?: "dictation" | "ambient";
+  /** Initial dictation state (on or off) when in dictation mode */
+  initialDictationState?: "on" | "off";
   /** Callback when a referral letter is added (via Add dialog or Library) */
   onReferralLetterAdd?: () => void;
   /** Callback when an order is deleted from the Orders document */

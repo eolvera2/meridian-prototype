@@ -58,6 +58,35 @@ function getTimestampDisplay(
   created: string;
   modified: string;
 } {
+  // Check if document has "--" timestamp (empty/initial state)
+  if (doc.created === "--") {
+    return { created: "--", modified: "--" };
+  }
+
+  // Check if document was just generated (12:00 PM timestamp)
+  if (doc.created === "12:00 PM") {
+    // If document has a modified field, use it
+    if (doc.modified) {
+      return {
+        created: "Created today at 12:00 PM",
+        modified: `Modified today at ${doc.modified}`,
+      };
+    }
+    return { created: "Created today at 12:00 PM", modified: "" };
+  }
+
+  // Check if document was created at 12:20 PM (task4 success / task5 start for Referral Letter)
+  if (doc.created === "12:20 PM") {
+    // If document has a modified field, use it
+    if (doc.modified) {
+      return {
+        created: "Created today at 12:20 PM",
+        modified: `Modified today at ${doc.modified}`,
+      };
+    }
+    return { created: "Created today at 12:20 PM", modified: "" };
+  }
+
   // Get current time for newly added documents
   const now = new Date();
   const currentTime = now.toLocaleTimeString("en-US", {
@@ -71,13 +100,13 @@ function getTimestampDisplay(
     if (doc.type === "orders") {
       return {
         created: "Created today at 12:00 PM",
-        modified: "Modified Today at 12:00 PM",
+        modified: "",
       };
     }
     if (doc.type === "progress-note") {
       return {
         created: "Created today at 12:00 PM",
-        modified: "Modified Today at 12:00 PM",
+        modified: "",
       };
     }
     return { created: `Created today at ${currentTime}`, modified: "" };

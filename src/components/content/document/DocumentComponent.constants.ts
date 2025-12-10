@@ -150,7 +150,7 @@ export const createDocumentFromType = (
       return {
         id: `doc-${timestamp}-${index}`,
         name: "Referral Letter",
-        created: today,
+        created: "12:20 PM",
         type: "referral-letter",
         sections: [
           {

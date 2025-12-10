@@ -17,6 +17,7 @@ export type DocumentData = {
   id: string;
   name: string;
   created: string;
+  modified?: string;
   type: string;
   sections?: DocumentSection[];
   orders?: number;
@@ -31,6 +32,7 @@ export type DocumentGridItem = {
   id: string;
   name: string;
   created: string;
+  modified?: string;
   document: DocumentData;
   isExpanded: boolean;
 };
@@ -42,6 +44,7 @@ export interface DocumentItem {
   id: string;
   name: string;
   created: string;
+  modified?: string;
   type: string;
   sections?: DocumentSection[];
   orders?: number;

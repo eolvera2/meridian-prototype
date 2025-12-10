@@ -26,14 +26,14 @@
   {
     "id": "3",
     "name": "Ellis Turner",
-    "reason": "Patient session",
-    "details": "Angel Brown is a 45-year-old male with a history of diabetes and hypertension who is experiencing frequent headaches.",
-    "time": "11:43 AM",
+    "reason": "Chest Pain",
+    "details": "Male, 55 YO, 01/01/1965, MRN12345789, Room 405",
+    "time": "--",
     "status": "",
     "signed": false,
-    "lastModified": "",
+    "lastModified": "--",
     "group": "Today",
-    "initialRecordingSeconds": 847
+    "initialRecordingSeconds": 0
   },
   {
     "id": "4",
