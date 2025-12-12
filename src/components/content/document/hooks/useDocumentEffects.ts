@@ -201,7 +201,7 @@ export function useDocumentEffects({
 
     if (isFullyStoppedFromRecording) {
       setAmbientRecordingStarted(false);
-      triggerSkeletonGeneration({ duration: 6000, toastDelay: 3000 });
+      triggerSkeletonGeneration({ duration: 3500, toastDelay: 500 });
     } else if (micMode === "ambient" && isRecording && !wasRecording) {
       setAmbientRecordingStarted(true);
     }

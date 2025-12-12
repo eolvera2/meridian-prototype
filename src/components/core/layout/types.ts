@@ -39,4 +39,5 @@ export interface DocumentHandlers {
   documents?: DocumentItem[];
   initialExpandedDocuments?: Set<string>;
   onPronounReplacementComplete?: () => void;
+  scrollToTop?: boolean;
 }

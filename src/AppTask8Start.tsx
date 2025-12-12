@@ -24,7 +24,7 @@ import "./App.css";
 // Referral letter content for Ellis Turner's STEMI case - pronouns replaced
 const REFERRAL_LETTER_CONTENT = `Dear Dr. Johnson,
 
-I am writing to refer my patient, Ellis Turner, a 55-year-old male, for cardiology evaluation and follow-up management of their recent ST-elevation myocardial infarction (STEMI).
+I am writing to refer my patient, Ellis Turner, a 41-year-old male, for cardiology evaluation and follow-up management of their recent ST-elevation myocardial infarction (STEMI).
 
 Mr. Turner presented to the emergency department with acute chest pain and was diagnosed with an inferior wall STEMI. They underwent successful cardiac catheterization and are currently stable on medical management.
 
@@ -152,7 +152,7 @@ function AppTask8Start() {
             id: "history",
             title: "History of Present Illness",
             content:
-              "Mr. Turner is a 55-year-old male presenting to the emergency department with chest pain that began approximately 2 hours ago. They describe the pain as substernal, pressure-like, radiating to their left arm and jaw. The pain is moderate to severe in intensity (7/10) and is not relieved by rest. They deny any recent trauma or exertion prior to symptom onset. Associated symptoms include mild shortness of breath and diaphoresis. They deny nausea, vomiting, or palpitations.\n\nPast medical history is significant for hypertension and hyperlipidemia, both managed with medications. They have no known history of coronary artery disease or prior cardiac events. Family history is notable for a father who had a myocardial infarction at age 60. Patient is a former smoker, quit 10 years ago with a 20 pack-year history.",
+              "Mr. Turner is a 41-year-old male presenting to the emergency department with chest pain that began approximately 2 hours ago. They describe the pain as substernal, pressure-like, radiating to their left arm and jaw. The pain is moderate to severe in intensity (7/10) and is not relieved by rest. They deny any recent trauma or exertion prior to symptom onset. Associated symptoms include mild shortness of breath and diaphoresis. They deny nausea, vomiting, or palpitations.\n\nPast medical history is significant for hypertension and hyperlipidemia, both managed with medications. They have no known history of coronary artery disease or prior cardiac events. Family history is notable for a father who had a myocardial infarction at age 60. Patient is a former smoker, quit 10 years ago with a 20 pack-year history.",
             checked: false,
           },
           {
@@ -173,7 +173,7 @@ function AppTask8Start() {
             id: "assessment",
             title: "Assessment & Plan",
             content:
-              "55-year-old male with acute ST-elevation myocardial infarction (STEMI) - inferior wall\n\nPlan:\n1. Cardiology consultation for urgent cardiac catheterization\n2. Administer aspirin 325 mg, loading dose of clopidogrel 600 mg\n3. Start heparin drip per protocol\n4. Beta-blocker therapy (metoprolol) once hemodynamically stable\n5. Statin therapy (atorvastatin 80 mg)\n6. Admit to CCU for continuous cardiac monitoring\n7. Serial troponins and EKGs\n8. Patient and family education regarding cardiac event and lifestyle modifications",
+              "41-year-old male with acute ST-elevation myocardial infarction (STEMI) - inferior wall\n\nPlan:\n1. Cardiology consultation for urgent cardiac catheterization\n2. Administer aspirin 325 mg, loading dose of clopidogrel 600 mg\n3. Start heparin drip per protocol\n4. Beta-blocker therapy (metoprolol) once hemodynamically stable\n5. Statin therapy (atorvastatin 80 mg)\n6. Admit to CCU for continuous cardiac monitoring\n7. Serial troponins and EKGs\n8. Patient and family education regarding cardiac event and lifestyle modifications",
             checked: false,
           },
         ],

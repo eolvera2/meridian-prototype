@@ -126,7 +126,7 @@ export const FloatingMicBar: React.FC = () => {
     if (hasAnimated.current) return;
     hasAnimated.current = true;
 
-    const note = `Patient: Ellis Turner\nCondition: Hypertension\nNotes: Reports occasional dizziness.`;
+    const note = `Patient: Ellis Turner\nCondition: Overdue for colonoscopy follow-up\nNotes: Underwent initial colonoscopy at age 35 due to family history of colorectal issues; acknowledges being overdue for a follow-up last year but did not schedule it.`;
     let index = 0;
 
     setMemoText(""); // Reset before animation
@@ -150,7 +150,7 @@ export const FloatingMicBar: React.FC = () => {
         } else {
           clearInterval(typingInterval);
         }
-      }, 67); // 3x faster
+      }, 33); // 2x faster than before
 
       // Cleanup
       return () => clearInterval(typingInterval);
@@ -205,7 +205,7 @@ export const FloatingMicBar: React.FC = () => {
           flex: 1,
           alignItems: "center",
           overflow: "hidden",
-          color: "var(--neutral-disabled-text-icon, #BDBDBD)",
+          color: "var(--colorNeutralForeground2)",
           textOverflow: "ellipsis",
           fontFamily: 'var(--Typography-Font-family-Base, "Segoe UI")',
           fontSize: "var(--Typography-Caption-2-Strong-Font-size, 10px)",
@@ -215,7 +215,7 @@ export const FloatingMicBar: React.FC = () => {
           margin: "4px", // Left margin set to 4px
         }}
       >
-        Select a patient
+        &lt; Memos
       </div>
 
       {/* Mic Button Centered Above */}
@@ -271,7 +271,7 @@ export const FloatingMicBar: React.FC = () => {
       <div className={styles.micBarToggleRow}>
         <Checkbox
           checked={true}
-          disabled={true}
+          disabled={false}
           label="Dictation"
           className={styles.dictationCheckbox}
         />
@@ -338,6 +338,7 @@ export const FloatingMicBar: React.FC = () => {
             onToggleExpand={() => setIsMemosExpanded(!isMemosExpanded)}
             memoText={memoText}
             setMemoText={setMemoText}
+            onClose={() => setIsMemosExpanded(false)}
           />
         </div>
       )}

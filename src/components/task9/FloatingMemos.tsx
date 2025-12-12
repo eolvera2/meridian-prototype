@@ -12,10 +12,8 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 import {
   Add16Regular,
   Copy20Regular,
-  Copy20Filled,
   Dismiss20Regular,
   ArrowExportUpRegular,
-  ArrowExportUpFilled,
   ChevronLeft20Regular,
   ChevronRight20Regular,
 } from "@fluentui/react-icons";
@@ -228,24 +226,10 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
                 setHovered(null);
                 setTooltipVisible(null);
               }}
-              style={
-                transferred
-                  ? {
-                      background: "#fff",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-                      color: "#2563eb",
-                      transition: "all 0.2s",
-                    }
-                  : undefined
-              }
               aria-checked={transferred}
               role="button"
             >
-              {transferred ? (
-                <ArrowExportUpFilled style={{ color: "#2563eb" }} />
-              ) : (
-                <ArrowExportUpRegular />
-              )}
+              <ArrowExportUpRegular />
             </button>
           </Tooltip>
           {/* Copy toggle button */}
@@ -271,24 +255,10 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
                 setHovered(null);
                 setTooltipVisible(null);
               }}
-              style={
-                copied
-                  ? {
-                      background: "#fff",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-                      color: "#2563eb",
-                      transition: "all 0.2s",
-                    }
-                  : undefined
-              }
               aria-checked={copied}
               role="button"
             >
-              {copied ? (
-                <Copy20Filled style={{ color: "#2563eb" }} />
-              ) : (
-                <Copy20Regular />
-              )}
+              <Copy20Regular />
             </button>
           </Tooltip>
           <Tooltip

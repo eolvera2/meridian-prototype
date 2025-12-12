@@ -74,7 +74,7 @@ export const DocumentHeader: React.FC<DocumentHeaderProps> = ({
           </button>
         </div>
       </div>
-      <div className={styles.headerDivider} />
+      {/* <div className={styles.headerDivider} /> */}
 
       {/* Recents Table */}
       <RecentsTable

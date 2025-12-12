@@ -45,6 +45,9 @@ export const MainContent: React.FC<MainContentProps> = ({
   onSettingsDocumentsReached,
   onPronounReplacementComplete,
   onCopilotPanelOpen,
+  autoDictationDisableOnDocumentView = false,
+  keepMicOnWhenUnchecking = false,
+  scrollToTop = false,
 }) => {
   const styles = useMainContentStyles();
   const dialogStyles = useDialogStyles();
@@ -160,17 +163,30 @@ export const MainContent: React.FC<MainContentProps> = ({
   const worklistCollapsed = externalWorklistCollapsed ?? false;
   const documentVisible = worklistCollapsed && !!selectedPatient;
 
+  // Track previous documentVisible to detect view transitions
+  const prevDocumentVisibleRef = useRef(documentVisible);
+
   // Force Dictation mode when in Home view (not in document view)
+  // Optionally auto-disable dictation when entering document view (task1 behavior)
   useEffect(() => {
+    const justEnteredDocumentView =
+      !prevDocumentVisibleRef.current && documentVisible;
+    prevDocumentVisibleRef.current = documentVisible;
+
     if (!documentVisible) {
       // In Home view, force Dictation mode
       setMicTooltipMode("dictation");
+    } else if (autoDictationDisableOnDocumentView && justEnteredDocumentView) {
+      // Only when FIRST entering Document view, automatically switch to ambient mode
+      // This allows users to start ambient recording immediately, but doesn't prevent
+      // them from switching to dictation mode afterwards
+      setMicTooltipMode("ambient");
+      // Ensure dictation is stopped if it was active
+      if (dictationState === "on") {
+        setDictationState("off");
+      }
     }
-  }, [documentVisible]);
-
-  // Note: mic mode (dictation/ambient) is now fully user-controlled
-  // No automatic mode switching occurs when navigating between views
-  // User must manually toggle the mode via the mic tooltip
+  }, [documentVisible, autoDictationDisableOnDocumentView, dictationState]);
 
   useEffect(() => {
     return () => {
@@ -423,8 +439,16 @@ export const MainContent: React.FC<MainContentProps> = ({
   const handleDictationEnabledChange = (enabled: boolean) => {
     const newMode = enabled ? "dictation" : "ambient";
 
-    // If unchecking dictation while mic is on in dictation mode, stop recording first
+    // If unchecking dictation while mic is on in dictation mode
     if (!enabled && dictationState === "on") {
+      // Task3 behavior: keep mic "on" but switch to ambient mode
+      if (keepMicOnWhenUnchecking) {
+        setMicTooltipMode(newMode);
+        // Switch to ambient mode and start ambient recording
+        setAmbientState("recording");
+        return;
+      }
+      // Default behavior: stop dictation
       setDictationState("off");
     }
 
@@ -530,12 +554,9 @@ export const MainContent: React.FC<MainContentProps> = ({
   };
 
   const handleSettingsClick = () => {
-    if (rightDrawerVisible && rightDrawerContent === "settings") {
-      closeRightDrawer();
-    } else {
-      setRightDrawerContent("settings");
-      setRightDrawerVisible(true);
-    }
+    // Always open settings, don't toggle
+    setRightDrawerContent("settings");
+    setRightDrawerVisible(true);
     onNavItemChange?.("settings");
   };
 
@@ -559,16 +580,17 @@ export const MainContent: React.FC<MainContentProps> = ({
   };
 
   const handleHelpClick = () => {
-    closeRightDrawer();
+    // Always navigate to help, don't close
     onNavItemChange?.("help");
   };
 
   const handleProfileClick = () => {
-    closeRightDrawer();
+    // Always navigate to profile, don't close
     onNavItemChange?.("avatar");
   };
 
   const handleHomeToggleClick = () => {
+    // Always navigate to home and close right drawer
     closeRightDrawer();
     onHomeToggle?.();
     onNavItemChange?.("home");
@@ -628,6 +650,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     documents: initialDocuments,
     initialExpandedDocuments,
     onPronounReplacementComplete,
+    scrollToTop,
   } as const;
 
   const usingDrawerLayout = shouldUseDrawerLayout();

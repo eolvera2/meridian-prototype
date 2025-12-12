@@ -249,7 +249,7 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
           <DialogBody>
             <div className={styles.dialogHeader}>
               <DialogTitle className={styles.dialogTitle}>
-                Remove order detection
+                Remove order?
               </DialogTitle>
               <button
                 className={styles.dialogCloseButton}
@@ -260,7 +260,7 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
               </button>
             </div>
             <DialogContent className={styles.dialogContent}>
-              Removing this detected order will update the note.
+              Removing this order will generate the note.
             </DialogContent>
             <DialogActions className={styles.dialogActions}>
               <Button appearance="secondary" onClick={handleCancelDelete}>

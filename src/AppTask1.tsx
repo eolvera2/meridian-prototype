@@ -123,6 +123,7 @@ function AppTask1() {
                 activeNavItem={activeNavItem}
                 onNavItemChange={setActiveNavItem}
                 onAmbientRecordingStop={handleAmbientRecordingStop}
+                autoDictationDisableOnDocumentView={true}
               />
             </div>
           </div>

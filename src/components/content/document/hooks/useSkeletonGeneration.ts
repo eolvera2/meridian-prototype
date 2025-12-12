@@ -73,8 +73,8 @@ export const useSkeletonGeneration = (
       afterComplete?: () => void;
     }) => {
       const {
-        duration = 5500,
-        toastDelay = 3000,
+        duration = 3000,
+        toastDelay = 500,
         documentIds,
         documentNames,
         afterComplete,

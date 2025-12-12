@@ -168,7 +168,7 @@ export const useStyles = makeStyles({
     overflow: "hidden",
   },
   orderText: {
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     fontWeight: 400,
     lineHeight: "20px",
     color: tokens.colorNeutralForeground1,

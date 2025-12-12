@@ -100,7 +100,7 @@ export const useHeaderStyles = makeStyles({
     padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalS}`,
     cursor: "pointer",
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: tokens.fontSizeBase300,
+    fontSize: tokens.fontSizeBase200,
     fontWeight: tokens.fontWeightRegular,
     color: tokens.colorNeutralForeground1,
     "&:hover": {
@@ -180,6 +180,7 @@ export const useTableStyles = makeStyles({
     tableLayout: "fixed",
     borderCollapse: "collapse",
     "& tr": {
+      borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
       borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
     },
     "& td": {
@@ -212,9 +213,9 @@ export const useTableStyles = makeStyles({
 
   timestampText: {
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: tokens.fontSizeBase300,
+    fontSize: tokens.fontSizeBase200,
     fontWeight: tokens.fontWeightRegular,
-    lineHeight: tokens.lineHeightBase300,
+    lineHeight: tokens.lineHeightBase200,
     color: tokens.colorNeutralForeground1,
     whiteSpace: "normal",
     wordBreak: "break-word",
@@ -226,7 +227,7 @@ export const useTableStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     gap: tokens.spacingHorizontalS,
-    margin: `${tokens.spacingVerticalXL} 0`,
+    // margin: `${tokens.spacingVerticalXL} 0`,
   },
 
   addDocumentButton: {
@@ -243,7 +244,7 @@ export const useTableStyles = makeStyles({
   },
 
   addDocumentHelperText: {
-    marginTop: tokens.spacingVerticalS,
+    marginBottom: tokens.spacingVerticalS,
     fontSize: tokens.fontSizeBase200,
     lineHeight: tokens.lineHeightBase200,
     color: tokens.colorNeutralForeground3,
@@ -480,9 +481,10 @@ export const useSectionStyles = makeStyles({
   sectionTextarea: {
     width: "100%",
     minHeight: "80px",
-    fontSize: tokens.fontSizeBase300,
+    maxHeight: "none",
+    fontSize: tokens.fontSizeBase200,
     fontFamily: "'Segoe UI', sans-serif",
-    lineHeight: tokens.lineHeightBase300,
+    lineHeight: tokens.lineHeightBase200,
     border: "none",
     outline: "none",
     resize: "none",
@@ -491,6 +493,7 @@ export const useSectionStyles = makeStyles({
     "& textarea": {
       fieldSizing: "content",
       minHeight: "80px",
+      maxHeight: "none",
       overflow: "hidden",
       border: "none !important",
       outline: "none !important",
@@ -547,6 +550,12 @@ export const useSectionStyles = makeStyles({
     boxShadow: "none !important",
     padding: `${tokens.spacingVerticalMNudge} !important`,
     backgroundColor: tokens.colorNeutralBackground1,
+  },
+
+  highlightedWord: {
+    color: "#0078D4",
+    backgroundColor: "transparent",
+    fontWeight: 600,
   },
 
   sectionContentDictationFocus: {
@@ -695,9 +704,9 @@ export const useOrderStyles = makeStyles({
   },
 
   orderInput: {
-    fontSize: tokens.fontSizeBase300,
+    fontSize: tokens.fontSizeBase200,
     fontWeight: tokens.fontWeightRegular,
-    lineHeight: tokens.lineHeightBase300,
+    lineHeight: tokens.lineHeightBase200,
     color: tokens.colorNeutralForeground1,
     fontFamily: "'Segoe UI', sans-serif",
     padding: `${tokens.spacingVerticalSNudge} ${tokens.spacingHorizontalMNudge}`,
@@ -711,7 +720,7 @@ export const useOrderStyles = makeStyles({
     resize: "none",
     overflow: "hidden",
     "@media (max-width: 769px)": {
-      fontSize: tokens.fontSizeBase400,
+      fontSize: tokens.fontSizeBase300,
     },
   },
 
@@ -752,9 +761,9 @@ export const useOrderStyles = makeStyles({
   },
 
   orderCodeText: {
-    fontSize: tokens.fontSizeBase300,
+    fontSize: tokens.fontSizeBase200,
     fontWeight: tokens.fontWeightSemibold,
-    lineHeight: tokens.lineHeightBase300,
+    lineHeight: tokens.lineHeightBase200,
     fontFamily: "'Segoe UI', sans-serif",
     color: tokens.colorNeutralForeground2,
   },
@@ -788,9 +797,9 @@ export const useOrderStyles = makeStyles({
     color: tokens.colorNeutralForeground2,
     width: "100%",
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: tokens.fontSizeBase300,
+    fontSize: tokens.fontSizeBase200,
     fontWeight: tokens.fontWeightSemibold,
-    lineHeight: tokens.lineHeightBase300,
+    lineHeight: tokens.lineHeightBase200,
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
     },
@@ -913,7 +922,7 @@ export const useStyles = makeStyles({
     padding: `${tokens.spacingVerticalXS} ${tokens.spacingHorizontalS}`,
     cursor: "pointer",
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: tokens.fontSizeBase300,
+    fontSize: tokens.fontSizeBase200,
     fontWeight: tokens.fontWeightRegular,
     color: tokens.colorNeutralForeground1,
     "&:hover": {
@@ -987,6 +996,7 @@ export const useStyles = makeStyles({
     tableLayout: "fixed",
     borderCollapse: "collapse",
     "& tr": {
+      borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
       borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
     },
     "& td": {
@@ -1019,9 +1029,9 @@ export const useStyles = makeStyles({
 
   timestampText: {
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: tokens.fontSizeBase300,
+    fontSize: tokens.fontSizeBase200,
     fontWeight: tokens.fontWeightRegular,
-    lineHeight: tokens.lineHeightBase300,
+    lineHeight: tokens.lineHeightBase200,
     color: tokens.colorNeutralForeground1,
     whiteSpace: "normal",
     wordBreak: "break-word",
@@ -1033,7 +1043,8 @@ export const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     gap: tokens.spacingHorizontalS,
-    margin: `${tokens.spacingVerticalXL} 0`,
+    marginBottom: tokens.spacingVerticalXL,
+    // margin: `${tokens.spacingVerticalXL} 0`,
   },
 
   addDocumentButton: {
@@ -1050,7 +1061,7 @@ export const useStyles = makeStyles({
   },
 
   addDocumentHelperText: {
-    marginTop: tokens.spacingVerticalS,
+    // marginTop: tokens.spacingVerticalS,
     fontSize: tokens.fontSizeBase200,
     lineHeight: tokens.lineHeightBase200,
     color: tokens.colorNeutralForeground3,
@@ -1279,9 +1290,10 @@ export const useStyles = makeStyles({
   sectionTextarea: {
     width: "100%",
     minHeight: "80px",
-    fontSize: tokens.fontSizeBase300,
+    maxHeight: "none",
+    fontSize: tokens.fontSizeBase200,
     fontFamily: "'Segoe UI', sans-serif",
-    lineHeight: tokens.lineHeightBase300,
+    lineHeight: tokens.lineHeightBase200,
     border: "none",
     outline: "none",
     resize: "none",
@@ -1289,6 +1301,7 @@ export const useStyles = makeStyles({
     "& textarea": {
       fieldSizing: "content",
       minHeight: "80px",
+      maxHeight: "none",
       overflow: "hidden",
       border: "none !important",
       outline: "none !important",
@@ -1479,9 +1492,9 @@ export const useStyles = makeStyles({
   },
 
   orderInput: {
-    fontSize: tokens.fontSizeBase300,
+    fontSize: tokens.fontSizeBase200,
     fontWeight: tokens.fontWeightRegular,
-    lineHeight: tokens.lineHeightBase300,
+    lineHeight: tokens.lineHeightBase200,
     color: tokens.colorNeutralForeground1,
     fontFamily: "'Segoe UI', sans-serif",
     padding: `${tokens.spacingVerticalSNudge} ${tokens.spacingHorizontalMNudge}`,
@@ -1495,7 +1508,7 @@ export const useStyles = makeStyles({
     resize: "none",
     overflow: "hidden",
     "@media (max-width: 769px)": {
-      fontSize: tokens.fontSizeBase400,
+      fontSize: tokens.fontSizeBase300,
     },
   },
 
@@ -1536,9 +1549,9 @@ export const useStyles = makeStyles({
   },
 
   orderCodeText: {
-    fontSize: tokens.fontSizeBase300,
+    fontSize: tokens.fontSizeBase200,
     fontWeight: tokens.fontWeightSemibold,
-    lineHeight: tokens.lineHeightBase300,
+    lineHeight: tokens.lineHeightBase200,
     fontFamily: "'Segoe UI', sans-serif",
     color: tokens.colorNeutralForeground2,
   },
@@ -1572,9 +1585,9 @@ export const useStyles = makeStyles({
     color: tokens.colorNeutralForeground2,
     width: "100%",
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: tokens.fontSizeBase300,
+    fontSize: tokens.fontSizeBase200,
     fontWeight: tokens.fontWeightSemibold,
-    lineHeight: tokens.lineHeightBase300,
+    lineHeight: tokens.lineHeightBase200,
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
     },

@@ -129,6 +129,8 @@ export interface DocumentComponentProps {
   initialExpandedDocuments?: Set<string>;
   /** Callback when pronoun replacement completes */
   onPronounReplacementComplete?: () => void;
+  /** Scroll to top of document area on mount instead of first expanded document */
+  scrollToTop?: boolean;
 }
 
 /**

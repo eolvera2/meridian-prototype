@@ -44,6 +44,7 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
   onOrderDelete,
   initialExpandedDocuments,
   onPronounReplacementComplete,
+  scrollToTop = false,
 }) => {
   const styles = useStyles();
   const { updateSelectedPatientLastModified } = useWorklistContext();
@@ -139,31 +140,44 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
   // Scroll to the first initially expanded document on mount
   const hasScrolledToInitialRef = useRef(false);
   useEffect(() => {
-    // Only scroll once on mount when we have initialExpandedDocuments
-    if (hasScrolledToInitialRef.current || !initialExpandedDocuments) {
-      return;
-    }
-
-    // Get the first expanded document ID from the set
-    const firstExpandedId = Array.from(initialExpandedDocuments)[0];
-    if (!firstExpandedId) {
+    // Only scroll once on mount when we have initialExpandedDocuments or scrollToTop
+    if (
+      hasScrolledToInitialRef.current ||
+      (!initialExpandedDocuments && !scrollToTop)
+    ) {
       return;
     }
 
     // Small delay to ensure DOM is ready
     const timer = setTimeout(() => {
-      const element = documentRefs.current[firstExpandedId];
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-        hasScrolledToInitialRef.current = true;
+      if (scrollToTop) {
+        // Scroll to the very top of the document component
+        const documentRoot = document.querySelector(".document-component-root");
+        if (documentRoot) {
+          documentRoot.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+          hasScrolledToInitialRef.current = true;
+        }
+      } else if (initialExpandedDocuments) {
+        // Get the first expanded document ID from the set
+        const firstExpandedId = Array.from(initialExpandedDocuments)[0];
+        if (firstExpandedId) {
+          const element = documentRefs.current[firstExpandedId];
+          if (element) {
+            element.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            hasScrolledToInitialRef.current = true;
+          }
+        }
       }
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [initialExpandedDocuments]);
+  }, [initialExpandedDocuments, scrollToTop]);
 
   // Use the extracted typing replacement hook
   const {
@@ -329,8 +343,8 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
 
       // Start skeleton animation
       triggerSkeletonGeneration({
-        duration: 6000,
-        toastDelay: 3000,
+        duration: 3500,
+        toastDelay: 500,
         afterComplete: () => {
           // After skeleton animation, populate Orders and update timestamps
           setDocuments((prev) => {
@@ -412,8 +426,8 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
     if (!wasTrigger && triggerPronounReplacement) {
       setIsPronounReplacement(true);
       triggerSkeletonGeneration({
-        duration: 5500,
-        toastDelay: 3000,
+        duration: 3000,
+        toastDelay: 500,
         afterComplete: () => {
           setIsPronounReplacement(false);
           // Update Note and Referral Letter modified timestamps after pronoun replacement completes
@@ -441,33 +455,26 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
 
     // Only trigger when the prop transitions from false to true
     if (!wasTrigger && triggerDraftReferralLetter) {
-      // Find existing referral letter or create a new one
-      let referralLetter = documents.find(
-        (doc) => doc.type === "referral-letter"
-      );
+      // Always create a new referral letter (allow multiple)
+      const newReferralLetter: DocumentItem = {
+        id: `doc-${Date.now()}`,
+        name: "Referral Letter",
+        created: "12:20 PM",
+        type: "referral-letter",
+        sections: [
+          {
+            id: `referral-${Date.now()}`,
+            title: "Referral Note",
+            content: "",
+            checked: false,
+          },
+        ],
+        isExpanded: false,
+      };
 
-      if (!referralLetter) {
-        // Create a new referral letter document
-        const newReferralLetter: DocumentItem = {
-          id: `doc-${Date.now()}`,
-          name: "Referral Letter",
-          created: "12:20 PM",
-          type: "referral-letter",
-          sections: [
-            {
-              id: `referral-${Date.now()}`,
-              title: "Referral Note",
-              content: "",
-              checked: false,
-            },
-          ],
-          isExpanded: false,
-        };
-
-        // Add the new referral letter to documents
-        setDocuments((prev) => [newReferralLetter, ...prev]);
-        referralLetter = newReferralLetter;
-      }
+      // Add the new referral letter to documents
+      setDocuments((prev) => [newReferralLetter, ...prev]);
+      const referralLetter = newReferralLetter;
 
       setIsDraftingReferralLetter(true);
 
@@ -505,8 +512,8 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
 
       // Trigger skeleton for just the referral letter
       triggerSkeletonGeneration({
-        duration: 5500,
-        toastDelay: 3000,
+        duration: 3000,
+        toastDelay: 500,
         documentIds: [referralId],
         documentNames: ["Referral letter"],
         afterComplete: () => setIsDraftingReferralLetter(false),

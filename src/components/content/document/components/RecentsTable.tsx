@@ -60,7 +60,7 @@ function getTimestampDisplay(
 } {
   // Check if document has "--" timestamp (empty/initial state)
   if (doc.created === "--") {
-    return { created: "--", modified: "--" };
+    return { created: "--", modified: "" };
   }
 
   // Check if document was just generated (12:00 PM timestamp)
@@ -155,7 +155,7 @@ export function RecentsTable({
               );
               return (
                 <TableRow key={item.id}>
-                  <TableCell style={{ width: "50%" }}>
+                  <TableCell style={{ width: "40%" }}>
                     <TableCellLayout>
                       <a
                         href="#"
@@ -172,7 +172,7 @@ export function RecentsTable({
                       </a>
                     </TableCellLayout>
                   </TableCell>
-                  <TableCell style={{ width: "50%" }}>
+                  <TableCell style={{ width: "60%" }}>
                     <TableCellLayout>
                       <div
                         style={{

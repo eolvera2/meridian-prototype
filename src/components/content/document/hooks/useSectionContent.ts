@@ -23,66 +23,68 @@ export interface UseSectionContentReturn {
 }
 
 // Pool of AI-generated section content for Notes
+// Based on annual physical examination comprehensive data
 const AI_SECTION_CONTENT_POOL: Record<string, string[]> = {
   Note: [
-    "Patient presents for routine wellness examination. Reports overall good health with no acute concerns. Has been maintaining regular exercise 3 times per week and following a balanced diet. Denies chest pain, shortness of breath, or palpitations. Sleep quality is adequate at 7-8 hours per night. Current medications include lisinopril 10 mg daily for hypertension with good BP control. No medication side effects reported. Discussed preventive health measures including colorectal cancer screening and flu vaccination.",
-    "Annual physical examination for established patient. Currently feeling well with no new complaints. Chronic conditions including hypertension and hyperlipidemia remain stable on current regimen. Recent labs show HbA1c 5.6%, lipid panel within target. BMI 26.2, down from 27.1 last year. Patient reports improved dietary habits and increased physical activity. Reviewed medication list for accuracy. Up to date on immunizations. Discussed age-appropriate cancer screenings.",
-    "Wellness visit for preventive care. Patient reports general good health. Vitals today: BP 128/78, HR 72, SpO2 98% on room air. Physical exam unremarkable. Depression screening (PHQ-9) score 2, negative. Alcohol use screening (AUDIT-C) score 1, low risk. Discussed smoking cessation resources as patient reports occasional social smoking. Reviewed family history noting new diagnosis of colon cancer in sibling - referred for early colonoscopy.",
-    "Routine health maintenance visit. Patient is a well-appearing adult in no acute distress. Comprehensive review of systems negative except for occasional mild headaches relieved with acetaminophen. Physical examination within normal limits. Labs reviewed: CBC normal, CMP normal, TSH 2.1. Immunizations current. Discussed advance directive planning and healthcare proxy designation. Follow-up scheduled in one year for annual wellness exam.",
+    "The patient is a 41-year-old who presents for an annual physical exam. He underwent his initial colonoscopy at the age of 35, prompted by a family history of colorectal issues. He has a history of actinic keratoses on his facial region and has requested a referral to Dr. Charles Taylor at MGH. He does not engage in any form of exercise but does participate in walking and hiking activities. He applies high SPF sunscreen when planning to spend extended periods outdoors. The patient denies experiencing any severe pain following his discectomy. He occasionally experiences discomfort managed with light stretching exercises. He works in the finance field for the state. His father had skin cancer treatments and removals.",
+    "Patient presents for routine wellness examination. Reports overall good health with no acute concerns. Has been maintaining walking and hiking activities. Denies chest pain, shortness of breath, or palpitations. No current medications. History of lumbar spine injury status post discectomy without severe pain. Discussed preventive health measures including colorectal cancer screening and dermatology follow-up.",
+    "Annual physical examination for established patient. Currently feeling well with no new complaints. History of actinic keratoses requiring dermatology follow-up. Reports occasional ear blockage upon awakening that resolves with steam. Notes change in urine color and frequency over past year. Not currently on any medications. Uses high SPF sunscreen appropriately when outdoors.",
+    "Routine health maintenance visit. Patient is a well-appearing 41-year-old in no acute distress. Reports interest in improving physical fitness following past lumbar spine injury. Comprehensive review of systems reveals occasional ear blockage and urinary frequency concerns. No current medications. Discussed advance directive planning and healthcare proxy designation. Follow-up scheduled in one year for annual wellness exam.",
   ],
   "Well visit - Note": [
-    "Patient presents for routine well visit. She reports feeling well overall with no acute concerns. Has been maintaining a healthy lifestyle with regular exercise 3 times per week and following a balanced diet. Denies chest pain, shortness of breath, palpitations, or syncope. No recent weight changes. Sleep is adequate at 7-8 hours per night. Stress levels are manageable. Vitals: BP 122/78 mmHg, HR 68 bpm, Temp 98.4°F, SpO2 99% on room air. General: Well-appearing, in no acute distress. Cardiovascular: Regular rate and rhythm, no murmurs. Lungs: Clear to auscultation bilaterally. Labs reviewed - lipid panel and CBC within normal limits. Preventive care discussed including flu vaccine and skin cancer prevention. Continue current lifestyle habits. Return in 1 year or sooner if concerns arise.",
+    "Patient presents for routine well visit. Reports feeling well overall with no acute concerns. Has been maintaining walking and hiking activities with regular use of high SPF sunscreen. Denies chest pain, shortness of breath, or palpitations. Sleep is adequate. No current medications. Vitals: BP 109/72, HR 87. General: Well-appearing, in no acute distress. Cardiovascular: Regular rate and rhythm, no murmurs. Lungs: Clear bilaterally. Preventive care discussed including skin cancer screening and physical fitness recommendations. Return in 1 year or sooner if concerns arise.",
   ],
   "Annual - Note": [
-    "Patient presents for annual physical examination. He reports overall good health with well-controlled chronic conditions. Hypertension has been stable on current medications with home BP readings averaging 130/82 mmHg. Reports compliance with medication regimen and dietary modifications. Exercises by walking 30 minutes daily. Denies any new symptoms including chest pain, dyspnea, dizziness, or visual changes. Vitals: BP 132/84 mmHg, HR 74 bpm, SpO2 98% on room air. Physical exam unremarkable. Labs: HbA1c 5.8% indicating prediabetes, LDL 128 slightly elevated, Vitamin D 28 low-normal. Assessment: 1) Hypertension - controlled, continue current regimen. 2) Prediabetes - lifestyle modifications, recheck in 3 months. 3) Borderline hyperlipidemia - trial lifestyle changes. Flu vaccine and tetanus booster administered today. Follow up in 3 months for lab recheck.",
+    "Patient presents for annual physical examination. He reports overall good health following past lumbar spine injury status post discectomy. History of actinic keratoses requiring dermatology follow-up. Family history significant for skin cancer in father. Reports occasional ear blockage upon awakening, resolves with steam. Notes change in urine color and frequency over past year. Not currently on any medications. Exercises by walking and hiking regularly. Uses high SPF sunscreen appropriately. Vitals: BP 109/72, HR 87. Physical exam shows impacted cerumen right ear, actinic keratoses on face, otherwise unremarkable. Follow up in 3 months for lab results or sooner if needed.",
   ],
   "History of Present Illness": [
-    "Patient presents with a three-day history of persistent cough and mild fever. Reports experiencing increased fatigue and occasional shortness of breath during physical activity. Denies chest pain or difficulty breathing at rest. Has been taking over-the-counter medication with minimal relief. No recent travel or known sick contacts reported.",
-    "45-year-old male with chief complaint of headaches for the past 2 weeks. Describes pain as bilateral, pressure-like, rated 6/10, worse in the morning. Associated with mild nausea but no vomiting. Denies visual changes, neck stiffness, or fever. Takes ibuprofen with partial relief.",
-    "Patient reports worsening lower back pain over the past month, radiating to left leg. Pain is sharp, rated 7/10, aggravated by sitting and bending. Reports tingling in left foot. No bowel or bladder dysfunction. Has history of lumbar disc herniation.",
-    "62-year-old female presents with progressive dyspnea on exertion over 3 months. Now unable to climb one flight of stairs without stopping. Associated with bilateral leg swelling. Denies orthopnea or PND. History of hypertension and diabetes mellitus type 2.",
+    "The patient is a 41-year-old who presents for an annual physical exam. He underwent his initial colonoscopy at the age of 35, prompted by a family history of colorectal issues. He acknowledges that he was due for a follow-up procedure in the previous year but failed to schedule it. His last endoscopy was performed in 2018. The patient had previously scheduled a dermatological appointment, which was subsequently cancelled. He has a history of actinic keratoses on his facial region. He reports no significant changes in his auditory or visual acuity, although he occasionally experiences a sensation of blockage in one ear upon awakening. This issue typically resolves after exposure to steam during his morning shower.",
+    "Patient reports walking and hiking activities but no structured exercise program. Does not engage in any form of exercise beyond walking. Applies high SPF sunscreen when planning to spend extended periods outdoors during the summer months. The patient has observed a change in his urine color over the past year, noting a dark, apple juice-like appearance. This discoloration is most pronounced with his first morning void. He also reports frequent urination, even with minimal fluid intake.",
+    "The patient denies experiencing any severe pain following his discectomy. He occasionally experiences discomfort, which he manages with light stretching exercises as instructed during his physical therapy sessions at Spaulding. He attributes his current lack of physical fitness to his back condition. He has a history of lumbar spine injury and has been advised against heavy weightlifting. Prior to his injury, he maintained an active lifestyle, running approximately 15 miles per week and engaging in regular weight training. He works in the finance field for the state. His father had skin cancer treatments and removals.",
+    "Patient has requested a referral to Dr. Charles Taylor at MGH, as recommended by his father. He has a history of actinic keratoses on his facial region. He maintains a regular ear cleaning regimen using Q-tips. He has expressed interest in obtaining a referral to Spaulding for swimming lessons. He recalls an instance where he consumed a single glass of wine and water during a meal out yet needed to urinate three times. He is currently not on any medications.",
   ],
   "Physical Exam": [
-    "Vital signs: Temperature 99.2°F, Blood pressure 128/82 mmHg, Heart rate 78 bpm, Respiratory rate 16/min, SpO2 97% on room air. General: Alert and oriented, no acute distress. HEENT: Oropharynx mildly erythematous, no exudates. Neck: Supple, no lymphadenopathy. Lungs: Scattered rhonchi bilaterally, no wheezes. Heart: Regular rate and rhythm, no murmurs. Abdomen: Soft, non-tender.",
-    "BP 142/88, HR 72, RR 14, SpO2 98% RA. General: Well-appearing, comfortable. HEENT: PERRLA, EOMI, TMs clear bilaterally. Neck: No thyromegaly, no JVD. CV: RRR, S1/S2 normal, no murmurs. Lungs: CTAB, no rales or wheezes. Extremities: No edema, pulses 2+ throughout.",
+    "Impacted cerumen is present in the right ear. No abnormal lymph nodes are felt in the neck. The thyroid appears normal. Both lungs are clear. The heart has a regular rate and rhythm. No murmurs are detected. The abdomen is soft and nontender. There is no swelling in the ankles. Actinic keratoses are present on the face. The skin on the back appears healthy. Vital Signs Blood pressure is 109/72. Heart rate is 87.",
+    "BP 109/72, HR 87. General: Well-appearing, comfortable, no acute distress. HEENT: PERRLA, EOMI, impacted cerumen right ear. Neck: No thyromegaly, no JVD, no abnormal lymph nodes. CV: RRR, S1/S2 normal, no murmurs. Lungs: CTAB, no rales or wheezes. Abdomen: Soft, nontender, no masses. Extremities: No edema. Skin: Actinic keratoses on face, back appears healthy.",
   ],
   Results: [
-    "CBC: WBC 11.2 (mildly elevated), Hgb 14.1, Plt 245. BMP within normal limits. Chest X-ray shows mild peribronchial thickening, no consolidation or effusion. Rapid strep negative. COVID-19 PCR pending.",
-    "Labs: WBC 8.2, Hgb 12.8, Plt 198. BMP: Na 140, K 4.2, Cl 102, CO2 24, BUN 18, Cr 1.0, Glucose 156. HbA1c 7.8%. Lipid panel: TC 245, LDL 158, HDL 42, TG 180. TSH 2.4.",
+    "Imaging Colonoscopy in 2018 showed normal colon.",
+    "Labs pending: Comprehensive metabolic panel, lipid panel, urinalysis, PSA. Colonoscopy 2018 normal. No acute findings on today's examination.",
   ],
   "Assessment & Plan": [
-    "Assessment: Acute bronchitis, likely viral etiology. Plan: 1) Supportive care with rest and hydration. 2) Guaifenesin 400mg every 4 hours as needed for cough. 3) Acetaminophen 650mg every 6 hours as needed for fever. 4) Return if symptoms worsen or persist beyond 10 days. 5) Follow up on COVID results.",
-    "1. Hypertension, uncontrolled - Increase lisinopril to 20mg daily, add amlodipine 5mg daily. 2. Type 2 DM, suboptimal control - Increase metformin to 1000mg BID, dietary counseling. 3. Hyperlipidemia - Start atorvastatin 40mg at bedtime. 4. Follow up in 4 weeks with repeat labs.",
+    "1. Annual physical examination. The patient's blood pressure readings are within the normal range, and he is not currently on any antihypertensive medications. His cholesterol levels have been slightly elevated in the past. I will proceed with ordering blood work and a urinalysis. If the results indicate any abnormalities, I will recommend fasting blood work for further evaluation. 2. Colonoscopy. The patient underwent a colonoscopy in 2018, which yielded normal results. A repeat colonoscopy was recommended at the age of 50. I have advised the patient to postpone the colonoscopy until he reaches the age of 50, unless there are specific indications that necessitate an earlier procedure. 3. Skin evaluation. The patient has a history of actinic keratoses on his face. A referral to Dr. Charles Taylor at MGH will be arranged for further evaluation and management. 4. Prostate check. The patient's urinary symptoms are unlikely to be related to prostate issues. However, they could potentially be indicative of diabetes. A PSA test will be ordered to rule out any prostate-related concerns. 5. Cerumen impaction. The patient has impacted cerumen in his right ear. Cerumen irrigation will be performed to alleviate the impaction. 6. Back pain. The patient has a history of lumbar spine injury and has previously undergone discectomy surgery. I have recommended that the patient consider joining a gym and working with a personal trainer to improve his physical fitness.",
+    "Preventive health maintenance - labs and urinalysis ordered. Dermatology referral for actinic keratoses management. Urinary symptoms evaluation - PSA ordered to rule out prostate concerns. Cerumen impaction - irrigation performed today. Physical fitness - gym membership with personal trainer recommended. Follow up in 3 months for lab results or sooner if needed.",
   ],
 };
 
-// Referral letter template
+// Referral letter template for Ellis Turner's STEMI case
 const REFERRAL_LETTER_CONTENT = `Dear Dr. Johnson,
 
-I am writing to refer my patient, Angel Brown, a 45-year-old male, for evaluation and management of their chronic headaches and cardiovascular concerns.
+I am writing to refer my patient, Ellis Turner, a 55-year-old male, for cardiology evaluation and follow-up management of his recent ST-elevation myocardial infarction (STEMI).
 
-Mr. Brown has a history of diabetes mellitus type 2 and hypertension, both of which are currently managed with oral medications. They have been experiencing frequent headaches over the past several months, which have become increasingly bothersome and are affecting their quality of life.
-
-Recent vital signs:
-- Blood pressure: 142/88 mmHg
-- Heart rate: 78 bpm
-- Temperature: 98.6°F
+Mr. Turner presented to the emergency department with acute chest pain and was diagnosed with an inferior wall STEMI. He underwent successful cardiac catheterization and is currently stable on medical management.
 
 Current medications:
-- Metformin 1000 mg twice daily
+- Aspirin 81 mg daily
+- Clopidogrel 75 mg daily
+- Metoprolol succinate 50 mg daily
 - Lisinopril 20 mg daily
-- Atorvastatin 40 mg at bedtime
+- Atorvastatin 80 mg at bedtime
+- Spironolactone 25 mg daily
 
-I would appreciate your expert evaluation and recommendations for further management. Please feel free to contact my office if you require any additional information.
+I would appreciate your expert evaluation for ongoing cardiac rehabilitation and long-term management recommendations.
 
 Thank you for your assistance in the care of this patient.
 
 Sincerely,
 Dr. Smith`;
 
-// Helper function to replace pronouns with they/them
+// Helper function to replace pronouns with they/them and fix grammar
 const replacePronounsWithTheyThem = (text: string): string => {
-  return text
+  let result = text;
+
+  // Replace pronouns first
+  result = result
     .replace(/\bHe\b/g, "They")
     .replace(/\bShe\b/g, "They")
     .replace(/\bhe\b/g, "they")
@@ -99,6 +101,53 @@ const replacePronounsWithTheyThem = (text: string): string => {
     .replace(/\bHerself\b/g, "Themselves")
     .replace(/\bhimself\b/g, "themselves")
     .replace(/\bherself\b/g, "themselves");
+
+  // Fix verb conjugations after they/them replacement
+  // Must fix common irregular verbs and present tense third-person singular forms
+  result = result
+    // Fix irregular verbs first (highest priority)
+    .replace(/\b(They|they)\s+is\b/g, "$1 are")
+    .replace(/\b(They|they)\s+was\b/g, "$1 were")
+    .replace(/\b(They|they)\s+has\b/g, "$1 have")
+    .replace(/\b(They|they)\s+does\b/g, "$1 do")
+
+    // Fix verbs ending in -es (goes, does, etc.)
+    .replace(/\b(They|they)\s+goes\b/g, "$1 go")
+    .replace(/\b(They|they)\s+does\b/g, "$1 do")
+
+    // Fix common medical/clinical verbs ending in -s
+    .replace(/\b(They|they)\s+describes\b/g, "$1 describe")
+    .replace(/\b(They|they)\s+denies\b/g, "$1 deny")
+    .replace(/\b(They|they)\s+reports\b/g, "$1 report")
+    .replace(/\b(They|they)\s+presents\b/g, "$1 present")
+    .replace(/\b(They|they)\s+appears\b/g, "$1 appear")
+    .replace(/\b(They|they)\s+experiences\b/g, "$1 experience")
+    .replace(/\b(They|they)\s+undergoes\b/g, "$1 undergo")
+    .replace(/\b(They|they)\s+continues\b/g, "$1 continue")
+    .replace(/\b(They|they)\s+remains\b/g, "$1 remain")
+    .replace(/\b(They|they)\s+requires\b/g, "$1 require")
+    .replace(/\b(They|they)\s+shows\b/g, "$1 show")
+    .replace(/\b(They|they)\s+exhibits\b/g, "$1 exhibit")
+    .replace(/\b(They|they)\s+demonstrates\b/g, "$1 demonstrate")
+    .replace(/\b(They|they)\s+complains\b/g, "$1 complain")
+    .replace(/\b(They|they)\s+notes\b/g, "$1 note")
+    .replace(/\b(They|they)\s+mentions\b/g, "$1 mention")
+    .replace(/\b(They|they)\s+states\b/g, "$1 state")
+    .replace(/\b(They|they)\s+indicates\b/g, "$1 indicate")
+    .replace(/\b(They|they)\s+suggests\b/g, "$1 suggest")
+    .replace(/\b(They|they)\s+feels\b/g, "$1 feel")
+    .replace(/\b(They|they)\s+needs\b/g, "$1 need")
+    .replace(/\b(They|they)\s+wants\b/g, "$1 want")
+    .replace(/\b(They|they)\s+takes\b/g, "$1 take")
+    .replace(/\b(They|they)\s+uses\b/g, "$1 use")
+    .replace(/\b(They|they)\s+works\b/g, "$1 work")
+    .replace(/\b(They|they)\s+lives\b/g, "$1 live")
+    .replace(/\b(They|they)\s+smokes\b/g, "$1 smoke")
+    .replace(/\b(They|they)\s+drinks\b/g, "$1 drink")
+    .replace(/\b(They|they)\s+exercises\b/g, "$1 exercise")
+    .replace(/\b(They|they)\s+engages\b/g, "$1 engage");
+
+  return result;
 };
 
 export function useSectionContent({

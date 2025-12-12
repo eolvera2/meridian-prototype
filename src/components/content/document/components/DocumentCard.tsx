@@ -112,6 +112,11 @@ function DocumentCard({
   >({});
   const previousShowSkeletonRef = React.useRef(showSkeleton);
 
+  // State to track which sections have highlighted pronouns
+  const [highlightedSections, setHighlightedSections] = React.useState<
+    Set<string>
+  >(new Set());
+
   // Ref for auto-focus on first section textarea
   const firstSectionTextareaRef = React.useRef<HTMLTextAreaElement | null>(
     null
@@ -170,9 +175,9 @@ function DocumentCard({
       ],
       "History of Present Illness": [
         "Patient presents with a three-day history of persistent cough and mild fever. Reports experiencing increased fatigue and occasional shortness of breath during physical activity. Denies chest pain or difficulty breathing at rest. Has been taking over-the-counter medication with minimal relief. No recent travel or known sick contacts reported.",
-        "45-year-old male with chief complaint of headaches for the past 2 weeks. Describes pain as bilateral, pressure-like, rated 6/10, worse in the morning. Associated with mild nausea but no vomiting. Denies visual changes, neck stiffness, or fever. Takes ibuprofen with partial relief.",
+        "41-year-old male with chief complaint of headaches for the past 2 weeks. Describes pain as bilateral, pressure-like, rated 6/10, worse in the morning. Associated with mild nausea but no vomiting. Denies visual changes, neck stiffness, or fever. Takes ibuprofen with partial relief.",
         "Patient reports worsening lower back pain over the past month, radiating to left leg. Pain is sharp, rated 7/10, aggravated by sitting and bending. Reports tingling in left foot. No bowel or bladder dysfunction. Has history of lumbar disc herniation.",
-        "62-year-old female presents with progressive dyspnea on exertion over 3 months. Now unable to climb one flight of stairs without stopping. Associated with bilateral leg swelling. Denies orthopnea or PND. History of hypertension and diabetes mellitus type 2.",
+        "41-year-old male presents with progressive dyspnea on exertion over 3 months. Now unable to climb one flight of stairs without stopping. Associated with bilateral leg swelling. Denies orthopnea or PND. History of hypertension and diabetes mellitus type 2.",
       ],
       "Physical Exam": [
         "Vital signs: Temperature 99.2°F, Blood pressure 128/82 mmHg, Heart rate 78 bpm, Respiratory rate 16/min, SpO2 97% on room air. General: Alert and oriented, no acute distress. HEENT: Oropharynx mildly erythematous, no exudates. Neck: Supple, no lymphadenopathy. Lungs: Scattered rhonchi bilaterally, no wheezes. Heart: Regular rate and rhythm, no murmurs. Abdomen: Soft, non-tender.",
@@ -204,23 +209,219 @@ function DocumentCard({
   // Helper function to replace pronouns with they/them
   const replacePronounsWithTheyThem = React.useCallback(
     (text: string): string => {
-      return text
-        .replace(/\bHe\b/g, "They")
-        .replace(/\bShe\b/g, "They")
-        .replace(/\bhe\b/g, "they")
-        .replace(/\bshe\b/g, "they")
-        .replace(/\bHim\b/g, "Them")
-        .replace(/\bHer\b(?!\s+\w)/g, "Them")
-        .replace(/\bhim\b/g, "them")
-        .replace(/\bher\b(?!\s+\w)/g, "them")
-        .replace(/\bHis\b/g, "Their")
-        .replace(/\bHer\s+(?=\w)/g, "Their ")
-        .replace(/\bhis\b/g, "their")
-        .replace(/\bher\s+(?=\w)/g, "their ")
-        .replace(/\bHimself\b/g, "Themselves")
-        .replace(/\bHerself\b/g, "Themselves")
-        .replace(/\bhimself\b/g, "themselves")
-        .replace(/\bherself\b/g, "themselves");
+      let result = text;
+
+      // Replace pronouns first - wrap in span with blue color
+      result = result
+        .replace(
+          /\bHe\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">They</span>'
+        )
+        .replace(
+          /\bShe\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">They</span>'
+        )
+        .replace(
+          /\bhe\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">they</span>'
+        )
+        .replace(
+          /\bshe\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">they</span>'
+        )
+        .replace(
+          /\bHim\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">Them</span>'
+        )
+        .replace(
+          /\bHer\b(?!\s+\w)/g,
+          '<span style="color: #0078D4; font-weight: 600;">Them</span>'
+        )
+        .replace(
+          /\bhim\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">them</span>'
+        )
+        .replace(
+          /\bher\b(?!\s+\w)/g,
+          '<span style="color: #0078D4; font-weight: 600;">them</span>'
+        )
+        .replace(
+          /\bHis\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">Their</span>'
+        )
+        .replace(
+          /\bHer\s+(?=\w)/g,
+          '<span style="color: #0078D4; font-weight: 600;">Their</span> '
+        )
+        .replace(
+          /\bhis\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">their</span>'
+        )
+        .replace(
+          /\bher\s+(?=\w)/g,
+          '<span style="color: #0078D4; font-weight: 600;">their</span> '
+        )
+        .replace(
+          /\bHimself\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">Themselves</span>'
+        )
+        .replace(
+          /\bHerself\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">Themselves</span>'
+        )
+        .replace(
+          /\bhimself\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">themselves</span>'
+        )
+        .replace(
+          /\bherself\b/g,
+          '<span style="color: #0078D4; font-weight: 600;">themselves</span>'
+        );
+
+      // Fix verb conjugations - wrap only the changed verb in blue
+      result = result
+        .replace(
+          /\b(They|they)\s+is\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">are</span>'
+        )
+        .replace(
+          /\b(They|they)\s+was\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">were</span>'
+        )
+        .replace(
+          /\b(They|they)\s+has\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">have</span>'
+        )
+        .replace(
+          /\b(They|they)\s+does\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">do</span>'
+        )
+        .replace(
+          /\b(They|they)\s+goes\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">go</span>'
+        )
+        .replace(
+          /\b(They|they)\s+describes\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">describe</span>'
+        )
+        .replace(
+          /\b(They|they)\s+denies\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">deny</span>'
+        )
+        .replace(
+          /\b(They|they)\s+reports\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">report</span>'
+        )
+        .replace(
+          /\b(They|they)\s+presents\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">present</span>'
+        )
+        .replace(
+          /\b(They|they)\s+appears\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">appear</span>'
+        )
+        .replace(
+          /\b(They|they)\s+experiences\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">experience</span>'
+        )
+        .replace(
+          /\b(They|they)\s+undergoes\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">undergo</span>'
+        )
+        .replace(
+          /\b(They|they)\s+continues\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">continue</span>'
+        )
+        .replace(
+          /\b(They|they)\s+remains\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">remain</span>'
+        )
+        .replace(
+          /\b(They|they)\s+requires\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">require</span>'
+        )
+        .replace(
+          /\b(They|they)\s+shows\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">show</span>'
+        )
+        .replace(
+          /\b(They|they)\s+exhibits\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">exhibit</span>'
+        )
+        .replace(
+          /\b(They|they)\s+demonstrates\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">demonstrate</span>'
+        )
+        .replace(
+          /\b(They|they)\s+complains\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">complain</span>'
+        )
+        .replace(
+          /\b(They|they)\s+notes\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">note</span>'
+        )
+        .replace(
+          /\b(They|they)\s+mentions\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">mention</span>'
+        )
+        .replace(
+          /\b(They|they)\s+states\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">state</span>'
+        )
+        .replace(
+          /\b(They|they)\s+indicates\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">indicate</span>'
+        )
+        .replace(
+          /\b(They|they)\s+suggests\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">suggest</span>'
+        )
+        .replace(
+          /\b(They|they)\s+feels\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">feel</span>'
+        )
+        .replace(
+          /\b(They|they)\s+needs\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">need</span>'
+        )
+        .replace(
+          /\b(They|they)\s+wants\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">want</span>'
+        )
+        .replace(
+          /\b(They|they)\s+takes\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">take</span>'
+        )
+        .replace(
+          /\b(They|they)\s+uses\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">use</span>'
+        )
+        .replace(
+          /\b(They|they)\s+works\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">work</span>'
+        )
+        .replace(
+          /\b(They|they)\s+lives\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">live</span>'
+        )
+        .replace(
+          /\b(They|they)\s+smokes\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">smoke</span>'
+        )
+        .replace(
+          /\b(They|they)\s+drinks\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">drink</span>'
+        )
+        .replace(
+          /\b(They|they)\s+exercises\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">exercise</span>'
+        )
+        .replace(
+          /\b(They|they)\s+engages\b/g,
+          '$1 <span style="color: #0078D4; font-weight: 600;">engage</span>'
+        );
+
+      return result;
     },
     []
   );
@@ -314,13 +515,18 @@ function DocumentCard({
       isPronounReplacement
     ) {
       const newContent: Record<string, string> = {};
+      const sectionsWithHighlights = new Set<string>();
+
       document.sections?.forEach((section) => {
         const currentContent = aiSectionContent[section.id] || section.content;
         if (currentContent) {
           newContent[section.id] = replacePronounsWithTheyThem(currentContent);
+          sectionsWithHighlights.add(section.id);
         }
       });
+
       setAiSectionContent((prev) => ({ ...prev, ...newContent }));
+      setHighlightedSections(sectionsWithHighlights);
     }
 
     // Replace pronouns in Order items when pronoun replacement skeleton ends
@@ -351,23 +557,24 @@ function DocumentCard({
     ) {
       const referralContent = `Dear Dr. Johnson,
 
-I am writing to refer my patient, Angel Brown, a 45-year-old male, for evaluation and management of their chronic headaches and cardiovascular concerns.
+I am writing to refer my patient, Ellis Turner, a 41-year-old male, for cardiology evaluation and follow-up management of his recent ST-elevation myocardial infarction (STEMI).
 
-Mr. Brown has a history of diabetes mellitus type 2 and hypertension, both of which are currently managed with oral medications. They have been experiencing frequent headaches over the past several months, which have become increasingly bothersome and are affecting their quality of life.
+Mr. Turner presented to the emergency department with acute chest pain and was diagnosed with an inferior wall STEMI. He underwent successful cardiac catheterization and is currently stable on medical management.
 
-Current Medications:
-- Metformin 1000 mg twice daily
-- Lisinopril 20 mg daily
+Current medications:
+- Aspirin 81 mg daily
+- Clopidogrel 75 mg daily
 - Metoprolol succinate 50 mg daily
+- Lisinopril 20 mg daily
+- Atorvastatin 80 mg at bedtime
 - Spironolactone 25 mg daily
 
-Recent vital signs show blood pressure of 138/88 mmHg with a heart rate of 72 bpm. Laboratory results from their last visit are within normal limits for their conditions.
+I would appreciate your expert evaluation for ongoing cardiac rehabilitation and long-term management recommendations.
 
-I would appreciate your expert evaluation and recommendations for management. Please do not hesitate to contact my office if you require any additional information.
+Thank you for your assistance in the care of this patient.
 
 Sincerely,
-Dr. Sarah Mitchell
-Primary Care Physician`;
+Dr. Smith`;
 
       const newContent: Record<string, string> = {};
       document.sections?.forEach((section) => {
@@ -855,6 +1062,7 @@ Primary Care Physician`;
                     onClick={() =>
                       onDeleteDocument?.(document.id, document.name)
                     }
+                    disabled={document.type === "progress-note"}
                   >
                     <Delete24Regular className={styles.toolbarIcon} />
                   </button>
@@ -1098,79 +1306,103 @@ Primary Care Physician`;
                                 : styles.sectionContent
                             }
                           >
-                            <Textarea
-                              className={
-                                dictationState === "on" &&
-                                focusedSectionId === section.id
-                                  ? mergeClasses(
-                                      styles.sectionTextarea,
-                                      styles.sectionTextareaDictationFocus
-                                    )
-                                  : styles.sectionTextarea
-                              }
-                              value={
-                                aiSectionContent[section.id] || section.content
-                              }
-                              textarea={
-                                {
-                                  "data-section": `${document.id}-${section.id}`,
-                                  ref:
-                                    sectionIndex === 0
-                                      ? firstSectionTextareaRef
-                                      : undefined,
-                                } as React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-                                  ref?: React.Ref<HTMLTextAreaElement>;
+                            {highlightedSections.has(section.id) ? (
+                              <div
+                                className={
+                                  dictationState === "on" &&
+                                  focusedSectionId === section.id
+                                    ? mergeClasses(
+                                        styles.sectionTextarea,
+                                        styles.sectionTextareaDictationFocus
+                                      )
+                                    : styles.sectionTextarea
                                 }
-                              }
-                              onChange={(
-                                _: React.ChangeEvent<HTMLTextAreaElement>,
-                                data: TextareaOnChangeData
-                              ) => {
-                                if (aiSectionContent[section.id]) {
-                                  setAiSectionContent((prev) => {
-                                    const newContent = { ...prev };
-                                    delete newContent[section.id];
-                                    return newContent;
-                                  });
+                                style={{
+                                  whiteSpace: "pre-wrap",
+                                  wordWrap: "break-word",
+                                }}
+                                dangerouslySetInnerHTML={{
+                                  __html:
+                                    aiSectionContent[section.id] ||
+                                    section.content,
+                                }}
+                              />
+                            ) : (
+                              <Textarea
+                                className={
+                                  dictationState === "on" &&
+                                  focusedSectionId === section.id
+                                    ? mergeClasses(
+                                        styles.sectionTextarea,
+                                        styles.sectionTextareaDictationFocus
+                                      )
+                                    : styles.sectionTextarea
                                 }
-                                onSectionContentChange(
-                                  document.id,
-                                  section.id,
-                                  data.value || ""
-                                );
-                              }}
-                              onFocus={(
-                                event: React.FocusEvent<HTMLTextAreaElement>
-                              ) => {
-                                // Call tooltip handler FIRST before dictation starts
-                                cursorTooltipHandlers?.onFocus(event);
-                                handleSectionFocus(section.id, section.title);
-                              }}
-                              onBlur={(
-                                event: React.FocusEvent<HTMLTextAreaElement>
-                              ) => {
-                                handleSectionBlur();
-                                cursorTooltipHandlers?.onBlur(event);
-                              }}
-                              onMouseEnter={(
-                                event: React.MouseEvent<HTMLTextAreaElement>
-                              ) => cursorTooltipHandlers?.onMouseEnter(event)}
-                              onMouseMove={(
-                                event: React.MouseEvent<HTMLTextAreaElement>
-                              ) => cursorTooltipHandlers?.onMouseMove(event)}
-                              onMouseLeave={(
-                                event: React.MouseEvent<HTMLTextAreaElement>
-                              ) => cursorTooltipHandlers?.onMouseLeave(event)}
-                              onClick={(
-                                event: React.MouseEvent<HTMLTextAreaElement>
-                              ) => cursorTooltipHandlers?.onClick(event)}
-                              onKeyDown={(
-                                event: React.KeyboardEvent<HTMLTextAreaElement>
-                              ) => cursorTooltipHandlers?.onKeyDown(event)}
-                              onKeyUp={(
-                                event: React.KeyboardEvent<HTMLTextAreaElement>
-                              ) => cursorTooltipHandlers?.onKeyUp(event)}
-                            />
+                                value={
+                                  aiSectionContent[section.id] ||
+                                  section.content
+                                }
+                                textarea={
+                                  {
+                                    "data-section": `${document.id}-${section.id}`,
+                                    ref:
+                                      sectionIndex === 0
+                                        ? firstSectionTextareaRef
+                                        : undefined,
+                                  } as React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+                                    ref?: React.Ref<HTMLTextAreaElement>;
+                                  }
+                                }
+                                onChange={(
+                                  _: React.ChangeEvent<HTMLTextAreaElement>,
+                                  data: TextareaOnChangeData
+                                ) => {
+                                  if (aiSectionContent[section.id]) {
+                                    setAiSectionContent((prev) => {
+                                      const newContent = { ...prev };
+                                      delete newContent[section.id];
+                                      return newContent;
+                                    });
+                                  }
+                                  onSectionContentChange(
+                                    document.id,
+                                    section.id,
+                                    data.value || ""
+                                  );
+                                }}
+                                onFocus={(
+                                  event: React.FocusEvent<HTMLTextAreaElement>
+                                ) => {
+                                  // Call tooltip handler FIRST before dictation starts
+                                  cursorTooltipHandlers?.onFocus(event);
+                                  handleSectionFocus(section.id, section.title);
+                                }}
+                                onBlur={(
+                                  event: React.FocusEvent<HTMLTextAreaElement>
+                                ) => {
+                                  handleSectionBlur();
+                                  cursorTooltipHandlers?.onBlur(event);
+                                }}
+                                onMouseEnter={(
+                                  event: React.MouseEvent<HTMLTextAreaElement>
+                                ) => cursorTooltipHandlers?.onMouseEnter(event)}
+                                onMouseMove={(
+                                  event: React.MouseEvent<HTMLTextAreaElement>
+                                ) => cursorTooltipHandlers?.onMouseMove(event)}
+                                onMouseLeave={(
+                                  event: React.MouseEvent<HTMLTextAreaElement>
+                                ) => cursorTooltipHandlers?.onMouseLeave(event)}
+                                onClick={(
+                                  event: React.MouseEvent<HTMLTextAreaElement>
+                                ) => cursorTooltipHandlers?.onClick(event)}
+                                onKeyDown={(
+                                  event: React.KeyboardEvent<HTMLTextAreaElement>
+                                ) => cursorTooltipHandlers?.onKeyDown(event)}
+                                onKeyUp={(
+                                  event: React.KeyboardEvent<HTMLTextAreaElement>
+                                ) => cursorTooltipHandlers?.onKeyUp(event)}
+                              />
+                            )}
                           </div>
                         )}
                       </>
@@ -1237,7 +1469,7 @@ Primary Care Physician`;
                 marginBottom: "12px",
               }}
             >
-              Remove order detection
+              Remove order?
             </DialogTitle>
             <DialogContent
               style={{
@@ -1248,7 +1480,7 @@ Primary Care Physician`;
                 marginBottom: "24px",
               }}
             >
-              Removing this detected order will update the note.
+              Removing this order will generate the note.
             </DialogContent>
             <DialogActions
               style={{

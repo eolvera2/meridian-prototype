@@ -2,7 +2,6 @@ import React from "react";
 import {
   makeStyles,
   tokens,
-  Avatar,
   NavDrawer,
   NavDrawerBody,
   mergeClasses,
@@ -14,6 +13,7 @@ import {
   QuestionCircle20Filled,
   HomeMoreFilled,
   HomeMoreRegular,
+  Person20Regular,
   bundleIcon,
 } from "@fluentui/react-icons";
 
@@ -256,15 +256,19 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
             >
               <HomeIcon />
             </button>
-            <div
+            <button
+              type="button"
               className={mergeClasses(
-                styles.avatarContainer,
+                styles.navButton,
                 activeNavItem === "avatar" && styles.selectedNavButton
               )}
               onClick={onProfileClick}
+              aria-label="Profile"
+              disabled
+              style={{ opacity: 0.4, cursor: "not-allowed" }}
             >
-              <Avatar name="Dr Jane Mason" size={28} />
-            </div>
+              <Person20Regular />
+            </button>
             <button
               className={mergeClasses(
                 styles.navButton,

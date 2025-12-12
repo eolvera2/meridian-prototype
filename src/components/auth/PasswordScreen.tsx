@@ -71,15 +71,15 @@ export const PasswordScreen: React.FC = () => {
               marginBottom: "24px",
             }}
           >
-            <Body1
+            <h1
               style={{
                 color: tokens.colorNeutralForeground3,
                 fontWeight: 600,
-                fontSize: "16px",
+                lineHeight: 1.2,
               }}
             >
               Enter the provided password to continue
-            </Body1>
+            </h1>
           </div>
 
           <form onSubmit={handleSubmit}>

@@ -54,6 +54,12 @@ export interface MainContentProps {
   onPronounReplacementComplete?: () => void;
   /** Callback when Copilot panel is opened */
   onCopilotPanelOpen?: () => void;
+  /** Whether to automatically disable dictation when entering document view (default: false) */
+  autoDictationDisableOnDocumentView?: boolean;
+  /** Whether to keep mic "on" in ambient mode when unchecking dictation checkbox (task3 behavior) */
+  keepMicOnWhenUnchecking?: boolean;
+  /** Scroll to top of document area on mount instead of first expanded document */
+  scrollToTop?: boolean;
 }
 
 /**
