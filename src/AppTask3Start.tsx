@@ -153,16 +153,13 @@ function AppTask3Start() {
             type: "transcript",
           },
         ],
-        isExpanded: true,
+        isExpanded: false,
       },
     ],
     [isSuccess]
   );
 
-  const initialExpandedDocuments = useMemo(
-    () => new Set(["orders-1", "1"]),
-    []
-  );
+  const initialExpandedDocuments = useMemo(() => new Set(["orders-1"]), []);
 
   return (
     <FluentProvider theme={webLightTheme}>
@@ -191,11 +188,6 @@ function AppTask3Start() {
                 onDictationModeChange={handleDictationModeChange}
                 initialDocuments={initialDocuments}
                 initialExpandedDocuments={initialExpandedDocuments}
-                autoSelectText={{
-                  documentId: "1",
-                  sectionId: "history",
-                  textToSelect: "Mr. Turner is a 41-year-old male",
-                }}
                 keepMicOnWhenUnchecking={true}
               />
             </div>

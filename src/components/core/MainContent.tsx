@@ -555,6 +555,8 @@ export const MainContent: React.FC<MainContentProps> = ({
 
   const handleSettingsClick = () => {
     // Always open settings, don't toggle
+    // Reset to parent settings page if currently on a child page
+    setSettingsSubPage(null);
     setRightDrawerContent("settings");
     setRightDrawerVisible(true);
     onNavItemChange?.("settings");

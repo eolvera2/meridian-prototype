@@ -48,7 +48,7 @@ export interface DocumentCardProps {
   /** Checkbox state for the document (true, false, or 'mixed') */
   checkboxState: boolean | "mixed";
   /** Callback when document card is clicked */
-  onDocumentClick: (documentId: string) => void;
+  onDocumentClick: (documentId: string, shouldToggle?: boolean) => void;
   /** Callback to toggle document checkbox */
   onDocumentCheckToggle: (documentId: string, checked: boolean) => void;
   /** Callback to toggle section checkbox */

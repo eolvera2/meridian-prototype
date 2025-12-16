@@ -96,10 +96,11 @@ const useStyles = makeStyles({
     fontSize: "18px",
     color: tokens.colorNeutralForeground2,
     cursor: "pointer",
-    transition: "background 0.2s, border-radius 0.2s",
+    transition: "background 0.2s, border-radius 0.2s, color 0.2s",
     "&:hover": {
       background: tokens.colorNeutralBackground3,
       borderRadius: 0,
+      color: tokens.colorBrandForeground1,
     },
   },
   title: {
@@ -131,10 +132,11 @@ const useStyles = makeStyles({
     fontSize: "20px",
     color: tokens.colorNeutralForeground2,
     cursor: "pointer",
-    transition: "background 0.2s",
+    transition: "background 0.2s, color 0.2s",
     "&:hover": {
       background: tokens.colorNeutralBackground3,
       borderRadius: 0,
+      color: tokens.colorBrandForeground1,
     },
   },
   textarea: {

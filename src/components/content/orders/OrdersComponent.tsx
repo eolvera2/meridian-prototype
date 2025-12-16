@@ -4,7 +4,7 @@
  * Displays and manages a list of orders with an expandable card UI.
  */
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Dialog,
   DialogSurface,
@@ -51,6 +51,26 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
   const [focusedOrderId, setFocusedOrderId] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
+  const [previousOrderText, setPreviousOrderText] = useState<string>("");
+
+  // Track the last non-empty value for each order - initialize immediately with initial values
+  const lastNonEmptyValues = useRef<Record<string, string>>(
+    initialOrders.reduce((acc, order) => {
+      if (order.text.trim() !== "") {
+        acc[order.id] = order.text;
+      }
+      return acc;
+    }, {} as Record<string, string>)
+  );
+
+  // Update lastNonEmptyValues when orders change (for new orders added)
+  useEffect(() => {
+    orders.forEach((order) => {
+      if (order.text.trim() !== "" && !lastNonEmptyValues.current[order.id]) {
+        lastNonEmptyValues.current[order.id] = order.text;
+      }
+    });
+  }, [orders]);
 
   // Get optional tooltip context for mic cursor tooltip support
   const tooltipContext = useOptionalTooltipContext();
@@ -67,6 +87,21 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
   };
 
   const handleOrderChange = (orderId: string, text: string) => {
+    // If text is cleared (empty), treat it as a deletion attempt
+    if (text.trim() === "") {
+      const previousText = lastNonEmptyValues.current[orderId];
+      if (previousText && previousText.trim() !== "") {
+        // Store the previous text before clearing
+        setPreviousOrderText(previousText);
+        setOrderToDelete(orderId);
+        setDeleteDialogOpen(true);
+        return;
+      }
+    } else {
+      // Update the last non-empty value
+      lastNonEmptyValues.current[orderId] = text;
+    }
+
     if (onOrderChange) {
       onOrderChange(orderId, text);
     } else {
@@ -77,6 +112,10 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
   };
 
   const handleDeleteClick = (orderId: string) => {
+    const orderToDelete = orders.find((order) => order.id === orderId);
+    if (orderToDelete) {
+      setPreviousOrderText(orderToDelete.text);
+    }
     setOrderToDelete(orderId);
     setDeleteDialogOpen(true);
   };
@@ -91,11 +130,27 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
     }
     setDeleteDialogOpen(false);
     setOrderToDelete(null);
+    setPreviousOrderText("");
   };
 
   const handleCancelDelete = () => {
+    // Restore the previous text if user cancels
+    if (orderToDelete && previousOrderText) {
+      if (onOrderChange) {
+        onOrderChange(orderToDelete, previousOrderText);
+      } else {
+        setOrders((prev) =>
+          prev.map((order) =>
+            order.id === orderToDelete
+              ? { ...order, text: previousOrderText }
+              : order
+          )
+        );
+      }
+    }
     setDeleteDialogOpen(false);
     setOrderToDelete(null);
+    setPreviousOrderText("");
   };
 
   const handleAddOrder = () => {

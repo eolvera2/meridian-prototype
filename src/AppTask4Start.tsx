@@ -149,16 +149,13 @@ function AppTask4Start() {
             type: "transcript",
           },
         ],
-        isExpanded: true,
+        isExpanded: false,
       },
     ],
     []
   );
 
-  const initialExpandedDocuments = useMemo(
-    () => new Set(["orders-1", "1"]),
-    []
-  );
+  const initialExpandedDocuments = useMemo(() => new Set(["orders-1"]), []);
 
   return (
     <FluentProvider theme={webLightTheme}>

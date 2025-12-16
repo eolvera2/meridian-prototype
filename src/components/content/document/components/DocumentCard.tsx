@@ -99,6 +99,7 @@ function DocumentCard({
     sectionId: string;
     orderId: string;
   } | null>(null);
+  const [previousOrderText, setPreviousOrderText] = React.useState<string>("");
 
   // Refs for order dictation
   const simulatedOrdersRef = React.useRef<Set<string>>(new Set());
@@ -111,6 +112,9 @@ function DocumentCard({
     Record<string, HTMLTextAreaElement | null>
   >({});
   const previousShowSkeletonRef = React.useRef(showSkeleton);
+
+  // Track last non-empty value for each order to detect text deletion
+  const lastNonEmptyOrderValues = React.useRef<Record<string, string>>({});
 
   // State to track which sections have highlighted pronouns
   const [highlightedSections, setHighlightedSections] = React.useState<
@@ -278,148 +282,64 @@ function DocumentCard({
           '<span style="color: #0078D4; font-weight: 600;">themselves</span>'
         );
 
-      // Fix verb conjugations - wrap only the changed verb in blue
-      result = result
-        .replace(
-          /\b(They|they)\s+is\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">are</span>'
-        )
-        .replace(
-          /\b(They|they)\s+was\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">were</span>'
-        )
-        .replace(
-          /\b(They|they)\s+has\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">have</span>'
-        )
-        .replace(
-          /\b(They|they)\s+does\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">do</span>'
-        )
-        .replace(
-          /\b(They|they)\s+goes\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">go</span>'
-        )
-        .replace(
-          /\b(They|they)\s+describes\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">describe</span>'
-        )
-        .replace(
-          /\b(They|they)\s+denies\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">deny</span>'
-        )
-        .replace(
-          /\b(They|they)\s+reports\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">report</span>'
-        )
-        .replace(
-          /\b(They|they)\s+presents\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">present</span>'
-        )
-        .replace(
-          /\b(They|they)\s+appears\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">appear</span>'
-        )
-        .replace(
-          /\b(They|they)\s+experiences\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">experience</span>'
-        )
-        .replace(
-          /\b(They|they)\s+undergoes\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">undergo</span>'
-        )
-        .replace(
-          /\b(They|they)\s+continues\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">continue</span>'
-        )
-        .replace(
-          /\b(They|they)\s+remains\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">remain</span>'
-        )
-        .replace(
-          /\b(They|they)\s+requires\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">require</span>'
-        )
-        .replace(
-          /\b(They|they)\s+shows\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">show</span>'
-        )
-        .replace(
-          /\b(They|they)\s+exhibits\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">exhibit</span>'
-        )
-        .replace(
-          /\b(They|they)\s+demonstrates\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">demonstrate</span>'
-        )
-        .replace(
-          /\b(They|they)\s+complains\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">complain</span>'
-        )
-        .replace(
-          /\b(They|they)\s+notes\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">note</span>'
-        )
-        .replace(
-          /\b(They|they)\s+mentions\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">mention</span>'
-        )
-        .replace(
-          /\b(They|they)\s+states\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">state</span>'
-        )
-        .replace(
-          /\b(They|they)\s+indicates\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">indicate</span>'
-        )
-        .replace(
-          /\b(They|they)\s+suggests\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">suggest</span>'
-        )
-        .replace(
-          /\b(They|they)\s+feels\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">feel</span>'
-        )
-        .replace(
-          /\b(They|they)\s+needs\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">need</span>'
-        )
-        .replace(
-          /\b(They|they)\s+wants\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">want</span>'
-        )
-        .replace(
-          /\b(They|they)\s+takes\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">take</span>'
-        )
-        .replace(
-          /\b(They|they)\s+uses\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">use</span>'
-        )
-        .replace(
-          /\b(They|they)\s+works\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">work</span>'
-        )
-        .replace(
-          /\b(They|they)\s+lives\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">live</span>'
-        )
-        .replace(
-          /\b(They|they)\s+smokes\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">smoke</span>'
-        )
-        .replace(
-          /\b(They|they)\s+drinks\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">drink</span>'
-        )
-        .replace(
-          /\b(They|they)\s+exercises\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">exercise</span>'
-        )
-        .replace(
-          /\b(They|they)\s+engages\b/g,
-          '$1 <span style="color: #0078D4; font-weight: 600;">engage</span>'
+      // Fix verb conjugations - account for both plain text and span-wrapped pronouns
+      // Pattern matches: "They verb" or "<span...>They</span> verb"
+      const verbStyle = 'style="color: #0078D4; font-weight: 600;"';
+      const spanPattern = `(<span ${verbStyle}>(?:They|they)<\\/span>)`;
+      const plainPattern = "(They|they)";
+
+      // Helper to create replacement pattern that works with both formats
+      const fixVerb = (singular: string, plural: string) => {
+        // First fix span-wrapped version
+        result = result.replace(
+          new RegExp(`${spanPattern}\\s+${singular}\\b`, "g"),
+          `$1 <span ${verbStyle}>${plural}</span>`
         );
+        // Then fix any plain text version
+        result = result.replace(
+          new RegExp(`\\b${plainPattern}\\s+${singular}\\b`, "g"),
+          `$1 <span ${verbStyle}>${plural}</span>`
+        );
+      };
+
+      // Irregular verbs
+      fixVerb("is", "are");
+      fixVerb("was", "were");
+      fixVerb("has", "have");
+      fixVerb("does", "do");
+      fixVerb("goes", "go");
+
+      // Common medical/clinical verbs
+      fixVerb("describes", "describe");
+      fixVerb("denies", "deny");
+      fixVerb("reports", "report");
+      fixVerb("presents", "present");
+      fixVerb("appears", "appear");
+      fixVerb("experiences", "experience");
+      fixVerb("undergoes", "undergo");
+      fixVerb("continues", "continue");
+      fixVerb("remains", "remain");
+      fixVerb("requires", "require");
+      fixVerb("shows", "show");
+      fixVerb("exhibits", "exhibit");
+      fixVerb("demonstrates", "demonstrate");
+      fixVerb("complains", "complain");
+      fixVerb("notes", "note");
+      fixVerb("mentions", "mention");
+      fixVerb("states", "state");
+      fixVerb("indicates", "indicate");
+      fixVerb("suggests", "suggest");
+      fixVerb("feels", "feel");
+      fixVerb("needs", "need");
+      fixVerb("wants", "want");
+      fixVerb("takes", "take");
+      fixVerb("uses", "use");
+      fixVerb("works", "work");
+      fixVerb("lives", "live");
+      fixVerb("smokes", "smoke");
+      fixVerb("drinks", "drink");
+      fixVerb("exercises", "exercise");
+      fixVerb("engages", "engage");
 
       return result;
     },
@@ -434,6 +354,13 @@ function DocumentCard({
     document.sections?.forEach((section) => {
       if (section.orderItems) {
         initialOrders[section.id] = section.orderItems;
+        // Initialize last non-empty values for each order
+        section.orderItems.forEach((order) => {
+          if (order.text.trim() !== "") {
+            const orderKey = `${section.id}-${order.id}`;
+            lastNonEmptyOrderValues.current[orderKey] = order.text;
+          }
+        });
       }
     });
     return initialOrders;
@@ -555,26 +482,23 @@ function DocumentCard({
       document.type === "referral-letter" &&
       isDraftingReferralLetter
     ) {
-      const referralContent = `Dear Dr. Johnson,
+      const referralContent = `Dear Dr. Taylor,
 
-I am writing to refer my patient, Ellis Turner, a 41-year-old male, for cardiology evaluation and follow-up management of his recent ST-elevation myocardial infarction (STEMI).
+I am referring my patient, a 41 year old male, for dermatologic evaluation and management of recurrent actinic keratoses on his facial region. He has a prior history of actinic keratoses and was previously scheduled to see Dermatology, but that appointment was cancelled. He specifically requested referral to your care at MGH, based on a recommendation from his father.
 
-Mr. Turner presented to the emergency department with acute chest pain and was diagnosed with an inferior wall STEMI. He underwent successful cardiac catheterization and is currently stable on medical management.
+During his annual physical examination, multiple actinic keratoses were noted on his face. The remainder of his skin exam was unremarkable. His father has a history of skin cancer requiring treatment and excisions, which further increases the importance of dermatologic surveillance.
 
-Current medications:
-- Aspirin 81 mg daily
-- Clopidogrel 75 mg daily
-- Metoprolol succinate 50 mg daily
-- Lisinopril 20 mg daily
-- Atorvastatin 80 mg at bedtime
-- Spironolactone 25 mg daily
+Additional relevant clinical information includes:
 
-I would appreciate your expert evaluation for ongoing cardiac rehabilitation and long-term management recommendations.
+Past Medical/Surgical History: Lumbar spine injury status post discectomy; history of cerumen impaction; no current medications.
 
-Thank you for your assistance in the care of this patient.
+Social History: Works in the finance sector for the state; engages in walking and hiking but no structured exercise regimen; uses highSPF sunscreen when outdoors.
 
-Sincerely,
-Dr. Smith`;
+Other Current Concerns: None directly related to dermatologic conditions. No systemic symptoms reported.
+
+Given his dermatologic history and family risk factors, I would appreciate your assessment regarding further management, potential treatment of current lesions, and recommendations for ongoing skin cancer surveillance.
+
+Please let me know if additional information is needed. Thank you in advance for your evaluation and care.`;
 
       const newContent: Record<string, string> = {};
       document.sections?.forEach((section) => {
@@ -851,6 +775,26 @@ Dr. Smith`;
   // Order item handlers
   const handleOrderChange = React.useCallback(
     (sectionId: string, orderId: string, text: string) => {
+      const orderKey = `${sectionId}-${orderId}`;
+      const storedText = lastNonEmptyOrderValues.current[orderKey] || "";
+
+      // If text is cleared (empty), treat it as a deletion attempt
+      if (text.trim() === "") {
+        if (storedText && storedText.trim() !== "") {
+          // Store the previous text before clearing
+          setPreviousOrderText(storedText);
+          setOrderToDelete({ sectionId, orderId });
+          setDeleteDialogOpen(true);
+          // Don't return - let the state update to empty so cancel can restore properly
+        }
+      } else {
+        // Only update the stored value if text is getting longer (user is adding, not deleting)
+        // This preserves the full original text for restoration on cancel
+        if (text.length >= storedText.length) {
+          lastNonEmptyOrderValues.current[orderKey] = text;
+        }
+      }
+
       setSectionOrders((prev) => ({
         ...prev,
         [sectionId]:
@@ -885,6 +829,12 @@ Dr. Smith`;
 
   const handleDeleteOrder = React.useCallback(
     (sectionId: string, orderId: string) => {
+      // Store the previous text before showing the delete dialog
+      const orderKey = `${sectionId}-${orderId}`;
+      const previousText = lastNonEmptyOrderValues.current[orderKey];
+      if (previousText) {
+        setPreviousOrderText(previousText);
+      }
       setOrderToDelete({ sectionId, orderId });
       setDeleteDialogOpen(true);
     },
@@ -893,6 +843,10 @@ Dr. Smith`;
 
   const handleConfirmDelete = React.useCallback(() => {
     if (orderToDelete) {
+      // Clean up the last non-empty value for this order
+      const orderKey = `${orderToDelete.sectionId}-${orderToDelete.orderId}`;
+      delete lastNonEmptyOrderValues.current[orderKey];
+
       setSectionOrders((prev) => ({
         ...prev,
         [orderToDelete.sectionId]:
@@ -905,12 +859,26 @@ Dr. Smith`;
     }
     setDeleteDialogOpen(false);
     setOrderToDelete(null);
+    setPreviousOrderText("");
   }, [orderToDelete, onOrderDelete]);
 
   const handleCancelDelete = React.useCallback(() => {
+    // Restore the previous text if user cancels
+    if (orderToDelete && previousOrderText) {
+      setSectionOrders((prev) => ({
+        ...prev,
+        [orderToDelete.sectionId]:
+          prev[orderToDelete.sectionId]?.map((order) =>
+            order.id === orderToDelete.orderId
+              ? { ...order, text: previousOrderText }
+              : order
+          ) || [],
+      }));
+    }
     setDeleteDialogOpen(false);
     setOrderToDelete(null);
-  }, []);
+    setPreviousOrderText("");
+  }, [orderToDelete, previousOrderText]);
 
   // Handle order focus for dictation
   const handleOrderFocus = React.useCallback(
@@ -941,7 +909,7 @@ Dr. Smith`;
       <div className={styles.cardHeader}>
         <div
           className={styles.cardTitle}
-          onClick={() => onDocumentClick(document.id)}
+          onClick={() => onDocumentClick(document.id, true)}
           style={{
             cursor: "pointer",
             display: "flex",

@@ -21,26 +21,23 @@ import "./styles/globals.css";
 import "./App.css";
 
 // Referral letter content for Ellis Turner's STEMI case
-const REFERRAL_LETTER_CONTENT = `Dear Dr. Johnson,
+const REFERRAL_LETTER_CONTENT = `Dear Dr. Taylor,
 
-I am writing to refer my patient, Ellis Turner, a 41-year-old male, for cardiology evaluation and follow-up management of his recent ST-elevation myocardial infarction (STEMI).
+I am referring my patient, a 41 year old male, for dermatologic evaluation and management of recurrent actinic keratoses on his facial region. He has a prior history of actinic keratoses and was previously scheduled to see Dermatology, but that appointment was cancelled. He specifically requested referral to your care at MGH, based on a recommendation from his father.
 
-Mr. Turner presented to the emergency department with acute chest pain and was diagnosed with an inferior wall STEMI. He underwent successful cardiac catheterization and is currently stable on medical management.
+During his annual physical examination, multiple actinic keratoses were noted on his face. The remainder of his skin exam was unremarkable. His father has a history of skin cancer requiring treatment and excisions, which further increases the importance of dermatologic surveillance.
 
-Current medications:
-- Aspirin 81 mg daily
-- Clopidogrel 75 mg daily
-- Metoprolol succinate 50 mg daily
-- Lisinopril 20 mg daily
-- Atorvastatin 80 mg at bedtime
-- Spironolactone 25 mg daily
+Additional relevant clinical information includes:
 
-I would appreciate your expert evaluation for ongoing cardiac rehabilitation and long-term management recommendations.
+Past Medical/Surgical History: Lumbar spine injury status post discectomy; history of cerumen impaction; no current medications.
 
-Thank you for your assistance in the care of this patient.
+Social History: Works in the finance sector for the state; engages in walking and hiking but no structured exercise regimen; uses highSPF sunscreen when outdoors.
 
-Sincerely,
-Dr. Smith`;
+Other Current Concerns: None directly related to dermatologic conditions. No systemic symptoms reported.
+
+Given his dermatologic history and family risk factors, I would appreciate your assessment regarding further management, potential treatment of current lesions, and recommendations for ongoing skin cancer surveillance.
+
+Please let me know if additional information is needed. Thank you in advance for your evaluation and care.`;
 
 function AppTask6Start() {
   const [navCollapsed, setNavCollapsed] = useState(true);
@@ -136,7 +133,7 @@ function AppTask6Start() {
             ],
           },
         ],
-        isExpanded: true,
+        isExpanded: false,
       },
       // Note document with Ellis Turner STEMI content
       {
@@ -182,15 +179,15 @@ function AppTask6Start() {
             type: "transcript",
           },
         ],
-        isExpanded: true,
+        isExpanded: false,
       },
     ],
     []
   );
 
-  // Expand all documents by default (task5 success state)
+  // Expand only the topmost accordion (referral letter) by default
   const initialExpandedDocuments = useMemo(
-    () => new Set(["referral-task6", "orders-1", "1"]),
+    () => new Set(["referral-task6"]),
     []
   );
 

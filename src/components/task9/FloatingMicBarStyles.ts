@@ -271,4 +271,20 @@ export const useFloatingMicBarStyles = makeStyles({
   iconActive: {
     color: tokens.colorBrandForeground1,
   },
+
+  memosLabel: {
+    display: "flex",
+    height: "24px",
+    flex: 1,
+    alignItems: "center",
+    overflow: "hidden",
+    color: tokens.colorNeutralForeground2,
+    textOverflow: "ellipsis",
+    fontFamily: tokens.fontFamilyBase,
+    fontSize: tokens.fontSizeBase100, // Caption 2 Strong = 10px
+    fontStyle: "normal",
+    fontWeight: 600,
+    lineHeight: tokens.lineHeightBase100, // Caption 2 Strong = 14px
+    margin: "4px",
+  },
 });

@@ -40,7 +40,7 @@ export interface UseDocumentHandlersOptions {
 
 export interface UseDocumentHandlersReturn {
   /** Handle document card click to expand/collapse */
-  handleDocumentClick: (documentId: string) => void;
+  handleDocumentClick: (documentId: string, shouldToggle?: boolean) => void;
   /** Handle section checkbox toggle */
   handleSectionToggle: (
     documentId: string,
@@ -81,11 +81,17 @@ export const useDocumentHandlers = (
   } = options;
 
   const handleDocumentClick = useCallback(
-    (documentId: string) => {
+    (documentId: string, shouldToggle: boolean = false) => {
       const newExpanded = new Set(expandedDocuments);
-      if (newExpanded.has(documentId)) {
-        newExpanded.delete(documentId);
+      if (shouldToggle) {
+        // Toggle behavior for accordion header clicks
+        if (newExpanded.has(documentId)) {
+          newExpanded.delete(documentId);
+        } else {
+          newExpanded.add(documentId);
+        }
       } else {
+        // Always open for index/recent links
         newExpanded.add(documentId);
       }
       setExpandedDocuments(newExpanded);

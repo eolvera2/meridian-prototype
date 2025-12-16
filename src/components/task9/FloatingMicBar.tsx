@@ -101,13 +101,13 @@ export const FloatingMicBar: React.FC = () => {
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
-  // Set initial position on first load (140px from right and top)
+  // Set initial position on first load (centered horizontally, 24px from top)
   useEffect(() => {
     const container = containerRef.current;
     if (container && position.x === 0 && position.y === 0) {
       const containerWidth = container.offsetWidth;
-      const initialX = window.innerWidth - containerWidth - 140;
-      const initialY = 140;
+      const initialX = (window.innerWidth - containerWidth) / 2;
+      const initialY = 24;
       setPosition({ x: initialX, y: initialY });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,7 +126,7 @@ export const FloatingMicBar: React.FC = () => {
     if (hasAnimated.current) return;
     hasAnimated.current = true;
 
-    const note = `Patient: Ellis Turner\nCondition: Overdue for colonoscopy follow-up\nNotes: Underwent initial colonoscopy at age 35 due to family history of colorectal issues; acknowledges being overdue for a follow-up last year but did not schedule it.`;
+    const note = `Ellis Turner underwent initial colonoscopy at age 35 due to family history of colorectal issues; acknowledges being overdue for a follow-up last year but did not schedule it.`;
     let index = 0;
 
     setMemoText(""); // Reset before animation
@@ -142,9 +142,14 @@ export const FloatingMicBar: React.FC = () => {
 
       const typingInterval = setInterval(() => {
         if (index < note.length) {
+          const currentIndex = index;
           setMemoText((prevText) => {
-            if (textarea) textarea.focus();
-            return prevText + note.charAt(index);
+            if (textarea) {
+              textarea.focus();
+              // Auto-scroll to keep cursor visible
+              textarea.scrollTop = textarea.scrollHeight;
+            }
+            return prevText + note.charAt(currentIndex);
           });
           index++;
         } else {
@@ -154,7 +159,7 @@ export const FloatingMicBar: React.FC = () => {
 
       // Cleanup
       return () => clearInterval(typingInterval);
-    }, 100); // Delay to ensure textarea is mounted
+    }, 5000); // 5 second delay before starting typing animation
   }, []);
 
   if (!isVisible) return null;
@@ -198,25 +203,7 @@ export const FloatingMicBar: React.FC = () => {
       </div>
 
       {/* Select a patient label */}
-      <div
-        style={{
-          display: "flex",
-          height: "24px",
-          flex: 1,
-          alignItems: "center",
-          overflow: "hidden",
-          color: "var(--colorNeutralForeground2)",
-          textOverflow: "ellipsis",
-          fontFamily: 'var(--Typography-Font-family-Base, "Segoe UI")',
-          fontSize: "var(--Typography-Caption-2-Strong-Font-size, 10px)",
-          fontStyle: "normal",
-          fontWeight: 600,
-          lineHeight: "var(--Typography-Caption-2-Strong-Line-height, 14px)",
-          margin: "4px", // Left margin set to 4px
-        }}
-      >
-        &lt; Memos
-      </div>
+      <div className={styles.memosLabel}>&lt; Memos</div>
 
       {/* Mic Button Centered Above */}
       <div className={styles.micBarMicRow}>
