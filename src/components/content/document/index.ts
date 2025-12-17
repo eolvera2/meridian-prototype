@@ -22,7 +22,9 @@ export type {
 // Constants
 export {
   DICTATION_CONTENT_MAP,
+  PATIENT_DOCUMENT_CONTENT,
   getDictationContentForSection,
+  getPatientContentForSection,
   ORDER_DICTATION_ITEMS,
   REFERRAL_LETTER_TEMPLATE,
   createDocumentFromType,

@@ -4,6 +4,7 @@ import {
   Worklist,
   DocumentComponent,
   SettingsPanel,
+  FAB,
 } from "../../content";
 import { Header } from "../Header";
 import { LeftNavigation } from "../../foundation";
@@ -296,6 +297,11 @@ export const MobileWorkspace: React.FC<MobileWorkspaceProps> = ({
           ) : null}
         </div>
       </div>
+
+      <FAB
+        scrollTargetSelector=".document-component-root"
+        visible={!!selectedPatient && worklistCollapsed}
+      />
 
       <div className={styles.microphoneContainer}>
         <MicrophoneInterface {...microphoneProps} />

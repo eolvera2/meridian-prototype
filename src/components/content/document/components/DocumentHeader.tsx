@@ -10,6 +10,7 @@ import {
   DocumentSettingsRegular,
   AddCircleRegular,
 } from "@fluentui/react-icons";
+import { Tooltip } from "@fluentui/react-components";
 import { RecentsTable } from "./RecentsTable";
 import type { DocumentGridItem } from "../DocumentComponent.types";
 
@@ -44,34 +45,41 @@ export const DocumentHeader: React.FC<DocumentHeaderProps> = ({
       <div className={styles.headerTop}>
         <h2 className={styles.title}>Recents</h2>
         <div className={styles.headerActions}>
-          <button
-            className={styles.headerButton}
-            aria-label="Document settings"
-            onClick={() => onNavigateToDocumentSettings?.()}
-            disabled={!onNavigateToDocumentSettings}
-            style={{
-              opacity: onNavigateToDocumentSettings ? 1 : 0.5,
-              cursor: onNavigateToDocumentSettings ? "pointer" : "not-allowed",
-            }}
-          >
-            <DocumentSettingsRegular
-              style={{ width: "20px", height: "20px", color: "#424242" }}
-            />
-            Settings
-          </button>
-          <button
-            className={styles.headerButton}
-            onClick={() => {
-              console.log("Add button clicked, opening dialog");
-              onOpenAddNoteDialog();
-            }}
-            aria-label="Add document"
-          >
-            <AddCircleRegular
-              style={{ width: "20px", height: "20px", color: "#424242" }}
-            />
-            Add
-          </button>
+          <Tooltip content="Document Settings" relationship="label">
+            <span style={{ display: "inline-flex" }}>
+              <button
+                className={styles.headerButton}
+                aria-label="Document settings"
+                onClick={() => onNavigateToDocumentSettings?.()}
+                disabled={!onNavigateToDocumentSettings}
+                style={{
+                  opacity: onNavigateToDocumentSettings ? 1 : 0.5,
+                  cursor: onNavigateToDocumentSettings
+                    ? "pointer"
+                    : "not-allowed",
+                }}
+              >
+                <DocumentSettingsRegular className={styles.headerButtonIcon} />
+                Settings
+              </button>
+            </span>
+          </Tooltip>
+
+          <Tooltip content="Add Document" relationship="label">
+            <span style={{ display: "inline-flex" }}>
+              <button
+                className={styles.headerButton}
+                onClick={() => {
+                  console.log("Add button clicked, opening dialog");
+                  onOpenAddNoteDialog();
+                }}
+                aria-label="Add document"
+              >
+                <AddCircleRegular className={styles.headerButtonIcon} />
+                Add
+              </button>
+            </span>
+          </Tooltip>
         </div>
       </div>
       {/* <div className={styles.headerDivider} /> */}

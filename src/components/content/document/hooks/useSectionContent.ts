@@ -110,9 +110,11 @@ const replacePronounsWithTheyThem = (text: string): string => {
 
     // Fix verbs ending in -es (goes, does, etc.)
     .replace(/\b(They|they)\s+goes\b/g, "$1 go")
-    .replace(/\b(They|they)\s+does\b/g, "$1 do")
 
     // Fix common medical/clinical verbs ending in -s
+    .replace(/\b(They|they)\s+acknowledges\b/g, "$1 acknowledge")
+    .replace(/\b(They|they)\s+maintains\b/g, "$1 maintain")
+    .replace(/\b(They|they)\s+applies\b/g, "$1 apply")
     .replace(/\b(They|they)\s+describes\b/g, "$1 describe")
     .replace(/\b(They|they)\s+denies\b/g, "$1 deny")
     .replace(/\b(They|they)\s+reports\b/g, "$1 report")
@@ -142,7 +144,32 @@ const replacePronounsWithTheyThem = (text: string): string => {
     .replace(/\b(They|they)\s+smokes\b/g, "$1 smoke")
     .replace(/\b(They|they)\s+drinks\b/g, "$1 drink")
     .replace(/\b(They|they)\s+exercises\b/g, "$1 exercise")
-    .replace(/\b(They|they)\s+engages\b/g, "$1 engage");
+    .replace(/\b(They|they)\s+engages\b/g, "$1 engage")
+    .replace(/\b(They|they)\s+expresses\b/g, "$1 express")
+    .replace(/\b(They|they)\s+requests\b/g, "$1 request")
+    .replace(/\b(They|they)\s+schedules\b/g, "$1 schedule")
+    .replace(/\b(They|they)\s+performs\b/g, "$1 perform");
+
+  // Fix verbs with adverbs between subject and verb (e.g., "They occasionally experiences")
+  result = result
+    .replace(/\b(They|they)\s+(\w+ly)\s+acknowledges\b/g, "$1 $2 acknowledge")
+    .replace(/\b(They|they)\s+(\w+ly)\s+maintains\b/g, "$1 $2 maintain")
+    .replace(/\b(They|they)\s+(\w+ly)\s+applies\b/g, "$1 $2 apply")
+    .replace(/\b(They|they)\s+(\w+ly)\s+experiences\b/g, "$1 $2 experience")
+    .replace(/\b(They|they)\s+(\w+ly)\s+reports\b/g, "$1 $2 report")
+    .replace(/\b(They|they)\s+(\w+ly)\s+describes\b/g, "$1 $2 describe")
+    .replace(/\b(They|they)\s+(\w+ly)\s+denies\b/g, "$1 $2 deny")
+    .replace(/\b(They|they)\s+(\w+ly)\s+presents\b/g, "$1 $2 present")
+    .replace(/\b(They|they)\s+(\w+ly)\s+engages\b/g, "$1 $2 engage")
+    .replace(/\b(They|they)\s+(\w+ly)\s+uses\b/g, "$1 $2 use")
+    .replace(/\b(They|they)\s+(\w+ly)\s+takes\b/g, "$1 $2 take");
+
+  // Fix "but does participate" → "but do participate" patterns
+  result = result
+    .replace(/\bbut does\s+/g, "but do ")
+    .replace(/\bbut doesn't\s+/g, "but don't ")
+    .replace(/\band does\s+/g, "and do ")
+    .replace(/\band doesn't\s+/g, "and don't ");
 
   return result;
 };

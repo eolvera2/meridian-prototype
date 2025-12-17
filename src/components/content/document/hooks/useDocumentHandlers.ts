@@ -103,7 +103,7 @@ export const useDocumentHandlers = (
         if (documentElement) {
           documentElement.scrollIntoView({
             behavior: "smooth",
-            block: "center",
+            block: "start",
           });
         }
       }, 100); // Small delay to ensure expansion animation starts

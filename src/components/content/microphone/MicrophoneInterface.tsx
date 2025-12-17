@@ -8,8 +8,9 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   mergeClasses,
   ToggleButton,
-  Button,
+  SplitButton,
   Checkbox,
+  Tooltip,
 } from "@fluentui/react-components";
 import {
   MicOffRegular,
@@ -329,132 +330,160 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
 
         {/* Center Section - Microphone Button */}
         <div className={styles.centerControls}>
-          <Button
+          <SplitButton
             appearance="subtle"
             className={mergeClasses(
               styles.micButton,
               shouldUseBrandStyles && styles.micButtonRecording,
               shouldDisableMic && styles.micButtonDisabled
             )}
-            onClick={handleMicClick}
-            aria-label={micButtonAriaLabel}
-            disabled={shouldDisableMic}
-          >
-            <div className={styles.micButtonContent}>
-              <div className={styles.primaryAction}>
-                <div className={styles.micIconSection}>
-                  {shouldDisableMic ? (
-                    <DeviceEqRegular
-                      className={mergeClasses(
-                        styles.micIcon,
-                        styles.micIconDisabled
-                      )}
-                    />
-                  ) : isAmbientMode ? (
-                    <DeviceEqRegular
-                      className={mergeClasses(
-                        styles.micIcon,
-                        shouldUseBrandStyles && styles.micIconRecording
-                      )}
-                    />
-                  ) : shouldUseBrandStyles ? (
-                    <Mic24Filled
-                      className={mergeClasses(
-                        styles.micIcon,
-                        styles.micIconRecording
-                      )}
-                    />
-                  ) : (
-                    <MicOffRegular className={styles.micIcon} />
-                  )}
-                </div>
-                {shouldShowTimeDisplay && (
-                  <div
-                    className={mergeClasses(
-                      styles.timeDisplay,
-                      shouldUseBrandStyles && styles.timeDisplayRecording,
-                      shouldDisableMic && styles.timeDisplayDisabled
-                    )}
-                  >
-                    {displayedTime}
-                  </div>
-                )}
-              </div>
-
-              <div
-                className={mergeClasses(
-                  styles.secondaryAction,
-                  shouldUseBrandStyles && styles.secondaryActionRecording
-                )}
-              >
+            primaryActionButton={{
+              onClick: handleMicClick,
+              disabled: shouldDisableMic,
+              "aria-label": micButtonAriaLabel,
+              className: mergeClasses(
+                styles.micSplitPrimaryButton,
+                shouldUseBrandStyles && styles.micSplitPrimaryButtonRecording
+              ),
+            }}
+            menuButton={{
+              disabled: true,
+              "aria-label": "Microphone options",
+              className: mergeClasses(
+                styles.secondaryAction,
+                styles.micSplitMenuButton,
+                shouldUseBrandStyles && styles.micSplitMenuButtonRecording,
+                shouldUseBrandStyles && styles.secondaryActionRecording
+              ),
+              icon: (
                 <ChevronDownRegular
                   className={mergeClasses(
                     styles.chevronIcon,
                     shouldUseBrandStyles && styles.chevronIconRecording
                   )}
                 />
+              ),
+            }}
+          >
+            <div
+              className={mergeClasses(
+                styles.primaryAction,
+                isInDictationMode && styles.primaryActionDictationCompact
+              )}
+            >
+              <div className={styles.micIconSection}>
+                {shouldDisableMic ? (
+                  <DeviceEqRegular
+                    className={mergeClasses(
+                      styles.micIcon,
+                      styles.micIconDisabled
+                    )}
+                  />
+                ) : isAmbientMode ? (
+                  <DeviceEqRegular
+                    className={mergeClasses(
+                      styles.micIcon,
+                      shouldUseBrandStyles && styles.micIconRecording
+                    )}
+                  />
+                ) : shouldUseBrandStyles ? (
+                  <Mic24Filled
+                    className={mergeClasses(
+                      styles.micIcon,
+                      styles.micIconRecording
+                    )}
+                  />
+                ) : (
+                  <MicOffRegular className={styles.micIcon} />
+                )}
               </div>
+
+              {shouldShowTimeDisplay && (
+                <div
+                  className={mergeClasses(
+                    styles.timeDisplay,
+                    shouldUseBrandStyles && styles.timeDisplayRecording,
+                    shouldDisableMic && styles.timeDisplayDisabled
+                  )}
+                >
+                  {displayedTime}
+                </div>
+              )}
             </div>
-          </Button>
+          </SplitButton>
         </div>
 
         <div className={styles.rightActions}>
-          <ToggleButton
-            appearance="subtle"
-            icon={
-              isNoteActive ? (
-                <NoteFilled className={styles.iconActive} />
-              ) : (
-                <NoteRegular />
-              )
-            }
-            checked={isNoteActive}
-            onClick={handleNoteClick}
-            className={styles.settingsButton}
-            aria-label="Toggle document panel"
-            disabled={disableNavigation || activeContent === "settings"}
-            style={
-              disableNavigation
-                ? { opacity: 0.4, cursor: "not-allowed" }
-                : undefined
-            }
-          />
-          <ToggleButton
-            appearance="subtle"
-            icon={
-              isAlertActive ? (
-                <AlertFilled className={styles.iconActive} />
-              ) : (
-                <AlertRegular />
-              )
-            }
-            checked={isAlertActive}
-            onClick={handleAlertClick}
-            className={styles.settingsButton}
-            aria-label="Toggle alerts"
-            disabled={disableNavigation || activeContent === "settings"}
-            style={
-              disableNavigation
-                ? { opacity: 0.4, cursor: "not-allowed" }
-                : undefined
-            }
-          />
-          <ToggleButton
-            appearance="subtle"
-            icon={
-              <img src={CopilotIdle} alt="Copilot" width={24} height={24} />
-            }
-            checked={isCopilotActive}
-            onClick={handleCopilotClick}
-            className={styles.settingsButton}
-            aria-label="Toggle Copilot"
-            disabled={disableNavigation || activeContent === "settings"}
-            style={
-              disableNavigation
-                ? { opacity: 0.4, cursor: "not-allowed" }
-                : undefined
-            }
-          />
+          <Tooltip content="Memos" relationship="label">
+            <span style={{ display: "inline-flex" }}>
+              <ToggleButton
+                appearance="subtle"
+                icon={
+                  isNoteActive ? (
+                    <NoteFilled className={styles.iconActive} />
+                  ) : (
+                    <NoteRegular />
+                  )
+                }
+                checked={isNoteActive}
+                onClick={handleNoteClick}
+                className={styles.settingsButton}
+                aria-label="Toggle document panel"
+                disabled={disableNavigation || activeContent === "settings"}
+                style={
+                  disableNavigation
+                    ? { opacity: 0.4, cursor: "not-allowed" }
+                    : undefined
+                }
+              />
+            </span>
+          </Tooltip>
+
+          <Tooltip content="Notifications" relationship="label">
+            <span style={{ display: "inline-flex" }}>
+              <ToggleButton
+                appearance="subtle"
+                icon={
+                  isAlertActive ? (
+                    <AlertFilled className={styles.iconActive} />
+                  ) : (
+                    <AlertRegular />
+                  )
+                }
+                checked={isAlertActive}
+                onClick={handleAlertClick}
+                className={styles.settingsButton}
+                aria-label="Toggle alerts"
+                disabled={disableNavigation || activeContent === "settings"}
+                style={
+                  disableNavigation
+                    ? { opacity: 0.4, cursor: "not-allowed" }
+                    : undefined
+                }
+              />
+            </span>
+          </Tooltip>
+
+          <Tooltip content="Copilot" relationship="label">
+            <span style={{ display: "inline-flex" }}>
+              <ToggleButton
+                appearance="subtle"
+                icon={
+                  <img src={CopilotIdle} alt="Copilot" width={24} height={24} />
+                }
+                checked={isCopilotActive}
+                onClick={handleCopilotClick}
+                className={styles.settingsButton}
+                aria-label="Toggle Copilot"
+                disabled={disableNavigation || activeContent === "settings"}
+                style={
+                  disableNavigation
+                    ? { opacity: 0.4, cursor: "not-allowed" }
+                    : undefined
+                }
+              />
+            </span>
+          </Tooltip>
         </div>
       </div>
 

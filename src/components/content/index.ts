@@ -20,6 +20,9 @@ export { OrdersComponent } from "./orders";
 export type { OrdersComponentProps, OrderItem } from "./orders";
 export { DictationModeToast } from "./DictationModeToast";
 export { GeneratingToast } from "./GeneratingToast";
+export { AIRequestToast } from "./AIRequestToast";
+export { FAB } from "./FAB";
+export type { FABProps, ScrollDirection } from "./FAB";
 export {
   TooltipProvider,
   useTooltipContext,

@@ -113,7 +113,7 @@ export const useStyles = makeStyles({
     padding: "0",
     minHeight: "32px",
     maxHeight: "40px",
-    minWidth: "48px",
+    minWidth: "32px",
     width: "auto",
     transition: "all 0.2s cubic-bezier(0.1,0.9,0.2,1)",
     "&:hover:not(:disabled)": {
@@ -186,6 +186,92 @@ export const useStyles = makeStyles({
     height: "40px",
   },
 
+  micSplitPrimaryButton: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: "16px",
+    paddingRight: "16px",
+    minHeight: "40px",
+    height: "40px",
+    border: "none",
+    backgroundColor: "transparent",
+    "&:hover": {
+      backgroundColor: "transparent !important",
+    },
+    "&:active": {
+      backgroundColor: "transparent !important",
+    },
+    "&:focus": {
+      backgroundColor: "transparent !important",
+    },
+    "&:focus-visible": {
+      backgroundColor: "transparent !important",
+    },
+    minWidth: "auto",
+    width: "auto",
+    borderRadius: "9999px 0 0 9999px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  micSplitPrimaryButtonRecording: {
+    backgroundColor: "transparent",
+    "&:hover": {
+      backgroundColor: "transparent !important",
+    },
+    "&:active": {
+      backgroundColor: "transparent !important",
+    },
+    "&:focus": {
+      backgroundColor: "transparent !important",
+    },
+    "&:focus-visible": {
+      backgroundColor: "transparent !important",
+    },
+  },
+
+  micSplitMenuButton: {
+    padding: 0,
+    minHeight: "40px",
+    height: "40px",
+    border: "none",
+    backgroundColor: "transparent",
+    "&:hover": {
+      backgroundColor: "transparent !important",
+    },
+    "&:active": {
+      backgroundColor: "transparent !important",
+    },
+    "&:focus": {
+      backgroundColor: "transparent !important",
+    },
+    "&:focus-visible": {
+      backgroundColor: "transparent !important",
+    },
+    "&:disabled": {
+      opacity: 1,
+      cursor: "default",
+      backgroundColor: "transparent",
+    },
+  },
+
+  micSplitMenuButtonRecording: {
+    backgroundColor: "transparent",
+    "&:hover": {
+      backgroundColor: "transparent !important",
+    },
+    "&:active": {
+      backgroundColor: "transparent !important",
+    },
+    "&:focus": {
+      backgroundColor: "transparent !important",
+    },
+    "&:focus-visible": {
+      backgroundColor: "transparent !important",
+    },
+  },
+
   micButtonDocumentExpanded: {
     width: "114px",
     height: "46px",
@@ -196,11 +282,12 @@ export const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     gap: "6px",
-    paddingLeft: "8px",
-    paddingRight: "6px",
-    flex: 1,
     height: "100%",
     borderRadius: "9999px 0 0 9999px",
+  },
+
+  primaryActionDictationCompact: {
+    gap: "4px",
   },
 
   timeDisplay: {
@@ -233,18 +320,29 @@ export const useStyles = makeStyles({
     maxWidth: "32px",
     height: "100%",
     borderRadius: "0 9999px 9999px 0",
-    borderLeft: `1px solid ${tokens.colorNeutralStroke1}`,
+    position: "relative",
+    "&::before": {
+      content: "''",
+      position: "absolute",
+      left: 0,
+      top: 0,
+      bottom: 0,
+      width: "1px",
+      backgroundColor: tokens.colorNeutralStroke1,
+    },
   },
 
   secondaryActionRecording: {
-    borderLeftColor: "rgba(255, 255, 255, 0.3)",
+    "&::before": {
+      backgroundColor: "rgba(255, 255, 255, 0.3)",
+    },
   },
 
   micIconSection: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    minWidth: "32px",
+    minWidth: "24px",
   },
 
   micIcon: {

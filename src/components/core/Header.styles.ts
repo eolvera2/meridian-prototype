@@ -84,17 +84,20 @@ export const useStyles = makeStyles({
     backgroundColor: "transparent !important",
     border: "none !important",
     boxShadow: "none !important",
+    color: `${tokens.colorNeutralForeground1} !important`,
     padding: 0,
     "&:hover": {
       backgroundColor: "transparent",
+      color: `${tokens.colorBrandForeground1} !important`,
     },
     "&:active": {
       backgroundColor: "transparent",
+      color: `${tokens.colorNeutralForeground1} !important`,
     },
-    "&[aria-pressed='true']": {
+    "&:focus": {
       backgroundColor: "transparent",
     },
-    "&[data-selected='true']": {
+    "&:focus-visible": {
       backgroundColor: "transparent",
     },
   },
@@ -234,6 +237,12 @@ export const useStyles = makeStyles({
     justifyContent: "center",
     minWidth: "32px",
     minHeight: "32px",
+    color: tokens.colorNeutralForeground2,
+
+    "&:hover": {
+      backgroundColor: tokens.colorNeutralBackground1Hover,
+      color: tokens.colorBrandForeground1,
+    },
 
     "@media (max-width: 768px)": {
       padding: "4px",
@@ -251,7 +260,7 @@ export const useStyles = makeStyles({
   },
 
   icon: {
-    color: "#424242",
+    color: "currentColor",
     width: "20px",
     height: "20px",
 
@@ -267,7 +276,7 @@ export const useStyles = makeStyles({
   },
 
   iconFilled: {
-    color: "#000000",
+    color: "currentColor",
     width: "20px",
     height: "20px",
 
@@ -279,6 +288,13 @@ export const useStyles = makeStyles({
     "@media (max-width: 480px)": {
       width: "16px",
       height: "16px",
+    },
+  },
+
+  toggleIconButton: {
+    color: tokens.colorNeutralForeground2,
+    "&:hover": {
+      color: tokens.colorBrandForeground1,
     },
   },
 });

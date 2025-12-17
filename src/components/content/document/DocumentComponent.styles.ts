@@ -105,7 +105,14 @@ export const useHeaderStyles = makeStyles({
     color: tokens.colorNeutralForeground1,
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
+      color: tokens.colorBrandForeground1,
     },
+  },
+
+  headerButtonIcon: {
+    width: "20px",
+    height: "20px",
+    color: "inherit",
   },
 
   title: {
@@ -331,6 +338,7 @@ export const useCardStyles = makeStyles({
     border: "none",
     borderRadius: tokens.borderRadiusSmall,
     padding: tokens.spacingHorizontalXS,
+    color: tokens.colorNeutralForeground2,
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
@@ -339,6 +347,7 @@ export const useCardStyles = makeStyles({
     flexShrink: 0,
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
+      color: tokens.colorBrandForeground1,
     },
   },
 });
@@ -375,6 +384,7 @@ export const useToolbarStyles = makeStyles({
     border: "none",
     borderRadius: tokens.borderRadiusSmall,
     padding: "2px",
+    color: tokens.colorNeutralForeground2,
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
@@ -383,13 +393,14 @@ export const useToolbarStyles = makeStyles({
     minHeight: "24px",
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
+      color: tokens.colorBrandForeground1,
     },
   },
 
   toolbarIcon: {
     width: "20px",
     height: "20px",
-    color: tokens.colorNeutralForeground2,
+    color: "currentColor",
   },
 
   starButton: {
@@ -397,12 +408,14 @@ export const useToolbarStyles = makeStyles({
     border: "none",
     borderRadius: tokens.borderRadiusSmall,
     padding: tokens.spacingHorizontalSNudge,
+    color: tokens.colorNeutralForeground2,
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
+      color: tokens.colorBrandForeground1,
     },
   },
 });
@@ -550,6 +563,27 @@ export const useSectionStyles = makeStyles({
     boxShadow: "none !important",
     padding: `${tokens.spacingVerticalMNudge} !important`,
     backgroundColor: tokens.colorNeutralBackground1,
+  },
+
+  // Style for the highlighted content div (used when displaying pronoun replacements)
+  // Matches the internal padding of Fluent UI Textarea component
+  highlightedContentDiv: {
+    width: "100%",
+    minHeight: "80px",
+    fontSize: tokens.fontSizeBase200,
+    fontFamily: "'Segoe UI', sans-serif",
+    lineHeight: tokens.lineHeightBase200,
+    color: tokens.colorNeutralForeground1,
+    backgroundColor: "transparent",
+    // Match Fluent UI Textarea internal padding
+    padding: `${tokens.spacingVerticalSNudge} ${tokens.spacingHorizontalMNudge}`,
+    boxSizing: "border-box",
+    "@media (max-width: 769px)": {
+      fontSize: tokens.fontSizeBase400,
+      lineHeight: tokens.lineHeightBase400,
+      minHeight: "52px",
+      padding: `${tokens.spacingVerticalSNudge} ${tokens.spacingHorizontalS}`,
+    },
   },
 
   highlightedWord: {
@@ -927,7 +961,14 @@ export const useStyles = makeStyles({
     color: tokens.colorNeutralForeground1,
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
+      color: tokens.colorBrandForeground1,
     },
+  },
+
+  headerButtonIcon: {
+    width: "20px",
+    height: "20px",
+    color: "inherit",
   },
 
   title: {
@@ -1150,6 +1191,7 @@ export const useStyles = makeStyles({
     border: "none",
     borderRadius: tokens.borderRadiusSmall,
     padding: tokens.spacingHorizontalXS,
+    color: tokens.colorNeutralForeground2,
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
@@ -1158,6 +1200,7 @@ export const useStyles = makeStyles({
     flexShrink: 0,
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
+      color: tokens.colorBrandForeground1,
     },
   },
 
@@ -1189,6 +1232,7 @@ export const useStyles = makeStyles({
     border: "none",
     borderRadius: tokens.borderRadiusSmall,
     padding: "2px",
+    color: tokens.colorNeutralForeground2,
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
@@ -1197,13 +1241,14 @@ export const useStyles = makeStyles({
     minHeight: "24px",
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
+      color: tokens.colorBrandForeground1,
     },
   },
 
   toolbarIcon: {
     width: "20px",
     height: "20px",
-    color: tokens.colorNeutralForeground2,
+    color: "currentColor",
   },
 
   starButton: {
@@ -1211,12 +1256,14 @@ export const useStyles = makeStyles({
     border: "none",
     borderRadius: tokens.borderRadiusSmall,
     padding: tokens.spacingHorizontalSNudge,
+    color: tokens.colorNeutralForeground2,
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
+      color: tokens.colorBrandForeground1,
     },
   },
 
@@ -1355,6 +1402,27 @@ export const useStyles = makeStyles({
     boxShadow: "none !important",
     padding: `${tokens.spacingVerticalMNudge} !important`,
     backgroundColor: tokens.colorNeutralBackground1,
+  },
+
+  // Style for the highlighted content div (used when displaying pronoun replacements)
+  // Matches the internal padding of Fluent UI Textarea component
+  highlightedContentDiv: {
+    width: "100%",
+    minHeight: "80px",
+    fontSize: tokens.fontSizeBase200,
+    fontFamily: "'Segoe UI', sans-serif",
+    lineHeight: tokens.lineHeightBase200,
+    color: tokens.colorNeutralForeground1,
+    backgroundColor: "transparent",
+    // Match Fluent UI Textarea internal padding
+    padding: `${tokens.spacingVerticalSNudge} ${tokens.spacingHorizontalMNudge}`,
+    boxSizing: "border-box",
+    "@media (max-width: 769px)": {
+      fontSize: tokens.fontSizeBase400,
+      lineHeight: tokens.lineHeightBase400,
+      minHeight: "52px",
+      padding: `${tokens.spacingVerticalSNudge} ${tokens.spacingHorizontalS}`,
+    },
   },
 
   sectionContentDictationFocus: {

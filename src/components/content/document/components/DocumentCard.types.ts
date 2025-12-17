@@ -94,6 +94,8 @@ export interface DocumentCardProps {
   onDeleteDocument?: (documentId: string, documentName: string) => void;
   /** Whether to show skeleton loading animation */
   showSkeleton?: boolean;
+  /** Patient ID for patient-specific content generation */
+  patientId?: string;
   /** Whether pronoun replacement is in progress */
   isPronounReplacement?: boolean;
   /** Whether drafting referral letter is in progress */

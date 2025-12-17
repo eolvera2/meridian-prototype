@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import documentsData from "../../data/documentsData.json";
 import { GeneratingToast } from "./GeneratingToast";
+import { AIRequestToast } from "./AIRequestToast";
 import type { TextFieldElement } from "../../utils/getCaretCoordinates.ts";
 import { AddNoteDialog } from "./AddNoteDialog";
 import { useTooltipContext } from "./tooltip";
@@ -18,6 +19,7 @@ import {
   useSkeletonGeneration,
   useAutoSelectText,
   createDocumentFromType,
+  getPatientContentForSection,
 } from "./document";
 import type {
   DocumentItem,
@@ -47,7 +49,8 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
   scrollToTop = false,
 }) => {
   const styles = useStyles();
-  const { updateSelectedPatientLastModified } = useWorklistContext();
+  const { updateSelectedPatientLastModified, selectedPatientId } =
+    useWorklistContext();
   const [documents, setDocuments] = useState<DocumentItem[]>(propDocuments);
   // Expand Note by default, or use initialExpandedDocuments if provided
   const [expandedDocuments, setExpandedDocuments] = useState<Set<string>>(
@@ -78,6 +81,20 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
   const [ambientRecordingStarted, setAmbientRecordingStarted] = useState(false);
   // Track when ambient recording has stopped (for timestamp updates)
   const [ambientRecordingStopped, setAmbientRecordingStopped] = useState(false);
+
+  // AI Request Toast state
+  const [aiRequestToastVisible, setAiRequestToastVisible] = useState(false);
+  const [aiRequestToastMode, setAiRequestToastMode] = useState<
+    "detected" | "completed"
+  >("detected");
+  const [aiRequestToastText, setAiRequestToastText] = useState("");
+  const [aiRequestToastHighlight, setAiRequestToastHighlight] = useState("");
+  const [aiRequestSkeletonDocIds, setAiRequestSkeletonDocIds] = useState<
+    Set<string>
+  >(new Set());
+  const aiRequestToastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
 
   console.log(
     "DocumentComponent render, isAddNoteDialogOpen:",
@@ -425,11 +442,43 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
     // Only trigger when the prop transitions from false to true
     if (!wasTrigger && triggerPronounReplacement) {
       setIsPronounReplacement(true);
-      triggerSkeletonGeneration({
-        duration: 3000,
-        toastDelay: 500,
-        afterComplete: () => {
-          setIsPronounReplacement(false);
+
+      // Get document IDs that will be affected (notes and referral letters)
+      const affectedDocs = documents.filter(
+        (doc) =>
+          doc.type === "progress-note" ||
+          doc.type === "referral-letter" ||
+          doc.type === "well-visit" ||
+          doc.type === "annual"
+      );
+      const docIds = affectedDocs.map((doc) => doc.id);
+
+      // Clear any existing timeout
+      if (aiRequestToastTimeoutRef.current) {
+        clearTimeout(aiRequestToastTimeoutRef.current);
+      }
+
+      // Start skeleton animation on affected documents
+      setAiRequestSkeletonDocIds(new Set(docIds));
+
+      // Show "detected" mode for 3 seconds (shorter for pronoun replacement)
+      setAiRequestToastText("Request detected:");
+      setAiRequestToastHighlight("Change pronouns to they/them");
+      setAiRequestToastMode("detected");
+      setAiRequestToastVisible(true);
+
+      aiRequestToastTimeoutRef.current = setTimeout(() => {
+        // Switch to "completed" mode for 2 seconds
+        setAiRequestToastText("Request completed:");
+        setAiRequestToastMode("completed");
+
+        aiRequestToastTimeoutRef.current = setTimeout(() => {
+          // Hide toast and stop skeleton after completed
+          setAiRequestToastVisible(false);
+          // Clear skeleton first - this triggers pronoun replacement in useSectionContent
+          // which checks for isPronounReplacement being true when skeleton ends
+          setAiRequestSkeletonDocIds(new Set());
+
           // Update Note and Referral Letter modified timestamps after pronoun replacement completes
           setDocuments((prev) =>
             prev.map((doc) =>
@@ -438,15 +487,17 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
                 : doc
             )
           );
-          onPronounReplacementComplete?.();
-        },
-      });
+
+          // Small delay before clearing isPronounReplacement to ensure useSectionContent
+          // processes the skeleton transition while isPronounReplacement is still true
+          setTimeout(() => {
+            setIsPronounReplacement(false);
+            onPronounReplacementComplete?.();
+          }, 100);
+        }, 2000);
+      }, 3000);
     }
-  }, [
-    triggerPronounReplacement,
-    triggerSkeletonGeneration,
-    onPronounReplacementComplete,
-  ]);
+  }, [triggerPronounReplacement, documents, onPronounReplacementComplete]);
 
   // Watch for draft referral letter trigger from Library prompt click
   useEffect(() => {
@@ -455,6 +506,12 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
 
     // Only trigger when the prop transitions from false to true
     if (!wasTrigger && triggerDraftReferralLetter) {
+      // Get patient-specific referral letter content
+      const referralContent = getPatientContentForSection(
+        "Referral Note",
+        selectedPatientId || undefined
+      );
+
       // Always create a new referral letter (allow multiple)
       const newReferralLetter: DocumentItem = {
         id: `doc-${Date.now()}`,
@@ -465,7 +522,7 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
           {
             id: `referral-${Date.now()}`,
             title: "Referral Note",
-            content: "",
+            content: referralContent,
             checked: false,
           },
         ],
@@ -510,21 +567,39 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
         }
       }, 100);
 
-      // Trigger skeleton for just the referral letter
-      triggerSkeletonGeneration({
-        duration: 3000,
-        toastDelay: 500,
-        documentIds: [referralId],
-        documentNames: ["Referral letter"],
-        afterComplete: () => setIsDraftingReferralLetter(false),
-      });
+      // Clear any existing timeout
+      if (aiRequestToastTimeoutRef.current) {
+        clearTimeout(aiRequestToastTimeoutRef.current);
+      }
+
+      // Start skeleton animation on the new referral letter
+      setAiRequestSkeletonDocIds(new Set([referralId]));
+
+      // Show "detected" mode for 5 seconds
+      setAiRequestToastText("Request detected:");
+      setAiRequestToastHighlight("Draft a referral letter");
+      setAiRequestToastMode("detected");
+      setAiRequestToastVisible(true);
+
+      aiRequestToastTimeoutRef.current = setTimeout(() => {
+        // Switch to "completed" mode for 2 seconds
+        setAiRequestToastText("Request completed:");
+        setAiRequestToastMode("completed");
+
+        aiRequestToastTimeoutRef.current = setTimeout(() => {
+          // Hide toast and stop skeleton after completed
+          setAiRequestToastVisible(false);
+          setAiRequestSkeletonDocIds(new Set());
+          setIsDraftingReferralLetter(false);
+        }, 2000);
+      }, 5000);
     }
   }, [
     triggerDraftReferralLetter,
     documents,
-    triggerSkeletonGeneration,
     onReferralLetterAdd,
     updateSelectedPatientLastModified,
+    selectedPatientId,
   ]);
 
   // Transform documents for DataGrid
@@ -558,6 +633,53 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
   // Note: Document syncing with propDocuments is handled by the useEffect at lines 127-137
   // which only resets when the reference actually changes (e.g., new patient selected)
   // We don't want to reset on every propDocuments change as it would lose user-added documents
+
+  // Trigger the AI Request toast sequence: detected (5s) -> completed (2s) -> hide
+  const triggerAiRequestToast = useCallback(
+    (documentNames: string[], count: number, documentIds: string[]) => {
+      // Clear any existing timeout
+      if (aiRequestToastTimeoutRef.current) {
+        clearTimeout(aiRequestToastTimeoutRef.current);
+      }
+
+      // Format the template name(s)
+      const templateText =
+        documentNames.length === 1
+          ? `Insert ${documentNames[0]} template`
+          : `Insert ${count} templates`;
+
+      // Start skeleton animation only on the added documents
+      setAiRequestSkeletonDocIds(new Set(documentIds));
+
+      // Show "detected" mode for 5 seconds
+      setAiRequestToastText("Request detected:");
+      setAiRequestToastHighlight(templateText);
+      setAiRequestToastMode("detected");
+      setAiRequestToastVisible(true);
+
+      aiRequestToastTimeoutRef.current = setTimeout(() => {
+        // Switch to "completed" mode for 2 seconds
+        setAiRequestToastText("Request completed:");
+        setAiRequestToastMode("completed");
+
+        aiRequestToastTimeoutRef.current = setTimeout(() => {
+          // Hide toast and stop skeleton after completed
+          setAiRequestToastVisible(false);
+          setAiRequestSkeletonDocIds(new Set());
+        }, 2000);
+      }, 5000);
+    },
+    []
+  );
+
+  // Handle AI request toast close
+  const handleAiRequestToastClose = useCallback(() => {
+    if (aiRequestToastTimeoutRef.current) {
+      clearTimeout(aiRequestToastTimeoutRef.current);
+    }
+    setAiRequestToastVisible(false);
+    setAiRequestSkeletonDocIds(new Set());
+  }, []);
 
   const handleAddNotes = (noteTypes: string[]) => {
     console.log("handleAddNotes received:", noteTypes);
@@ -595,6 +717,10 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
         newSet.add(newDocuments[0].id);
         return newSet;
       });
+
+      // Trigger the AI request toast sequence with the new document IDs
+      const newDocIds = newDocuments.map((doc) => doc.id);
+      triggerAiRequestToast(noteTypes, noteTypes.length, newDocIds);
     }
 
     // Check if referral letter was added
@@ -701,10 +827,14 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
                 onOrderCountChange={handleOrderCountChange}
                 onDeleteDocument={handleDeleteDocumentRequest}
                 showSkeleton={
-                  isDraftingReferralLetter
+                  // AI request skeleton: only for specific added documents
+                  aiRequestSkeletonDocIds.has(document.id) ||
+                  // Referral letter drafting: only for referral-letter type
+                  (isDraftingReferralLetter
                     ? showSkeleton && document.type === "referral-letter"
-                    : showSkeleton
+                    : showSkeleton && !aiRequestSkeletonDocIds.size)
                 }
+                patientId={selectedPatientId ?? undefined}
                 isPronounReplacement={isPronounReplacement}
                 isDraftingReferralLetter={isDraftingReferralLetter}
                 autoFocus={autoFocusDocuments.has(document.id)}
@@ -724,6 +854,15 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
         text={getGeneratingText()}
         onClose={() => setShowGeneratingToast(false)}
         showProgress={showSkeleton}
+      />
+
+      <AIRequestToast
+        visible={aiRequestToastVisible}
+        text={aiRequestToastText}
+        highlightedText={aiRequestToastHighlight}
+        mode={aiRequestToastMode}
+        onUndo={handleAiRequestToastClose}
+        onClose={handleAiRequestToastClose}
       />
 
       <AddNoteDialog

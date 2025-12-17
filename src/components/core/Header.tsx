@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ToggleButton } from "@fluentui/react-components";
+import { Button, ToggleButton, Tooltip } from "@fluentui/react-components";
 import {
   bundleIcon,
   Script24Regular as ScriptRegular,
@@ -14,7 +14,6 @@ import { useStyles } from "./Header.styles";
 
 const Script = bundleIcon(ScriptFilled, ScriptRegular);
 const Library = bundleIcon(LibraryFilled, LibraryRegular);
-const ChevronLeft = bundleIcon(ChevronLeftFilled, ChevronLeftRegular);
 
 export interface HeaderPatient {
   id: string;
@@ -69,22 +68,23 @@ export const Header: React.FC<HeaderProps> = ({
       <div className={styles.headerContent}>
         <div className={styles.left}>
           <div className={styles.homeButtonContainer}>
-            <ToggleButton
-              checked={homeChecked}
-              onClick={() => onHomeClick?.()}
-              className={styles.homeToggleButton}
-              icon={
-                homeChecked ? (
-                  <ChevronLeft className={styles.iconFilled} />
-                ) : (
-                  <ChevronLeftRegular className={styles.icon} />
-                )
-              }
-              appearance="transparent"
-              size="small"
-              aria-label="Back to Home"
-              disabled={disableNavigation}
-            />
+            <Tooltip content="Home" relationship="label">
+              <Button
+                onClick={() => onHomeClick?.()}
+                className={styles.homeToggleButton}
+                icon={
+                  homeChecked ? (
+                    <ChevronLeftFilled className={styles.iconFilled} />
+                  ) : (
+                    <ChevronLeftRegular className={styles.icon} />
+                  )
+                }
+                appearance="transparent"
+                size="small"
+                aria-label="Back to Home"
+                disabled={disableNavigation}
+              />
+            </Tooltip>
           </div>
           <div className={styles.patientInfo}>
             <div className={styles.name} title={patient?.name}>
@@ -111,45 +111,65 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         <div className={styles.right}>
-          <ToggleButton
-            checked={scriptChecked}
-            onClick={() => onToggleScript?.(!scriptChecked)}
-            icon={
-              scriptChecked ? (
-                <Script className={styles.iconFilled} />
-              ) : (
-                <ScriptRegular className={styles.icon} />
-              )
-            }
-            appearance="subtle"
-            size="small"
-            aria-label="Toggle Transcript"
-            style={scriptChecked ? { backgroundColor: "#f5f5f5" } : undefined}
-            disabled={disableNavigation}
-          />
-          <ToggleButton
-            checked={libraryChecked}
-            onClick={() => onToggleLibrary?.(!libraryChecked)}
-            icon={
-              libraryChecked ? (
-                <Library className={styles.iconFilled} />
-              ) : (
-                <LibraryRegular className={styles.icon} />
-              )
-            }
-            appearance="subtle"
-            size="small"
-            aria-label="Toggle Library"
-            style={libraryChecked ? { backgroundColor: "#f5f5f5" } : undefined}
-            disabled={disableNavigation}
-          />
-          <Button
-            aria-label="More options"
-            appearance="subtle"
-            size="small"
-            icon={<MoreVertical className={styles.icon} />}
-            className={styles.iconButton}
-          />
+          <Tooltip content="Transcript" relationship="label">
+            <span style={{ display: "inline-flex" }}>
+              <ToggleButton
+                checked={scriptChecked}
+                onClick={() => onToggleScript?.(!scriptChecked)}
+                className={styles.toggleIconButton}
+                icon={
+                  scriptChecked ? (
+                    <Script className={styles.iconFilled} />
+                  ) : (
+                    <ScriptRegular className={styles.icon} />
+                  )
+                }
+                appearance="subtle"
+                size="small"
+                aria-label="Toggle Transcript"
+                style={
+                  scriptChecked ? { backgroundColor: "#f5f5f5" } : undefined
+                }
+                disabled={disableNavigation}
+              />
+            </span>
+          </Tooltip>
+
+          <Tooltip content="Library" relationship="label">
+            <span style={{ display: "inline-flex" }}>
+              <ToggleButton
+                checked={libraryChecked}
+                onClick={() => onToggleLibrary?.(!libraryChecked)}
+                className={styles.toggleIconButton}
+                icon={
+                  libraryChecked ? (
+                    <Library className={styles.iconFilled} />
+                  ) : (
+                    <LibraryRegular className={styles.icon} />
+                  )
+                }
+                appearance="subtle"
+                size="small"
+                aria-label="Toggle Library"
+                style={
+                  libraryChecked ? { backgroundColor: "#f5f5f5" } : undefined
+                }
+                disabled={disableNavigation}
+              />
+            </span>
+          </Tooltip>
+
+          <Tooltip content="Menu" relationship="label">
+            <span style={{ display: "inline-flex" }}>
+              <Button
+                aria-label="More options"
+                appearance="subtle"
+                size="small"
+                icon={<MoreVertical className={styles.icon} />}
+                className={styles.iconButton}
+              />
+            </span>
+          </Tooltip>
         </div>
       </div>
     </div>

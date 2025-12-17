@@ -5,6 +5,7 @@ import {
   Worklist,
   DocumentComponent,
   SettingsPanel,
+  FAB,
 } from "../../content";
 import { Header } from "../Header";
 import type { HeaderProps } from "../Header";
@@ -195,6 +196,11 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
             </div>
           </div>
         )}
+
+        <FAB
+          scrollTargetSelector=".document-component-root"
+          visible={!!selectedPatient}
+        />
 
         <div className={styles.desktopMicrophoneContainer} ref={microphoneRef}>
           <MicrophoneInterface {...microphoneProps} />

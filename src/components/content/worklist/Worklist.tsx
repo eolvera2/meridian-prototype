@@ -12,6 +12,7 @@ import {
   SearchBox,
   Button,
   Divider,
+  Tooltip,
 } from "@fluentui/react-components";
 import type {
   SelectTabEvent,
@@ -53,6 +54,16 @@ export const Worklist: React.FC<WorklistProps> = ({
   const styles = useStyles();
   const { patients } = useWorklistContext();
   const toId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+  const hasValidLastModified = (value?: string) => {
+    const normalized = value?.trim();
+    return Boolean(normalized && normalized !== "--" && normalized !== "0");
+  };
+
+  const shouldShowLastModified = (patient: (typeof patients)[number]) => {
+    const recordingSeconds = patient.initialRecordingSeconds ?? 0;
+    return recordingSeconds > 0 && hasValidLastModified(patient.lastModified);
+  };
 
   const [activeTab, setActiveTab] = useState<TabValue>("schedule");
   const [searchValue, setSearchValue] = useState("");
@@ -293,13 +304,17 @@ export const Worklist: React.FC<WorklistProps> = ({
                 </Tab>
               </TabList>
 
-              <button
-                className={styles.searchButton}
-                onClick={handleSearchToggle}
-                aria-label="Search patients"
-              >
-                <Search20Regular />
-              </button>
+              <Tooltip content="Search" relationship="label">
+                <span style={{ display: "inline-flex" }}>
+                  <button
+                    className={styles.searchButton}
+                    onClick={handleSearchToggle}
+                    aria-label="Search patients"
+                  >
+                    <Search20Regular />
+                  </button>
+                </span>
+              </Tooltip>
             </>
           ) : (
             <div className={styles.searchContainerActive}>
@@ -335,27 +350,31 @@ export const Worklist: React.FC<WorklistProps> = ({
                 icon={<Filter16Regular />}
                 aria-label="Filter options"
               />
-              <Button
-                appearance="subtle"
-                className={styles.filterButton}
-                icon={
-                  sortOrder === "asc" ? (
-                    <ArrowUp16Regular />
-                  ) : sortOrder === "desc" ? (
-                    <ArrowDown16Regular />
-                  ) : (
-                    <ArrowSort16Regular />
-                  )
-                }
-                aria-label={`Sort patients ${
-                  sortOrder === "none"
-                    ? "alphabetically"
-                    : sortOrder === "asc"
-                    ? "descending"
-                    : "ascending"
-                }`}
-                onClick={handleSortToggle}
-              />
+              <Tooltip content="Sort" relationship="label">
+                <span style={{ display: "inline-flex" }}>
+                  <Button
+                    appearance="subtle"
+                    className={styles.filterButton}
+                    icon={
+                      sortOrder === "asc" ? (
+                        <ArrowUp16Regular />
+                      ) : sortOrder === "desc" ? (
+                        <ArrowDown16Regular />
+                      ) : (
+                        <ArrowSort16Regular />
+                      )
+                    }
+                    aria-label={`Sort patients ${
+                      sortOrder === "none"
+                        ? "alphabetically"
+                        : sortOrder === "asc"
+                        ? "descending"
+                        : "ascending"
+                    }`}
+                    onClick={handleSortToggle}
+                  />
+                </span>
+              </Tooltip>
             </div>
           </div>
         </div>
@@ -488,11 +507,13 @@ export const Worklist: React.FC<WorklistProps> = ({
                                             Signed
                                           </div>
                                         </div>
-                                        <div className={styles.modifiedText}>
-                                          Modified {patient.lastModified}
-                                        </div>
+                                        {shouldShowLastModified(patient) && (
+                                          <div className={styles.modifiedText}>
+                                            Modified {patient.lastModified}
+                                          </div>
+                                        )}
                                       </>
-                                    ) : patient.lastModified ? (
+                                    ) : shouldShowLastModified(patient) ? (
                                       <div className={styles.modifiedText}>
                                         Modified {patient.lastModified}
                                       </div>
@@ -507,17 +528,24 @@ export const Worklist: React.FC<WorklistProps> = ({
                                     justifyContent: "flex-end",
                                   }}
                                 >
-                                  <button
-                                    className={`${styles.micButton} mic-button`}
-                                    aria-label="Voice dictation"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      onPatientSelect?.(patient.id);
-                                      onMicButtonClick?.(patient.id);
-                                    }}
+                                  <Tooltip
+                                    content="Ambient Recording"
+                                    relationship="label"
                                   >
-                                    <DeviceEqRegular />
-                                  </button>
+                                    <span style={{ display: "inline-flex" }}>
+                                      <button
+                                        className={`${styles.micButton} mic-button`}
+                                        aria-label="Ambient Recording"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          onPatientSelect?.(patient.id);
+                                          onMicButtonClick?.(patient.id);
+                                        }}
+                                      >
+                                        <DeviceEqRegular />
+                                      </button>
+                                    </span>
+                                  </Tooltip>
                                 </div>
                               </div>
                             </div>
@@ -564,17 +592,24 @@ export const Worklist: React.FC<WorklistProps> = ({
                       <div
                         style={{ display: "flex", justifyContent: "flex-end" }}
                       >
-                        <button
-                          className={`${styles.micButton} mic-button`}
-                          aria-label="Ambient mode recording"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onPatientSelect?.(patient.id);
-                            onMicButtonClick?.(patient.id);
-                          }}
+                        <Tooltip
+                          content="Ambient Recording"
+                          relationship="label"
                         >
-                          <DeviceEqRegular />
-                        </button>
+                          <span style={{ display: "inline-flex" }}>
+                            <button
+                              className={`${styles.micButton} mic-button`}
+                              aria-label="Ambient Recording"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onPatientSelect?.(patient.id);
+                                onMicButtonClick?.(patient.id);
+                              }}
+                            >
+                              <DeviceEqRegular />
+                            </button>
+                          </span>
+                        </Tooltip>
                       </div>
                     </div>
                   </div>

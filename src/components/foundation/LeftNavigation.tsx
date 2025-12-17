@@ -5,6 +5,7 @@ import {
   NavDrawer,
   NavDrawerBody,
   mergeClasses,
+  Tooltip,
 } from "@fluentui/react-components";
 import {
   Settings20Regular,
@@ -243,54 +244,81 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
 
           {/* Primary navigation */}
           <div className={styles.navTop}>
-            <button
-              type="button"
-              className={mergeClasses(
-                styles.navButton,
-                styles.homeButton,
-                activeNavItem === "home" && styles.selectedNavButton
-              )}
-              onClick={onHomeToggle}
-              aria-label="Return to schedule"
-              aria-pressed={homeToggleActive}
+            <Tooltip content="Home" relationship="label" positioning={"after"}>
+              <span style={{ display: "inline-flex" }}>
+                <button
+                  type="button"
+                  className={mergeClasses(
+                    styles.navButton,
+                    styles.homeButton,
+                    activeNavItem === "home" && styles.selectedNavButton
+                  )}
+                  onClick={onHomeToggle}
+                  aria-label="Return to schedule"
+                  aria-pressed={homeToggleActive}
+                >
+                  <HomeIcon />
+                </button>
+              </span>
+            </Tooltip>
+
+            <Tooltip
+              content="Account"
+              relationship="label"
+              positioning={"after"}
             >
-              <HomeIcon />
-            </button>
-            <button
-              type="button"
-              className={mergeClasses(
-                styles.navButton,
-                activeNavItem === "avatar" && styles.selectedNavButton
-              )}
-              onClick={onProfileClick}
-              aria-label="Profile"
-              disabled
-              style={{ opacity: 0.4, cursor: "not-allowed" }}
+              <span style={{ display: "inline-flex" }}>
+                <button
+                  type="button"
+                  className={mergeClasses(
+                    styles.navButton,
+                    activeNavItem === "avatar" && styles.selectedNavButton
+                  )}
+                  onClick={onProfileClick}
+                  aria-label="Profile"
+                  disabled
+                  style={{ opacity: 0.4, cursor: "not-allowed" }}
+                >
+                  <Person20Regular />
+                </button>
+              </span>
+            </Tooltip>
+
+            <Tooltip
+              content="Settings"
+              relationship="label"
+              positioning={"after"}
             >
-              <Person20Regular />
-            </button>
-            <button
-              className={mergeClasses(
-                styles.navButton,
-                activeNavItem === "settings" && styles.selectedNavButton
-              )}
-              onClick={onSettingsClick}
-              aria-label="Open settings"
-            >
-              <SettingsIcon />
-            </button>
-            <button
-              className={mergeClasses(
-                styles.navButton,
-                activeNavItem === "help" && styles.selectedNavButton
-              )}
-              onClick={onHelpClick}
-              aria-label="Get help"
-              disabled
-              style={{ opacity: 0.4, cursor: "not-allowed" }}
-            >
-              <HelpIcon />
-            </button>
+              <span style={{ display: "inline-flex" }}>
+                <button
+                  className={mergeClasses(
+                    styles.navButton,
+                    activeNavItem === "settings" && styles.selectedNavButton
+                  )}
+                  onClick={onSettingsClick}
+                  aria-label="Open settings"
+                >
+                  <SettingsIcon />
+                </button>
+              </span>
+            </Tooltip>
+
+            <Tooltip content="Help" relationship="label" positioning={"after"}>
+              <span style={{ display: "inline-flex" }}>
+                <button
+                  className={mergeClasses(
+                    styles.navButton,
+                    activeNavItem === "help" && styles.selectedNavButton
+                  )}
+                  onClick={onHelpClick}
+                  aria-label="Get help"
+                  disabled
+                  style={{ opacity: 0.4, cursor: "not-allowed" }}
+                >
+                  <HelpIcon />
+                </button>
+              </span>
+            </Tooltip>
           </div>
         </div>
       </NavDrawerBody>

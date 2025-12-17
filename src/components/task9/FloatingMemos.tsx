@@ -187,7 +187,7 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
     <div className={styles.root}>
       {/* Header row: title and actions (outside card) */}
       <div className={styles.cardHeader}>
-        <span className={styles.title}>Memo 0001</span>
+        <span className={styles.title}>Dictation 0001</span>
         <div className={styles.actions}>
           <Tooltip
             content="Add memo"
