@@ -169,7 +169,12 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
               )}
 
               <div className={styles.contentContainer} ref={contentAreaRef}>
-                <div className={styles.documentArea}>
+                <div
+                  className={mergeClasses(
+                    styles.documentArea,
+                    "document-scroll-container"
+                  )}
+                >
                   {worklistCollapsed && selectedPatient && (
                     <DocumentComponent
                       key={selectedPatient.id}
@@ -198,8 +203,10 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
         )}
 
         <FAB
-          scrollTargetSelector=".document-component-root"
-          visible={!!selectedPatient}
+          scrollTargetSelector=".right-drawer-scroll-container, .document-scroll-container"
+          visible={
+            !!selectedPatient && worklistCollapsed && !rightDrawerVisible
+          }
         />
 
         <div className={styles.desktopMicrophoneContainer} ref={microphoneRef}>

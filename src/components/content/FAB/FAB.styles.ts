@@ -19,8 +19,8 @@ export const useStyles = makeStyles({
   },
 
   fabButton: {
-    width: "40px",
-    height: "40px",
+    width: "48px",
+    height: "48px",
     borderRadius: "50%",
     backgroundColor: tokens.colorNeutralBackground1,
     border: `1px solid ${tokens.colorNeutralStroke1}`,
@@ -51,7 +51,8 @@ export const useStyles = makeStyles({
 
   fabIcon: {
     fontSize: "20px",
-    color: tokens.colorNeutralForeground1,
+    color: tokens.colorBrandForeground1,
+    pointerEvents: "none",
   },
 
   // Badge indicator for scroll position
@@ -76,6 +77,14 @@ export const useStyles = makeStyles({
     opacity: 0,
     pointerEvents: "none",
     transform: "translateX(-50%) translateY(10px)",
+  },
+
+  // Temporarily faded while the user is actively scrolling
+  faded: {
+    opacity: 0,
+    pointerEvents: "none",
+    transform: "translateX(-50%) translateY(0)",
+    transition: "opacity 0.2s ease",
   },
 
   // Visible state with animation

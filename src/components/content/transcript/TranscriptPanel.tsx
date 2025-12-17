@@ -10,6 +10,7 @@ import {
   Checkbox,
   mergeClasses,
   Card,
+  Tooltip,
   Dialog,
   DialogSurface,
   DialogBody,
@@ -87,12 +88,14 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, styles }) => {
             <span className={styles.messageTime}>{message.timestamp}</span>
           </div>
         </div>
-        <Button
-          appearance="subtle"
-          icon={<MoreHorizontal20Regular />}
-          className={styles.moreButton}
-          aria-label="More options"
-        />
+        <Tooltip content="Menu" relationship="label">
+          <Button
+            appearance="subtle"
+            icon={<MoreHorizontal20Regular />}
+            className={styles.moreButton}
+            aria-label="Menu"
+          />
+        </Tooltip>
       </div>
       <div className={styles.messageContent}>{renderContent()}</div>
       {message.ordersDetected && (
@@ -161,13 +164,15 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({
             <span className={styles.recordingDateTime}>
               {recording.date} {recording.time}
             </span>
-            <Button
-              appearance="subtle"
-              icon={<Delete20Regular />}
-              className={styles.deleteButton}
-              aria-label="Delete recording"
-              onClick={handleDeleteClick}
-            />
+            <Tooltip content="Delete" relationship="label">
+              <Button
+                appearance="subtle"
+                icon={<Delete20Regular />}
+                className={styles.deleteButton}
+                aria-label="Delete recording"
+                onClick={handleDeleteClick}
+              />
+            </Tooltip>
           </div>
         </div>
         {recording.isExpanded && (
@@ -272,26 +277,37 @@ export const TranscriptPanel: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.toolbar}>
-        <Button
-          appearance="subtle"
-          icon={<SelectAllOn20Regular />}
-          className={styles.toolbarButton}
-          aria-label="Select all"
-        />
-        <Button
-          appearance="subtle"
-          icon={<ChatSparkle20Regular />}
-          className={styles.toolbarButton}
-          aria-label="Chat"
-        />
-        <Button
-          appearance="subtle"
-          icon={<Copy20Regular />}
-          className={styles.toolbarButton}
-          aria-label="Copy"
-        />
+        <Tooltip content="Select All" relationship="label">
+          <Button
+            appearance="subtle"
+            icon={<SelectAllOn20Regular />}
+            className={styles.toolbarButton}
+            aria-label="Select all"
+          />
+        </Tooltip>
+        <Tooltip content="AI Chat" relationship="label">
+          <Button
+            appearance="subtle"
+            icon={<ChatSparkle20Regular />}
+            className={styles.toolbarButton}
+            aria-label="Chat"
+          />
+        </Tooltip>
+        <Tooltip content="Copy" relationship="label">
+          <Button
+            appearance="subtle"
+            icon={<Copy20Regular />}
+            className={styles.toolbarButton}
+            aria-label="Copy"
+          />
+        </Tooltip>
       </div>
-      <div className={styles.recordingsList}>
+      <div
+        className={mergeClasses(
+          styles.recordingsList,
+          "right-drawer-scroll-container"
+        )}
+      >
         {recordings.map((recording) => (
           <RecordingSection
             key={recording.id}

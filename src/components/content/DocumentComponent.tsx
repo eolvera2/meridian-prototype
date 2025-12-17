@@ -603,15 +603,13 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
   ]);
 
   // Transform documents for DataGrid
-  const gridItems: DocumentGridItem[] = documents
-    .filter((doc) => doc.type !== "after-visit-summary")
-    .map((doc) => ({
-      id: doc.id,
-      name: doc.name,
-      created: doc.created,
-      document: doc,
-      isExpanded: expandedDocuments.has(doc.id),
-    }));
+  const gridItems: DocumentGridItem[] = documents.map((doc) => ({
+    id: doc.id,
+    name: doc.name,
+    created: doc.created,
+    document: doc,
+    isExpanded: expandedDocuments.has(doc.id),
+  }));
 
   // Callback to update order count when orders change in a card
   const handleOrderCountChange = useCallback(
@@ -791,60 +789,58 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
 
       {/* Document Stack */}
       <div className={styles.documentStack}>
-        {documents
-          .filter((doc) => doc.type !== "after-visit-summary")
-          .map((document) => {
-            const isExpanded = expandedDocuments.has(document.id);
-            const isDocumentChecked = areAllSectionsChecked(document);
-            const isDocumentPartiallyChecked =
-              !isDocumentChecked && areSomeSectionsChecked(document);
-            const documentCheckboxState = isDocumentChecked
-              ? true
-              : isDocumentPartiallyChecked
-              ? "mixed"
-              : false;
+        {documents.map((document) => {
+          const isExpanded = expandedDocuments.has(document.id);
+          const isDocumentChecked = areAllSectionsChecked(document);
+          const isDocumentPartiallyChecked =
+            !isDocumentChecked && areSomeSectionsChecked(document);
+          const documentCheckboxState = isDocumentChecked
+            ? true
+            : isDocumentPartiallyChecked
+            ? "mixed"
+            : false;
 
-            return (
-              <DocumentCard
-                key={document.id}
-                document={document}
-                styles={styles}
-                isExpanded={isExpanded}
-                checkboxState={documentCheckboxState}
-                onDocumentClick={handleDocumentClick}
-                onDocumentCheckToggle={handleDocumentCheckToggle}
-                onSectionToggle={handleSectionToggle}
-                onSectionContentChange={handleSectionContentChange}
-                registerDocumentRef={registerDocumentRef}
-                micMode={micMode}
-                isRecording={isRecording}
-                dictationState={dictationState}
-                cursorTooltipHandlers={cursorTooltipHandlers}
-                setTooltipVisible={setTooltipVisible}
-                updateTooltipFromCaret={updateTooltipFromCaret}
-                onStartSectionDictation={startSectionDictation}
-                onStopSectionDictation={stopSectionDictation}
-                onOrderCountChange={handleOrderCountChange}
-                onDeleteDocument={handleDeleteDocumentRequest}
-                showSkeleton={
-                  // AI request skeleton: only for specific added documents
-                  aiRequestSkeletonDocIds.has(document.id) ||
-                  // Referral letter drafting: only for referral-letter type
-                  (isDraftingReferralLetter
-                    ? showSkeleton && document.type === "referral-letter"
-                    : showSkeleton && !aiRequestSkeletonDocIds.size)
-                }
-                patientId={selectedPatientId ?? undefined}
-                isPronounReplacement={isPronounReplacement}
-                isDraftingReferralLetter={isDraftingReferralLetter}
-                autoFocus={autoFocusDocuments.has(document.id)}
-                onAutoFocusConsumed={handleAutoFocusConsumed}
-                onOrderDelete={
-                  document.type === "orders" ? onOrderDelete : undefined
-                }
-              />
-            );
-          })}
+          return (
+            <DocumentCard
+              key={document.id}
+              document={document}
+              styles={styles}
+              isExpanded={isExpanded}
+              checkboxState={documentCheckboxState}
+              onDocumentClick={handleDocumentClick}
+              onDocumentCheckToggle={handleDocumentCheckToggle}
+              onSectionToggle={handleSectionToggle}
+              onSectionContentChange={handleSectionContentChange}
+              registerDocumentRef={registerDocumentRef}
+              micMode={micMode}
+              isRecording={isRecording}
+              dictationState={dictationState}
+              cursorTooltipHandlers={cursorTooltipHandlers}
+              setTooltipVisible={setTooltipVisible}
+              updateTooltipFromCaret={updateTooltipFromCaret}
+              onStartSectionDictation={startSectionDictation}
+              onStopSectionDictation={stopSectionDictation}
+              onOrderCountChange={handleOrderCountChange}
+              onDeleteDocument={handleDeleteDocumentRequest}
+              showSkeleton={
+                // AI request skeleton: only for specific added documents
+                aiRequestSkeletonDocIds.has(document.id) ||
+                // Referral letter drafting: only for referral-letter type
+                (isDraftingReferralLetter
+                  ? showSkeleton && document.type === "referral-letter"
+                  : showSkeleton && !aiRequestSkeletonDocIds.size)
+              }
+              patientId={selectedPatientId ?? undefined}
+              isPronounReplacement={isPronounReplacement}
+              isDraftingReferralLetter={isDraftingReferralLetter}
+              autoFocus={autoFocusDocuments.has(document.id)}
+              onAutoFocusConsumed={handleAutoFocusConsumed}
+              onOrderDelete={
+                document.type === "orders" ? onOrderDelete : undefined
+              }
+            />
+          );
+        })}
       </div>
 
       {/* MicCursorTooltip is now rendered globally in MainContent */}

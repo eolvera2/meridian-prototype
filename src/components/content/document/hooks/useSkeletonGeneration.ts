@@ -60,7 +60,7 @@ export const useSkeletonGeneration = (
 
   // Get visible documents for generation (with default filtering applied)
   const getVisibleDocumentsForGeneration = useCallback((): DocumentItem[] => {
-    return documents.filter((doc) => doc.type !== "after-visit-summary");
+    return documents;
   }, [documents]);
 
   // Trigger skeleton animation with options

@@ -128,7 +128,7 @@ export const CopilotThread: React.FC<CopilotThreadProps> = () => {
 
   return (
     <div className={styles.chatContainer}>
-      <div className={styles.messagesArea}>
+      <div className={`${styles.messagesArea} right-drawer-scroll-container`}>
         <div className={styles.messageAgent}>
           Hello! I'm here to help you with patient information and clinical
           insights.

@@ -361,7 +361,12 @@ export const MemosPanel: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.memosList}>
+      <div
+        className={mergeClasses(
+          styles.memosList,
+          "right-drawer-scroll-container"
+        )}
+      >
         {groupedMemos.map((group) => (
           <div key={group.label} className={styles.dateGroup}>
             <div className={styles.dateLabel}>

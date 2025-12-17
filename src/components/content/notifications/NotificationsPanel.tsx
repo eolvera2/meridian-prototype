@@ -175,7 +175,12 @@ export const NotificationsPanel: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.notificationsList}>
+      <div
+        className={mergeClasses(
+          styles.notificationsList,
+          "right-drawer-scroll-container"
+        )}
+      >
         {groupedNotifications.map((group) => (
           <div key={group.label} className={styles.dateGroup}>
             <div className={styles.dateLabel}>

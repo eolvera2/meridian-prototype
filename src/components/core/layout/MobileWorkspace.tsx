@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { mergeClasses } from "@fluentui/react-components";
 import {
   MicrophoneInterface,
   Worklist,
@@ -228,7 +229,12 @@ export const MobileWorkspace: React.FC<MobileWorkspaceProps> = ({
               </div>
             )}
             <div className={styles.mobileContentContainer}>
-              <div className={styles.mobileDocumentArea}>
+              <div
+                className={mergeClasses(
+                  styles.mobileDocumentArea,
+                  "document-scroll-container"
+                )}
+              >
                 {selectedPatient && worklistCollapsed && (
                   <DocumentComponent
                     key={selectedPatient.id}
@@ -299,8 +305,8 @@ export const MobileWorkspace: React.FC<MobileWorkspaceProps> = ({
       </div>
 
       <FAB
-        scrollTargetSelector=".document-component-root"
-        visible={!!selectedPatient && worklistCollapsed}
+        scrollTargetSelector=".right-drawer-scroll-container, .document-scroll-container"
+        visible={!!selectedPatient && worklistCollapsed && !rightDrawerVisible}
       />
 
       <div className={styles.microphoneContainer}>

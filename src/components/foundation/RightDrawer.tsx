@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Button,
+  Tooltip,
   mergeClasses,
   Drawer,
   DrawerHeader,
@@ -28,12 +29,6 @@ import { useRightDrawerStyles } from "./RightDrawer.styles";
 import "./RightDrawer.css";
 
 const useCustomHeaderStyles = makeStyles({
-  headerContent: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
-  },
   title: {
     fontWeight: 600,
     fontSize: tokens.fontSizeBase400,
@@ -42,6 +37,13 @@ const useCustomHeaderStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     gap: "4px",
+    flexShrink: 0,
+    minWidth: "max-content",
+  },
+  librarySubHeader: {
+    display: "flex",
+    gap: "8px",
+    paddingTop: "8px",
   },
   generalChatButton: {
     display: "flex",
@@ -234,28 +236,34 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
           <DrawerHeaderTitle
             action={
               <div className={headerStyles.rightSection}>
-                <Button
-                  appearance="subtle"
-                  aria-label="Search"
-                  icon={<Search20Regular />}
-                />
-                <Button
-                  appearance="subtle"
-                  aria-label="Filter"
-                  icon={<Filter20Regular />}
-                />
+                <Tooltip content="Search" relationship="label">
+                  <Button
+                    appearance="subtle"
+                    aria-label="Search"
+                    icon={<Search20Regular />}
+                  />
+                </Tooltip>
+                <Tooltip content="Filter" relationship="label">
+                  <Button
+                    appearance="subtle"
+                    aria-label="Filter"
+                    icon={<Filter20Regular />}
+                  />
+                </Tooltip>
                 <Button
                   appearance="subtle"
                   aria-label="Divider"
                   disabled={true}
                   icon={<DividerTall20Regular />}
                 />
-                <Button
-                  appearance="subtle"
-                  aria-label="Close"
-                  icon={<Dismiss24Regular />}
-                  onClick={onClose}
-                />
+                <Tooltip content="Close" relationship="label">
+                  <Button
+                    appearance="subtle"
+                    aria-label="Close"
+                    icon={<Dismiss24Regular />}
+                    onClick={onClose}
+                  />
+                </Tooltip>
               </div>
             }
           >
@@ -293,70 +301,53 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
             <span className={headerStyles.title}>Notifications</span>
           </DrawerHeaderTitle>
         ) : content === "library" ? (
-          <DrawerHeaderTitle
-            action={
-              <div className={headerStyles.rightSection}>
-                <Button
-                  appearance="subtle"
-                  aria-label="Search"
-                  icon={<Search20Regular />}
-                />
-                <Button
-                  appearance="subtle"
-                  aria-label="Filter"
-                  icon={<Filter20Regular />}
-                />
-                <Button
-                  appearance="subtle"
-                  aria-label="Divider"
-                  disabled={true}
-                  icon={<DividerTall20Regular />}
-                />
-                <Button
-                  appearance="subtle"
-                  aria-label="Close"
-                  icon={<Dismiss24Regular />}
-                  onClick={onClose}
-                />
-              </div>
-            }
-          >
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+          <>
+            <DrawerHeaderTitle
+              action={
+                <div className={headerStyles.rightSection}>
+                  <Tooltip content="Search" relationship="label">
+                    <Button
+                      appearance="subtle"
+                      aria-label="Search"
+                      icon={<Search20Regular />}
+                    />
+                  </Tooltip>
+                  <Tooltip content="Filter" relationship="label">
+                    <Button
+                      appearance="subtle"
+                      aria-label="Filter"
+                      icon={<Filter20Regular />}
+                    />
+                  </Tooltip>
+                  <Button
+                    appearance="subtle"
+                    aria-label="Divider"
+                    disabled={true}
+                    icon={<DividerTall20Regular />}
+                  />
+                  <Tooltip content="Close" relationship="label">
+                    <Button
+                      appearance="subtle"
+                      aria-label="Close"
+                      icon={<Dismiss24Regular />}
+                      onClick={onClose}
+                    />
+                  </Tooltip>
+                </div>
+              }
             >
               <span className={headerStyles.title}>Library</span>
-              <div style={{ display: "flex", gap: "8px" }}>
-                <Button
-                  appearance="outline"
-                  icon={<AddRegular />}
-                  size="small"
-                  style={{
-                    flex: "1 1 auto",
-                    minWidth: 0,
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  Create prompt
-                </Button>
-                <Button
-                  appearance="outline"
-                  icon={<OpenRegular />}
-                  size="small"
-                  style={{
-                    flex: "1 1 auto",
-                    minWidth: 0,
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  Manage library
-                </Button>
-              </div>
+            </DrawerHeaderTitle>
+
+            <div className={headerStyles.librarySubHeader}>
+              <Button appearance="outline" icon={<AddRegular />} size="small">
+                Create prompt
+              </Button>
+              <Button appearance="outline" icon={<OpenRegular />} size="small">
+                Manage library
+              </Button>
             </div>
-          </DrawerHeaderTitle>
+          </>
         ) : (
           <DrawerHeaderTitle
             action={
@@ -375,7 +366,14 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
         )}
       </DrawerHeader>
 
-      <DrawerBody>{renderContent()}</DrawerBody>
+      <DrawerBody
+        className={mergeClasses(
+          styles.drawerBody,
+          "right-drawer-scroll-container"
+        )}
+      >
+        {renderContent()}
+      </DrawerBody>
     </Drawer>
   );
 };
