@@ -7,7 +7,7 @@
   max-width: 100%;
   overflow: hidden;
   position: relative;
-  background-color: #ffffff;
+  background-color: var(--colorNeutralBackground1);
 }
 
 .app-body {
@@ -35,7 +35,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: white;
+  background: var(--colorNeutralBackground1);
   z-index: 2000; /* above everything */
   transition: opacity 600ms ease, visibility 600ms ease;
   opacity: 1;

@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, makeStyles, tokens } from "@fluentui/react-components";
+import { useI18n } from "../../i18n/I18nContext";
 
 export interface LibraryPanelProps {
   onPromptClick?: (prompt: string) => void;
@@ -9,12 +10,12 @@ const useStyles = makeStyles({
   container: {
     display: "flex",
     flexDirection: "column",
-    gap: "16px",
-    padding: "16px",
+    gap: "var(--gap-xxxlarge)",
+    padding: "var(--spacing-xxxlarge)",
   },
   card: {
     padding: "0",
-    borderRadius: "4px",
+    borderRadius: "var(--border-radius-medium)",
     boxShadow:
       "0px 8px 16px 0px rgba(0,0,0,0.14), 0px 0px 2px 0px rgba(0,0,0,0.12)",
     backgroundColor: tokens.colorNeutralBackground1,
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
   sectionHeader: {
     padding: "12px 16px 8px 16px",
     color: tokens.colorNeutralForeground3,
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
     lineHeight: "16px",
   },
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
   },
   promptItem: {
     padding: "10px 16px 10px 24px",
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     fontWeight: 400,
     lineHeight: "20px",
     color: tokens.colorNeutralForeground1,
@@ -44,47 +45,47 @@ const useStyles = makeStyles({
   },
 });
 
-const prompts = [
-  "Apply my note style",
-  "Change pronouns to he him",
-  "Change pronouns to she her",
-  "Change pronouns to they them",
-  "Draft after visit summary",
-  "Draft referral letter",
-  "Get coaching",
-  "Summarize evidence",
-  "Summarize note",
-];
+const promptKeys = [
+  "library.prompts.applyMyNoteStyle",
+  "library.prompts.changePronounsToHeHim",
+  "library.prompts.changePronounsToSheHer",
+  "library.prompts.changePronounsToTheyThem",
+  "library.prompts.draftAfterVisitSummary",
+  "library.prompts.draftReferralLetter",
+  "library.prompts.getCoaching",
+  "library.prompts.summarizeEvidence",
+  "library.prompts.summarizeNote",
+] as const;
 
 export const LibraryPanel: React.FC<LibraryPanelProps> = ({
   onPromptClick,
 }) => {
   const styles = useStyles();
+  const { t } = useI18n();
 
-  const handlePromptClick = (prompt: string) => {
-    console.log("Prompt clicked:", prompt);
-    onPromptClick?.(prompt);
+  const handlePromptClick = (promptKey: (typeof promptKeys)[number]) => {
+    onPromptClick?.(t(promptKey));
   };
 
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
-        <div className={styles.sectionHeader}>Prompts</div>
+        <div className={styles.sectionHeader}>{t("library.promptsHeader")}</div>
         <div className={styles.promptList}>
-          {prompts.map((prompt) => (
+          {promptKeys.map((promptKey) => (
             <div
-              key={prompt}
+              key={promptKey}
               className={styles.promptItem}
-              onClick={() => handlePromptClick(prompt)}
+              onClick={() => handlePromptClick(promptKey)}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
-                  handlePromptClick(prompt);
+                  handlePromptClick(promptKey);
                 }
               }}
             >
-              {prompt}
+              {t(promptKey)}
             </div>
           ))}
         </div>

@@ -11,6 +11,7 @@ import {
   NoteAdd20Regular,
 } from "@fluentui/react-icons";
 import DragonCopilotLogo from "../../assets/logo.svg";
+import { useI18n } from "../../i18n/I18nContext";
 
 // Types
 interface Memo {
@@ -28,7 +29,11 @@ interface MemoGroup {
 }
 
 // Helper to format relative dates
-const formatDateLabel = (date: Date): string => {
+const formatDateLabel = (
+  date: Date,
+  formatDate: (date: Date, options?: Intl.DateTimeFormatOptions) => string,
+  t: (key: string) => string
+): string => {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const yesterday = new Date(today);
@@ -41,31 +46,26 @@ const formatDateLabel = (date: Date): string => {
   );
 
   if (memoDate.getTime() === today.getTime()) {
-    return "Today";
+    return t("common.today");
   }
   if (memoDate.getTime() === yesterday.getTime()) {
-    return "Yesterday";
+    return t("common.yesterday");
   }
 
   // Format as "Wednesday, November 27"
-  return date.toLocaleDateString("en-US", {
+  return formatDate(date, {
     weekday: "long",
     month: "long",
     day: "numeric",
   });
 };
 
-// Helper to format time
-const formatTime = (date: Date): string => {
-  return date.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-};
-
 // Group memos by date
-const groupMemosByDate = (memos: Memo[]): MemoGroup[] => {
+const groupMemosByDate = (
+  memos: Memo[],
+  formatDate: (date: Date, options?: Intl.DateTimeFormatOptions) => string,
+  t: (key: string) => string
+): MemoGroup[] => {
   const groups: Map<string, Memo[]> = new Map();
 
   // Sort memos by date descending
@@ -74,7 +74,7 @@ const groupMemosByDate = (memos: Memo[]): MemoGroup[] => {
   );
 
   sortedMemos.forEach((memo) => {
-    const label = formatDateLabel(memo.timestamp);
+    const label = formatDateLabel(memo.timestamp, formatDate, t);
     const existing = groups.get(label) || [];
     groups.set(label, [...existing, memo]);
   });
@@ -86,7 +86,7 @@ const groupMemosByDate = (memos: Memo[]): MemoGroup[] => {
 };
 
 // Generate sample memos with current week dates
-const generateSampleMemos = (): Memo[] => {
+const generateSampleMemos = (t: (key: string) => string): Memo[] => {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const yesterday = new Date(today);
@@ -106,20 +106,18 @@ const generateSampleMemos = (): Memo[] => {
       timestamp: new Date(
         today.getTime() + 10 * 60 * 60 * 1000 + 45 * 60 * 1000
       ), // 10:45 AM today
-      title: "Cardiac Monitoring Follow-up",
-      description:
-        "Review ECG results from this morning. Patient showing improved rhythm stability. Continue current medication protocol.",
+      title: t("memos.sample.1.title"),
+      description: t("memos.sample.1.description"),
     },
     {
       id: "2",
-      author: "Dragon Copilot",
+      author: t("app.title"),
       isAIGenerated: true,
       timestamp: new Date(
         today.getTime() + 9 * 60 * 60 * 1000 + 15 * 60 * 1000
       ), // 9:15 AM today
-      title: "Lab Results Summary",
-      description:
-        "Recent CBC shows elevated WBC count (12.5). Consider infection workup if symptoms persist. Recommend repeat in 48 hours.",
+      title: t("memos.sample.2.title"),
+      description: t("memos.sample.2.description"),
     },
     {
       id: "3",
@@ -128,20 +126,18 @@ const generateSampleMemos = (): Memo[] => {
       timestamp: new Date(
         yesterday.getTime() + 14 * 60 * 60 * 1000 + 30 * 60 * 1000
       ), // 2:30 PM yesterday
-      title: "Medication Adjustment Notes",
-      description:
-        "Increased metoprolol to 50mg BID due to persistent tachycardia. Monitor BP closely over next 72 hours.",
+      title: t("memos.sample.3.title"),
+      description: t("memos.sample.3.description"),
     },
     {
       id: "4",
-      author: "Dragon Copilot",
+      author: t("app.title"),
       isAIGenerated: true,
       timestamp: new Date(
         yesterday.getTime() + 11 * 60 * 60 * 1000 + 20 * 60 * 1000
       ), // 11:20 AM yesterday
-      title: "Risk Assessment Update",
-      description:
-        "Based on recent vitals and lab trends, cardiovascular risk score has decreased. Recommend continuing current treatment plan.",
+      title: t("memos.sample.4.title"),
+      description: t("memos.sample.4.description"),
     },
     {
       id: "5",
@@ -150,20 +146,18 @@ const generateSampleMemos = (): Memo[] => {
       timestamp: new Date(
         twoDaysAgo.getTime() + 16 * 60 * 60 * 1000 + 10 * 60 * 1000
       ), // 4:10 PM
-      title: "Discharge Planning Discussion",
-      description:
-        "Patient stable for discharge within 48-72 hours. Coordinate with social work for home care arrangements.",
+      title: t("memos.sample.5.title"),
+      description: t("memos.sample.5.description"),
     },
     {
       id: "6",
-      author: "Dragon Copilot",
+      author: t("app.title"),
       isAIGenerated: true,
       timestamp: new Date(
         threeDaysAgo.getTime() + 8 * 60 * 60 * 1000 + 45 * 60 * 1000
       ), // 8:45 AM
-      title: "Vital Signs Trend Analysis",
-      description:
-        "Blood pressure showing downward trend over past 3 days. Current average 128/82. Heart rate stable at 72 bpm.",
+      title: t("memos.sample.6.title"),
+      description: t("memos.sample.6.description"),
     },
     {
       id: "7",
@@ -172,9 +166,8 @@ const generateSampleMemos = (): Memo[] => {
       timestamp: new Date(
         fourDaysAgo.getTime() + 13 * 60 * 60 * 1000 + 55 * 60 * 1000
       ), // 1:55 PM
-      title: "Consultation Request - Cardiology",
-      description:
-        "Requesting cardiology consult for evaluation of new murmur detected during morning rounds. Echo recommended.",
+      title: t("memos.sample.7.title"),
+      description: t("memos.sample.7.description"),
     },
   ];
 };
@@ -193,7 +186,7 @@ const useStyles = makeStyles({
     padding: "0 16px 80px 16px", // Extra bottom padding for FAB
   },
   dateGroup: {
-    marginBottom: "8px",
+    marginBottom: "var(--spacing-large)",
   },
   dateLabel: {
     display: "flex",
@@ -215,19 +208,19 @@ const useStyles = makeStyles({
     backgroundColor: tokens.colorNeutralStroke2,
   },
   memoCard: {
-    marginBottom: "8px",
+    marginBottom: "var(--spacing-large)",
     padding: "12px 16px",
   },
   memoHeader: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: "8px",
+    marginBottom: "var(--spacing-large)",
   },
   authorSection: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
   authorLogo: {
     width: "20px",
@@ -246,11 +239,11 @@ const useStyles = makeStyles({
   headerRight: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
   moreButton: {
     minWidth: "auto",
-    padding: "4px",
+    padding: "var(--spacing-small-4)",
     color: tokens.colorNeutralForeground3,
   },
   timestamp: {
@@ -279,19 +272,19 @@ const useStyles = makeStyles({
     bottom: "14px",
     left: "50%",
     transform: "translateX(-50%)",
-    zIndex: 10,
+    zIndex: "var(--z-index-navigation)",
   },
   fabButton: {
     backgroundColor: tokens.colorNeutralBackground1,
     border: `1px solid ${tokens.colorNeutralStroke1}`,
-    borderRadius: "20px",
+    borderRadius: "var(--border-radius-pill)",
     padding: "8px 16px",
     boxShadow: tokens.shadow8,
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
     cursor: "pointer",
-    transition: "all 0.2s ease",
+    transition: "var(--transition-ease-fast)",
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground3,
       boxShadow: tokens.shadow16,
@@ -312,7 +305,13 @@ interface MemoCardProps {
   styles: ReturnType<typeof useStyles>;
 }
 
-const MemoCard: React.FC<MemoCardProps> = ({ memo, styles }) => {
+/**
+ * Memoized MemoCard component to prevent re-renders when unrelated memos change.
+ * Only re-renders when the memo data or styles reference changes.
+ */
+const MemoCard = React.memo<MemoCardProps>(({ memo, styles }) => {
+  const { formatTime, t } = useI18n();
+
   return (
     <Card className={styles.memoCard} appearance="filled">
       <div className={styles.memoHeader}>
@@ -320,7 +319,7 @@ const MemoCard: React.FC<MemoCardProps> = ({ memo, styles }) => {
           {memo.isAIGenerated && (
             <img
               src={DragonCopilotLogo}
-              alt="Dragon Copilot"
+              alt={t("app.title")}
               className={styles.authorLogo}
             />
           )}
@@ -338,25 +337,34 @@ const MemoCard: React.FC<MemoCardProps> = ({ memo, styles }) => {
             appearance="subtle"
             icon={<MoreHorizontal20Regular />}
             className={styles.moreButton}
-            aria-label="More options"
+            aria-label={t("memos.moreOptions")}
           />
-          <span className={styles.timestamp}>{formatTime(memo.timestamp)}</span>
+          <span className={styles.timestamp}>
+            {formatTime(memo.timestamp, {
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            })}
+          </span>
         </div>
       </div>
       <div className={styles.memoTitle}>{memo.title}</div>
       <div className={styles.memoDescription}>{memo.description}</div>
     </Card>
   );
-};
+});
 
 export const MemosPanel: React.FC = () => {
+  const { formatDate, t } = useI18n();
   const styles = useStyles();
-  const memos = React.useMemo(() => generateSampleMemos(), []);
-  const groupedMemos = React.useMemo(() => groupMemosByDate(memos), [memos]);
+  const memos = React.useMemo(() => generateSampleMemos(t), [t]);
+  const groupedMemos = React.useMemo(
+    () => groupMemosByDate(memos, formatDate, t),
+    [memos, formatDate, t]
+  );
 
   const handleAddMemo = () => {
     // Placeholder - will be implemented later
-    console.log("Add memo clicked");
   };
 
   return (
@@ -384,7 +392,7 @@ export const MemosPanel: React.FC = () => {
       <div className={styles.fabContainer}>
         <button className={styles.fabButton} onClick={handleAddMemo}>
           <NoteAdd20Regular className={styles.fabIcon} />
-          <span className={styles.fabText}>Add a memo</span>
+          <span className={styles.fabText}>{t("memos.addMemo")}</span>
         </button>
       </div>
     </div>

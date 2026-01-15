@@ -5,9 +5,13 @@
 /**
  * Appends ?success=true query parameter to the current hash route.
  * Works with HashRouter by preserving the route and adding a query param.
- * e.g., #/task1-start becomes #/task1-start?success=true
+ * e.g., #/en-US/task1-start becomes #/en-US/task1-start?success=true
+ * 
+ * Handles both iframe and regular window contexts, with fallback for cross-origin restrictions.
+ * 
+ * @returns void
  */
-export const navigateToSuccess = () => {
+export const navigateToSuccess = (): void => {
   const isInIframe = window.parent !== window;
 
   const appendSuccess = (win: Window) => {

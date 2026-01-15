@@ -7,6 +7,7 @@
 
 import { useEffect } from "react";
 import type { AutoSelectTextConfig } from "../DocumentComponent.types";
+import { DOCUMENT_TIMING_MS } from "../DocumentComponent.constants";
 
 export interface UseAutoSelectTextOptions {
   /** Auto-select configuration from props */
@@ -36,23 +37,10 @@ export const useAutoSelectText = (options: UseAutoSelectTextOptions): void => {
     const { documentId, sectionId, textToSelect } = autoSelectText;
     const sectionKey = `${documentId}-${sectionId}`;
 
-    console.log(
-      "[AutoSelect] Starting auto-select for:",
-      sectionKey,
-      "text:",
-      textToSelect
-    );
-
     // First, ensure the document is expanded by adding it to the set
     setExpandedDocuments((prev) => {
       const newSet = new Set(prev);
       newSet.add(documentId);
-      console.log(
-        "[AutoSelect] Expanding document:",
-        documentId,
-        "Current expanded:",
-        Array.from(newSet)
-      );
       return newSet;
     });
 
@@ -62,7 +50,6 @@ export const useAutoSelectText = (options: UseAutoSelectTextOptions): void => {
       // Find the document card and click on it to expand
       const documentCard = documentRefs.current[documentId];
       if (documentCard) {
-        console.log("[AutoSelect] Found document card, scrolling into view");
         // Find the scrollable container (documentArea) instead of using global scrollIntoView
         const scrollContainer = documentCard.closest('[class*="documentArea"]');
         if (scrollContainer) {
@@ -82,11 +69,6 @@ export const useAutoSelectText = (options: UseAutoSelectTextOptions): void => {
         // Now look for the textarea with the text
         let textarea: HTMLTextAreaElement | null = null;
         const allTextareas = document.querySelectorAll("textarea");
-        console.log(
-          "[AutoSelect] Found",
-          allTextareas.length,
-          "textareas total"
-        );
 
         for (const ta of allTextareas) {
           const value = ta.value || "";
@@ -96,7 +78,6 @@ export const useAutoSelectText = (options: UseAutoSelectTextOptions): void => {
             if (parent || value.includes("Mr. Brown")) {
               // Specific check for History of Present Illness content
               textarea = ta as HTMLTextAreaElement;
-              console.log("[AutoSelect] Found target textarea");
               break;
             }
           }
@@ -105,7 +86,6 @@ export const useAutoSelectText = (options: UseAutoSelectTextOptions): void => {
         if (textarea) {
           const textContent = textarea.value;
           const startIndex = textContent.indexOf(textToSelect);
-          console.log("[AutoSelect] startIndex:", startIndex);
 
           if (startIndex !== -1) {
             const endIndex = startIndex + textToSelect.length;
@@ -136,20 +116,14 @@ export const useAutoSelectText = (options: UseAutoSelectTextOptions): void => {
             setTimeout(() => {
               targetTextarea.focus();
               targetTextarea.setSelectionRange(startIndex, endIndex);
-              console.log(
-                "[AutoSelect] Selection applied - hasFocus:",
-                document.activeElement === targetTextarea
-              );
-            }, 800);
+            }, DOCUMENT_TIMING_MS.autoSelectApplySelectionDelay);
           }
-        } else {
-          console.warn("[AutoSelect] Could not find textarea with target text");
         }
-      }, 800);
+      }, DOCUMENT_TIMING_MS.autoSelectAfterExpandDelay);
     };
 
     // Start the process after a short delay to let React render
-    const timer = setTimeout(expandAndSelect, 300);
+    const timer = setTimeout(expandAndSelect, DOCUMENT_TIMING_MS.autoSelectStartDelay);
     return () => clearTimeout(timer);
   }, [autoSelectText, setExpandedDocuments, documentRefs]);
 };

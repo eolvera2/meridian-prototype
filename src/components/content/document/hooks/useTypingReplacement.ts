@@ -8,6 +8,7 @@
 import { useRef, useCallback } from "react";
 import type { AutoSelectTextConfig } from "../DocumentComponent.types";
 import type { DocumentItem } from "../DocumentComponent.types";
+import { DOCUMENT_TIMING_MS } from "../DocumentComponent.constants";
 
 export interface UseTypingReplacementOptions {
   /** Ref to track if simulation is currently running */
@@ -46,7 +47,6 @@ export const useTypingReplacement = (
 
     // Prevent running twice
     if (hasSimulatedReplacementRef.current) {
-      console.log("[TypingSimulation] Already simulated, skipping");
       return false;
     }
 
@@ -62,14 +62,8 @@ export const useTypingReplacement = (
     ) as HTMLTextAreaElement;
 
     if (!targetTextarea) {
-      console.log(
-        "[TypingSimulation] Could not find textarea for section",
-        sectionKey
-      );
       return false;
     }
-
-    console.log("[TypingSimulation] Starting typing simulation");
 
     // Mark as simulated
     hasSimulatedReplacementRef.current = true;
@@ -128,18 +122,16 @@ export const useTypingReplacement = (
           // Wait for everything to settle before starting typing
           setTimeout(() => {
             startTypingAnimation();
-          }, 300);
-        }, 100);
-      } else {
-        console.log("[TypingSimulation] Could not find textarea:", sectionKey);
+          }, DOCUMENT_TIMING_MS.typingReplacementStartDelay);
+        }, DOCUMENT_TIMING_MS.typingReplacementScrollSettleDelay);
       }
-    }, 100);
+    }, DOCUMENT_TIMING_MS.typingReplacementDomUpdateDelay);
 
     // Function to start the typing animation
     const startTypingAnimation = () => {
       // Now simulate typing the replacement text character by character
       let charIndex = 0;
-      const typingSpeed = 17; // milliseconds per character (3x faster than 50ms)
+      const typingSpeed = DOCUMENT_TIMING_MS.typingReplacementCharInterval;
 
       // Clear any existing replacement interval
       if (replacementIntervalRef.current) {
@@ -176,12 +168,11 @@ export const useTypingReplacement = (
               ta.focus();
               ta.setSelectionRange(charIndex, charIndex);
             }
-          }, 0);
+          }, DOCUMENT_TIMING_MS.typingReplacementCursorUpdateDelay);
 
           charIndex++;
         } else {
           // Typing complete
-          console.log("[TypingSimulation] Typing simulation complete");
           if (replacementIntervalRef.current) {
             clearInterval(replacementIntervalRef.current);
             replacementIntervalRef.current = null;
@@ -200,7 +191,7 @@ export const useTypingReplacement = (
                 replacementText.length
               );
             }
-          }, 100);
+          }, DOCUMENT_TIMING_MS.typingReplacementEndCursorDelay);
         }
       }, typingSpeed);
     };

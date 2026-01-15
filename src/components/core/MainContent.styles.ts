@@ -50,7 +50,7 @@ export const useMainContentStyles = makeStyles({
   },
 
   worklistContainer: {
-    width: "300px",
+    width: "var(--content-min-width)",
     flexShrink: 0,
     transition: "width 0.3s ease, opacity 0.3s ease",
     overflow: "hidden",
@@ -122,7 +122,7 @@ export const useMainContentStyles = makeStyles({
       maxWidth: "calc((100% - 44px) / 2)",
       height: "100%",
       order: 1,
-      zIndex: 10,
+      zIndex: "var(--z-index-navigation)",
       boxSizing: "border-box",
       overflow: "hidden",
       flexShrink: 0,
@@ -146,7 +146,7 @@ export const useMainContentStyles = makeStyles({
     flexShrink: 0,
     width: "100%",
     position: "relative",
-    zIndex: 10,
+    zIndex: "var(--z-index-navigation)",
   },
 
   headerContainerWithDrawer: {
@@ -157,8 +157,8 @@ export const useMainContentStyles = makeStyles({
       right: 0,
       width: "100%",
       height: "64px",
-      zIndex: 105,
-      backgroundColor: "#ffffff",
+      zIndex: "105",
+      backgroundColor: "var(--colorNeutralBackground1)",
       borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
       flexShrink: 0,
     },
@@ -214,7 +214,7 @@ export const useMainContentStyles = makeStyles({
 
     "@media (max-width: 768px)": {
       display: "flex",
-      paddingBottom: "72px",
+      paddingBottom: "var(--microphone-interface-height)",
       minHeight: 0,
     },
   },
@@ -232,7 +232,7 @@ export const useMainContentStyles = makeStyles({
       flexDirection: "row",
       flex: 1,
       minHeight: 0,
-      paddingBottom: "72px",
+      paddingBottom: "var(--microphone-interface-height)",
       height: "calc(100vh - 44px - 72px)",
       position: "relative",
       top: 0,
@@ -243,7 +243,7 @@ export const useMainContentStyles = makeStyles({
       flex: 1,
       minHeight: 0,
       alignItems: "stretch",
-      paddingBottom: "72px",
+      paddingBottom: "var(--microphone-interface-height)",
       height: "100%",
     },
   },
@@ -270,7 +270,7 @@ export const useMainContentStyles = makeStyles({
       maxWidth: "50%",
       height: "100%",
       overflow: "hidden",
-      zIndex: 99,
+      zIndex: "var(--z-index-sticky-header)",
       boxSizing: "border-box",
       paddingTop: 0,
       order: 1,
@@ -355,8 +355,8 @@ export const useMainContentStyles = makeStyles({
     minHeight: 0,
     height: "100%",
     "@media (max-width: 768px)": {
-      paddingBottom: "96px",
-      scrollPaddingBottom: "96px",
+      paddingBottom: "var(--microphone-interface-extended-height)",
+      scrollPaddingBottom: "var(--microphone-interface-extended-height)",
     },
   },
 
@@ -370,7 +370,7 @@ export const useMainContentStyles = makeStyles({
       left: 0,
       right: 0,
       width: "100%",
-      zIndex: 200,
+      zIndex: "var(--z-index-microphone)",
       flexShrink: 0,
       backgroundColor: tokens.colorNeutralBackground1,
       borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
@@ -379,7 +379,7 @@ export const useMainContentStyles = makeStyles({
 
   desktopMicrophoneContainer: {
     flexShrink: 0,
-    zIndex: 200,
+    zIndex: "var(--z-index-microphone)",
     backgroundColor: tokens.colorNeutralBackground1,
     borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
     position: "relative",
@@ -411,19 +411,19 @@ export const useMainContentStyles = makeStyles({
 
   settingsPanel: {
     flex: 1,
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
     overflow: "hidden",
     display: "flex",
     flexDirection: "column",
     height: "100%",
     minHeight: 0,
-    zIndex: 5,
+    zIndex: "var(--z-index-content)",
 
     "@media (max-width: 768px)": {
       flex: 1,
       minWidth: 0,
       width: "100%",
-      zIndex: 15,
+      zIndex: "var(--z-index-navigation-secondary)",
       position: "relative",
       order: 2,
     },
@@ -448,17 +448,17 @@ export const useDialogStyles = makeStyles({
     paddingRight: 0,
   },
   dialogTitleText: {
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
     fontWeight: 600,
     lineHeight: "28px",
     fontFamily: "'Segoe UI', sans-serif",
   },
   dialogCloseButton: {
     minWidth: "auto",
-    padding: "4px",
+    padding: "var(--spacing-small-4)",
   },
   dialogContent: {
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     lineHeight: "20px",
     color: tokens.colorNeutralForeground2,
     paddingTop: tokens.spacingVerticalS,

@@ -16,6 +16,7 @@ import {
   getCaretCoordinates,
   type TextFieldElement,
 } from "../../../utils/getCaretCoordinates";
+import { TOOLTIP_TIMING_MS } from "./Tooltip.constants";
 
 export interface TooltipPosition {
   x: number;
@@ -177,7 +178,7 @@ export const TooltipProvider: React.FC<TooltipProviderProps> = ({
             // Keep activeFieldRef pointing to the last field
           }
         }
-      }, 0);
+      }, TOOLTIP_TIMING_MS.blurDefer);
 
       focusedFieldRef.current = null;
 
@@ -285,7 +286,7 @@ export const TooltipProvider: React.FC<TooltipProviderProps> = ({
             updateTooltipFromCaret(activeFieldRef.current);
           }
           typingTimeoutRef.current = null;
-        }, 1000);
+        }, TOOLTIP_TIMING_MS.afterTypingDelay);
       }
     },
     [updateTooltipFromCaret]
@@ -330,7 +331,7 @@ export const TooltipProvider: React.FC<TooltipProviderProps> = ({
             setTooltipVisible(true);
           }
         }
-      }, 150);
+      }, TOOLTIP_TIMING_MS.scrollEndDebounce);
     };
 
     window.addEventListener("scroll", handleScroll, true);

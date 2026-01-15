@@ -20,7 +20,7 @@ export const useStyles = makeStyles({
     padding: "0 16px 16px 16px",
   },
   dateGroup: {
-    marginBottom: "8px",
+    marginBottom: "var(--spacing-large)",
   },
   dateLabel: {
     display: "flex",
@@ -42,19 +42,19 @@ export const useStyles = makeStyles({
     backgroundColor: tokens.colorNeutralStroke2,
   },
   notificationCard: {
-    marginBottom: "8px",
+    marginBottom: "var(--spacing-large)",
     padding: "12px 16px",
   },
   notificationHeader: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: "8px",
+    marginBottom: "var(--spacing-large)",
   },
   authorSection: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
   authorLogo: {
     width: "20px",
@@ -73,11 +73,11 @@ export const useStyles = makeStyles({
   headerRight: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
   deleteButton: {
     minWidth: "auto",
-    padding: "4px",
+    padding: "var(--spacing-small-4)",
     color: tokens.colorNeutralForeground3,
   },
   timestamp: {
@@ -91,7 +91,7 @@ export const useStyles = makeStyles({
   },
   notificationIcon: {
     flexShrink: 0,
-    marginTop: "2px",
+    marginTop: "var(--spacing-xs)",
   },
   alertIcon: {
     color: tokens.colorPaletteRedForeground1,

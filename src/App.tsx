@@ -10,11 +10,13 @@ import { TitleBar } from "./components";
 import { MainContent } from "./components/core/MainContent";
 import { TooltipProvider } from "./components/content/tooltip";
 import { WorklistProvider } from "./components/content/worklist";
+import { useI18n } from "./i18n/I18nContext";
 import "./styles/tokens.css";
 import "./styles/globals.css";
 import "./App.css"; // Make sure App.css is imported
 
 function App() {
+  const { t } = useI18n();
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [activeNavItem, setActiveNavItem] = useState<
     "home" | "avatar" | "settings" | "help" | null
@@ -105,15 +107,18 @@ function App() {
                   aria-hidden
                 />
                 <div className="loading-spinner">
-                  <Spinner size="tiny" label="Loading ..." />
+                  <Spinner size="tiny" label={t("common.loading")} />
                 </div>
                 <div className="loading-bottom">
-                  <img className="ms-logo" src={MsftLogo} alt="Microsoft" />
+                  <img
+                    className="ms-logo"
+                    src={MsftLogo}
+                    alt={t("common.microsoft")}
+                  />
                 </div>
               </div>
             )}
             <TitleBar
-              title="Dragon Copilot"
               onMinimize={handleWindowControls.minimize}
               onMaximize={handleWindowControls.maximize}
               onClose={handleWindowControls.close}

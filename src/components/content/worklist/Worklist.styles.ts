@@ -15,14 +15,14 @@ export const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
-    zIndex: 5,
+    zIndex: "var(--z-index-content)",
     height: "100%",
     flexShrink: 0,
     borderRight: `1px solid ${tokens.colorNeutralStroke2}`,
     minHeight: 0,
     "@media (max-width: 768px)": {
       width: "100%",
-      zIndex: 15,
+      zIndex: "var(--z-index-navigation-secondary)",
       position: "relative",
     },
   },
@@ -43,7 +43,7 @@ export const useStyles = makeStyles({
     flex: 1,
     minHeight: 0,
     overflowY: "auto",
-    paddingRight: "4px",
+    paddingRight: "var(--spacing-small-4)",
   },
 
   tabs: {
@@ -51,7 +51,7 @@ export const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "flex-start",
     padding: "12px 8px 0px 0px",
-    gap: "8px",
+    gap: "var(--gap-large)",
     position: "relative",
     flexWrap: "nowrap",
     "& .fui-TabList": {
@@ -111,7 +111,7 @@ export const useStyles = makeStyles({
   searchContainer: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
     position: "relative",
   },
 
@@ -140,16 +140,16 @@ export const useStyles = makeStyles({
     background: "transparent",
     border: "none",
     cursor: "pointer",
-    padding: "6px",
+    padding: "var(--spacing-medium)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    minWidth: "32px",
-    minHeight: "32px",
+    minWidth: "var(--button-size-standard)",
+    minHeight: "var(--button-size-standard)",
     flexShrink: 0,
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
-      borderRadius: "4px",
+      borderRadius: "var(--border-radius-medium)",
     },
   },
 
@@ -161,7 +161,7 @@ export const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
 
   dateInput: {
@@ -171,7 +171,7 @@ export const useStyles = makeStyles({
   dateInputContent: {
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "var(--gap-medium)",
   },
 
   dateIcon: {
@@ -189,20 +189,20 @@ export const useStyles = makeStyles({
 
   dateUnderline: {
     height: "1px",
-    marginTop: "4px",
+    marginTop: "var(--spacing-small-4)",
     backgroundColor: tokens.colorNeutralStroke2,
   },
 
   filterOptions: {
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "var(--gap-medium)",
   },
 
   filterButton: {
-    minWidth: "32px",
-    minHeight: "32px",
-    padding: "6px",
+    minWidth: "var(--button-size-standard)",
+    minHeight: "var(--button-size-standard)",
+    padding: "var(--spacing-medium)",
   },
 
   content: {
@@ -233,14 +233,14 @@ export const useStyles = makeStyles({
     height: "20px",
     color: tokens.colorNeutralForeground3,
     transition: "transform 120ms ease",
-    marginRight: "8px",
+    marginRight: "var(--spacing-large)",
   },
 
   listItem: {
-    padding: "12px",
+    padding: "var(--spacing-xxlarge)",
     borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
     cursor: "pointer",
-    transition: "all 0.2s cubic-bezier(0.1, 0.9, 0.2, 1)",
+    transition: "var(--transition-fluent)",
     backgroundColor: "transparent",
     position: "relative",
     "&:hover": {
@@ -257,21 +257,21 @@ export const useStyles = makeStyles({
 
   listItemContent: {
     display: "flex",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
 
   listItemMain: {
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    gap: "6px",
+    gap: "var(--gap-medium)",
   },
 
   listItemHeader: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
 
   patientName: {
@@ -282,7 +282,7 @@ export const useStyles = makeStyles({
   rightSide: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
 
   timeText: {
@@ -294,19 +294,19 @@ export const useStyles = makeStyles({
     background: "transparent",
     border: "none",
     cursor: "pointer",
-    padding: "4px",
-    transition: "opacity 0.2s ease",
+    padding: "var(--spacing-small-4)",
+    transition: "var(--transition-opacity-normal)",
   },
 
   micButton: {
     background: "transparent",
     border: "none",
     cursor: "pointer",
-    padding: "4px",
+    padding: "var(--spacing-small-4)",
     opacity: 0,
-    transition: "opacity 0.2s ease",
+    transition: "var(--transition-opacity-normal)",
     color: tokens.colorBrandForeground1,
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -333,7 +333,7 @@ export const useStyles = makeStyles({
   statusRow: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
 
   statusBadge: {
@@ -345,7 +345,7 @@ export const useStyles = makeStyles({
 
   signedPill: {
     display: "inline-flex",
-    gap: "8px",
+    gap: "var(--gap-large)",
     alignItems: "center",
     backgroundColor: tokens.colorNeutralBackground4,
     padding: "3px",
@@ -356,7 +356,7 @@ export const useStyles = makeStyles({
     color: tokens.colorNeutralForeground2,
     fontSize: "10px",
     fontWeight: 600,
-    marginRight: "8px",
+    marginRight: "var(--spacing-large)",
   },
 
   modifiedText: {
@@ -374,19 +374,19 @@ export const useStyles = makeStyles({
     borderRadius: "16px",
     fontSize: "10px",
     fontWeight: 600,
-    marginRight: "8px",
+    marginRight: "var(--spacing-large)",
   },
 
   userAddedPill: {
     display: "inline-flex",
     alignItems: "center",
-    backgroundColor: "#F9E2AE",
+    backgroundColor: "var(--palette-yellow-f9e2ae)",
     color: tokens.colorNeutralForeground2,
     padding: "2px 8px",
     borderRadius: "16px",
     fontSize: "10px",
     fontWeight: 600,
-    marginRight: "8px",
+    marginRight: "var(--spacing-large)",
   },
 
   createdText: {
@@ -398,7 +398,7 @@ export const useStyles = makeStyles({
   statusText: {
     display: "inline-flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
 
   footer: {
@@ -407,7 +407,7 @@ export const useStyles = makeStyles({
     position: "sticky",
     bottom: 0,
     borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
-    boxShadow: "0 -6px 18px rgba(0,0,0,0.08)",
+    boxShadow: "var(--shadow-top)",
     flexShrink: 0,
     zIndex: 1,
   },
@@ -415,12 +415,12 @@ export const useStyles = makeStyles({
   addPatientButton: {
     backgroundColor: tokens.colorBrandBackground,
     border: "none",
-    borderRadius: "4px",
+    borderRadius: "var(--border-radius-medium)",
     boxShadow:
       "0px 4px 8px 0px rgba(0,0,0,0.14), 0px 0px 2px 0px rgba(0,0,0,0.12)",
     cursor: "pointer",
     display: "flex",
-    gap: "6px",
+    gap: "var(--gap-medium)",
     height: "44px",
     alignItems: "center",
     justifyContent: "center",
@@ -435,14 +435,14 @@ export const useStyles = makeStyles({
     fontFamily: "'Segoe UI', sans-serif",
     fontSize: "16px",
     lineHeight: "22px",
-    color: "#ffffff",
+    color: "var(--colorBrandForeground)",
     fontWeight: 600,
   },
 
   addIcon: {
     width: "24px",
     height: "24px",
-    color: "#ffffff",
+    color: "var(--colorBrandForeground)",
   },
 
   worklistMobile: {

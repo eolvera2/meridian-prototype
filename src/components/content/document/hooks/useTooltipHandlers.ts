@@ -10,6 +10,7 @@ import {
   type TextFieldElement,
 } from "../../../../utils/getCaretCoordinates";
 import type { TooltipPosition } from "../DocumentComponent.types";
+import { DOCUMENT_TIMING_MS } from "../DocumentComponent.constants";
 
 export interface UseTooltipHandlersOptions {
   isSimulatingRef: React.RefObject<boolean>;
@@ -163,7 +164,7 @@ export const useTooltipHandlers = (
             // Don't clear it - this preserves the "last focused" position
           }
         }
-      }, 0);
+      }, DOCUMENT_TIMING_MS.deferToNextTick);
 
       // Clear the focused ref immediately (it will be set again if another field gets focus)
       focusedFieldRef.current = null;
@@ -256,7 +257,7 @@ export const useTooltipHandlers = (
             updateTooltipFromCaret(activeFieldRef.current);
           }
           typingTimeoutRef.current = null;
-        }, 500);
+        }, DOCUMENT_TIMING_MS.tooltipAfterTypingIdleDelay);
       }
     },
     [isSimulatingRef, updateTooltipFromCaret]

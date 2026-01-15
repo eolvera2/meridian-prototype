@@ -287,7 +287,7 @@ export const MobileWorkspace: React.FC<MobileWorkspaceProps> = ({
                 right: 0,
                 bottom: "72px",
                 width: "100%",
-                zIndex: 150,
+                zIndex: "var(--z-index-drawer)",
               }}
             >
               <RightDrawer

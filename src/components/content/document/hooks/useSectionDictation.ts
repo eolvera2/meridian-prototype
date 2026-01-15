@@ -6,7 +6,10 @@
 
 import { useRef, useCallback } from "react";
 import type { TextFieldElement } from "../../../../utils/getCaretCoordinates";
-import { getDictationContentForSection } from "../DocumentComponent.constants";
+import {
+  DOCUMENT_TIMING_MS,
+  getDictationContentForSection,
+} from "../DocumentComponent.constants";
 import type { DocumentItem } from "../DocumentComponent.types";
 
 export interface UseSectionDictationOptions {
@@ -75,11 +78,8 @@ export const useSectionDictation = (
 
       // Check if already simulating
       if (isSimulatingRef.current) {
-        console.log("Already simulating, skipping");
         return;
       }
-
-      console.log("Starting dictation for section:", sectionTitle);
       isSimulatingRef.current = true;
 
       // Use the already-focused field from activeFieldRef if available
@@ -132,7 +132,7 @@ export const useSectionDictation = (
         clearInterval(dictationIntervalRef.current);
       }
 
-      const typingSpeed = 30; // milliseconds per character
+      const typingSpeed = DOCUMENT_TIMING_MS.dictationCharInterval;
 
       // Hide tooltip when dictation typing starts
       setTooltipVisible(false);
@@ -184,7 +184,6 @@ export const useSectionDictation = (
           currentSimulationRef.current.charIndex++;
         } else {
           // Typing complete for this section
-          console.log("Typing complete for section:", sectionTitle);
           if (dictationIntervalRef.current) {
             clearInterval(dictationIntervalRef.current);
             dictationIntervalRef.current = null;
@@ -202,7 +201,7 @@ export const useSectionDictation = (
             setTooltipVisible(true);
             simulatingFieldRef.current = null;
             tooltipFadeTimeoutRef.current = null;
-          }, 1000);
+          }, DOCUMENT_TIMING_MS.tooltipAfterDictationDelay);
         }
       }, typingSpeed);
     },

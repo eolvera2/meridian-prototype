@@ -13,6 +13,7 @@ import {
   DialogSurface,
   DialogBody,
   DialogTitle,
+  tokens,
   DialogContent,
   DialogActions,
 } from "@fluentui/react-components";
@@ -37,6 +38,7 @@ import {
   groupNotificationsByDate,
   generateSampleNotifications,
 } from "./NotificationsPanel.utils";
+import { useI18n } from "../../../i18n/I18nContext";
 
 // ============================================================================
 // Helper Functions
@@ -83,11 +85,14 @@ interface NotificationCardProps {
   onDelete: (id: string) => void;
 }
 
-const NotificationCard: React.FC<NotificationCardProps> = ({
-  notification,
-  styles,
-  onDelete,
-}) => {
+/**
+ * Memoized NotificationCard component to prevent re-renders when unrelated notifications change.
+ * Only re-renders when the notification data, styles, or delete handler reference changes.
+ */
+const NotificationCard = React.memo<NotificationCardProps>(
+  ({ notification, styles, onDelete }) => {
+    const { locale, t } = useI18n();
+
   return (
     <Card className={styles.notificationCard} appearance="filled">
       <div className={styles.notificationHeader}>
@@ -95,7 +100,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
           {notification.isAIGenerated && (
             <img
               src={DragonCopilotLogo}
-              alt="Dragon Copilot"
+              alt={t("app.title")}
               className={styles.authorLogo}
             />
           )}
@@ -110,13 +115,13 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
         </div>
         <div className={styles.headerRight}>
           <span className={styles.timestamp}>
-            {formatTime(notification.timestamp)}
+            {formatTime(notification.timestamp, locale)}
           </span>
           <Button
             appearance="subtle"
             icon={<Delete20Regular />}
             className={styles.deleteButton}
-            aria-label="Delete notification"
+            aria-label={t("notifications.deleteNotificationAria")}
             onClick={() => onDelete(notification.id)}
           />
         </div>
@@ -132,16 +137,17 @@ const NotificationCard: React.FC<NotificationCardProps> = ({
       </div>
     </Card>
   );
-};
+});
 
 // ============================================================================
 // NotificationsPanel Component
 // ============================================================================
 
 export const NotificationsPanel: React.FC = () => {
+  const { locale, t } = useI18n();
   const styles = useStyles();
   const [notifications, setNotifications] = React.useState<Notification[]>(() =>
-    generateSampleNotifications()
+    generateSampleNotifications(t)
   );
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [notificationToDelete, setNotificationToDelete] = React.useState<
@@ -149,8 +155,8 @@ export const NotificationsPanel: React.FC = () => {
   >(null);
 
   const groupedNotifications = React.useMemo(
-    () => groupNotificationsByDate(notifications),
-    [notifications]
+    () => groupNotificationsByDate(notifications, locale, t),
+    [notifications, locale, t]
   );
 
   const handleDeleteClick = (id: string) => {
@@ -209,55 +215,54 @@ export const NotificationsPanel: React.FC = () => {
           }
         }}
       >
-        <DialogSurface style={{ maxWidth: "320px", padding: "24px" }}>
+        <DialogSurface className="dialog-surface-standard">
           <DialogBody>
             <DialogTitle
               action={
                 <Button
                   appearance="subtle"
-                  aria-label="Close"
+                  aria-label={t("common.close")}
                   icon={<Dismiss24Regular />}
                   onClick={handleCancelDelete}
                   style={{
                     minWidth: "auto",
-                    padding: "4px",
+                    padding: "var(--spacing-small-4)",
                   }}
                 />
               }
               style={{
-                fontSize: "20px",
+                fontSize: tokens.fontSizeBase500,
                 fontWeight: 600,
                 lineHeight: "28px",
                 fontFamily: "'Segoe UI', sans-serif",
-                marginBottom: "12px",
+                marginBottom: "var(--spacing-xxlarge)",
               }}
             >
-              Delete notification
+              {t("notifications.deleteDialogTitle")}
             </DialogTitle>
             <DialogContent
               style={{
-                fontSize: "14px",
+                fontSize: tokens.fontSizeBase300,
                 fontWeight: 400,
                 lineHeight: "20px",
                 fontFamily: "'Segoe UI', sans-serif",
-                marginBottom: "24px",
+                marginBottom: "var(--spacing-huge)",
               }}
             >
-              Are you sure you want to delete this notification? This action
-              cannot be undone.
+              {t("notifications.deleteDialogBody")}
             </DialogContent>
             <DialogActions
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
-                gap: "8px",
+                gap: "var(--gap-large)",
               }}
             >
               <Button appearance="secondary" onClick={handleCancelDelete}>
-                Cancel
+                {t("common.cancel")}
               </Button>
               <Button appearance="primary" onClick={handleConfirmDelete}>
-                Delete
+                {t("common.delete")}
               </Button>
             </DialogActions>
           </DialogBody>

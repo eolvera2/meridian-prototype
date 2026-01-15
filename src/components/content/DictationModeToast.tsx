@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { Dismiss24Regular } from "@fluentui/react-icons";
+import { useI18n } from "../../i18n/I18nContext";
 
 const useStyles = makeStyles({
   toastContainer: {
@@ -9,8 +10,8 @@ const useStyles = makeStyles({
     left: 0,
     right: 0,
     width: "100%",
-    zIndex: 201, // Just above mic interface (200)
-    transition: "opacity 0.3s ease-in-out, transform 0.3s ease-in-out",
+    zIndex: "var(--z-index-toast)", // Just above mic interface (200)
+    transition: "var(--transition-fade), transform 0.3s ease-in-out",
     pointerEvents: "none",
   },
 
@@ -41,13 +42,13 @@ const useStyles = makeStyles({
   toastContent: {
     display: "flex",
     alignItems: "center",
-    gap: "4px",
+    gap: "var(--gap-small)",
     flex: 1,
   },
 
   toastText: {
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
     lineHeight: "16px",
     color: tokens.colorNeutralForeground1,
@@ -66,7 +67,7 @@ const useStyles = makeStyles({
     backgroundColor: "transparent",
     border: "none",
     borderRadius: tokens.borderRadiusSmall,
-    padding: "4px",
+    padding: "var(--spacing-small-4)",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
@@ -90,9 +91,12 @@ export const DictationModeToast: React.FC<DictationModeToastProps> = ({
   onClose,
 }) => {
   const styles = useStyles();
+  const { t } = useI18n();
 
   const message =
-    mode === "dictation" ? "Mic in dictation mode" : "Mic in ambient mode";
+    mode === "dictation"
+      ? t("dictationModeToast.message.dictation")
+      : t("dictationModeToast.message.ambient");
 
   return (
     <div
@@ -108,9 +112,9 @@ export const DictationModeToast: React.FC<DictationModeToastProps> = ({
           <button
             className={styles.closeButton}
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t("common.close")}
           >
-            <Dismiss24Regular style={{ width: "20px", height: "20px" }} />
+            <Dismiss24Regular className="icon-size-20" />
           </button>
         </div>
       </div>

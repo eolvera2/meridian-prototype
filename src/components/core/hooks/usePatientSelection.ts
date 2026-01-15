@@ -15,6 +15,17 @@ const mapToHeaderPatient = (item: WorklistItem, fallbackId: string) => ({
   initialRecordingSeconds: item?.initialRecordingSeconds,
 });
 
+/**
+ * Hook for managing patient selection state and worklist interactions.
+ * 
+ * Handles patient selection, recording controls, and worklist state changes.
+ * Synchronizes selected patient with WorklistContext.
+ * 
+ * @param onWorklistStateChange - Callback when worklist collapse/selection state changes
+ * @param onStartRecording - Callback when recording should start
+ * @param initialPatientId - Optional initial patient ID to select on mount
+ * @returns Patient selection state and control functions
+ */
 export const usePatientSelection = (
   onWorklistStateChange?: WorklistStateChange,
   onStartRecording?: () => void,

@@ -12,6 +12,7 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import { Dismiss24Regular, Checkmark12Regular } from "@fluentui/react-icons";
+import { useI18n } from "../../i18n/I18nContext";
 
 // Note type options
 const NOTE_TYPES = [
@@ -35,12 +36,16 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-between",
     gap: tokens.spacingHorizontalS,
-    paddingRight: 0,
     flexShrink: 0,
+    paddingRight: 0,
+  },
+  dialogCloseButton: {
+    minWidth: "auto",
+    padding: "var(--spacing-small-4)",
   },
   titleText: {
     flex: 1,
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
     fontWeight: 600,
     lineHeight: "28px",
     fontFamily: "'Segoe UI', sans-serif",
@@ -48,7 +53,7 @@ const useStyles = makeStyles({
   dialogContent: {
     display: "flex",
     flexDirection: "column",
-    gap: "8px",
+    gap: "var(--gap-large)",
     paddingTop: tokens.spacingVerticalM,
     paddingBottom: tokens.spacingVerticalL,
     overflowY: "auto",
@@ -57,8 +62,8 @@ const useStyles = makeStyles({
   pill: {
     width: "100%",
     padding: "10px 12px",
-    borderRadius: "20px",
-    border: `1px solid #e0e0e0`,
+    borderRadius: "var(--border-radius-pill)",
+    border: `1px solid var(--palette-gray-e0e0e0)`,
     backgroundColor: tokens.colorNeutralBackground1,
     cursor: "pointer",
     display: "flex",
@@ -71,10 +76,10 @@ const useStyles = makeStyles({
     },
   },
   pillSelected: {
-    backgroundColor: "#ebf3fc",
+    backgroundColor: "var(--palette-blue-ebf3fc)",
   },
   pillLabel: {
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     fontWeight: 600,
     lineHeight: "20px",
     color: tokens.colorBrandForeground1,
@@ -90,9 +95,14 @@ const useStyles = makeStyles({
     gap: tokens.spacingVerticalS,
     paddingTop: tokens.spacingVerticalM,
     flexShrink: 0,
+    alignItems: "stretch",
+    justifySelf: "stretch",
+    gridColumn: "1 / -1",
   },
   actionButton: {
     width: "100%",
+    minWidth: "100%",
+    justifySelf: "stretch",
   },
 });
 
@@ -107,6 +117,7 @@ export const AddNoteDialog: React.FC<AddNoteDialogProps> = ({
   onClose,
   onAdd,
 }) => {
+  const { t } = useI18n();
   const styles = useStyles();
   const [selectedNotes, setSelectedNotes] = useState<Set<string>>(new Set());
 
@@ -152,13 +163,14 @@ export const AddNoteDialog: React.FC<AddNoteDialogProps> = ({
             action={
               <Button
                 appearance="subtle"
-                aria-label="Close"
+                aria-label={t("common.close")}
                 icon={<Dismiss24Regular />}
                 onClick={handleClose}
+                className={styles.dialogCloseButton}
               />
             }
           >
-            <span className={styles.titleText}>Select</span>
+            <span className={styles.titleText}>{t("addNoteDialog.title")}</span>
           </DialogTitle>
 
           <DialogContent className={styles.dialogContent}>
@@ -189,14 +201,14 @@ export const AddNoteDialog: React.FC<AddNoteDialogProps> = ({
               onClick={handleAdd}
               disabled={selectedNotes.size === 0}
             >
-              Add
+              {t("common.add")}
             </Button>
             <Button
               appearance="secondary"
               className={styles.actionButton}
               onClick={handleClose}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
           </DialogActions>
         </DialogBody>

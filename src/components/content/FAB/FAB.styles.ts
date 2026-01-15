@@ -12,7 +12,7 @@ export const useStyles = makeStyles({
     bottom: "calc(72px + 20px)", // 72px mic interface height + 20px spacing
     left: "50%",
     transform: "translateX(-50%)",
-    zIndex: 199, // Below mic interface (200) but above content
+    zIndex: "var(--z-index-fab)", // Below mic interface (200) but above content
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -29,7 +29,7 @@ export const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
-    transition: "all 0.2s ease",
+    transition: "var(--transition-ease-fast)",
     padding: 0,
 
     "&:hover": {
@@ -50,7 +50,7 @@ export const useStyles = makeStyles({
   },
 
   fabIcon: {
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
     color: tokens.colorBrandForeground1,
     pointerEvents: "none",
   },
@@ -84,7 +84,7 @@ export const useStyles = makeStyles({
     opacity: 0,
     pointerEvents: "none",
     transform: "translateX(-50%) translateY(0)",
-    transition: "opacity 0.2s ease",
+    transition: "var(--transition-opacity-normal)",
   },
 
   // Visible state with animation

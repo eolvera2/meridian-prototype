@@ -17,6 +17,7 @@ import {
   Person20Regular,
 } from "@fluentui/react-icons";
 import { useStyles } from "./Settings.styles";
+import { useI18n } from "../../../i18n/I18nContext";
 
 export interface SettingsProps {
   onClose?: () => void;
@@ -31,10 +32,14 @@ export const Settings: React.FC<SettingsProps> = ({
   onSubPageChange,
 }) => {
   const styles = useStyles();
+  const { t } = useI18n();
   const [expandedSection, setExpandedSection] = React.useState<string | null>(
     "languages"
   );
-  const [languages, setLanguages] = React.useState(["English", "Spanish"]);
+  const [languages, setLanguages] = React.useState<Array<"en" | "es">>([
+    "en",
+    "es",
+  ]);
   const [internalPage, setInternalPage] = React.useState<string | null>(
     activeSubPage ?? null
   );
@@ -75,18 +80,21 @@ export const Settings: React.FC<SettingsProps> = ({
   >(
     () => ({
       documents: {
-        backLabel: "Settings",
-        title: "Documents",
-        message: "Document Settings coming soon...",
+        backLabel: t("rightDrawer.titles.settings"),
+        title: t("settings.sections.documents"),
+        message: t("settings.subPages.documents.comingSoon"),
       },
     }),
-    []
+    [t]
   );
 
   React.useEffect(() => {
-    const nextTitle = currentPage && subPages[currentPage] ? "" : "Settings";
+    const nextTitle =
+      currentPage && subPages[currentPage]
+        ? ""
+        : t("rightDrawer.titles.settings");
     onTitleChange?.(nextTitle);
-  }, [currentPage, onTitleChange, subPages]);
+  }, [currentPage, onTitleChange, subPages, t]);
 
   // Render sub-page if one is active
   if (currentPage && subPages[currentPage]) {
@@ -108,35 +116,35 @@ export const Settings: React.FC<SettingsProps> = ({
   const settingSections = [
     {
       id: "languages",
-      title: "Ambient recording languages",
-      description: "Languages that you are certified to use.",
+      title: t("settings.sections.ambientRecordingLanguages"),
+      description: t("settings.descriptions.certifiedLanguages"),
       expandable: true,
     },
     {
       id: "microphone",
       icon: <MicSettings20Regular />,
-      title: "Microphone",
+      title: t("settings.sections.microphone"),
       description: null,
       expandable: false,
     },
     {
       id: "general",
       icon: <Settings20Regular />,
-      title: "General",
+      title: t("settings.sections.general"),
       description: null,
       expandable: false,
     },
     {
       id: "style",
       icon: <TextField20Regular />,
-      title: "Style & format",
+      title: t("settings.sections.styleAndFormat"),
       description: null,
       expandable: false,
     },
     {
       id: "documents",
       icon: <DocumentOnePageSparkleRegular />,
-      title: "Documents",
+      title: t("settings.sections.documents"),
       description: null,
       expandable: false,
       navigable: true,
@@ -144,14 +152,14 @@ export const Settings: React.FC<SettingsProps> = ({
     {
       id: "library",
       icon: <Library20Regular />,
-      title: "Library",
+      title: t("settings.sections.library"),
       description: null,
       expandable: false,
     },
     {
       id: "profile",
       icon: <Person20Regular />,
-      title: "Profile",
+      title: t("settings.sections.profile"),
       description: null,
       expandable: false,
     },
@@ -196,26 +204,33 @@ export const Settings: React.FC<SettingsProps> = ({
             {section.id === "languages" && expandedSection === "languages" && (
               <div className={styles.expandedContent}>
                 <div className={styles.languageTags}>
-                  {languages.map((lang) => (
-                    <div key={lang} className={styles.languageTag}>
-                      {lang}
-                      {lang !== "English" && (
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleRemoveLanguage(lang);
-                          }}
-                          role="button"
-                          aria-label={`Remove ${lang}`}
-                          className={styles.removeBadge}
-                        >
-                          <div className={styles.badgeContent}>
-                            <DismissCircle12Regular />
+                  {languages.map((lang) => {
+                    const languageLabel = t(
+                      `settings.languages.options.${lang}`
+                    );
+                    return (
+                      <div key={lang} className={styles.languageTag}>
+                        {languageLabel}
+                        {lang !== "en" && (
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRemoveLanguage(lang);
+                            }}
+                            role="button"
+                            aria-label={t(
+                              `settings.languages.removeAria.${lang}`
+                            )}
+                            className={styles.removeBadge}
+                          >
+                            <div className={styles.badgeContent}>
+                              <DismissCircle12Regular />
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}

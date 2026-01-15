@@ -3,7 +3,7 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 
 const useStyles = makeStyles({
   root: {
-    padding: "16px",
+    padding: "var(--spacing-xxxlarge)",
     color: tokens.colorNeutralForeground2,
     fontSize: tokens.fontSizeBase300,
     lineHeight: tokens.lineHeightBase300,

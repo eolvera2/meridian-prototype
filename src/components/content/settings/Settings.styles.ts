@@ -21,24 +21,24 @@ export const useStyles = makeStyles({
     minHeight: 0,
     overflowY: "auto",
     overflowX: "hidden",
-    padding: "16px",
+    padding: "var(--spacing-xxxlarge)",
     display: "flex",
     flexDirection: "column",
-    gap: "8px",
+    gap: "var(--gap-large)",
     boxSizing: "border-box",
     width: "100%",
 
     "@media (max-width: 768px)": {
-      padding: "12px",
+      padding: "var(--spacing-xxlarge)",
     },
   },
 
   settingSection: {
-    padding: "16px",
+    padding: "var(--spacing-xxxlarge)",
     cursor: "pointer",
     transition: "background-color 0.2s cubic-bezier(0.1, 0.9, 0.2, 1)",
     backgroundColor: tokens.colorNeutralBackground1,
-    borderRadius: "8px",
+    borderRadius: "var(--border-radius-xlarge)",
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     boxSizing: "border-box",
     width: "100%",
@@ -49,7 +49,7 @@ export const useStyles = makeStyles({
     },
 
     "@media (max-width: 768px)": {
-      padding: "12px",
+      padding: "var(--spacing-xxlarge)",
     },
   },
 
@@ -67,7 +67,7 @@ export const useStyles = makeStyles({
     justifyContent: "space-between",
     width: "100%",
     minWidth: 0,
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
 
   settingLeft: {
@@ -81,14 +81,14 @@ export const useStyles = makeStyles({
 
   settingIcon: {
     color: tokens.colorNeutralForeground2,
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
     flexShrink: 0,
   },
 
   settingContent: {
     display: "flex",
     flexDirection: "column",
-    gap: "4px",
+    gap: "var(--gap-small)",
     flex: 1,
     minWidth: 0,
     overflow: "hidden",
@@ -96,7 +96,7 @@ export const useStyles = makeStyles({
 
   settingTitle: {
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     fontWeight: 600,
     lineHeight: "20px",
     color: tokens.colorNeutralForeground1,
@@ -107,7 +107,7 @@ export const useStyles = makeStyles({
 
   settingDescription: {
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 400,
     lineHeight: "16px",
     color: tokens.colorNeutralForeground3,
@@ -117,18 +117,18 @@ export const useStyles = makeStyles({
 
   chevronIcon: {
     color: tokens.colorNeutralForeground3,
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
     flexShrink: 0,
   },
 
   expandedContent: {
-    marginTop: "16px",
+    marginTop: "var(--spacing-xxxlarge)",
   },
 
   languageTags: {
     display: "flex",
     flexWrap: "wrap",
-    gap: "8px",
+    gap: "var(--gap-large)",
     width: "100%",
     boxSizing: "border-box",
   },
@@ -139,7 +139,7 @@ export const useStyles = makeStyles({
     gap: tokens.spacingHorizontalXS,
     backgroundColor: tokens.colorNeutralBackground5,
     padding: `${tokens.spacingVerticalXXS} ${tokens.spacingHorizontalS}`,
-    borderRadius: "9999px",
+    borderRadius: "var(--border-radius-circular)",
     fontSize: "10px",
     fontWeight: 600,
     lineHeight: "14px",
@@ -155,7 +155,7 @@ export const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     gap: tokens.spacingHorizontalNone,
-    borderRadius: "9999px",
+    borderRadius: "var(--border-radius-circular)",
     backgroundColor: tokens.colorNeutralBackground5,
     "& svg": {
       width: "12px",
@@ -185,8 +185,8 @@ export const useStyles = makeStyles({
   subPageHeader: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
-    padding: "16px",
+    gap: "var(--gap-large)",
+    padding: "var(--spacing-xxxlarge)",
     cursor: "pointer",
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground2Hover,
@@ -195,12 +195,12 @@ export const useStyles = makeStyles({
 
   backIcon: {
     color: tokens.colorNeutralForeground2,
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
   },
 
   backText: {
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     fontWeight: 400,
     lineHeight: "20px",
     color: tokens.colorNeutralForeground2,
@@ -217,7 +217,7 @@ export const useStyles = makeStyles({
 
   subPageBody: {
     flex: 1,
-    padding: "16px",
+    padding: "var(--spacing-xxxlarge)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -225,7 +225,7 @@ export const useStyles = makeStyles({
 
   placeholderMessage: {
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     fontWeight: 400,
     color: tokens.colorNeutralForeground3,
   },

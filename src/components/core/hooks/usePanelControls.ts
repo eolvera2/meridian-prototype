@@ -4,8 +4,13 @@ import type { RightDrawerContent } from "../../shared";
 const getWindowWidth = () =>
   typeof window === "undefined" ? 1024 : window.innerWidth;
 
-const isMediumScreen = (width: number) => width <= 768 && width >= 481;
+const isMediumScreen = (width: number): boolean => width <= 768 && width >= 481;
 
+/**
+ * Hook for managing right drawer panel controls and responsive layout behavior.
+ * 
+ * @returns Panel control state and functions for managing drawer visibility and content
+ */
 export const usePanelControls = () => {
   const [rightDrawerVisible, setRightDrawerVisible] = useState(false);
   const [rightDrawerContent, setRightDrawerContent] =

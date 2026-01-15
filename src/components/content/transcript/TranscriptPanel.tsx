@@ -13,6 +13,7 @@ import {
   Tooltip,
   Dialog,
   DialogSurface,
+  tokens,
   DialogBody,
   DialogTitle,
   DialogContent,
@@ -32,6 +33,7 @@ import {
 import { useStyles, type TranscriptStyles } from "./TranscriptPanel.styles";
 import type { TranscriptMessage, Recording } from "./TranscriptPanel.types";
 import { generateSampleRecordings } from "./TranscriptPanel.data";
+import { useI18n } from "../../../i18n/I18nContext";
 
 // ============================================================================
 // MessageCard Component
@@ -43,6 +45,7 @@ interface MessageCardProps {
 }
 
 const MessageCard: React.FC<MessageCardProps> = ({ message, styles }) => {
+  const { t } = useI18n();
   // Highlight medication in content
   const renderContent = () => {
     if (!message.highlightedMedication) {
@@ -88,19 +91,19 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, styles }) => {
             <span className={styles.messageTime}>{message.timestamp}</span>
           </div>
         </div>
-        <Tooltip content="Menu" relationship="label">
+        <Tooltip content={t("transcript.tooltip.menu")} relationship="label">
           <Button
             appearance="subtle"
             icon={<MoreHorizontal20Regular />}
             className={styles.moreButton}
-            aria-label="Menu"
+            aria-label={t("transcript.aria.menu")}
           />
         </Tooltip>
       </div>
       <div className={styles.messageContent}>{renderContent()}</div>
       {message.ordersDetected && (
         <div className={styles.ordersDetected}>
-          <span className={styles.ordersLabel}>Orders detected: </span>
+          <span className={styles.ordersLabel}>{t("transcript.ordersDetected")}</span>
           {message.ordersDetected}
         </div>
       )}
@@ -125,6 +128,7 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({
   onToggle,
   onDelete,
 }) => {
+  const { t } = useI18n();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleDeleteClick = (e: React.MouseEvent) => {
@@ -164,12 +168,12 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({
             <span className={styles.recordingDateTime}>
               {recording.date} {recording.time}
             </span>
-            <Tooltip content="Delete" relationship="label">
+            <Tooltip content={t("common.delete")} relationship="label">
               <Button
                 appearance="subtle"
                 icon={<Delete20Regular />}
                 className={styles.deleteButton}
-                aria-label="Delete recording"
+                aria-label={t("transcript.aria.deleteRecording")}
                 onClick={handleDeleteClick}
               />
             </Tooltip>
@@ -192,55 +196,55 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({
           }
         }}
       >
-        <DialogSurface style={{ maxWidth: "320px", padding: "24px" }}>
+        <DialogSurface className="dialog-surface-standard">
           <DialogBody>
             <DialogTitle
               action={
                 <Button
                   appearance="subtle"
-                  aria-label="Close"
+                  aria-label={t("common.close")}
                   icon={<Dismiss24Regular />}
                   onClick={handleCancelDelete}
                   style={{
                     minWidth: "auto",
-                    padding: "4px",
+                    padding: "var(--spacing-small-4)",
                   }}
                 />
               }
               style={{
-                fontSize: "20px",
+                fontSize: tokens.fontSizeBase500,
                 fontWeight: 600,
                 lineHeight: "28px",
                 fontFamily: "'Segoe UI', sans-serif",
-                marginBottom: "12px",
+                marginBottom: "var(--spacing-xxlarge)",
               }}
             >
-              Delete recording
+              {t("transcript.deleteDialog.title")}
             </DialogTitle>
             <DialogContent
               style={{
-                fontSize: "14px",
+                fontSize: tokens.fontSizeBase300,
                 fontWeight: 400,
                 lineHeight: "20px",
                 fontFamily: "'Segoe UI', sans-serif",
-                marginBottom: "24px",
+                marginBottom: "var(--spacing-huge)",
               }}
             >
-              Are you sure you want to delete "{recording.name}"? This action
-              cannot be undone.
+              {t("transcript.deleteDialog.bodyPrefix")} "{recording.name}"
+              {t("transcript.deleteDialog.bodySuffix")}
             </DialogContent>
             <DialogActions
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
-                gap: "8px",
+                gap: "var(--gap-large)",
               }}
             >
               <Button appearance="secondary" onClick={handleCancelDelete}>
-                Cancel
+                {t("common.cancel")}
               </Button>
               <Button appearance="primary" onClick={handleConfirmDelete}>
-                Delete
+                {t("common.delete")}
               </Button>
             </DialogActions>
           </DialogBody>
@@ -256,6 +260,7 @@ const RecordingSection: React.FC<RecordingSectionProps> = ({
 
 export const TranscriptPanel: React.FC = () => {
   const styles = useStyles();
+  const { t } = useI18n();
   const [recordings, setRecordings] = useState<Recording[]>(
     generateSampleRecordings()
   );
@@ -277,28 +282,28 @@ export const TranscriptPanel: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.toolbar}>
-        <Tooltip content="Select All" relationship="label">
+        <Tooltip content={t("transcript.tooltip.selectAll")} relationship="label">
           <Button
             appearance="subtle"
             icon={<SelectAllOn20Regular />}
             className={styles.toolbarButton}
-            aria-label="Select all"
+            aria-label={t("transcript.aria.selectAll")}
           />
         </Tooltip>
-        <Tooltip content="AI Chat" relationship="label">
+        <Tooltip content={t("transcript.tooltip.aiChat")} relationship="label">
           <Button
             appearance="subtle"
             icon={<ChatSparkle20Regular />}
             className={styles.toolbarButton}
-            aria-label="Chat"
+            aria-label={t("transcript.aria.chat")}
           />
         </Tooltip>
-        <Tooltip content="Copy" relationship="label">
+        <Tooltip content={t("common.copy")} relationship="label">
           <Button
             appearance="subtle"
             icon={<Copy20Regular />}
             className={styles.toolbarButton}
-            aria-label="Copy"
+            aria-label={t("common.copy")}
           />
         </Tooltip>
       </div>

@@ -7,6 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:prod": "tsc -b && vite build --config vite.config.prod.ts",
+    "check:i18n": "node scripts/check-i18n-keys.mjs",
+    "check:i18n:hooks": "node scripts/check-i18n-hooks.mjs",
+    "check:i18n:all": "npm run check:i18n && npm run check:i18n:hooks",
     "lint": "eslint .",
     "preview": "vite preview"
   },

@@ -17,6 +17,7 @@ import {
   Person20Regular,
   bundleIcon,
 } from "@fluentui/react-icons";
+import { useI18n } from "../../i18n/I18nContext";
 
 // Create bundled icons for proper Fluent UI integration
 const SettingsIcon = bundleIcon(Settings20Filled, Settings20Regular);
@@ -39,12 +40,12 @@ const useStyles = makeStyles({
     height: "100%",
     backgroundColor: tokens.colorNeutralBackground4,
     borderRight: "none",
-    zIndex: 1150,
+    zIndex: "var(--z-index-left-nav)",
     flexShrink: 0,
     transition: "width 0.3s cubic-bezier(0.1,0.9,0.2,1), opacity 0.3s ease",
 
     "@media (max-width: 768px)": {
-      zIndex: 5,
+      zIndex: "var(--z-index-content)",
       position: "relative",
     },
 
@@ -66,7 +67,7 @@ const useStyles = makeStyles({
       flexDirection: "column",
       justifyContent: "space-between",
       height: "100%",
-      // paddingTop: "8px",
+      // paddingTop: "var(--spacing-large)",
       // paddingBottom: "12px",
     },
   },
@@ -90,7 +91,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
-    gap: "10px",
+    gap: "var(--gap-xlarge)",
   },
 
   navCenter: {
@@ -98,7 +99,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
-    gap: "10px",
+    gap: "var(--gap-xlarge)",
     marginTop: 0,
   },
 
@@ -107,7 +108,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
-    gap: "10px",
+    gap: "var(--gap-xlarge)",
     marginTop: 0,
   },
 
@@ -125,7 +126,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
-    transition: "all 0.2s cubic-bezier(0.1,0.9,0.2,1)",
+    transition: "var(--transition-fluent)",
     color: tokens.colorNeutralForeground1,
     position: "relative",
 
@@ -138,8 +139,8 @@ const useStyles = makeStyles({
     },
 
     "& img": {
-      width: "24px",
-      height: "24px",
+      width: "var(--icon-size-standard)",
+      height: "var(--icon-size-standard)",
       objectFit: "contain",
     },
   },
@@ -161,11 +162,11 @@ const useStyles = makeStyles({
     left: "3px",
     width: "4px",
     height: "21px",
-    borderRadius: "2px",
+    borderRadius: "var(--border-radius-small)",
     backgroundColor: tokens.colorBrandBackground,
     transition: "top 0.3s cubic-bezier(0.1,0.9,0.2,1), opacity 0.2s ease",
     pointerEvents: "none",
-    zIndex: 10,
+    zIndex: "var(--z-index-navigation)",
   },
 
   avatarContainer: {
@@ -175,7 +176,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
-    transition: "all 0.2s cubic-bezier(0.1,0.9,0.2,1)",
+    transition: "var(--transition-fluent)",
     backgroundColor: tokens.colorNeutralBackground4,
 
     "&:hover": {
@@ -190,7 +191,7 @@ const useStyles = makeStyles({
     justifyContent: "flex-start",
     height: "100%",
     width: "100%",
-    gap: "10px",
+    gap: "var(--gap-xlarge)",
     position: "relative",
     // paddingTop: "10px",
   },
@@ -206,6 +207,7 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
   activeNavItem = "home",
 }) => {
   const styles = useStyles();
+  const { t } = useI18n();
 
   // Calculate pill position based on active nav item
   // Positions: home=6px, avatar=60px (44+10+6), settings=114px (44+10+44+10+6), help=168px (44+10+44+10+44+10+6)
@@ -244,8 +246,12 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
 
           {/* Primary navigation */}
           <div className={styles.navTop}>
-            <Tooltip content="Home" relationship="label" positioning={"after"}>
-              <span style={{ display: "inline-flex" }}>
+            <Tooltip
+              content={t("leftNav.tooltip.home")}
+              relationship="label"
+              positioning={"after"}
+            >
+              <span className="inline-flex">
                 <button
                   type="button"
                   className={mergeClasses(
@@ -254,7 +260,7 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
                     activeNavItem === "home" && styles.selectedNavButton
                   )}
                   onClick={onHomeToggle}
-                  aria-label="Return to schedule"
+                  aria-label={t("leftNav.aria.returnToSchedule")}
                   aria-pressed={homeToggleActive}
                 >
                   <HomeIcon />
@@ -263,11 +269,11 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
             </Tooltip>
 
             <Tooltip
-              content="Account"
+              content={t("leftNav.tooltip.account")}
               relationship="label"
               positioning={"after"}
             >
-              <span style={{ display: "inline-flex" }}>
+              <span className="inline-flex">
                 <button
                   type="button"
                   className={mergeClasses(
@@ -275,7 +281,7 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
                     activeNavItem === "avatar" && styles.selectedNavButton
                   )}
                   onClick={onProfileClick}
-                  aria-label="Profile"
+                  aria-label={t("leftNav.aria.profile")}
                   disabled
                   style={{ opacity: 0.4, cursor: "not-allowed" }}
                 >
@@ -285,33 +291,37 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
             </Tooltip>
 
             <Tooltip
-              content="Settings"
+              content={t("leftNav.tooltip.settings")}
               relationship="label"
               positioning={"after"}
             >
-              <span style={{ display: "inline-flex" }}>
+              <span className="inline-flex">
                 <button
                   className={mergeClasses(
                     styles.navButton,
                     activeNavItem === "settings" && styles.selectedNavButton
                   )}
                   onClick={onSettingsClick}
-                  aria-label="Open settings"
+                  aria-label={t("leftNav.aria.openSettings")}
                 >
                   <SettingsIcon />
                 </button>
               </span>
             </Tooltip>
 
-            <Tooltip content="Help" relationship="label" positioning={"after"}>
-              <span style={{ display: "inline-flex" }}>
+            <Tooltip
+              content={t("leftNav.tooltip.help")}
+              relationship="label"
+              positioning={"after"}
+            >
+              <span className="inline-flex">
                 <button
                   className={mergeClasses(
                     styles.navButton,
                     activeNavItem === "help" && styles.selectedNavButton
                   )}
                   onClick={onHelpClick}
-                  aria-label="Get help"
+                  aria-label={t("leftNav.aria.getHelp")}
                   disabled
                   style={{ opacity: 0.4, cursor: "not-allowed" }}
                 >

@@ -21,6 +21,7 @@ import {
   ChevronDown16Regular,
 } from "@fluentui/react-icons";
 import logoSvg from "../../assets/logo.svg";
+import { useI18n } from "../../i18n/I18nContext";
 
 type LayoutOption = "twoColumn" | "stacked" | "wide";
 
@@ -45,7 +46,7 @@ const useStyles = makeStyles({
     WebkitAppRegion: "drag",
     width: "100%", // Take full width
     // Increase z-index so TitleBar renders above all UI layers
-    zIndex: 1100,
+    zIndex: "var(--z-index-titlebar)",
     // Remove overflow hidden to allow menu to show
   },
   titleContent: {
@@ -66,7 +67,7 @@ const useStyles = makeStyles({
   titleActions: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
     WebkitAppRegion: "no-drag", // Make window controls clickable
     // Remove positioning and overflow constraints
   },
@@ -88,38 +89,40 @@ const useStyles = makeStyles({
   layoutSplitButton: {
     padding: 0,
     minWidth: "auto",
-    height: "32px",
+    height: "var(--button-size-standard)",
     backgroundColor: "transparent",
   },
 });
 
 export const TitleBar: React.FC<TitleBarProps> = ({
-  title = "Dragon Copilot",
+  title,
   onMinimize,
   onMaximize,
   onClose,
   onLayoutOptionSelect,
 }) => {
   const styles = useStyles();
+  const { t } = useI18n();
+  const resolvedTitle = title ?? t("app.title");
   const layoutOptions = React.useMemo(
     () => [
       {
         key: "twoColumn" as const,
-        label: "Split columns",
+        label: t("titleBar.layout.splitColumns"),
         Icon: LayoutOneThirdIcon,
       },
       {
         key: "stacked" as const,
-        label: "Stacked views",
+        label: t("titleBar.layout.stackedViews"),
         Icon: LayoutStackedIcon,
       },
       {
         key: "wide" as const,
-        label: "Wide canvas",
+        label: t("titleBar.layout.wideCanvas"),
         Icon: LayoutWideIcon,
       },
     ],
-    []
+    [t]
   );
 
   const handleLayoutSelect = (option: LayoutOption) => {
@@ -130,8 +133,12 @@ export const TitleBar: React.FC<TitleBarProps> = ({
     <div className={styles.titleBar}>
       <div className={styles.titleContent}>
         <div className={styles.titleLeft}>
-          <img src={logoSvg} alt="Logo" className={styles.logo} />
-          <Text weight="semibold">{title}</Text>
+          <img
+            src={logoSvg}
+            alt={t("common.logoAlt")}
+            className={styles.logo}
+          />
+          <Text weight="semibold">{resolvedTitle}</Text>
         </div>
         <div className={styles.titleActions}>
           <div className={styles.layoutMenuWrapper}>
@@ -142,11 +149,13 @@ export const TitleBar: React.FC<TitleBarProps> = ({
                   className={styles.layoutSplitButton}
                   icon={<LayoutOneThirdIcon className={styles.icon} />}
                   primaryActionButton={{
-                    "aria-label": "Apply last split layout",
+                    "aria-label": t("titleBar.layout.applyLastSplitLayout"),
                     onClick: () => handleLayoutSelect("twoColumn"),
                   }}
                   menuButton={{
-                    "aria-label": "Choose different window layout",
+                    "aria-label": t(
+                      "titleBar.layout.chooseDifferentWindowLayout"
+                    ),
                     icon: <ChevronDown16Regular />,
                   }}
                 />
@@ -170,19 +179,19 @@ export const TitleBar: React.FC<TitleBarProps> = ({
             appearance="subtle"
             icon={<MinimizeIcon className={styles.icon} />}
             onClick={onMinimize}
-            aria-label="Minimize"
+            aria-label={t("common.minimize")}
           />
           <Button
             appearance="subtle"
             icon={<MaximizeIcon className={styles.icon} />}
             onClick={onMaximize}
-            aria-label="Maximize"
+            aria-label={t("common.maximize")}
           />
           <Button
             appearance="subtle"
             icon={<CloseIcon className={styles.icon} />}
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t("common.close")}
           />
         </div>
       </div>

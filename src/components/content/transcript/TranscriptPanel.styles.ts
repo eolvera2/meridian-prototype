@@ -17,13 +17,13 @@ export const useStyles = makeStyles({
   toolbar: {
     display: "flex",
     alignItems: "center",
-    gap: "4px",
+    gap: "var(--gap-small)",
     padding: "8px 16px",
     borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
   },
   toolbarButton: {
     minWidth: "auto",
-    padding: "6px",
+    padding: "var(--spacing-medium)",
     color: tokens.colorNeutralForeground2,
   },
   recordingsList: {
@@ -50,7 +50,7 @@ export const useStyles = makeStyles({
   recordingHeaderLeft: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
   chevronIcon: {
     color: tokens.colorNeutralForeground2,
@@ -66,7 +66,7 @@ export const useStyles = makeStyles({
   recordingHeaderRight: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
   recordingDateTime: {
     fontSize: tokens.fontSizeBase200,
@@ -74,14 +74,14 @@ export const useStyles = makeStyles({
   },
   deleteButton: {
     minWidth: "auto",
-    padding: "4px",
+    padding: "var(--spacing-small-4)",
     color: tokens.colorNeutralForeground3,
   },
   messagesContainer: {
     padding: "8px 16px 16px 16px",
     display: "flex",
     flexDirection: "column",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
   messageCard: {
     padding: "12px 16px",
@@ -90,12 +90,12 @@ export const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: "8px",
+    marginBottom: "var(--spacing-large)",
   },
   speakerSection: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
   },
   speakerAvatar: {
     width: "32px",
@@ -128,7 +128,7 @@ export const useStyles = makeStyles({
   },
   moreButton: {
     minWidth: "auto",
-    padding: "4px",
+    padding: "var(--spacing-small-4)",
     color: tokens.colorNeutralForeground3,
   },
   messageContent: {
@@ -141,7 +141,7 @@ export const useStyles = makeStyles({
     fontWeight: tokens.fontWeightBold,
   },
   ordersDetected: {
-    backgroundColor: "#f1faf1",
+    backgroundColor: "var(--palette-green-f1faf1)",
     padding: "4px 7px",
     margin: "12px -16px -12px -16px",
     boxShadow:

@@ -7,6 +7,7 @@
  */
 
 import { useEffect, useRef } from "react";
+import { useI18n } from "../../../../i18n/I18nContext";
 import type { DocumentItem } from "../DocumentComponent.types";
 
 export type AmbientState = "stop" | "recording" | "pause";
@@ -99,6 +100,8 @@ export function useDocumentEffects({
   triggerSkeletonGeneration,
   runTypingSimulation,
 }: UseDocumentEffectsOptions): UseDocumentEffectsReturn {
+  const { formatDate } = useI18n();
+
   // Track previous states for transition detection
   const prevDictationStateRef = useRef(dictationState);
   const prevTriggerPronounRef = useRef(triggerPronounReplacement);
@@ -118,9 +121,6 @@ export function useDocumentEffects({
       autoSelectText &&
       !hasSimulatedReplacementRef.current
     ) {
-      console.log(
-        "[DictationState] Detected transition to 'on', triggering typing simulation"
-      );
       setTimeout(() => {
         runTypingSimulation();
       }, 100);
@@ -251,7 +251,7 @@ export function useDocumentEffects({
       );
 
       if (!referralLetter) {
-        const today = new Date().toLocaleDateString("en-US", {
+          const today = formatDate(new Date(), {
           year: "numeric",
           month: "2-digit",
           day: "2-digit",
@@ -307,6 +307,7 @@ export function useDocumentEffects({
     setIsDraftingReferralLetter,
     setShowReferralLetter,
     documentRefs,
+      formatDate,
   ]);
 
   return {

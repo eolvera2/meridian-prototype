@@ -12,10 +12,10 @@ export const useFloatingMicBarStyles = makeStyles({
     top: "140px",
     right: "140px",
     width: "275px",
-    backgroundColor: "#fff", // Set background to white
-    borderRadius: "8px",
-    border: "1px solid #b7b7b7",
-    boxShadow: "0px 8px 16px rgba(0,0,0,0.14), 0px 0px 2px rgba(0,0,0,0.12)",
+    backgroundColor: "var(--colorNeutralBackground1)", // Set background to white
+    borderRadius: "var(--border-radius-xlarge)",
+    border: "1px solid var(--palette-gray-b7b7b7)",
+    boxShadow: "var(--shadow-medium)",
     zIndex: 1000,
     overflow: "hidden",
     display: "flex",
@@ -28,8 +28,8 @@ export const useFloatingMicBarStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-between",
     padding: "0 6px",
-    height: "32px",
-    backgroundColor: "#fff", // Set background to white
+    height: "var(--button-size-standard)",
+    backgroundColor: "var(--colorNeutralBackground1)", // Set background to white
     borderTopLeftRadius: "8px",
     borderTopRightRadius: "8px",
   },
@@ -37,7 +37,7 @@ export const useFloatingMicBarStyles = makeStyles({
   titleBarLeft: {
     display: "flex",
     alignItems: "center",
-    gap: "4px",
+    gap: "var(--gap-small)",
   },
 
   dragonLogo: {
@@ -48,14 +48,14 @@ export const useFloatingMicBarStyles = makeStyles({
   titleBarRight: {
     display: "flex",
     alignItems: "center",
-    gap: "4px",
+    gap: "var(--gap-small)",
   },
 
   titleBarButton: {
-    width: "32px",
-    height: "32px",
-    minWidth: "32px",
-    padding: "6px",
+    width: "var(--button-size-standard)",
+    height: "var(--button-size-standard)",
+    minWidth: "var(--button-size-standard)",
+    padding: "var(--spacing-medium)",
   },
 
   // Content Bar
@@ -70,7 +70,7 @@ export const useFloatingMicBarStyles = makeStyles({
   headerContainer: {
     display: "flex",
     alignItems: "center",
-    gap: "4px",
+    gap: "var(--gap-small)",
   },
 
   patientName: {
@@ -83,9 +83,9 @@ export const useFloatingMicBarStyles = makeStyles({
   },
 
   editButton: {
-    width: "24px",
-    height: "24px",
-    minWidth: "24px",
+    width: "var(--icon-size-standard)",
+    height: "var(--icon-size-standard)",
+    minWidth: "var(--icon-size-standard)",
     marginLeft: "4px",
   },
 
@@ -104,15 +104,15 @@ export const useFloatingMicBarStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-between",
     padding: "8px 12px 10px 12px",
-    gap: "16px",
+    gap: "var(--gap-xxxlarge)",
     backgroundColor: tokens.colorNeutralBackground1,
   },
 
   micBarMicRow: {
     display: "flex",
     justifyContent: "center",
-    paddingTop: "8px",
-    paddingBottom: "4px",
+    paddingTop: "var(--spacing-large)",
+    paddingBottom: "var(--spacing-small-4)",
   },
 
   micBarToggleRow: {
@@ -131,7 +131,7 @@ export const useFloatingMicBarStyles = makeStyles({
 
   micBarToggleRowActions: {
     display: "flex",
-    gap: "8px",
+    gap: "var(--gap-large)",
     marginRight: "4px",
   },
 
@@ -147,7 +147,7 @@ export const useFloatingMicBarStyles = makeStyles({
       backgroundImage:
         "linear-gradient(90deg, rgba(13, 145, 225, 0.2) 0%, rgba(140, 72, 255, 0.2) 25%, rgba(255, 95, 61, 0.2) 50%, rgba(242, 244, 253, 0.2) 75%, rgba(13, 145, 225, 0.2) 100%)",
       pointerEvents: "none",
-      zIndex: 0,
+      zIndex: "var(--z-index-base)",
       opacity: 0.9,
       animationDuration: "3.6s",
       animationTimingFunction: "cubic-bezier(0.6, 0, 0.4, 1)",
@@ -172,18 +172,18 @@ export const useFloatingMicBarStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--colorNeutralBackground1)",
     border: "1px solid transparent",
-    borderRadius: "9999px",
+    borderRadius: "var(--border-radius-circular)",
     boxShadow:
       "0px 2px 4px 0px rgba(0,0,0,0.14), 0px 0px 2px 0px rgba(0,0,0,0.12)",
     cursor: "pointer",
     padding: "0",
-    minHeight: "32px",
+    minHeight: "var(--button-size-standard)",
     maxHeight: "40px",
     minWidth: "95px",
     width: "95px",
-    transition: "all 0.2s cubic-bezier(0.1,0.9,0.2,1)",
+    transition: "var(--transition-fluent)",
     "&:hover:not(:disabled)": {
       boxShadow:
         "0px 4px 8px 0px rgba(0,0,0,0.16), 0px 0px 4px 0px rgba(0,0,0,0.14)",
@@ -205,8 +205,8 @@ export const useFloatingMicBarStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "6px",
-    paddingLeft: "8px",
+    gap: "var(--gap-medium)",
+    paddingLeft: "var(--spacing-large)",
     paddingRight: "6px",
     flex: 1,
     height: "100%",
@@ -217,24 +217,24 @@ export const useFloatingMicBarStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    minWidth: "32px",
+    minWidth: "var(--button-size-standard)",
   },
 
   micIcon: {
-    width: "24px",
-    height: "24px",
+    width: "var(--icon-size-standard)",
+    height: "var(--icon-size-standard)",
     color: tokens.colorNeutralForeground2,
   },
 
   micIconRecording: {
-    color: "#ffffff",
+    color: "var(--colorBrandForeground)",
   },
 
   secondaryAction: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "32px",
+    width: "var(--button-size-standard)",
     maxWidth: "32px",
     height: "100%",
     borderRadius: "0 9999px 9999px 0",
@@ -248,24 +248,24 @@ export const useFloatingMicBarStyles = makeStyles({
   chevronIcon: {
     width: "12px",
     height: "12px",
-    color: "#424242",
+    color: "var(--colorNeutralForeground2)",
   },
 
   chevronIconRecording: {
-    color: "#ffffff",
+    color: "var(--colorBrandForeground)",
   },
 
   rightActions: {
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "var(--gap-medium)",
     position: "relative",
     zIndex: 1,
   },
 
   actionButton: {
-    minWidth: "32px",
-    height: "32px",
+    minWidth: "var(--button-size-standard)",
+    height: "var(--button-size-standard)",
   },
 
   iconActive: {
@@ -274,7 +274,7 @@ export const useFloatingMicBarStyles = makeStyles({
 
   memosLabel: {
     display: "flex",
-    height: "24px",
+    height: "var(--icon-size-standard)",
     flex: 1,
     alignItems: "center",
     overflow: "hidden",

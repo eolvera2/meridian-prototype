@@ -13,6 +13,34 @@
   --patient-header-height: 60px;
   --microphone-interface-height: 72px;
   --microphone-interface-mobile-height: 70px;
+  --microphone-interface-extended-height: 96px;
+
+  /* Z-Index Layering System */
+  --z-index-base: 0;
+  --z-index-below: 1;
+  --z-index-content: 5;
+  --z-index-navigation: 10;
+  --z-index-navigation-secondary: 15;
+  --z-index-sticky-header: 99;
+  --z-index-header: 100;
+  --z-index-drawer: 150;
+  --z-index-fab: 199;
+  --z-index-microphone: 200;
+  --z-index-toast: 201;
+  --z-index-task-floating-mic: 1000;
+  --z-index-titlebar: 1100;
+  --z-index-left-nav: 1150;
+
+  /* Common Dimensions */
+  --button-size-standard: 32px;
+  --button-size-small: 24px;
+  --button-size-large: 44px;
+  --icon-size-standard: 24px;
+  --icon-size-small: 20px;
+  --content-min-width: 300px;
+  --content-max-width: 1000px;
+  --dialog-width-standard: 320px;
+  --dialog-max-width: 400px;
 
   /* Design Tokens for CSS usage */
   --colorNeutralBackground1: #ffffff;
@@ -20,4 +48,85 @@
   --colorNeutralForeground2: #424242;
   --colorBrandBackground: #0078d4;
   --colorBrandForeground: #ffffff;
+
+  /* Legacy palette (exact values used in UI) */
+  --palette-gray-242424: #242424;
+  --palette-gray-616161: #616161;
+  --palette-gray-e0e0e0: #e0e0e0;
+  --palette-gray-b7b7b7: #b7b7b7;
+  --palette-gray-d1d1d1: #d1d1d1;
+  --palette-gray-d9d9d9: #d9d9d9;
+  --palette-gray-f0f0f0: #f0f0f0;
+  --palette-gray-707070: #707070;
+  --palette-blue-d6e6f5: #d6e6f5;
+  --palette-blue-0f6cbd: #0f6cbd;
+  --palette-blue-ebf3fc: #ebf3fc;
+  --palette-purple-5b5fc7: #5b5fc7;
+  --palette-yellow-f9e2ae: #f9e2ae;
+  --palette-green-f1faf1: #f1faf1;
+  --palette-black: #000000;
+
+  /* Gradients */
+  --gradient-rainbow-progress: linear-gradient(
+    90deg,
+    #0d91e1 0%,
+    #5e62c6 25%,
+    #d2007e 50%,
+    #e94b3c 75%,
+    #ff5f3d 100%
+  );
+
+  /* Border Radius */
+  --border-radius-small: 2px;
+  --border-radius-medium: 4px;
+  --border-radius-large: 6px;
+  --border-radius-xlarge: 8px;
+  --border-radius-pill: 20px;
+  --border-radius-circular: 9999px;
+
+  /* Opacity */
+  --opacity-disabled: 0.4;
+  --opacity-subtle: 0.5;
+  --opacity-medium: 0.7;
+  --opacity-strong: 0.9;
+  --opacity-full: 1;
+
+  /* Transition Durations */
+  --transition-fast: 0.15s;
+  --transition-normal: 0.2s;
+  --transition-slow: 0.3s;
+
+  /* Common Transitions */
+  --transition-ease-fast: all 0.2s ease;
+  --transition-opacity-normal: opacity 0.2s ease;
+  --transition-fluent: all 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+  --transition-background-fast: background 0.2s;
+  --transition-fade: opacity 0.3s ease-in-out;
+
+  /* Box Shadows */
+  --shadow-small: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 0px 2px rgba(0, 0, 0, 0.12);
+  --shadow-medium: 0px 8px 16px rgba(0, 0, 0, 0.14), 0px 0px 2px rgba(0, 0, 0, 0.12);
+  --shadow-top: 0 -6px 18px rgba(0, 0, 0, 0.08);
+  --shadow-none: none;
+
+  /* Common Spacing (for frequently used margin/padding) */
+  --spacing-xxs: 1px;
+  --spacing-xs: 2px;
+  --spacing-small: 3px;
+  --spacing-small-4: 4px;
+  --spacing-medium: 6px;
+  --spacing-large: 8px;
+  --spacing-xlarge: 10px;
+  --spacing-xxlarge: 12px;
+  --spacing-xxxlarge: 16px;
+  --spacing-huge: 24px;
+
+  /* Gap values (flexbox/grid gaps) */
+  --gap-small: 4px;
+  --gap-medium: 6px;
+  --gap-large: 8px;
+  --gap-xlarge: 10px;
+  --gap-xxlarge: 12px;
+  --gap-xxxlarge: 16px;
 }
+

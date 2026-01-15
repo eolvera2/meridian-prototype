@@ -24,6 +24,7 @@ import {
 } from "@fluentui/react-icons";
 import { useTask9Styles } from "./Task9Styles";
 import { FloatingMicBar } from "./FloatingMicBar";
+import { useI18n } from "../../i18n/I18nContext";
 
 // Service codes for Level of Service
 const SERVICE_CODES = [
@@ -39,7 +40,7 @@ const SERVICE_CODES = [
 
 // Left nav items - first one is Notes (selected), rest are generic
 const LEFT_NAV_ITEMS = [
-  { id: "notes", type: "notes", label: "Notes" },
+  { id: "notes", type: "notes" },
   { id: "item2", type: "generic" },
   { id: "item3", type: "generic" },
   { id: "item4", type: "generic" },
@@ -54,6 +55,7 @@ const LEFT_NAV_ITEMS = [
 
 export const Task9: React.FC = () => {
   const styles = useTask9Styles();
+  const { t } = useI18n();
 
   return (
     <FluentProvider theme={webLightTheme}>
@@ -61,26 +63,30 @@ export const Task9: React.FC = () => {
       <div className={styles.ehrFame}>
         {/* Contoso Title Bar */}
         <div className={styles.contosoTitle}>
-          <div className={styles.contosoBadge}>C</div>
-          <span className={styles.contosoAppTitle}>Contoso EHR</span>
+          <div className={styles.contosoBadge}>
+            {t("task9.contoso.badgeLetter")}
+          </div>
+          <span className={styles.contosoAppTitle}>
+            {t("task9.contoso.appTitle")}
+          </span>
           <div className={styles.contosoTitleRight}>
             <Button
               appearance="subtle"
               icon={<Subtract20Regular />}
               size="large"
-              aria-label="Minimize"
+              aria-label={t("common.minimize")}
             />
             <Button
               appearance="subtle"
               icon={<Square20Regular />}
               size="large"
-              aria-label="Maximize"
+              aria-label={t("common.maximize")}
             />
             <Button
               appearance="subtle"
               icon={<Dismiss20Regular />}
               size="large"
-              aria-label="Close"
+              aria-label={t("common.close")}
             />
           </div>
         </div>
@@ -91,8 +97,12 @@ export const Task9: React.FC = () => {
             <Person28Regular />
           </div>
           <div className={styles.patientInfo}>
-            <span className={styles.patientName}>Ellis Turner </span>
-            <span className={styles.patientDetails}>| M | 01-01-1965</span>
+            <span className={styles.patientName}>
+              {t("task9.patient.name")}
+            </span>
+            <span className={styles.patientDetails}>
+              {t("task9.patient.details")}
+            </span>
           </div>
         </div>
 
@@ -109,10 +119,16 @@ export const Task9: React.FC = () => {
                   <>
                     <div className={styles.leftNavItemBadge}>
                       <ClipboardPulse20Regular
-                        style={{ color: "#fff", width: 16, height: 16 }}
+                        style={{
+                          color: "var(--colorBrandForeground)",
+                          width: 16,
+                          height: 16,
+                        }}
                       />
                     </div>
-                    <span className={styles.leftNavItemText}>{item.label}</span>
+                    <span className={styles.leftNavItemText}>
+                      {t("task9.leftNav.notes")}
+                    </span>
                   </>
                 ) : (
                   <>
@@ -132,7 +148,7 @@ export const Task9: React.FC = () => {
                   <PersonFeedback16Regular />
                   <QuestionCircle16Regular />
                 </div>
-                <h1 className={styles.noteTitle}>Note June 11, 2025</h1>
+                <h1 className={styles.noteTitle}>{t("task9.noteTitle")}</h1>
               </div>
               <div className={styles.noteBody}>
                 {/* Note body content - empty white space */}
@@ -144,17 +160,21 @@ export const Task9: React.FC = () => {
           <div className={styles.rightColumn}>
             {/* Level of Service */}
             <div className={styles.levelOfService}>
-              <div className={styles.losHeader}>Level of service</div>
+              <div className={styles.losHeader}>
+                {t("task9.levelOfService.title")}
+              </div>
               <div className={styles.losSearchBar}>
                 <div className={styles.losSearchInput}>
-                  <Search16Regular style={{ color: "#616161" }} />
+                  <Search16Regular
+                    style={{ color: "var(--palette-gray-616161)" }}
+                  />
                   <span className={styles.losSearchText}>
-                    Search level of service
+                    {t("task9.levelOfService.searchPlaceholder")}
                   </span>
                 </div>
                 <button className={styles.losAddButton}>
                   <Add20Regular />
-                  <span>Add</span>
+                  <span>{t("common.add")}</span>
                 </button>
               </div>
               <div className={styles.losButtonGrid}>
@@ -187,10 +207,10 @@ export const Task9: React.FC = () => {
 
         {/* Footer */}
         <div className={styles.footer}>
-          <div className={styles.footerBadge}>C</div>
-          <span className={styles.footerText}>
-            Contoso EHR all rights reserved 2025
-          </span>
+          <div className={styles.footerBadge}>
+            {t("task9.contoso.badgeLetter")}
+          </div>
+          <span className={styles.footerText}>{t("task9.footer")}</span>
         </div>
 
         {/* Floating Mic Bar */}

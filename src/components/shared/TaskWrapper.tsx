@@ -5,6 +5,9 @@
  * Using iframe ensures dialogs overlay properly outside the narrow container.
  */
 
+import { useParams } from "react-router-dom";
+import { coerceSupportedLocale } from "../../i18n/locales";
+
 interface TaskWrapperProps {
   /** The task number (1-9) */
   taskNumber: number;
@@ -13,8 +16,10 @@ interface TaskWrapperProps {
 }
 
 export const TaskWrapper = ({ taskNumber, title }: TaskWrapperProps) => {
+  const params = useParams();
+  const locale = coerceSupportedLocale(params.locale);
   const iframeTitle = title || `Task ${taskNumber} Narrow View`;
-  const iframeSrc = `#/task${taskNumber}-home`;
+  const iframeSrc = `#/${locale}/task${taskNumber}-home`;
 
   return (
     <div className="narrow-view-background">

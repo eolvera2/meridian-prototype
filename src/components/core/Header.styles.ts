@@ -9,7 +9,7 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 export const useStyles = makeStyles({
   header: {
     minHeight: "88px",
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--colorNeutralBackground1)",
     borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
     boxShadow:
       "0px 1px 2px 0px rgba(0,0,0,0.14), 0px 0px 2px 0px rgba(0,0,0,0.12)",
@@ -20,7 +20,7 @@ export const useStyles = makeStyles({
     flexShrink: 0,
     position: "sticky",
     top: 0,
-    zIndex: 100,
+    zIndex: "var(--z-index-header)",
 
     "@media (min-width: 769px)": {
       display: "flex",
@@ -45,10 +45,10 @@ export const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
-    padding: "12px",
+    padding: "var(--spacing-xxlarge)",
     minHeight: "80px",
     width: "100%",
-    paddingBottom: "4px",
+    paddingBottom: "var(--spacing-small-4)",
     gap: "12px",
 
     "@media (max-width: 768px)": {
@@ -68,11 +68,11 @@ export const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     alignSelf: "center",
-    marginRight: "12px",
+    marginRight: "var(--spacing-xxlarge)",
     flexShrink: 0,
 
     "@media (max-width: 768px)": {
-      marginRight: "8px",
+      marginRight: "var(--spacing-large)",
     },
 
     "@media (max-width: 480px)": {
@@ -83,7 +83,7 @@ export const useStyles = makeStyles({
   homeToggleButton: {
     backgroundColor: "transparent !important",
     border: "none !important",
-    boxShadow: "none !important",
+    boxShadow: "var(--shadow-none) !important",
     color: `${tokens.colorNeutralForeground1} !important`,
     padding: 0,
     "&:hover": {
@@ -116,14 +116,14 @@ export const useStyles = makeStyles({
     },
 
     "@media (max-width: 480px)": {
-      gap: "4px",
+      gap: "var(--gap-small)",
     },
   },
 
   patientInfo: {
     display: "flex",
     flexDirection: "column",
-    gap: "4px",
+    gap: "var(--gap-small)",
     minWidth: 0,
     flex: 1,
 
@@ -139,8 +139,8 @@ export const useStyles = makeStyles({
   name: {
     fontFamily: "'Segoe UI', sans-serif",
     fontWeight: 600,
-    color: "#242424",
-    fontSize: "20px",
+    color: "var(--palette-gray-242424)",
+    fontSize: tokens.fontSizeBase500,
     lineHeight: "28px",
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -159,14 +159,14 @@ export const useStyles = makeStyles({
 
   subtitle: {
     fontFamily: "'Segoe UI', sans-serif",
-    color: "#242424",
+    color: "var(--palette-gray-242424)",
     fontSize: "10px",
     lineHeight: "14px",
     fontWeight: 400,
     display: "flex",
     flexDirection: "column",
     gap: "2px",
-    paddingTop: "2px",
+    paddingTop: "var(--spacing-xs)",
     width: "100%",
 
     "@media (max-width: 768px)": {
@@ -189,7 +189,7 @@ export const useStyles = makeStyles({
 
   reasonRow: {
     display: "flex",
-    gap: "4px",
+    gap: "var(--gap-small)",
     alignItems: "center",
     whiteSpace: "nowrap",
     overflow: "hidden",
@@ -209,14 +209,14 @@ export const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-end",
-    gap: "6px",
+    gap: "var(--gap-medium)",
     flexShrink: 0,
     marginLeft: "auto",
 
     "@media (max-width: 768px)": {
       alignItems: "center",
       justifyContent: "flex-end",
-      gap: "4px",
+      gap: "var(--gap-small)",
     },
 
     "@media (max-width: 480px)": {
@@ -227,16 +227,16 @@ export const useStyles = makeStyles({
   },
 
   iconButton: {
-    padding: "6px",
-    borderRadius: "4px",
+    padding: "var(--spacing-medium)",
+    borderRadius: "var(--border-radius-medium)",
     background: "rgba(255,255,255,0)",
     border: "none",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    minWidth: "32px",
-    minHeight: "32px",
+    minWidth: "var(--button-size-standard)",
+    minHeight: "var(--button-size-standard)",
     color: tokens.colorNeutralForeground2,
 
     "&:hover": {
@@ -245,17 +245,17 @@ export const useStyles = makeStyles({
     },
 
     "@media (max-width: 768px)": {
-      padding: "4px",
+      padding: "var(--spacing-small-4)",
       minWidth: "28px",
       minHeight: "28px",
-      borderRadius: "3px",
+      borderRadius: "var(--border-radius-small)",
     },
 
     "@media (max-width: 480px)": {
       padding: "3px",
       minWidth: "24px",
       minHeight: "24px",
-      borderRadius: "2px",
+      borderRadius: "var(--border-radius-small)",
     },
   },
 

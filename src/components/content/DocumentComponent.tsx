@@ -6,6 +6,10 @@ import type { TextFieldElement } from "../../utils/getCaretCoordinates.ts";
 import { AddNoteDialog } from "./AddNoteDialog";
 import { useTooltipContext } from "./tooltip";
 import { useWorklistContext } from "./worklist";
+import { useI18n } from "../../i18n/I18nContext";
+import { getMedicalContentString } from "../../utils/medicalBundle";
+import { normalizeParagraphSpacing } from "../../utils/normalizeParagraphSpacing";
+import { createEnGbProgressNoteSections } from "../../utils/enGbNote";
 
 // Import from extracted modules
 import {
@@ -13,6 +17,7 @@ import {
   DocumentCard,
   DeleteDocumentDialog,
   DocumentHeader,
+  DOCUMENT_TIMING_MS,
   useSectionDictation,
   useTypingReplacement,
   useDocumentHandlers,
@@ -48,10 +53,17 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
   onPronounReplacementComplete,
   scrollToTop = false,
 }) => {
+  const { formatDate, locale, medical } = useI18n();
   const styles = useStyles();
   const { updateSelectedPatientLastModified, selectedPatientId } =
     useWorklistContext();
+
+  const isDefaultDocumentsDataset =
+    propDocuments === (documentsData as unknown as DocumentItem[]);
+
   const [documents, setDocuments] = useState<DocumentItem[]>(propDocuments);
+
+  const hasAppliedEnGbDefaultsRef = useRef(false);
   // Expand Note by default, or use initialExpandedDocuments if provided
   const [expandedDocuments, setExpandedDocuments] = useState<Set<string>>(
     initialExpandedDocuments ?? new Set(["1"])
@@ -94,11 +106,6 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
   >(new Set());
   const aiRequestToastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
-  );
-
-  console.log(
-    "DocumentComponent render, isAddNoteDialogOpen:",
-    isAddNoteDialogOpen
   );
 
   const documentRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -145,14 +152,112 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
   useEffect(() => {
     // Only reset if propDocuments reference actually changed (new patient selected)
     if (propDocuments !== initialPropDocumentsRef.current) {
-      console.log(
-        "propDocuments changed, resetting documents to:",
-        propDocuments
-      );
       setDocuments(propDocuments);
       initialPropDocumentsRef.current = propDocuments;
     }
   }, [propDocuments]);
+
+  // Ensure en-GB uses the same locale-specific document stack/content on all screen sizes.
+  // Without this, the default home experience falls back to the en-US demo documents.
+  useEffect(() => {
+    if (locale !== "en-GB") return;
+    if (hasAppliedEnGbDefaultsRef.current) return;
+
+    hasAppliedEnGbDefaultsRef.current = true;
+
+    const letterTemplate = normalizeParagraphSpacing(
+      getMedicalContentString(medical, "letterToGp")
+    );
+
+    setDocuments((prev) => {
+      const hasLetterToGp = prev.some((d) => d.type === "letter-to-gp");
+
+      const next = prev.map((doc) => {
+        if (doc.type !== "progress-note") return doc;
+
+        const hasEnUsSections = (doc.sections ?? []).some((s) =>
+          ["history", "physical", "results", "assessment"].includes(s.id)
+        );
+        if (!hasEnUsSections) return doc;
+
+        return {
+          ...doc,
+          sections: createEnGbProgressNoteSections({ isEmpty: false, medical }),
+        };
+      });
+
+      if (hasLetterToGp) return next;
+
+      const noteIndex = next.findIndex((d) => d.type === "progress-note");
+      const created = noteIndex >= 0 ? next[noteIndex]?.created ?? "--" : "--";
+
+      const letterDoc: DocumentItem = {
+        id: "letter-to-gp-1",
+        name: "Letter to GP",
+        created,
+        type: "letter-to-gp",
+        sections: [
+          {
+            id: "letter-to-gp",
+            title: "Letter to GP",
+            content: letterTemplate ?? "",
+            checked: false,
+          },
+        ],
+        isExpanded: true,
+      };
+
+      if (noteIndex >= 0) {
+        const withLetter = [...next];
+        withLetter.splice(noteIndex, 0, letterDoc);
+        return withLetter;
+      }
+
+      return [letterDoc, ...next];
+    });
+  }, [locale, medical]);
+
+  // Backfill en-GB Letter to GP content once the medical bundle is available.
+  // This prevents an empty seeded letter when bundles load async.
+  useEffect(() => {
+    if (locale !== "en-GB") return;
+
+    // In the default/home experience we want the same behavior as Task 1:
+    // the Letter to GP starts empty and should not auto-fill.
+    if (isDefaultDocumentsDataset) return;
+
+    const letterTemplate = normalizeParagraphSpacing(
+      getMedicalContentString(medical, "letterToGp")
+    );
+    if (!letterTemplate) return;
+
+    setDocuments((prev) => {
+      let changed = false;
+
+      const next = prev.map((doc) => {
+        if (doc.type !== "letter-to-gp") return doc;
+
+        // Task 1 intentionally starts with an empty Letter to GP.
+        if (doc.created === "--") return doc;
+
+        let docChanged = false;
+
+        const sections = doc.sections || [];
+        const nextSections = sections.map((s) => {
+          if (s.id !== "letter-to-gp") return s;
+          if (s.content.trim().length > 0) return s;
+
+          changed = true;
+          docChanged = true;
+          return { ...s, content: letterTemplate };
+        });
+
+        return docChanged ? { ...doc, sections: nextSections } : doc;
+      });
+
+      return changed ? next : prev;
+    });
+  }, [locale, medical, isDefaultDocumentsDataset]);
 
   // Scroll to the first initially expanded document on mount
   const hasScrolledToInitialRef = useRef(false);
@@ -191,7 +296,7 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
           }
         }
       }
-    }, 100);
+    }, DOCUMENT_TIMING_MS.initialScrollDelay);
 
     return () => clearTimeout(timer);
   }, [initialExpandedDocuments, scrollToTop]);
@@ -254,13 +359,10 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
       autoSelectText &&
       !hasSimulatedReplacementRef.current
     ) {
-      console.log(
-        "[DictationState] Detected transition to 'on', triggering typing simulation"
-      );
       // Small delay to let the UI update
       setTimeout(() => {
         runTypingSimulation();
-      }, 100);
+      }, DOCUMENT_TIMING_MS.typingSimulationStartDelay);
     }
     // Note: hasSimulatedReplacementRef is intentionally excluded - we only want to check its current value,
     // not re-run the effect when the ref object changes (refs are stable across renders)
@@ -493,9 +595,9 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
           setTimeout(() => {
             setIsPronounReplacement(false);
             onPronounReplacementComplete?.();
-          }, 100);
-        }, 2000);
-      }, 3000);
+          }, DOCUMENT_TIMING_MS.pronounReplacementCompletionDelay);
+        }, DOCUMENT_TIMING_MS.aiToastCompleted);
+      }, DOCUMENT_TIMING_MS.aiToastDetectedPronoun);
     }
   }, [triggerPronounReplacement, documents, onPronounReplacementComplete]);
 
@@ -506,11 +608,16 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
 
     // Only trigger when the prop transitions from false to true
     if (!wasTrigger && triggerDraftReferralLetter) {
-      // Get patient-specific referral letter content
-      const referralContent = getPatientContentForSection(
+      const fallbackReferralContent = getPatientContentForSection(
         "Referral Note",
         selectedPatientId || undefined
       );
+
+      const referralContent =
+        locale === "en-GB"
+          ? getMedicalContentString(medical, "referralLetter") ??
+            fallbackReferralContent
+          : fallbackReferralContent;
 
       // Always create a new referral letter (allow multiple)
       const newReferralLetter: DocumentItem = {
@@ -565,7 +672,7 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
             block: "start",
           });
         }
-      }, 100);
+      }, DOCUMENT_TIMING_MS.referralScrollDelay);
 
       // Clear any existing timeout
       if (aiRequestToastTimeoutRef.current) {
@@ -591,8 +698,8 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
           setAiRequestToastVisible(false);
           setAiRequestSkeletonDocIds(new Set());
           setIsDraftingReferralLetter(false);
-        }, 2000);
-      }, 5000);
+        }, DOCUMENT_TIMING_MS.aiToastCompleted);
+      }, DOCUMENT_TIMING_MS.aiToastDetectedDefault);
     }
   }, [
     triggerDraftReferralLetter,
@@ -664,8 +771,8 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
           // Hide toast and stop skeleton after completed
           setAiRequestToastVisible(false);
           setAiRequestSkeletonDocIds(new Set());
-        }, 2000);
-      }, 5000);
+        }, DOCUMENT_TIMING_MS.aiToastCompleted);
+      }, DOCUMENT_TIMING_MS.aiToastDetectedDefault);
     },
     []
   );
@@ -680,23 +787,31 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
   }, []);
 
   const handleAddNotes = (noteTypes: string[]) => {
-    console.log("handleAddNotes received:", noteTypes);
-
-    const today = new Date().toLocaleDateString("en-US", {
+    const today = formatDate(new Date(), {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
     });
 
     const newDocuments: DocumentItem[] = noteTypes.map((noteType, index) => {
-      console.log(`Processing noteType: "${noteType}"`);
-      return createDocumentFromType(noteType, index, today);
-    });
+      const doc = createDocumentFromType(noteType, index, today);
 
-    console.log("Adding documents:", newDocuments);
+      if (doc.type === "referral-letter" && locale === "en-GB") {
+        const enGbReferral = getMedicalContentString(medical, "referralLetter");
+        if (enGbReferral) {
+          return {
+            ...doc,
+            sections: (doc.sections || []).map((s, i) =>
+              i === 0 ? { ...s, content: enGbReferral } : s
+            ),
+          };
+        }
+      }
+
+      return doc;
+    });
     setDocuments((prev) => {
       const updated = [...newDocuments, ...prev];
-      console.log("Updated documents:", updated);
       return updated;
     });
     setIsAddNoteDialogOpen(false);

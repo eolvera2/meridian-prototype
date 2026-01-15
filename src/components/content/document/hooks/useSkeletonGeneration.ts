@@ -8,6 +8,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import type { DocumentItem } from "../DocumentComponent.types";
+import { DOCUMENT_TIMING_MS } from "../DocumentComponent.constants";
 
 export interface UseSkeletonGenerationOptions {
   /** Current documents array */
@@ -73,8 +74,8 @@ export const useSkeletonGeneration = (
       afterComplete?: () => void;
     }) => {
       const {
-        duration = 3000,
-        toastDelay = 500,
+        duration = DOCUMENT_TIMING_MS.skeletonDefaultDuration,
+        toastDelay = DOCUMENT_TIMING_MS.skeletonToastDelay,
         documentIds,
         documentNames,
         afterComplete,
@@ -117,7 +118,7 @@ export const useSkeletonGeneration = (
 
         // Call afterComplete callback after a brief delay
         if (afterComplete) {
-          setTimeout(afterComplete, 100);
+          setTimeout(afterComplete, DOCUMENT_TIMING_MS.skeletonAfterCompleteDelay);
         }
       }, duration);
 

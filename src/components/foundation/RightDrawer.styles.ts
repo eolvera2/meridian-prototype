@@ -13,16 +13,16 @@ export const useRightDrawerStyles = makeStyles({
     "& .fui-Drawer": {
       backgroundColor: tokens.colorNeutralBackground2,
       borderLeft: `1px solid ${tokens.colorNeutralStroke2}`,
-      boxShadow: "none !important",
+      boxShadow: "var(--shadow-none) !important",
     },
     // Additional high-specificity selectors to remove all shadows
     "& > .fui-Drawer": {
-      boxShadow: "none !important",
+      boxShadow: "var(--shadow-none) !important",
     },
     "&&& .fui-Drawer": {
-      boxShadow: "none !important",
+      boxShadow: "var(--shadow-none) !important",
     },
-    boxShadow: "none !important",
+    boxShadow: "var(--shadow-none) !important",
 
     // Force relative positioning for desktop inline mode
     "@media (min-width: 769px)": {
@@ -65,11 +65,11 @@ export const useRightDrawerStyles = makeStyles({
     color: tokens.colorNeutralForeground1,
 
     "@media (max-width: 768px) and (min-width: 481px)": {
-      fontSize: "14px",
+      fontSize: tokens.fontSizeBase300,
     },
 
     "@media (max-width: 480px)": {
-      fontSize: "14px",
+      fontSize: tokens.fontSizeBase300,
     },
   },
 
@@ -248,7 +248,7 @@ export const useRightDrawerStyles = makeStyles({
       bottom: "72px",
       width: "50%",
       height: "calc(100vh - var(--title-bar-height, 44px) - 72px)",
-      zIndex: 150,
+      zIndex: "var(--z-index-drawer)",
       "& .fui-Drawer": {
         position: "fixed",
         right: 0,
@@ -269,7 +269,7 @@ export const useRightDrawerStyles = makeStyles({
       bottom: "72px",
       width: "100%",
       height: "calc(100vh - var(--title-bar-height, 44px) - 72px)",
-      zIndex: 150,
+      zIndex: "var(--z-index-drawer)",
       "& .fui-Drawer": {
         position: "fixed",
         top: "var(--title-bar-height, 44px)",

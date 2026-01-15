@@ -12,14 +12,14 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
-    zIndex: 5,
+    zIndex: "var(--z-index-content)",
     height: "100%",
     borderRight: `1px solid ${tokens.colorNeutralStroke2}`,
     minHeight: 0,
 
     "@media (max-width: 768px)": {
       width: "100%",
-      zIndex: 15,
+      zIndex: "var(--z-index-navigation-secondary)",
       position: "relative",
     },
   },
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   },
 
   title: {
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
     fontWeight: 600,
     color: tokens.colorNeutralForeground1,
     margin: 0,

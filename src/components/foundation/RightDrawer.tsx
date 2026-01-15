@@ -27,6 +27,7 @@ import { LibraryPanel } from "../content/LibraryPanel";
 import { PlaceholderPanel } from "../shared/PlaceholderPanel";
 import { useRightDrawerStyles } from "./RightDrawer.styles";
 import "./RightDrawer.css";
+import { useI18n } from "../../i18n/I18nContext";
 
 const useCustomHeaderStyles = makeStyles({
   title: {
@@ -36,19 +37,19 @@ const useCustomHeaderStyles = makeStyles({
   rightSection: {
     display: "flex",
     alignItems: "center",
-    gap: "4px",
+    gap: "var(--gap-small)",
     flexShrink: 0,
     minWidth: "max-content",
   },
   librarySubHeader: {
     display: "flex",
-    gap: "8px",
-    paddingTop: "8px",
+    gap: "var(--gap-large)",
+    paddingTop: "var(--spacing-large)",
   },
   generalChatButton: {
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "var(--gap-medium)",
     color: tokens.colorNeutralForeground1,
     fontSize: tokens.fontSizeBase300,
     fontWeight: tokens.fontWeightRegular,
@@ -63,12 +64,12 @@ const useCustomHeaderStyles = makeStyles({
   },
   divider: {
     width: "1px",
-    height: "24px",
+    height: "var(--icon-size-standard)",
     backgroundColor: tokens.colorNeutralStroke2,
     marginLeft: "4px",
   },
   iconButton: {
-    minWidth: "32px",
+    minWidth: "var(--button-size-standard)",
     color: tokens.colorNeutralForeground2,
   },
 });
@@ -105,6 +106,7 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
 }) => {
   const styles = useRightDrawerStyles();
   const headerStyles = useCustomHeaderStyles();
+  const { t } = useI18n();
   const overlayProps =
     type === "overlay" ? { modalType: "non-modal" as const } : {};
 
@@ -120,21 +122,21 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
   const getDrawerTitle = () => {
     switch (content) {
       case "copilot":
-        return "Copilot";
+        return t("rightDrawer.titles.copilot");
       case "notifications":
-        return "Notifications";
+        return t("rightDrawer.titles.notifications");
       case "memos":
-        return "Memos";
+        return t("rightDrawer.titles.memos");
       case "transcription":
-        return "Transcript";
+        return t("rightDrawer.titles.transcript");
       case "extensions":
-        return "Extensions";
+        return t("rightDrawer.titles.extensions");
       case "library":
-        return "Library";
+        return t("rightDrawer.titles.library");
       case "settings":
-        return "Settings";
+        return t("rightDrawer.titles.settings");
       default:
-        return "Panel";
+        return t("rightDrawer.titles.panel");
     }
   };
 
@@ -149,13 +151,15 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
       case "transcription":
         return <TranscriptPanel />;
       case "extensions":
-        return <PlaceholderPanel message="Extensions content coming soon..." />;
+        return (
+          <PlaceholderPanel message={t("rightDrawer.placeholders.extensionsComingSoon")} />
+        );
       case "library":
         return <LibraryPanel onPromptClick={onLibraryPromptClick} />;
       case "settings":
         return <Settings onClose={onClose} />;
       default:
-        return <PlaceholderPanel message="Select a tool to view content" />;
+        return <PlaceholderPanel message={t("rightDrawer.placeholders.selectTool")} />;
     }
   };
 
@@ -187,19 +191,19 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
               <div className={headerStyles.rightSection}>
                 <button className={headerStyles.generalChatButton}>
                   <OpenRegular style={{ fontSize: "16px" }} />
-                  <span>General chat</span>
+                  <span>{t("rightDrawer.actions.generalChat")}</span>
                 </button>
                 <div className={headerStyles.divider} />
                 <Button
                   appearance="subtle"
-                  aria-label="Close"
+                  aria-label={t("common.close")}
                   icon={<Dismiss24Regular />}
                   onClick={onClose}
                 />
               </div>
             }
           >
-            <span className={headerStyles.title}>Copilot</span>
+            <span className={headerStyles.title}>{t("rightDrawer.titles.copilot")}</span>
           </DrawerHeaderTitle>
         ) : content === "memos" ? (
           <DrawerHeaderTitle
@@ -207,59 +211,59 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
               <div className={headerStyles.rightSection}>
                 <Button
                   appearance="subtle"
-                  aria-label="Search"
+                  aria-label={t("common.search")}
                   icon={<Search20Regular />}
                 />
                 <Button
                   appearance="subtle"
-                  aria-label="Filter"
+                  aria-label={t("common.filter")}
                   icon={<Filter20Regular />}
                 />
                 <Button
                   appearance="subtle"
-                  aria-label="Divider"
+                  aria-label={t("common.divider")}
                   disabled={true}
                   icon={<DividerTall20Regular />}
                 />
                 <Button
                   appearance="subtle"
-                  aria-label="Close"
+                  aria-label={t("common.close")}
                   icon={<Dismiss24Regular />}
                   onClick={onClose}
                 />
               </div>
             }
           >
-            <span className={headerStyles.title}>Memos</span>
+            <span className={headerStyles.title}>{t("rightDrawer.titles.memos")}</span>
           </DrawerHeaderTitle>
         ) : content === "transcription" ? (
           <DrawerHeaderTitle
             action={
               <div className={headerStyles.rightSection}>
-                <Tooltip content="Search" relationship="label">
+                <Tooltip content={t("common.search")} relationship="label">
                   <Button
                     appearance="subtle"
-                    aria-label="Search"
+                    aria-label={t("common.search")}
                     icon={<Search20Regular />}
                   />
                 </Tooltip>
-                <Tooltip content="Filter" relationship="label">
+                <Tooltip content={t("common.filter")} relationship="label">
                   <Button
                     appearance="subtle"
-                    aria-label="Filter"
+                    aria-label={t("common.filter")}
                     icon={<Filter20Regular />}
                   />
                 </Tooltip>
                 <Button
                   appearance="subtle"
-                  aria-label="Divider"
+                  aria-label={t("common.divider")}
                   disabled={true}
                   icon={<DividerTall20Regular />}
                 />
-                <Tooltip content="Close" relationship="label">
+                <Tooltip content={t("common.close")} relationship="label">
                   <Button
                     appearance="subtle"
-                    aria-label="Close"
+                    aria-label={t("common.close")}
                     icon={<Dismiss24Regular />}
                     onClick={onClose}
                   />
@@ -267,7 +271,7 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
               </div>
             }
           >
-            <span className={headerStyles.title}>Transcript</span>
+            <span className={headerStyles.title}>{t("rightDrawer.titles.transcript")}</span>
           </DrawerHeaderTitle>
         ) : content === "notifications" ? (
           <DrawerHeaderTitle
@@ -275,60 +279,60 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
               <div className={headerStyles.rightSection}>
                 <Button
                   appearance="subtle"
-                  aria-label="Search"
+                  aria-label={t("common.search")}
                   icon={<Search20Regular />}
                 />
                 <Button
                   appearance="subtle"
-                  aria-label="Filter"
+                  aria-label={t("common.filter")}
                   icon={<Filter20Regular />}
                 />
                 <Button
                   appearance="subtle"
-                  aria-label="Divider"
+                  aria-label={t("common.divider")}
                   disabled={true}
                   icon={<DividerTall20Regular />}
                 />
                 <Button
                   appearance="subtle"
-                  aria-label="Close"
+                  aria-label={t("common.close")}
                   icon={<Dismiss24Regular />}
                   onClick={onClose}
                 />
               </div>
             }
           >
-            <span className={headerStyles.title}>Notifications</span>
+            <span className={headerStyles.title}>{t("rightDrawer.titles.notifications")}</span>
           </DrawerHeaderTitle>
         ) : content === "library" ? (
           <>
             <DrawerHeaderTitle
               action={
                 <div className={headerStyles.rightSection}>
-                  <Tooltip content="Search" relationship="label">
+                  <Tooltip content={t("common.search")} relationship="label">
                     <Button
                       appearance="subtle"
-                      aria-label="Search"
+                      aria-label={t("common.search")}
                       icon={<Search20Regular />}
                     />
                   </Tooltip>
-                  <Tooltip content="Filter" relationship="label">
+                  <Tooltip content={t("common.filter")} relationship="label">
                     <Button
                       appearance="subtle"
-                      aria-label="Filter"
+                      aria-label={t("common.filter")}
                       icon={<Filter20Regular />}
                     />
                   </Tooltip>
                   <Button
                     appearance="subtle"
-                    aria-label="Divider"
+                    aria-label={t("common.divider")}
                     disabled={true}
                     icon={<DividerTall20Regular />}
                   />
-                  <Tooltip content="Close" relationship="label">
+                  <Tooltip content={t("common.close")} relationship="label">
                     <Button
                       appearance="subtle"
-                      aria-label="Close"
+                      aria-label={t("common.close")}
                       icon={<Dismiss24Regular />}
                       onClick={onClose}
                     />
@@ -336,15 +340,15 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
                 </div>
               }
             >
-              <span className={headerStyles.title}>Library</span>
+              <span className={headerStyles.title}>{t("rightDrawer.titles.library")}</span>
             </DrawerHeaderTitle>
 
             <div className={headerStyles.librarySubHeader}>
               <Button appearance="outline" icon={<AddRegular />} size="small">
-                Create prompt
+                {t("rightDrawer.actions.createPrompt")}
               </Button>
               <Button appearance="outline" icon={<OpenRegular />} size="small">
-                Manage library
+                {t("rightDrawer.actions.manageLibrary")}
               </Button>
             </div>
           </>
@@ -354,7 +358,7 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
               content !== "settings" ? (
                 <Button
                   appearance="subtle"
-                  aria-label="Close"
+                  aria-label={t("common.close")}
                   icon={<Dismiss24Regular />}
                   onClick={onClose}
                 />

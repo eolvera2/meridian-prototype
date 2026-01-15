@@ -14,7 +14,7 @@ export const useTask9Styles = makeStyles({
     height: "100vh",
     width: "100%",
     overflow: "hidden",
-    boxShadow: "0px 2px 4px rgba(0,0,0,0.14), 0px 0px 2px rgba(0,0,0,0.12)",
+    boxShadow: "var(--shadow-small)",
     backgroundColor: tokens.colorNeutralBackground1,
     boxSizing: "border-box",
   },
@@ -33,18 +33,18 @@ export const useTask9Styles = makeStyles({
   contosoBadge: {
     width: "20px",
     height: "20px",
-    borderRadius: "9999px",
+    borderRadius: "var(--border-radius-circular)",
     backgroundColor: tokens.colorBrandBackground,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: "#fff",
+    color: "var(--colorBrandForeground)",
     fontSize: "10px",
     fontWeight: 600,
   },
 
   contosoAppTitle: {
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     fontWeight: 600,
     lineHeight: "20px",
     color: tokens.colorNeutralForeground1,
@@ -55,20 +55,20 @@ export const useTask9Styles = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
-    gap: "4px",
+    gap: "var(--gap-small)",
   },
 
   // Header with patient info
   ehrHeader: {
     display: "flex",
     alignItems: "center",
-    gap: "6px",
-    padding: "10px",
+    gap: "var(--gap-medium)",
+    padding: "var(--spacing-xlarge)",
     height: "58px",
     boxSizing: "border-box",
     overflow: "hidden",
     flexShrink: 0,
-    backgroundColor: "#d6e6f5",
+    backgroundColor: "var(--palette-blue-d6e6f5)",
     borderBottom: "1px solid #a0a0a0",
   },
 
@@ -76,7 +76,7 @@ export const useTask9Styles = makeStyles({
     width: "40px",
     height: "40px",
     borderRadius: "50%",
-    backgroundColor: "#d9d9d9",
+    backgroundColor: "var(--palette-gray-d9d9d9)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -86,26 +86,26 @@ export const useTask9Styles = makeStyles({
   patientInfo: {
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "var(--gap-medium)",
     flex: 1,
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     letterSpacing: "0.56px",
   },
 
   patientName: {
     fontWeight: 700,
-    color: "#242424",
+    color: "var(--palette-gray-242424)",
   },
 
   patientDetails: {
-    color: "#242424",
+    color: "var(--palette-gray-242424)",
     fontWeight: 300,
   },
 
   // Divider
   divider: {
     height: "1px",
-    backgroundColor: "#e0e0e0",
+    backgroundColor: "var(--palette-gray-e0e0e0)",
     width: "100%",
     flexShrink: 0,
   },
@@ -117,10 +117,10 @@ export const useTask9Styles = makeStyles({
     gap: "0",
     padding: "0",
     paddingTop: "10px",
-    paddingBottom: "10px",
+    paddingBottom: "var(--spacing-xlarge)",
     overflow: "hidden",
     minHeight: 0,
-    backgroundColor: "#d6e6f5",
+    backgroundColor: "var(--palette-blue-d6e6f5)",
   },
 
   // Left Navigation
@@ -129,29 +129,29 @@ export const useTask9Styles = makeStyles({
     flexDirection: "column",
     width: "146px",
     flexShrink: 0,
-    backgroundColor: "#d6e6f5",
+    backgroundColor: "var(--palette-blue-d6e6f5)",
     gap: "0",
     paddingTop: "0",
     paddingLeft: "10px",
-    paddingRight: "10px",
+    paddingRight: "var(--spacing-xlarge)",
     paddingBottom: "0",
   },
 
   leftNavItem: {
     display: "flex",
     alignItems: "center",
-    gap: "10px",
-    padding: "10px",
+    gap: "var(--gap-xlarge)",
+    padding: "var(--spacing-xlarge)",
     width: "100%",
     boxSizing: "border-box",
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--colorNeutralBackground1)",
     borderBottom: "1px solid #e0e0e0",
   },
 
   leftNavItemBadge: {
     width: "32px",
     height: "32px",
-    borderRadius: "9999px",
+    borderRadius: "var(--border-radius-circular)",
     backgroundColor: tokens.colorBrandBackground,
     display: "flex",
     alignItems: "center",
@@ -162,7 +162,7 @@ export const useTask9Styles = makeStyles({
   leftNavItemBadgeGeneric: {
     width: "32px",
     height: "32px",
-    borderRadius: "9999px",
+    borderRadius: "var(--border-radius-circular)",
     backgroundColor: tokens.colorBrandBackground,
     flexShrink: 0,
   },
@@ -177,25 +177,25 @@ export const useTask9Styles = makeStyles({
   leftNavItemPlaceholder: {
     flex: 1,
     height: "26px",
-    backgroundColor: "#d9d9d9",
+    backgroundColor: "var(--palette-gray-d9d9d9)",
   },
 
   // Epic Note container (main content)
   epicNote: {
     flex: 1,
-    padding: "10px",
+    padding: "var(--spacing-xlarge)",
     overflow: "auto",
     minHeight: 0,
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--colorNeutralBackground1)",
   },
 
   noteContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: "var(--colorNeutralBackground1)",
     display: "flex",
     flexDirection: "column",
     height: "100%",
     overflow: "hidden",
-    borderRadius: "4px",
+    borderRadius: "var(--border-radius-medium)",
   },
 
   noteHeader: {
@@ -214,7 +214,7 @@ export const useTask9Styles = makeStyles({
   },
 
   noteTitle: {
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
     fontWeight: 600,
     letterSpacing: "0.8px",
     height: "24px",
@@ -223,7 +223,7 @@ export const useTask9Styles = makeStyles({
 
   noteBody: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "var(--colorNeutralBackground1)",
     overflow: "auto",
   },
 
@@ -231,13 +231,13 @@ export const useTask9Styles = makeStyles({
   rightColumn: {
     display: "flex",
     flexDirection: "column",
-    gap: "10px",
+    gap: "var(--gap-xlarge)",
     width: "274px",
     flexShrink: 0,
-    backgroundColor: "#d6e6f5",
+    backgroundColor: "var(--palette-blue-d6e6f5)",
     paddingTop: "0",
     paddingLeft: "10px",
-    paddingRight: "10px",
+    paddingRight: "var(--spacing-xlarge)",
     paddingBottom: "0",
   },
 
@@ -245,18 +245,18 @@ export const useTask9Styles = makeStyles({
   levelOfService: {
     display: "flex",
     flexDirection: "column",
-    gap: "10px",
-    padding: "10px",
+    gap: "var(--gap-xlarge)",
+    padding: "var(--spacing-xlarge)",
     overflow: "hidden",
-    boxShadow: "0px 2px 4px rgba(0,0,0,0.14), 0px 0px 2px rgba(0,0,0,0.12)",
-    borderRadius: "4px",
-    backgroundColor: "#f5f5f5",
+    boxShadow: "var(--shadow-small)",
+    borderRadius: "var(--border-radius-medium)",
+    backgroundColor: "var(--colorNeutralBackground3)",
   },
 
   losHeader: {
     fontSize: "16px",
     fontWeight: 700,
-    color: "#5b5fc7",
+    color: "var(--palette-purple-5b5fc7)",
   },
 
   losSearchBar: {
@@ -270,27 +270,27 @@ export const useTask9Styles = makeStyles({
     flex: 1,
     display: "flex",
     alignItems: "center",
-    gap: "4px",
-    borderBottom: "1px solid #616161",
+    gap: "var(--gap-small)",
+    borderBottom: "1px solid var(--palette-gray-616161)",
     padding: "6px 10px",
   },
 
   losSearchText: {
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase200,
     lineHeight: "16px",
-    color: "#707070",
+    color: "var(--palette-gray-707070)",
   },
 
   losAddButton: {
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "var(--gap-medium)",
     padding: "6px 12px",
-    border: "1px solid #d1d1d1",
-    borderRadius: "4px",
+    border: "1px solid var(--palette-gray-d1d1d1)",
+    borderRadius: "var(--border-radius-medium)",
     backgroundColor: "transparent",
     cursor: "pointer",
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     fontWeight: 600,
   },
 
@@ -306,11 +306,11 @@ export const useTask9Styles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     padding: "6px 12px",
-    border: "1px solid #d1d1d1",
-    borderRadius: "4px",
+    border: "1px solid var(--palette-gray-d1d1d1)",
+    borderRadius: "var(--border-radius-medium)",
     backgroundColor: "transparent",
     cursor: "pointer",
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     fontWeight: 600,
     lineHeight: "20px",
   },
@@ -319,26 +319,26 @@ export const useTask9Styles = makeStyles({
   ehrComponent: {
     display: "flex",
     flexDirection: "column",
-    gap: "8px",
-    padding: "4px",
-    border: "1px solid #d1d1d1",
-    borderRadius: "4px",
+    gap: "var(--gap-large)",
+    padding: "var(--spacing-small-4)",
+    border: "1px solid var(--palette-gray-d1d1d1)",
+    borderRadius: "var(--border-radius-medium)",
     overflow: "hidden",
     width: "100%",
     boxSizing: "border-box",
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--colorNeutralBackground1)",
   },
 
   ehrComponentAvatar: {
     width: "32px",
     height: "32px",
     borderRadius: "50%",
-    backgroundColor: "#d9d9d9",
+    backgroundColor: "var(--palette-gray-d9d9d9)",
   },
 
   ehrComponentLine: {
     height: "12px",
-    backgroundColor: "#d9d9d9",
+    backgroundColor: "var(--palette-gray-d9d9d9)",
     width: "100%",
   },
 
@@ -351,24 +351,24 @@ export const useTask9Styles = makeStyles({
     height: "29px",
     padding: "0 16px",
     flexShrink: 0,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "var(--palette-gray-f0f0f0)",
   },
 
   footerBadge: {
     width: "20px",
     height: "20px",
-    borderRadius: "9999px",
+    borderRadius: "var(--border-radius-circular)",
     backgroundColor: tokens.colorBrandBackground,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: "#fff",
+    color: "var(--colorBrandForeground)",
     fontSize: "10px",
     fontWeight: 600,
   },
 
   footerText: {
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase200,
     lineHeight: "16px",
     color: tokens.colorNeutralForeground1,
   },
@@ -387,7 +387,7 @@ export const useTask9Styles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: "4px",
+    borderRadius: "var(--border-radius-medium)",
     backgroundColor: "transparent",
     border: "none",
     cursor: "pointer",
@@ -402,10 +402,10 @@ export const useTask9Styles = makeStyles({
     top: "49px",
     right: "20px",
     width: "250px",
-    backgroundColor: "#fff",
-    borderRadius: "8px",
-    border: "1px solid #b7b7b7",
-    boxShadow: "0px 2px 4px rgba(0,0,0,0.14), 0px 0px 2px rgba(0,0,0,0.12)",
-    zIndex: 100,
+    backgroundColor: "var(--colorNeutralBackground1)",
+    borderRadius: "var(--border-radius-xlarge)",
+    border: "1px solid var(--palette-gray-b7b7b7)",
+    boxShadow: "var(--shadow-small)",
+    zIndex: "var(--z-index-header)",
   },
 });

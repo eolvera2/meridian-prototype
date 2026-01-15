@@ -31,10 +31,11 @@ import {
 import { useStyles } from "./OrdersComponent.styles";
 import type { OrdersComponentProps, OrderItem } from "./OrdersComponent.types";
 import { useOptionalTooltipContext } from "../tooltip";
+import { useI18n } from "../../../i18n/I18nContext";
 
 export const OrdersComponent: React.FC<OrdersComponentProps> = ({
-  title = "Orders",
-  createdDate = "11/1 at 1:30 PM",
+  title,
+  createdDate,
   orders: initialOrders = [
     { id: "1", text: "Start spironolactone 25 mg daily.", code: "150.33" },
     { id: "2", text: "Continue metoprolol succinate 50 mg daily." },
@@ -46,6 +47,9 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
   onAddOrder,
 }) => {
   const styles = useStyles();
+  const { t } = useI18n();
+  const resolvedTitle = title ?? t("orders.title");
+  const resolvedCreatedDate = createdDate ?? t("orders.createdDateSample");
   const [internalExpanded, setInternalExpanded] = useState(true);
   const [orders, setOrders] = useState<OrderItem[]>(initialOrders);
   const [focusedOrderId, setFocusedOrderId] = useState<string | null>(null);
@@ -170,25 +174,34 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
           <button
             className={styles.expandButton}
             onClick={handleToggleExpand}
-            aria-label={isExpanded ? "Collapse" : "Expand"}
+            aria-label={isExpanded ? t("orders.collapse") : t("orders.expand")}
           >
             {isExpanded ? (
-              <ChevronDown20Regular style={{ color: "#424242" }} />
+              <ChevronDown20Regular
+                style={{ color: "var(--colorNeutralForeground2)" }}
+              />
             ) : (
-              <ChevronRight20Regular style={{ color: "#424242" }} />
+              <ChevronRight20Regular
+                style={{ color: "var(--colorNeutralForeground2)" }}
+              />
             )}
           </button>
 
           <div className={styles.headerContent}>
             <div className={styles.eyebrow}>
-              <span>Created</span>
-              <span>{createdDate}</span>
+              <span>{t("orders.createdLabel")}</span>
+              <span>{resolvedCreatedDate}</span>
             </div>
-            <h3 className={styles.title}>{title}</h3>
+            <h3 className={styles.title}>{resolvedTitle}</h3>
           </div>
 
-          <button className={styles.menuButton} aria-label="More options">
-            <MoreVertical20Regular style={{ color: "#424242" }} />
+          <button
+            className={styles.menuButton}
+            aria-label={t("common.moreOptions")}
+          >
+            <MoreVertical20Regular
+              style={{ color: "var(--colorNeutralForeground2)" }}
+            />
           </button>
         </div>
 
@@ -197,20 +210,35 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
           <div className={styles.toolbar}>
             <div className={styles.toolbarActions}>
               <div className={styles.leftActions}>
-                <button className={styles.toolbarButton} aria-label="Export">
+                <button
+                  className={styles.toolbarButton}
+                  aria-label={t("orders.toolbar.export")}
+                >
                   <ArrowExportUp20Regular />
                 </button>
-                <button className={styles.toolbarButton} aria-label="Sync">
+                <button
+                  className={styles.toolbarButton}
+                  aria-label={t("orders.toolbar.sync")}
+                >
                   <ArrowSync20Regular />
                 </button>
-                <button className={styles.toolbarButton} aria-label="History">
+                <button
+                  className={styles.toolbarButton}
+                  aria-label={t("orders.toolbar.history")}
+                >
                   <History20Regular />
                 </button>
-                <button className={styles.toolbarButton} aria-label="Cart">
+                <button
+                  className={styles.toolbarButton}
+                  aria-label={t("orders.toolbar.cart")}
+                >
                   <Cart20Regular />
                 </button>
               </div>
-              <button className={styles.toolbarButton} aria-label="Feedback">
+              <button
+                className={styles.toolbarButton}
+                aria-label={t("orders.toolbar.feedback")}
+              >
                 <PersonFeedback20Regular />
               </button>
             </div>
@@ -261,7 +289,10 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
 
                 {/* Copy button with code (if code exists) */}
                 {order.code && (
-                  <button className={styles.codeButton} aria-label="Copy code">
+                  <button
+                    className={styles.codeButton}
+                    aria-label={t("orders.copyCode")}
+                  >
                     <Copy20Regular className={styles.codeIcon} />
                     <span className={styles.codeText}>{order.code}</span>
                   </button>
@@ -271,7 +302,7 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
                 <button
                   className={styles.deleteButton}
                   onClick={() => handleDeleteClick(order.id)}
-                  aria-label="Delete order"
+                  aria-label={t("orders.deleteOrder")}
                 >
                   <Delete20Regular />
                 </button>
@@ -282,10 +313,12 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
             <button
               className={styles.addOrderButton}
               onClick={handleAddOrder}
-              aria-label="Add order"
+              aria-label={t("orders.addOrder")}
             >
-              <Add20Regular style={{ width: "20px", height: "20px" }} />
-              <span className={styles.addOrderText}>Add order</span>
+              <Add20Regular className="icon-size-20" />
+              <span className={styles.addOrderText}>
+                {t("orders.addOrderText")}
+              </span>
             </button>
           </div>
         </div>
@@ -304,25 +337,25 @@ export const OrdersComponent: React.FC<OrdersComponentProps> = ({
           <DialogBody>
             <div className={styles.dialogHeader}>
               <DialogTitle className={styles.dialogTitle}>
-                Remove order?
+                {t("orders.removeOrderTitle")}
               </DialogTitle>
               <button
                 className={styles.dialogCloseButton}
                 onClick={handleCancelDelete}
-                aria-label="Close dialog"
+                aria-label={t("orders.closeDialog")}
               >
                 <Dismiss24Regular />
               </button>
             </div>
             <DialogContent className={styles.dialogContent}>
-              Removing this order will generate the note.
+              {t("orders.removeOrderBody")}
             </DialogContent>
             <DialogActions className={styles.dialogActions}>
               <Button appearance="secondary" onClick={handleCancelDelete}>
-                Cancel
+                {t("common.cancel")}
               </Button>
               <Button appearance="primary" onClick={handleConfirmDelete}>
-                Remove
+                {t("orders.remove")}
               </Button>
             </DialogActions>
           </DialogBody>

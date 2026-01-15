@@ -12,7 +12,11 @@ import type {
 /**
  * Formats a date as a relative label (Today, Yesterday, or full date).
  */
-export const formatDateLabel = (date: Date): string => {
+export const formatDateLabel = (
+  date: Date,
+  locale: string = "en-US",
+  t: (key: string) => string = (key) => key
+): string => {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const yesterday = new Date(today);
@@ -25,36 +29,38 @@ export const formatDateLabel = (date: Date): string => {
   );
 
   if (notificationDate.getTime() === today.getTime()) {
-    return "Today";
+    return t("common.today");
   }
   if (notificationDate.getTime() === yesterday.getTime()) {
-    return "Yesterday";
+    return t("common.yesterday");
   }
 
   // Format as "Wednesday, November 27"
-  return date.toLocaleDateString("en-US", {
+  return new Intl.DateTimeFormat(locale, {
     weekday: "long",
     month: "long",
     day: "numeric",
-  });
+  }).format(date);
 };
 
 /**
  * Formats a date as a time string (e.g., "11:02 AM").
  */
-export const formatTime = (date: Date): string => {
-  return date.toLocaleTimeString("en-US", {
+export const formatTime = (date: Date, locale: string = "en-US"): string => {
+  return new Intl.DateTimeFormat(locale, {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
-  });
+  }).format(date);
 };
 
 /**
  * Groups notifications by their date label.
  */
 export const groupNotificationsByDate = (
-  notifications: Notification[]
+  notifications: Notification[],
+  locale: string = "en-US",
+  t: (key: string) => string = (key) => key
 ): NotificationGroup[] => {
   const groups: Map<string, Notification[]> = new Map();
 
@@ -64,7 +70,7 @@ export const groupNotificationsByDate = (
   );
 
   sortedNotifications.forEach((notification) => {
-    const label = formatDateLabel(notification.timestamp);
+    const label = formatDateLabel(notification.timestamp, locale, t);
     const existing = groups.get(label) || [];
     groups.set(label, [...existing, notification]);
   });
@@ -78,7 +84,9 @@ export const groupNotificationsByDate = (
 /**
  * Generates sample notifications for demo purposes.
  */
-export const generateSampleNotifications = (): Notification[] => {
+export const generateSampleNotifications = (
+  t: (key: string) => string = (key) => key
+): Notification[] => {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const yesterday = new Date(today);
@@ -93,13 +101,13 @@ export const generateSampleNotifications = (): Notification[] => {
   return [
     {
       id: "1",
-      author: "Dragon Copilot",
+      author: t("app.title"),
       isAIGenerated: true,
       timestamp: new Date(
         today.getTime() + 11 * 60 * 60 * 1000 + 2 * 60 * 1000
       ),
-      title: "Mobile mic disconnected",
-      description: "Retry pairing here and on your mobile device",
+      title: t("notifications.sample.1.title"),
+      description: t("notifications.sample.1.description"),
       type: "alert",
     },
     {
@@ -109,9 +117,8 @@ export const generateSampleNotifications = (): Notification[] => {
       timestamp: new Date(
         today.getTime() + 11 * 60 * 60 * 1000 + 2 * 60 * 1000
       ),
-      title: "Information assistant response",
-      description:
-        "The plan includes a tiered pharmacy network. Preferred options include:",
+      title: t("notifications.sample.2.title"),
+      description: t("notifications.sample.2.description"),
       type: "info",
     },
     {
@@ -121,8 +128,8 @@ export const generateSampleNotifications = (): Notification[] => {
       timestamp: new Date(
         today.getTime() + 11 * 60 * 60 * 1000 + 2 * 60 * 1000
       ),
-      title: "Optum recommendation",
-      description: "Time: E/M Code 99214\n30-39 minutes spent on patient care",
+      title: t("notifications.sample.3.title"),
+      description: t("notifications.sample.3.description"),
       type: "recommendation",
     },
     {
@@ -132,20 +139,19 @@ export const generateSampleNotifications = (): Notification[] => {
       timestamp: new Date(
         yesterday.getTime() + 11 * 60 * 60 * 1000 + 2 * 60 * 1000
       ),
-      title: "Canary alert",
-      description: "Detected a depression biomarker",
+      title: t("notifications.sample.4.title"),
+      description: t("notifications.sample.4.description"),
       type: "recommendation",
     },
     {
       id: "5",
-      author: "Dragon Copilot",
+      author: t("app.title"),
       isAIGenerated: true,
       timestamp: new Date(
         yesterday.getTime() + 9 * 60 * 60 * 1000 + 30 * 60 * 1000
       ),
-      title: "Speech recognition paused",
-      description:
-        "Ambient listening has been paused due to inactivity. Click to resume.",
+      title: t("notifications.sample.5.title"),
+      description: t("notifications.sample.5.description"),
       type: "alert",
     },
     {
@@ -155,21 +161,19 @@ export const generateSampleNotifications = (): Notification[] => {
       timestamp: new Date(
         yesterday.getTime() + 14 * 60 * 60 * 1000 + 15 * 60 * 1000
       ),
-      title: "Lab results available",
-      description:
-        "New lab results are ready for review. CBC and metabolic panel completed.",
+      title: t("notifications.sample.6.title"),
+      description: t("notifications.sample.6.description"),
       type: "info",
     },
     {
       id: "7",
-      author: "Dragon Copilot",
+      author: t("app.title"),
       isAIGenerated: true,
       timestamp: new Date(
         twoDaysAgo.getTime() + 10 * 60 * 60 * 1000 + 45 * 60 * 1000
       ),
-      title: "Documentation reminder",
-      description:
-        "You have 3 unsigned notes from yesterday. Please review and sign.",
+      title: t("notifications.sample.7.title"),
+      description: t("notifications.sample.7.description"),
       type: "alert",
     },
     {
@@ -179,9 +183,8 @@ export const generateSampleNotifications = (): Notification[] => {
       timestamp: new Date(
         twoDaysAgo.getTime() + 16 * 60 * 60 * 1000 + 20 * 60 * 1000
       ),
-      title: "Prior authorization approved",
-      description:
-        "Prior auth for MRI lumbar spine has been approved. Valid for 30 days.",
+      title: t("notifications.sample.8.title"),
+      description: t("notifications.sample.8.description"),
       type: "info",
     },
     {
@@ -191,21 +194,19 @@ export const generateSampleNotifications = (): Notification[] => {
       timestamp: new Date(
         threeDaysAgo.getTime() + 8 * 60 * 60 * 1000 + 55 * 60 * 1000
       ),
-      title: "Quality measure alert",
-      description:
-        "Patient is due for annual wellness visit. Last visit was 13 months ago.",
+      title: t("notifications.sample.9.title"),
+      description: t("notifications.sample.9.description"),
       type: "recommendation",
     },
     {
       id: "10",
-      author: "Dragon Copilot",
+      author: t("app.title"),
       isAIGenerated: true,
       timestamp: new Date(
         threeDaysAgo.getTime() + 15 * 60 * 60 * 1000 + 10 * 60 * 1000
       ),
-      title: "Medication interaction warning",
-      description:
-        "Potential interaction detected between newly prescribed medication and existing regimen.",
+      title: t("notifications.sample.10.title"),
+      description: t("notifications.sample.10.description"),
       type: "alert",
     },
     {
@@ -215,21 +216,19 @@ export const generateSampleNotifications = (): Notification[] => {
       timestamp: new Date(
         fourDaysAgo.getTime() + 11 * 60 * 60 * 1000 + 30 * 60 * 1000
       ),
-      title: "Referral status update",
-      description:
-        "Cardiology referral for patient has been scheduled. Appointment set for next week.",
+      title: t("notifications.sample.11.title"),
+      description: t("notifications.sample.11.description"),
       type: "info",
     },
     {
       id: "12",
-      author: "Dragon Copilot",
+      author: t("app.title"),
       isAIGenerated: true,
       timestamp: new Date(
         fourDaysAgo.getTime() + 13 * 60 * 60 * 1000 + 45 * 60 * 1000
       ),
-      title: "Coding suggestion",
-      description:
-        "Based on documentation, consider adding diagnosis code for hypertension management.",
+      title: t("notifications.sample.12.title"),
+      description: t("notifications.sample.12.description"),
       type: "recommendation",
     },
   ];

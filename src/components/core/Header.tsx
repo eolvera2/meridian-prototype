@@ -11,6 +11,7 @@ import {
   MoreVertical24Regular as MoreVertical,
 } from "@fluentui/react-icons";
 import { useStyles } from "./Header.styles";
+import { useI18n } from "../../i18n/I18nContext";
 
 const Script = bundleIcon(ScriptFilled, ScriptRegular);
 const Library = bundleIcon(LibraryFilled, LibraryRegular);
@@ -48,6 +49,7 @@ export const Header: React.FC<HeaderProps> = ({
   disableNavigation = false,
 }) => {
   const styles = useStyles();
+  const { t } = useI18n();
 
   // Determine header class based on worklist state
   const getHeaderClass = () => {
@@ -68,7 +70,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className={styles.headerContent}>
         <div className={styles.left}>
           <div className={styles.homeButtonContainer}>
-            <Tooltip content="Home" relationship="label">
+            <Tooltip content={t("header.tooltip.home")} relationship="label">
               <Button
                 onClick={() => onHomeClick?.()}
                 className={styles.homeToggleButton}
@@ -81,21 +83,21 @@ export const Header: React.FC<HeaderProps> = ({
                 }
                 appearance="transparent"
                 size="small"
-                aria-label="Back to Home"
+                aria-label={t("header.aria.backToHome")}
                 disabled={disableNavigation}
               />
             </Tooltip>
           </div>
           <div className={styles.patientInfo}>
             <div className={styles.name} title={patient?.name}>
-              {patient ? patient.name : "No patient selected"}
+              {patient ? patient.name : t("header.patient.noneSelected")}
             </div>
             <div className={styles.subtitle}>
               {patient ? (
                 <>
                   <div className={styles.reasonRow}>
                     <span className={styles.reasonLabel}>
-                      Reason for Visit:
+                      {t("header.patient.reasonForVisit")}
                     </span>
                     <span>{patient.reason ?? ""}</span>
                   </div>
@@ -104,15 +106,15 @@ export const Header: React.FC<HeaderProps> = ({
                   ) : null}
                 </>
               ) : (
-                "Select a patient from the worklist"
+                t("header.patient.selectFromWorklist")
               )}
             </div>
           </div>
         </div>
 
         <div className={styles.right}>
-          <Tooltip content="Transcript" relationship="label">
-            <span style={{ display: "inline-flex" }}>
+          <Tooltip content={t("header.tooltip.transcript")} relationship="label">
+            <span className="inline-flex">
               <ToggleButton
                 checked={scriptChecked}
                 onClick={() => onToggleScript?.(!scriptChecked)}
@@ -126,17 +128,19 @@ export const Header: React.FC<HeaderProps> = ({
                 }
                 appearance="subtle"
                 size="small"
-                aria-label="Toggle Transcript"
+                aria-label={t("header.aria.toggleTranscript")}
                 style={
-                  scriptChecked ? { backgroundColor: "#f5f5f5" } : undefined
+                  scriptChecked
+                    ? { backgroundColor: "var(--colorNeutralBackground3)" }
+                    : undefined
                 }
                 disabled={disableNavigation}
               />
             </span>
           </Tooltip>
 
-          <Tooltip content="Library" relationship="label">
-            <span style={{ display: "inline-flex" }}>
+          <Tooltip content={t("header.tooltip.library")} relationship="label">
+            <span className="inline-flex">
               <ToggleButton
                 checked={libraryChecked}
                 onClick={() => onToggleLibrary?.(!libraryChecked)}
@@ -150,19 +154,21 @@ export const Header: React.FC<HeaderProps> = ({
                 }
                 appearance="subtle"
                 size="small"
-                aria-label="Toggle Library"
+                aria-label={t("header.aria.toggleLibrary")}
                 style={
-                  libraryChecked ? { backgroundColor: "#f5f5f5" } : undefined
+                  libraryChecked
+                    ? { backgroundColor: "var(--colorNeutralBackground3)" }
+                    : undefined
                 }
                 disabled={disableNavigation}
               />
             </span>
           </Tooltip>
 
-          <Tooltip content="Menu" relationship="label">
-            <span style={{ display: "inline-flex" }}>
+          <Tooltip content={t("header.tooltip.menu")} relationship="label">
+            <span className="inline-flex">
               <Button
-                aria-label="More options"
+                aria-label={t("common.moreOptions")}
                 appearance="subtle"
                 size="small"
                 icon={<MoreVertical className={styles.icon} />}

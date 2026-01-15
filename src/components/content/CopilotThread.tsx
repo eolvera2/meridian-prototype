@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { SendFilled, SendRegular } from "@fluentui/react-icons";
 import { useOptionalTooltipContext } from "./tooltip";
+import { useI18n } from "../../i18n/I18nContext";
 
 const useStyles = makeStyles({
   chatContainer: {
@@ -11,7 +12,7 @@ const useStyles = makeStyles({
   },
   messagesArea: {
     flex: 1,
-    padding: "16px",
+    padding: "var(--spacing-xxxlarge)",
     overflowY: "auto",
     display: "flex",
     flexDirection: "column",
@@ -48,10 +49,10 @@ const useStyles = makeStyles({
   inputContainer: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "var(--gap-large)",
     backgroundColor: tokens.colorNeutralBackground1,
     border: `1px solid ${tokens.colorNeutralStrokeAccessible}`,
-    borderRadius: "6px",
+    borderRadius: "var(--border-radius-large)",
     padding: "4px 6px 4px 16px",
     ":focus-within": {
       border: `1px solid ${tokens.colorBrandStroke1}`,
@@ -72,8 +73,8 @@ const useStyles = makeStyles({
     },
   },
   sendButton: {
-    minWidth: "32px",
-    minHeight: "32px",
+    minWidth: "var(--button-size-standard)",
+    minHeight: "var(--button-size-standard)",
     borderRadius: tokens.borderRadiusMedium,
     border: "none",
     backgroundColor: "transparent",
@@ -82,7 +83,7 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    transition: "all 0.2s ease",
+    transition: "var(--transition-ease-fast)",
     "&:hover:not(:disabled)": {
       backgroundColor: tokens.colorNeutralBackground3,
       color: tokens.colorNeutralForeground1,
@@ -102,6 +103,7 @@ export type CopilotThreadProps = Record<string, never>;
 
 export const CopilotThread: React.FC<CopilotThreadProps> = () => {
   const styles = useStyles();
+  const { t } = useI18n();
   const [inputValue, setInputValue] = useState("");
   const [isHovering, setIsHovering] = useState(false);
 
@@ -130,16 +132,13 @@ export const CopilotThread: React.FC<CopilotThreadProps> = () => {
     <div className={styles.chatContainer}>
       <div className={`${styles.messagesArea} right-drawer-scroll-container`}>
         <div className={styles.messageAgent}>
-          Hello! I'm here to help you with patient information and clinical
-          insights.
+          {t("copilotThread.sample.agentIntro")}
         </div>
         <div className={styles.messageUser}>
-          Can you provide a summary of the current patient's condition?
+          {t("copilotThread.sample.userQuestion")}
         </div>
         <div className={styles.messageAgent}>
-          Based on the available data, I can see this patient has been admitted
-          for routine monitoring. Would you like me to analyze their latest
-          vitals?
+          {t("copilotThread.sample.agentFollowUp")}
         </div>
       </div>
 
@@ -147,7 +146,7 @@ export const CopilotThread: React.FC<CopilotThreadProps> = () => {
         <div className={styles.inputContainer}>
           <input
             type="text"
-            placeholder="Ask Dragon Copilot for help"
+            placeholder={t("copilotThread.inputPlaceholder")}
             className={styles.textInput}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
@@ -168,9 +167,9 @@ export const CopilotThread: React.FC<CopilotThreadProps> = () => {
             onMouseLeave={() => setIsHovering(false)}
           >
             {isHovering && inputValue.trim() ? (
-              <SendFilled style={{ fontSize: "20px" }} />
+              <SendFilled style={{ fontSize: tokens.fontSizeBase500 }} />
             ) : (
-              <SendRegular style={{ fontSize: "20px" }} />
+              <SendRegular style={{ fontSize: tokens.fontSizeBase500 }} />
             )}
           </button>
         </div>

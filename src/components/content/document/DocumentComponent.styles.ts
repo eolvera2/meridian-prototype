@@ -20,12 +20,12 @@ export const useDocumentStyles = makeStyles({
     backgroundColor: tokens.colorNeutralBackground2,
     borderRadius: tokens.borderRadiusSmall,
     width: "100%",
-    minWidth: "300px",
-    marginTop: "2px",
+    minWidth: "var(--content-min-width)",
+    marginTop: "var(--spacing-xs)",
 
     // Only constrain width on large screens (desktop)
     "@media (min-width: 769px)": {
-      maxWidth: "1000px",
+      maxWidth: "var(--content-max-width)",
       padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalXL}`,
     },
 
@@ -40,7 +40,7 @@ export const useDocumentStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     gap: tokens.spacingHorizontalS,
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
   },
 });
 
@@ -153,7 +153,7 @@ export const useTableStyles = makeStyles({
     flexDirection: "column",
     gap: tokens.spacingHorizontalMNudge,
     width: "100%",
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
 
     // Override DataGrid default styles to match design
     "& .fui-DataGrid": {
@@ -271,7 +271,7 @@ export const useCardStyles = makeStyles({
     padding: tokens.spacingHorizontalL,
     display: "flex",
     flexDirection: "column",
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
   },
 
   cardHeader: {
@@ -389,8 +389,8 @@ export const useToolbarStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    minWidth: "24px",
-    minHeight: "24px",
+    minWidth: "var(--icon-size-standard)",
+    minHeight: "var(--icon-size-standard)",
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
       color: tokens.colorBrandForeground1,
@@ -430,7 +430,7 @@ export const useSectionStyles = makeStyles({
     flexDirection: "column",
     gap: tokens.spacingHorizontalS,
     paddingTop: tokens.spacingVerticalMNudge,
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
   },
 
   sectionDivider: {
@@ -444,7 +444,7 @@ export const useSectionStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     gap: tokens.spacingHorizontalS,
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
   },
 
   sectionHeader: {
@@ -479,12 +479,12 @@ export const useSectionStyles = makeStyles({
     boxShadow: tokens.shadow2,
     padding: tokens.spacingHorizontalMNudge,
     minHeight: "40px",
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
     "@media (max-width: 769px)": {
       backgroundColor: tokens.colorNeutralBackground3,
       border: "none",
       borderRadius: tokens.borderRadiusSmall,
-      boxShadow: "none",
+      boxShadow: "var(--shadow-none)",
       padding: 0,
       minWidth: "0",
       minHeight: "52px",
@@ -560,7 +560,7 @@ export const useSectionStyles = makeStyles({
   sectionTextareaDictationFocus: {
     outline: "none !important",
     border: "none !important",
-    boxShadow: "none !important",
+    boxShadow: "var(--shadow-none) !important",
     padding: `${tokens.spacingVerticalMNudge} !important`,
     backgroundColor: tokens.colorNeutralBackground1,
   },
@@ -587,7 +587,7 @@ export const useSectionStyles = makeStyles({
   },
 
   highlightedWord: {
-    color: "#0078D4",
+    color: "var(--colorBrandBackground)",
     backgroundColor: "transparent",
     fontWeight: 600,
   },
@@ -595,17 +595,16 @@ export const useSectionStyles = makeStyles({
   sectionContentDictationFocus: {
     border: "3px solid transparent !important",
     borderRadius: tokens.borderRadiusSmall,
-    backgroundImage:
-      "linear-gradient(90deg, #0D91E1 0%, #5E62C6 25%, #D2007E 50%, #E94B3C 75%, #FF5F3D 100%)",
+    backgroundImage: "var(--gradient-rainbow-progress)",
     padding: "0 !important",
-    boxShadow: "none !important",
+    boxShadow: "var(--shadow-none) !important",
   },
 
   // Blue border for regular focus state (when not dictating)
   sectionContentFocus: {
     border: `2px solid ${tokens.colorBrandForeground1} !important`,
     borderRadius: tokens.borderRadiusSmall,
-    boxShadow: "none !important",
+    boxShadow: "var(--shadow-none) !important",
   },
 });
 
@@ -620,7 +619,7 @@ export const useReferenceStyles = makeStyles({
     gap: tokens.spacingHorizontalXS,
     marginTop: tokens.spacingVerticalM,
     height: "48px",
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
   },
 
   referencesHeader: {
@@ -647,7 +646,7 @@ export const useReferenceStyles = makeStyles({
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     borderRadius: tokens.borderRadiusSmall,
     padding: `2px ${tokens.spacingHorizontalS}`,
-    height: "24px",
+    height: "var(--icon-size-standard)",
     display: "flex",
     alignItems: "center",
     gap: "2px",
@@ -853,7 +852,7 @@ export const useSkeletonStyles = makeStyles({
     backgroundColor: "transparent",
     border: "none",
     borderRadius: tokens.borderRadiusSmall,
-    boxShadow: "none",
+    boxShadow: "var(--shadow-none)",
     minHeight: "120px",
   },
 
@@ -889,11 +888,11 @@ export const useStyles = makeStyles({
     backgroundColor: tokens.colorNeutralBackground2,
     borderRadius: tokens.borderRadiusSmall,
     width: "100%",
-    minWidth: "300px",
-    marginTop: "2px",
+    minWidth: "var(--content-min-width)",
+    marginTop: "var(--spacing-xs)",
 
     "@media (min-width: 769px)": {
-      maxWidth: "1000px",
+      maxWidth: "var(--content-max-width)",
       padding: `${tokens.spacingVerticalS} ${tokens.spacingHorizontalXL}`,
     },
 
@@ -1004,7 +1003,7 @@ export const useStyles = makeStyles({
     flexDirection: "column",
     gap: tokens.spacingHorizontalMNudge,
     width: "100%",
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
 
     "& .fui-DataGrid": {
       backgroundColor: "transparent",
@@ -1114,7 +1113,7 @@ export const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     gap: tokens.spacingHorizontalS,
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
   },
 
   documentCard: {
@@ -1124,7 +1123,7 @@ export const useStyles = makeStyles({
     padding: tokens.spacingHorizontalL,
     display: "flex",
     flexDirection: "column",
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
   },
 
   cardHeader: {
@@ -1237,8 +1236,8 @@ export const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    minWidth: "24px",
-    minHeight: "24px",
+    minWidth: "var(--icon-size-standard)",
+    minHeight: "var(--icon-size-standard)",
     "&:hover": {
       backgroundColor: tokens.colorNeutralBackground1Hover,
       color: tokens.colorBrandForeground1,
@@ -1273,7 +1272,7 @@ export const useStyles = makeStyles({
     flexDirection: "column",
     gap: tokens.spacingHorizontalS,
     paddingTop: tokens.spacingVerticalMNudge,
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
   },
 
   sectionDivider: {
@@ -1287,7 +1286,7 @@ export const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     gap: tokens.spacingHorizontalS,
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
   },
 
   sectionHeader: {
@@ -1322,12 +1321,12 @@ export const useStyles = makeStyles({
     boxShadow: tokens.shadow2,
     padding: tokens.spacingHorizontalMNudge,
     minHeight: "40px",
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
     "@media (max-width: 769px)": {
       backgroundColor: tokens.colorNeutralBackground3,
       border: "none",
       borderRadius: tokens.borderRadiusSmall,
-      boxShadow: "none",
+      boxShadow: "var(--shadow-none)",
       padding: 0,
       minWidth: "0",
       minHeight: "52px",
@@ -1399,7 +1398,7 @@ export const useStyles = makeStyles({
   sectionTextareaDictationFocus: {
     outline: "none !important",
     border: "none !important",
-    boxShadow: "none !important",
+    boxShadow: "var(--shadow-none) !important",
     padding: `${tokens.spacingVerticalMNudge} !important`,
     backgroundColor: tokens.colorNeutralBackground1,
   },
@@ -1428,16 +1427,15 @@ export const useStyles = makeStyles({
   sectionContentDictationFocus: {
     border: "3px solid transparent !important",
     borderRadius: tokens.borderRadiusSmall,
-    backgroundImage:
-      "linear-gradient(90deg, #0D91E1 0%, #5E62C6 25%, #D2007E 50%, #E94B3C 75%, #FF5F3D 100%)",
+    backgroundImage: "var(--gradient-rainbow-progress)",
     padding: "0 !important",
-    boxShadow: "none !important",
+    boxShadow: "var(--shadow-none) !important",
   },
 
   sectionContentFocus: {
     border: `2px solid ${tokens.colorBrandForeground1} !important`,
     borderRadius: tokens.borderRadiusSmall,
-    boxShadow: "none !important",
+    boxShadow: "var(--shadow-none) !important",
   },
 
   // References
@@ -1447,7 +1445,7 @@ export const useStyles = makeStyles({
     gap: tokens.spacingHorizontalXS,
     marginTop: tokens.spacingVerticalM,
     height: "48px",
-    minWidth: "300px",
+    minWidth: "var(--content-min-width)",
   },
 
   referencesHeader: {
@@ -1474,7 +1472,7 @@ export const useStyles = makeStyles({
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     borderRadius: tokens.borderRadiusSmall,
     padding: `2px ${tokens.spacingHorizontalS}`,
-    height: "24px",
+    height: "var(--icon-size-standard)",
     display: "flex",
     alignItems: "center",
     gap: "2px",
@@ -1669,7 +1667,7 @@ export const useStyles = makeStyles({
     backgroundColor: "transparent",
     border: "none",
     borderRadius: tokens.borderRadiusSmall,
-    boxShadow: "none",
+    boxShadow: "var(--shadow-none)",
     minHeight: "120px",
   },
 

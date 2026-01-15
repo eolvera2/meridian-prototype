@@ -5,7 +5,10 @@
  */
 
 import { useCallback, useRef } from "react";
-import { getDictationContentForSection } from "../DocumentComponent.constants";
+import {
+  DOCUMENT_TIMING_MS,
+  getDictationContentForSection,
+} from "../DocumentComponent.constants";
 import type { DocumentItem } from "../DocumentComponent.types";
 import type { TextFieldElement } from "../../../../utils/getCaretCoordinates";
 
@@ -49,11 +52,8 @@ export const useDictationSimulation = (
 
       // Check if already simulating
       if (isSimulatingRef.current) {
-        console.log("Already simulating, skipping");
         return;
       }
-
-      console.log("Starting dictation for section:", sectionTitle);
       isSimulatingRef.current = true;
 
       // Store reference to the field being simulated for auto-scroll
@@ -100,7 +100,7 @@ export const useDictationSimulation = (
         clearInterval(dictationIntervalRef.current);
       }
 
-      const typingSpeed = 30; // milliseconds per character
+      const typingSpeed = DOCUMENT_TIMING_MS.dictationCharInterval;
 
       dictationIntervalRef.current = window.setInterval(() => {
         if (!currentSimulationRef.current) return;
@@ -143,7 +143,6 @@ export const useDictationSimulation = (
           currentSimulationRef.current.charIndex++;
         } else {
           // Typing complete for this section
-          console.log("Typing complete for section:", sectionTitle);
           if (dictationIntervalRef.current) {
             clearInterval(dictationIntervalRef.current);
             dictationIntervalRef.current = null;

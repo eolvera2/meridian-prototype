@@ -13,6 +13,7 @@ import {
 import { Tooltip } from "@fluentui/react-components";
 import { RecentsTable } from "./RecentsTable";
 import type { DocumentGridItem } from "../DocumentComponent.types";
+import { useI18n } from "../../../../i18n/I18nContext";
 
 export interface DocumentHeaderProps {
   /** Styles object from useStyles */
@@ -40,16 +41,17 @@ export const DocumentHeader: React.FC<DocumentHeaderProps> = ({
   onOpenAddNoteDialog,
   ambientRecordingStopped,
 }) => {
+  const { t } = useI18n();
   return (
     <div className={`${styles.documentHeader} document-header`}>
       <div className={styles.headerTop}>
-        <h2 className={styles.title}>Recents</h2>
+        <h2 className={styles.title}>{t("recents.title")}</h2>
         <div className={styles.headerActions}>
-          <Tooltip content="Document Settings" relationship="label">
-            <span style={{ display: "inline-flex" }}>
+          <Tooltip content={t("document.header.settingsTooltip")} relationship="label">
+            <span className="inline-flex">
               <button
                 className={styles.headerButton}
-                aria-label="Document settings"
+                aria-label={t("document.header.settingsAria")}
                 onClick={() => onNavigateToDocumentSettings?.()}
                 disabled={!onNavigateToDocumentSettings}
                 style={{
@@ -60,23 +62,22 @@ export const DocumentHeader: React.FC<DocumentHeaderProps> = ({
                 }}
               >
                 <DocumentSettingsRegular className={styles.headerButtonIcon} />
-                Settings
+                {t("document.header.settings")}
               </button>
             </span>
           </Tooltip>
 
-          <Tooltip content="Add Document" relationship="label">
-            <span style={{ display: "inline-flex" }}>
+          <Tooltip content={t("document.header.addTooltip")} relationship="label">
+            <span className="inline-flex">
               <button
                 className={styles.headerButton}
                 onClick={() => {
-                  console.log("Add button clicked, opening dialog");
                   onOpenAddNoteDialog();
                 }}
-                aria-label="Add document"
+                aria-label={t("document.header.addAria")}
               >
                 <AddCircleRegular className={styles.headerButtonIcon} />
-                Add
+                {t("document.header.add")}
               </button>
             </span>
           </Tooltip>

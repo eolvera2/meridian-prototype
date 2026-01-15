@@ -16,6 +16,10 @@ import { TooltipProvider } from "./components/content/tooltip";
 import { WorklistProvider } from "./components/content/worklist";
 import type { DocumentItem } from "./components/content/document";
 import { navigateToSuccess } from "./utils/navigation";
+import { useI18n } from "./i18n/I18nContext";
+import { createEnGbProgressNoteSections } from "./utils/enGbNote";
+import { getMedicalContentString } from "./utils/medicalBundle";
+import { normalizeParagraphSpacing } from "./utils/normalizeParagraphSpacing";
 import "./styles/tokens.css";
 import "./styles/globals.css";
 import "./App.css";
@@ -40,6 +44,7 @@ Given his dermatologic history and family risk factors, I would appreciate your 
 Please let me know if additional information is needed. Thank you in advance for your evaluation and care.`;
 
 function AppTask5Start() {
+  const { locale, medical } = useI18n();
   const [navCollapsed, setNavCollapsed] = useState(true);
   const [worklistCollapsed, setWorklistCollapsed] = useState(true);
   const [patientSelected, setPatientSelected] = useState(true);
@@ -94,7 +99,11 @@ function AppTask5Start() {
           {
             id: "referral-content-task5",
             title: "Referral Note",
-            content: REFERRAL_LETTER_CONTENT,
+            content:
+              locale === "en-GB"
+                ? getMedicalContentString(medical, "referralLetter") ??
+                  REFERRAL_LETTER_CONTENT
+                : REFERRAL_LETTER_CONTENT,
             checked: false,
           },
         ],
@@ -141,6 +150,29 @@ function AppTask5Start() {
         ],
         isExpanded: false,
       },
+      ...(locale === "en-GB"
+        ? ([
+            {
+              id: "letter-to-gp-1",
+              name: "Letter to GP",
+              created: "12:00 PM",
+              modified: isSuccess ? "12:23 PM" : "12:20 PM",
+              type: "letter-to-gp",
+              sections: [
+                {
+                  id: "letter-to-gp",
+                  title: "Letter to GP",
+                  content:
+                    normalizeParagraphSpacing(
+                      getMedicalContentString(medical, "letterToGp")
+                    ) ?? "",
+                  checked: false,
+                },
+              ],
+              isExpanded: false,
+            },
+          ] as DocumentItem[])
+        : []),
       // Note document
       {
         id: "1",
@@ -148,11 +180,14 @@ function AppTask5Start() {
         created: "12:00 PM",
         modified: isSuccess ? "12:23 PM" : "12:20 PM",
         type: "progress-note",
-        sections: [
-          {
-            id: "history",
-            title: "History of Present Illness",
-            content: `The patient is a 41-year-old who presents for an annual physical exam. He underwent his initial colonoscopy at the age of 35, prompted by a family history of colorectal issues. He acknowledges that he was due for a follow-up procedure in the previous year but failed to schedule it. His last endoscopy was performed in 2018. He has expressed interest in scheduling a colonoscopy at the age of 45.
+        sections:
+          locale === "en-GB"
+            ? createEnGbProgressNoteSections({ isEmpty: false, medical })
+            : [
+                {
+                  id: "history",
+                  title: "History of Present Illness",
+                  content: `The patient is a 41-year-old who presents for an annual physical exam. He underwent his initial colonoscopy at the age of 35, prompted by a family history of colorectal issues. He acknowledges that he was due for a follow-up procedure in the previous year but failed to schedule it. His last endoscopy was performed in 2018. He has expressed interest in scheduling a colonoscopy at the age of 45.
 
 The patient had previously scheduled a dermatological appointment, which was subsequently cancelled. He has a history of actinic keratoses on his facial region. He has requested a referral to Dr. Charles Taylor at MGH, as recommended by his father.
 
@@ -165,26 +200,26 @@ The patient has observed a change in his urine color over the past year, noting 
 He is currently not on any medications.
 
 The patient denies experiencing any severe pain following his discectomy. He occasionally experiences discomfort, which he manages with light stretching exercises as instructed during his physical therapy sessions at Spaulding. He attributes his current lack of physical fitness to his back condition. He has expressed interest in obtaining a referral to Spaulding for swimming lessons. He has a history of lumbar spine injury and has been advised against heavy weightlifting. Prior to his injury, he maintained an active lifestyle, running approximately 15 miles per week and engaging in regular weight training.`,
-            checked: false,
-          },
-          {
-            id: "physical",
-            title: "Physical Exam",
-            content: `Impacted cerumen is present in the right ear. No abnormal lymph nodes are felt in the neck. The thyroid appears normal. Both lungs are clear. The heart has a regular rate and rhythm. No murmurs are detected. The abdomen is soft and nontender. There is no swelling in the ankles. Actinic keratoses are present on the face. The skin on the back appears healthy.
+                  checked: false,
+                },
+                {
+                  id: "physical",
+                  title: "Physical Exam",
+                  content: `Impacted cerumen is present in the right ear. No abnormal lymph nodes are felt in the neck. The thyroid appears normal. Both lungs are clear. The heart has a regular rate and rhythm. No murmurs are detected. The abdomen is soft and nontender. There is no swelling in the ankles. Actinic keratoses are present on the face. The skin on the back appears healthy.
 
 Blood pressure is 109/72. Heart rate is 87.`,
-            checked: false,
-          },
-          {
-            id: "results",
-            title: "Results",
-            content: `Colonoscopy in 2018 showed normal colon.`,
-            checked: false,
-          },
-          {
-            id: "assessment",
-            title: "Assessment & Plan",
-            content: `1. Annual physical examination. The patient's blood pressure readings are within the normal range, and he is not currently on any antihypertensive medications. His cholesterol levels have been slightly elevated in the past. I will proceed with ordering blood work and a urinalysis. If the results indicate any abnormalities, I will recommend fasting blood work for further evaluation.
+                  checked: false,
+                },
+                {
+                  id: "results",
+                  title: "Results",
+                  content: `Colonoscopy in 2018 showed normal colon.`,
+                  checked: false,
+                },
+                {
+                  id: "assessment",
+                  title: "Assessment & Plan",
+                  content: `1. Annual physical examination. The patient's blood pressure readings are within the normal range, and he is not currently on any antihypertensive medications. His cholesterol levels have been slightly elevated in the past. I will proceed with ordering blood work and a urinalysis. If the results indicate any abnormalities, I will recommend fasting blood work for further evaluation.
 
 2. Colonoscopy. The patient underwent a colonoscopy in 2018, which yielded normal results. A repeat colonoscopy was recommended at the age of 50. I have advised the patient to postpone the colonoscopy until he reaches the age of 50, unless there are specific indications that necessitate an earlier procedure.
 
@@ -195,9 +230,9 @@ Blood pressure is 109/72. Heart rate is 87.`,
 5. Cerumen impaction. The patient has impacted cerumen in his right ear. Cerumen irrigation will be performed to alleviate the impaction.
 
 6. Back pain. The patient has a history of lumbar spine injury and has previously undergone discectomy surgery. I have recommended that the patient consider joining a gym and working with a personal trainer to improve his physical fitness. He should inform the trainer about his past discectomy surgery and exercise caution with his back. At this time, a referral to Spaulding is not necessary.`,
-            checked: false,
-          },
-        ],
+                  checked: false,
+                },
+              ],
         references: [
           {
             id: "1",
@@ -208,7 +243,7 @@ Blood pressure is 109/72. Heart rate is 87.`,
         isExpanded: false,
       },
     ],
-    [isSuccess]
+    [isSuccess, locale, medical]
   );
 
   // Expand only the topmost accordion (referral letter) by default
@@ -223,7 +258,6 @@ Blood pressure is 109/72. Heart rate is 87.`,
         <TooltipProvider>
           <div className="app-container">
             <TitleBar
-              title="Dragon Copilot"
               onMinimize={handleWindowControls.minimize}
               onMaximize={handleWindowControls.maximize}
               onClose={handleWindowControls.close}

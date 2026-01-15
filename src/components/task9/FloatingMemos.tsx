@@ -18,6 +18,7 @@ import {
   ChevronRight20Regular,
 } from "@fluentui/react-icons";
 import { navigateToSuccess } from "../../utils/navigation";
+import { useI18n } from "../../i18n/I18nContext";
 
 type FloatingMemosProps = {
   isRecording?: boolean;
@@ -45,15 +46,15 @@ const useStyles = makeStyles({
     background: "none",
     border: "none",
     borderRadius: "50%",
-    width: "32px",
-    height: "32px",
+    width: "var(--button-size-standard)",
+    height: "var(--button-size-standard)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
     color: tokens.colorBrandForeground1,
     cursor: "pointer",
-    transition: "background 0.2s",
+    transition: "var(--transition-background-fast)",
     "&:hover": {
       background: tokens.colorNeutralBackground3,
     },
@@ -68,9 +69,9 @@ const useStyles = makeStyles({
   },
   card: {
     display: "flex",
-    background: "#fff",
+    background: "var(--colorNeutralBackground1)",
     border: "none !important",
-    boxShadow: "none !important",
+    boxShadow: "var(--shadow-none) !important",
     width: "100%",
     maxWidth: "100%",
     padding: "0",
@@ -82,14 +83,14 @@ const useStyles = makeStyles({
   actions: {
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "var(--gap-medium)",
   },
   actionButton: {
     background: "none",
     border: "none",
     borderRadius: "50%",
-    width: "24px",
-    height: "24px",
+    width: "var(--icon-size-standard)",
+    height: "var(--icon-size-standard)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -106,7 +107,7 @@ const useStyles = makeStyles({
   title: {
     fontFamily: tokens.fontFamilyBase,
     fontWeight: 600,
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     lineHeight: tokens.lineHeightBase200,
     color: tokens.colorNeutralForeground1,
     flex: 1,
@@ -117,19 +118,19 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    marginTop: "4px",
-    marginBottom: "8px",
+    marginTop: "var(--spacing-small-4)",
+    marginBottom: "var(--spacing-large)",
   },
   chevronButton: {
     background: "none",
     border: "none",
     borderRadius: 0,
-    width: "32px",
-    height: "32px",
+    width: "var(--button-size-standard)",
+    height: "var(--button-size-standard)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
     color: tokens.colorNeutralForeground2,
     cursor: "pointer",
     transition: "background 0.2s, color 0.2s",
@@ -150,8 +151,8 @@ const useStyles = makeStyles({
     border: "none",
     outline: "none",
     resize: "none",
-    backgroundColor: "#fff", // Set background to white
-    borderRadius: "6px",
+    backgroundColor: "var(--colorNeutralBackground1)", // Set background to white
+    borderRadius: "var(--border-radius-large)",
     padding: "10px 12px",
     boxShadow: tokens.shadow2,
     "&:focus": {
@@ -167,6 +168,7 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
   onClose,
 }) => {
   const styles = useStyles();
+  const { t } = useI18n();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [copied, setCopied] = React.useState(false);
@@ -187,16 +189,16 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
     <div className={styles.root}>
       {/* Header row: title and actions (outside card) */}
       <div className={styles.cardHeader}>
-        <span className={styles.title}>Dictation 0001</span>
+        <span className={styles.title}>{t("task9.floatingMemos.title")}</span>
         <div className={styles.actions}>
           <Tooltip
-            content="Add memo"
+            content={t("task9.floatingMemos.addMemo")}
             relationship="label"
             positioning={{ position: "below" }}
           >
             <button
               className={styles.actionButton}
-              aria-label="Add memo"
+              aria-label={t("task9.floatingMemos.addMemo")}
               onClick={handleAdd}
             >
               <Add16Regular />
@@ -206,9 +208,11 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
           <Tooltip
             content={
               transferred ? (
-                <span className="darkTooltip">Transferred</span>
+                <span className="darkTooltip">
+                  {t("task9.floatingMemos.transferred")}
+                </span>
               ) : (
-                "Transfer"
+                t("task9.floatingMemos.transfer")
               )
             }
             relationship="label"
@@ -221,7 +225,7 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
           >
             <button
               className={styles.actionButton}
-              aria-label="Export memo"
+              aria-label={t("task9.floatingMemos.exportMemo")}
               onClick={handleUpload}
               onMouseEnter={() => !transferred && setHovered("transfer")}
               onMouseLeave={() => {
@@ -237,7 +241,13 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
           {/* Copy toggle button */}
           <Tooltip
             content={
-              copied ? <span className="darkTooltip">Copied</span> : "Copy"
+              copied ? (
+                <span className="darkTooltip">
+                  {t("task9.floatingMemos.copied")}
+                </span>
+              ) : (
+                t("common.copy")
+              )
             }
             relationship="label"
             visible={copied ? tooltipVisible === "copy" : hovered === "copy"}
@@ -245,7 +255,7 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
           >
             <button
               className={styles.actionButton}
-              aria-label="Copy memo"
+              aria-label={t("task9.floatingMemos.copyMemo")}
               onClick={() => {
                 setCopied((prev) => !prev);
                 setTooltipVisible("copy");
@@ -264,13 +274,13 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
             </button>
           </Tooltip>
           <Tooltip
-            content="Close"
+            content={t("common.close")}
             relationship="label"
             positioning={{ position: "below" }}
           >
             <button
               className={styles.actionButton}
-              aria-label="Close memo"
+              aria-label={t("task9.floatingMemos.closeMemo")}
               onClick={onClose}
             >
               <Dismiss20Regular />
@@ -281,7 +291,10 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
       {/* Card with textarea and chevrons below header */}
       <div className={styles.card}>
         <div className={styles.textareaRow}>
-          <button className={styles.chevronButton} aria-label="Previous memo">
+          <button
+            className={styles.chevronButton}
+            aria-label={t("task9.floatingMemos.previousMemo")}
+          >
             <ChevronLeft20Regular />
           </button>
           <textarea
@@ -293,7 +306,10 @@ export const FloatingMemos: React.FC<FloatingMemosProps> = ({
             spellCheck={false}
             autoComplete="off"
           />
-          <button className={styles.chevronButton} aria-label="Next memo">
+          <button
+            className={styles.chevronButton}
+            aria-label={t("task9.floatingMemos.nextMemo")}
+          >
             <ChevronRight20Regular />
           </button>
         </div>

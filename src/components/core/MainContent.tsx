@@ -13,6 +13,7 @@ import type { HeaderProps } from "./Header";
 import { usePanelControls } from "./hooks/usePanelControls";
 import { usePatientSelection } from "./hooks/usePatientSelection";
 import { useMainContentStyles, useDialogStyles } from "./MainContent.styles";
+import { MAIN_CONTENT_TIMING_MS } from "./MainContent.constants";
 import { DesktopWorkspace, MobileWorkspace } from "./layout";
 import type { MainContentProps, DialogReason } from "./MainContent.types";
 import type {
@@ -22,6 +23,7 @@ import type {
 } from "../shared";
 import { useTooltipContext } from "../content/tooltip";
 import { MicCursorTooltip } from "../content/MicCursorTooltip";
+import { useI18n } from "../../i18n/I18nContext";
 
 export const MainContent: React.FC<MainContentProps> = ({
   navCollapsed = false,
@@ -51,6 +53,7 @@ export const MainContent: React.FC<MainContentProps> = ({
 }) => {
   const styles = useMainContentStyles();
   const dialogStyles = useDialogStyles();
+  const { t } = useI18n();
 
   // Global tooltip context for all input/textarea elements
   const { tooltipVisible, tooltipPosition } = useTooltipContext();
@@ -130,7 +133,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     setTimeout(() => {
       // Call the original mic button click handler (which will start ambient recording)
       handleWorklistActions.onMicButtonClick(patientId);
-    }, 0);
+    }, MAIN_CONTENT_TIMING_MS.deferStartAmbientRecording);
   };
 
   // Create modified worklist actions with the wrapped handlers
@@ -217,7 +220,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     documentActivityTimeoutRef.current = window.setTimeout(() => {
       setDocumentActivity(null);
       documentActivityTimeoutRef.current = null;
-    }, 5000);
+    }, MAIN_CONTENT_TIMING_MS.documentActivityClear);
   };
 
   const describeDocumentContext = (documentId: string) => {
@@ -286,7 +289,10 @@ export const MainContent: React.FC<MainContentProps> = ({
     setScriptChecked(false);
     setLibraryChecked(false);
     // Reset the trigger after a brief delay
-    setTimeout(() => setResetToggleButtons(false), 100);
+    setTimeout(
+      () => setResetToggleButtons(false),
+      MAIN_CONTENT_TIMING_MS.resetToggleButtons
+    );
   };
 
   // Handler for library prompt click (e.g., "Change pronouns to they them", "Draft referral letter")
@@ -304,7 +310,7 @@ export const MainContent: React.FC<MainContentProps> = ({
       // Reset the trigger after the skeleton animation completes
       setTimeout(() => {
         setTriggerPronounReplacement(false);
-      }, 100);
+      }, MAIN_CONTENT_TIMING_MS.triggerReset);
     }
 
     // Check if this is the draft referral letter prompt
@@ -318,7 +324,7 @@ export const MainContent: React.FC<MainContentProps> = ({
       // Reset the trigger after the skeleton animation completes
       setTimeout(() => {
         setTriggerDraftReferralLetter(false);
-      }, 100);
+      }, MAIN_CONTENT_TIMING_MS.triggerReset);
     }
   };
 
@@ -347,7 +353,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     triggerRecordingReset();
     setTimeout(() => {
       window.dispatchEvent(new Event("resize"));
-    }, 50);
+    }, MAIN_CONTENT_TIMING_MS.homeResizeDispatch);
   };
 
   // Handle showing dialog when switching to dictation mode during ambient recording
@@ -368,18 +374,12 @@ export const MainContent: React.FC<MainContentProps> = ({
     setAmbientState("stop");
 
     if (dialogReason === "dictation") {
-      console.log(
-        `[Dialog] Confirmed: Stopping ambient recording and switching to Dictation mode`
-      );
       // Delay mode switch to allow the useEffect in DocumentComponent to detect
       // the pause→stop transition while micMode is still "ambient"
       setTimeout(() => {
         setMicTooltipMode("dictation");
-      }, 100);
+      }, MAIN_CONTENT_TIMING_MS.dictationModeSwitchAfterStop);
     } else {
-      console.log(
-        `[Dialog] Confirmed: Stopping ambient recording and navigating home`
-      );
       // Navigate home
       performHomeNavigation();
     }
@@ -389,7 +389,6 @@ export const MainContent: React.FC<MainContentProps> = ({
 
   // Handle dialog cancel - resume recording and stay in current mode/view
   const handleStopRecordingCancel = () => {
-    console.log(`[Dialog] Cancelled: Resuming ambient recording`);
     // Resume the recording
     setAmbientState("recording");
     // Close the dialog
@@ -401,35 +400,19 @@ export const MainContent: React.FC<MainContentProps> = ({
   // If in Dictation mode with state 'off', switch to Ambient mode
   // If in Ambient mode, switch to Dictation mode AND start dictation
   const handleMicModeToggle = () => {
-    const currentMode =
-      micTooltipMode === "dictation" ? "Dictation" : "Ambient";
-
     if (micTooltipMode === "dictation" && dictationState === "on") {
       // Turn off dictation but stay in Dictation mode
-      console.log(
-        `[Tooltip] Mode: '${currentMode}' (staying) | Dictation State: '${dictationState}' → 'off' | Ambient State: '${ambientState}'`
-      );
       setDictationState("off");
     } else if (micTooltipMode === "dictation" && dictationState === "off") {
       // In Dictation mode with mic off - turn ON the mic (start dictation)
-      console.log(
-        `[Tooltip] Mode: '${currentMode}' (staying) | Dictation State: '${dictationState}' → 'on' | Ambient State: '${ambientState}'`
-      );
       setDictationState("on");
     } else {
       // In Ambient mode, switch to Dictation mode AND start dictation automatically
       // If ambient is recording, show confirmation dialog first
       if (ambientState === "recording" || ambientState === "pause") {
-        console.log(
-          `[Tooltip] Ambient recording active, showing confirmation dialog`
-        );
         handleShowStopRecordingDialog();
         return;
       }
-
-      console.log(
-        `[Tooltip] Mode: '${currentMode}' → 'Dictation' | Dictation State: '${dictationState}' → 'on' | Ambient State: '${ambientState}'`
-      );
       setMicTooltipMode("dictation");
       setDictationState("on");
     }
@@ -528,7 +511,10 @@ export const MainContent: React.FC<MainContentProps> = ({
     setRightDrawerContent(content);
     setRightDrawerVisible(true);
     setResetToggleButtons(true);
-    setTimeout(() => setResetToggleButtons(false), 100);
+    setTimeout(
+      () => setResetToggleButtons(false),
+      MAIN_CONTENT_TIMING_MS.resetToggleButtons
+    );
   };
 
   const handleScriptToggle = (next: boolean) => {
@@ -577,8 +563,8 @@ export const MainContent: React.FC<MainContentProps> = ({
       // Step 3: After settings opens, navigate to documents subpage
       setTimeout(() => {
         setSettingsSubPage("documents");
-      }, 50);
-    }, 50);
+      }, MAIN_CONTENT_TIMING_MS.settingsNavigationStep);
+    }, MAIN_CONTENT_TIMING_MS.settingsNavigationStep);
   };
 
   const handleHelpClick = () => {
@@ -722,7 +708,7 @@ export const MainContent: React.FC<MainContentProps> = ({
               action={
                 <Button
                   appearance="subtle"
-                  aria-label="Close"
+                  aria-label={t("common.close")}
                   icon={<Dismiss24Regular />}
                   onClick={handleStopRecordingCancel}
                   className={dialogStyles.dialogCloseButton}
@@ -730,12 +716,11 @@ export const MainContent: React.FC<MainContentProps> = ({
               }
             >
               <span className={dialogStyles.dialogTitleText}>
-                Stop recording?
+                {t("mainContent.stopRecordingDialog.title")}
               </span>
             </DialogTitle>
             <DialogContent className={dialogStyles.dialogContent}>
-              Switching to dictation mode will stop your current recording and
-              generate an updated note.
+              {t("mainContent.stopRecordingDialog.body")}
             </DialogContent>
             <DialogActions className={dialogStyles.dialogActions}>
               <Button
@@ -743,14 +728,14 @@ export const MainContent: React.FC<MainContentProps> = ({
                 onClick={handleStopRecordingConfirm}
                 className={dialogStyles.dialogButton}
               >
-                Continue
+                {t("common.continue")}
               </Button>
               <Button
                 appearance="secondary"
                 onClick={handleStopRecordingCancel}
                 className={dialogStyles.dialogButton}
               >
-                Cancel
+                {t("common.cancel")}
               </Button>
             </DialogActions>
           </DialogBody>

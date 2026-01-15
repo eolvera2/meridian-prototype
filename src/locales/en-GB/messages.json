@@ -1,0 +1,519 @@
+{
+  "app": {
+    "title": "Dragon Copilot"
+  },
+  "common": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "moreOptions": "More options",
+    "search": "Search",
+    "filter": "Filter",
+    "divider": "Divider",
+    "menu": "Menu",
+    "export": "Export",
+    "reload": "Reload",
+    "restore": "Restore",
+    "highlight": "Highlight",
+    "selectAll": "Select all",
+    "feedback": "Feedback",
+    "continue": "Continue",
+    "close": "Close",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "copy": "Copy",
+    "add": "Add",
+    "undo": "Undo",
+    "minimize": "Minimize",
+    "maximize": "Maximize",
+    "dismiss": "Dismiss",
+    "dictation": "Dictation",
+    "loading": "Loading...",
+    "microsoft": "Microsoft",
+    "logoAlt": "Logo"
+  },
+  "narrowView": {
+    "iframeTitle": "Narrow View"
+  },
+  "memos": {
+    "moreOptions": "More options",
+    "addMemo": "Add a memo",
+    "sample": {
+      "1": {
+        "title": "Cardiac Monitoring Follow-up",
+        "description": "Review ECG results from this morning. Patient showing improved rhythm stability. Continue current medication protocol."
+      },
+      "2": {
+        "title": "Lab Results Summary",
+        "description": "Recent CBC shows elevated WBC count (12.5). Consider infection workup if symptoms persist. Recommend repeat in 48 hours."
+      },
+      "3": {
+        "title": "Medication Adjustment Notes",
+        "description": "Increased metoprolol to 50mg BID due to persistent tachycardia. Monitor BP closely over next 72 hours."
+      },
+      "4": {
+        "title": "Risk Assessment Update",
+        "description": "Based on recent vitals and lab trends, cardiovascular risk score has decreased. Recommend continuing current treatment plan."
+      },
+      "5": {
+        "title": "Discharge Planning Discussion",
+        "description": "Patient stable for discharge within 48-72 hours. Coordinate with social work for home care arrangements."
+      },
+      "6": {
+        "title": "Vital Signs Trend Analysis",
+        "description": "Blood pressure showing downward trend over past 3 days. Current average 128/82. Heart rate stable at 72 bpm."
+      },
+      "7": {
+        "title": "Consultation Request - Cardiology",
+        "description": "Requesting cardiology consult for evaluation of new murmur detected during morning rounds. Echo recommended."
+      }
+    }
+  },
+  "auth": {
+    "passwordScreen": {
+      "heading": "Enter the provided password to continue",
+      "passwordPlaceholder": "Enter password",
+      "verifying": "Verifying...",
+      "errorIncorrectPassword": "Incorrect password. Please try again.",
+      "sessionExpires": "Session expires after 2 hours of inactivity"
+    }
+  },
+  "copilotThread": {
+    "inputPlaceholder": "Ask Dragon Copilot for help",
+    "sample": {
+      "agentIntro": "Hello! I'm here to help you with patient information and clinical insights.",
+      "userQuestion": "Can you provide a summary of the current patient's condition?",
+      "agentFollowUp": "Based on the available data, I can see this patient has been admitted for routine monitoring. Would you like me to analyse their latest vitals?"
+    }
+  },
+  "notifications": {
+    "deleteNotification": "Delete notification",
+    "deleteNotificationAria": "Delete notification",
+    "deleteDialogTitle": "Delete notification",
+    "deleteDialogBody": "Are you sure you want to delete this notification? This action cannot be undone.",
+    "sample": {
+      "1": {
+        "title": "Mobile mic disconnected",
+        "description": "Retry pairing here and on your mobile device"
+      },
+      "2": {
+        "title": "Information assistant response",
+        "description": "The plan includes a tiered pharmacy network. Preferred options include:"
+      },
+      "3": {
+        "title": "Optum recommendation",
+        "description": "Time: E/M Code 99214\n30-39 minutes spent on patient care"
+      },
+      "4": {
+        "title": "Canary alert",
+        "description": "Detected a depression biomarker"
+      },
+      "5": {
+        "title": "Speech recognition paused",
+        "description": "Ambient listening has been paused due to inactivity. Click to resume."
+      },
+      "6": {
+        "title": "Lab results available",
+        "description": "New lab results are ready for review. CBC and metabolic panel completed."
+      },
+      "7": {
+        "title": "Documentation reminder",
+        "description": "You have 3 unsigned notes from yesterday. Please review and sign."
+      },
+      "8": {
+        "title": "Prior authorization approved",
+        "description": "Prior auth for MRI lumbar spine has been approved. Valid for 30 days."
+      },
+      "9": {
+        "title": "Quality measure alert",
+        "description": "Patient is due for annual wellness visit. Last visit was 13 months ago."
+      },
+      "10": {
+        "title": "Medication interaction warning",
+        "description": "Potential interaction detected between newly prescribed medication and existing regimen."
+      },
+      "11": {
+        "title": "Referral status update",
+        "description": "Cardiology referral for patient has been scheduled. Appointment set for next week."
+      },
+      "12": {
+        "title": "Coding suggestion",
+        "description": "Based on documentation, consider adding diagnosis code for hypertension management."
+      }
+    }
+  },
+  "recents": {
+    "title": "Recents",
+    "tableAriaLabel": "Recent documents",
+    "createdTodayAtPrefix": "Created today at",
+    "modifiedTodayAtPrefix": "Modified today at",
+    "modifiedTodayAtPrefixCap": "Modified Today at",
+    "createdTodayAt1200": "Created today at 12:00 PM",
+    "createdTodayAt1220": "Created today at 12:20 PM",
+    "createdTodayAt1145": "Created today at 11:45 AM",
+    "createdTodayAt1132": "Created today at 11:32 AM",
+    "modifiedTodayAt1202": "Modified Today at 12:02 PM",
+    "modifiedTodayAt1158": "Modified Today at 11:58 AM"
+  },
+  "worklist": {
+    "tabs": {
+      "ariaLabel": "Worklist tabs",
+      "schedule": "Schedule",
+      "userAdded": "User-added"
+    },
+    "search": {
+      "ariaLabel": "Search patients",
+      "placeholder": "Search patients..."
+    },
+    "dateRange": {
+      "start": "July 23"
+    },
+    "filter": {
+      "ariaLabel": "Filter options"
+    },
+    "sort": {
+      "tooltip": "Sort",
+      "ariaLabelPrefix": "Sort patients",
+      "alphabetically": "alphabetically",
+      "descending": "descending",
+      "ascending": "ascending"
+    },
+    "groups": {
+      "lastWeek": "Last Week",
+      "lastTwoWeeks": "Last 2 Weeks",
+      "lastMonth": "Last Month",
+      "later": "Later"
+    },
+    "reasonPrefix": "Reason:",
+    "syncInitiated": "Sync initiated",
+    "signed": "Signed",
+    "modified": "Modified",
+    "ambientRecording": "Ambient Recording",
+    "userAdded": "User-added",
+    "created": "Created",
+    "addPatient": "Add patient"
+  },
+  "documentCard": {
+    "references": "References"
+  },
+  "mainContent": {
+    "stopRecordingDialog": {
+      "title": "Stop recording?",
+      "body": "Switching to dictation mode will stop your current recording and generate an updated note."
+    }
+  },
+  "header": {
+    "tooltip": {
+      "home": "Home",
+      "transcript": "Transcript",
+      "library": "Library",
+      "menu": "Menu"
+    },
+    "aria": {
+      "backToHome": "Back to Home",
+      "toggleTranscript": "Toggle Transcript",
+      "toggleLibrary": "Toggle Library"
+    },
+    "patient": {
+      "noneSelected": "No patient selected",
+      "selectFromWorklist": "Select a patient from the worklist",
+      "reasonForVisit": "Reason for Visit:"
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "createdLabel": "Created",
+    "createdDateSample": "11/1 at 1:30 PM",
+    "toolbar": {
+      "export": "Export",
+      "sync": "Sync",
+      "history": "History",
+      "cart": "Cart",
+      "feedback": "Feedback"
+    },
+    "copyCode": "Copy code",
+    "deleteOrder": "Delete order",
+    "addOrder": "Add order",
+    "addOrderText": "Add order",
+    "removeOrderTitle": "Remove order?",
+    "closeDialog": "Close dialog",
+    "removeOrderBody": "Removing this order will generate the note.",
+    "remove": "Remove"
+  },
+  "addNoteDialog": {
+    "title": "Select"
+  },
+  "document": {
+    "header": {
+      "settingsTooltip": "Document Settings",
+      "settingsAria": "Document settings",
+      "settings": "Settings",
+      "addTooltip": "Add Document",
+      "addAria": "Add document",
+      "add": "Add"
+    },
+    "deleteDialog": {
+      "title": "Delete document",
+      "bodyPrefix": "Are you sure you want to delete",
+      "bodySuffix": "? This action cannot be undone."
+    }
+  },
+  "transcript": {
+    "tooltip": {
+      "menu": "Menu",
+      "selectAll": "Select All",
+      "aiChat": "AI Chat"
+    },
+    "aria": {
+      "menu": "Menu",
+      "deleteRecording": "Delete recording",
+      "selectAll": "Select all",
+      "chat": "Chat"
+    },
+    "ordersDetected": "Orders detected: ",
+    "deleteDialog": {
+      "title": "Delete recording",
+      "bodyPrefix": "Are you sure you want to delete",
+      "bodySuffix": "? This action cannot be undone."
+    }
+  },
+  "microphone": {
+    "copilotAlt": "Copilot",
+    "tooltip": {
+      "memos": "Memos",
+      "notifications": "Notifications",
+      "copilot": "Copilot"
+    },
+    "aria": {
+      "toggleDocumentPanel": "Toggle document panel",
+      "toggleAlerts": "Toggle alerts",
+      "toggleCopilot": "Toggle Copilot",
+      "options": "Microphone options",
+      "enableDictationToUseMic": "Enable Dictation to use microphone",
+      "pauseMicSession": "Pause microphone session",
+      "resumeMicSession": "Resume microphone session",
+      "stopRecording": "Stop recording",
+      "startRecording": "Start recording"
+    }
+  },
+  "leftNav": {
+    "tooltip": {
+      "home": "Home",
+      "account": "Account",
+      "settings": "Settings",
+      "help": "Help"
+    },
+    "aria": {
+      "returnToSchedule": "Return to schedule",
+      "profile": "Profile",
+      "openSettings": "Open settings",
+      "getHelp": "Get help"
+    }
+  },
+  "rightDrawer": {
+    "titles": {
+      "copilot": "Copilot",
+      "notifications": "Notifications",
+      "memos": "Memos",
+      "transcript": "Transcript",
+      "extensions": "Extensions",
+      "library": "Library",
+      "settings": "Settings",
+      "panel": "Panel"
+    },
+    "actions": {
+      "generalChat": "General chat",
+      "createPrompt": "Create prompt",
+      "manageLibrary": "Manage library"
+    },
+    "placeholders": {
+      "extensionsComingSoon": "Extensions content coming soon...",
+      "selectTool": "Select a tool to view content"
+    }
+  },
+  "library": {
+    "promptsHeader": "Prompts",
+    "prompts": {
+      "applyMyNoteStyle": "Apply my note style",
+      "changePronounsToHeHim": "Change pronouns to he him",
+      "changePronounsToSheHer": "Change pronouns to she her",
+      "changePronounsToTheyThem": "Change pronouns to they them",
+      "draftAfterVisitSummary": "Draft after visit summary",
+      "draftReferralLetter": "Draft referral letter",
+      "getCoaching": "Get coaching",
+      "summarizeEvidence": "Summarise evidence",
+      "summarizeNote": "Summarise note"
+    }
+  },
+  "titleBar": {
+    "layout": {
+      "splitColumns": "Split columns",
+      "stackedViews": "Stacked views",
+      "wideCanvas": "Wide canvas",
+      "applyLastSplitLayout": "Apply last split layout",
+      "chooseDifferentWindowLayout": "Choose different window layout"
+    }
+  },
+  "dictationModeToast": {
+    "message": {
+      "dictation": "Mic in dictation mode",
+      "ambient": "Mic in ambient mode"
+    }
+  },
+  "task9": {
+    "contoso": {
+      "badgeLetter": "C",
+      "appTitle": "Contoso EHR"
+    },
+    "patient": {
+      "name": "Ellis Turner",
+      "details": "| M | 01-01-1965"
+    },
+    "floatingMemos": {
+      "title": "Dictation 0001",
+      "addMemo": "Add memo",
+      "transfer": "Transfer",
+      "transferred": "Transferred",
+      "exportMemo": "Export memo",
+      "copied": "Copied",
+      "copyMemo": "Copy memo",
+      "closeMemo": "Close memo",
+      "previousMemo": "Previous memo",
+      "nextMemo": "Next memo"
+    },
+    "floatingMicBar": {
+      "memosLabel": "< Memos",
+      "startRecording": "Start recording",
+      "stopRecording": "Stop recording",
+      "toggleMemos": "Toggle Memos",
+      "toggleNotifications": "Toggle Notifications"
+    },
+    "leftNav": {
+      "notes": "Notes"
+    },
+    "noteTitle": "Note June 11, 2025",
+    "levelOfService": {
+      "title": "Level of service",
+      "searchPlaceholder": "Search level of service"
+    },
+    "footer": "Contoso EHR all rights reserved 2025"
+  },
+  "documentCard": {
+    "references": "References",
+    "orderSuggestions": {
+      "checkBmpAndCbcIn2Weeks": "Check BMP and CBC in 2 weeks",
+      "orderEchoAssessCardiacFunction": "Order echocardiogram to assess cardiac function",
+      "scheduleFollowUpIn4Weeks": "Schedule follow-up in 4 weeks",
+      "prescribeMetoprolol50Daily": "Prescribe metoprolol 50 mg daily",
+      "orderChestXrayPaLateral": "Order chest X-ray (PA/Lateral)",
+      "referToCardiologyFurtherEval": "Refer to cardiology for further evaluation",
+      "startLisinopril10ForHypertension": "Start lisinopril 10 mg daily for hypertension",
+      "orderLipidPanelFasting": "Order lipid panel (fasting)",
+      "discontinueAspirinBleedingRisk": "Discontinue aspirin due to bleeding risk",
+      "orderTshAndFreeT4": "Order TSH and free T4",
+      "prescribeAtorvastatin40AtBedtime": "Prescribe atorvastatin 40 mg at bedtime",
+      "referToNephrology": "Refer to nephrology",
+      "startFurosemide20Daily": "Start furosemide 20 mg daily"
+    },
+    "orderDictation": {
+      "startSpironolactone25Daily": "Start spironolactone 25 mg daily",
+      "continueMetoprolol50Daily": "Continue metoprolol 50 mg daily",
+      "increaseLisinoprilTo20Daily": "Increase lisinopril to 20 mg daily",
+      "orderEchocardiogram": "Order echocardiogram",
+      "scheduleFollowUpIn2Weeks": "Schedule follow-up in 2 weeks",
+      "newOrder": "New order"
+    },
+    "pronounReplacement": {
+      "pronouns": {
+        "theyCap": "They",
+        "theyLower": "they",
+        "themCap": "Them",
+        "themLower": "them",
+        "theirCap": "Their",
+        "theirLower": "their",
+        "themselvesCap": "Themselves",
+        "themselvesLower": "themselves"
+      },
+      "verbs": {
+        "are": "are",
+        "were": "were",
+        "have": "have",
+        "do": "do",
+        "go": "go",
+        "acknowledge": "acknowledge",
+        "maintain": "maintain",
+        "apply": "apply",
+        "describe": "describe",
+        "deny": "deny",
+        "report": "report",
+        "present": "present",
+        "appear": "appear",
+        "experience": "experience",
+        "undergo": "undergo",
+        "continue": "continue",
+        "remain": "remain",
+        "require": "require",
+        "show": "show",
+        "exhibit": "exhibit",
+        "demonstrate": "demonstrate",
+        "complain": "complain",
+        "note": "note",
+        "mention": "mention",
+        "state": "state",
+        "indicate": "indicate",
+        "suggest": "suggest",
+        "feel": "feel",
+        "need": "need",
+        "want": "want",
+        "take": "take",
+        "use": "use",
+        "work": "work",
+        "live": "live",
+        "smoke": "smoke",
+        "drink": "drink",
+        "exercise": "exercise",
+        "engage": "engage",
+        "express": "express",
+        "request": "request",
+        "schedule": "schedule",
+        "perform": "perform"
+      },
+      "phrases": {
+        "butDo": "but do ",
+        "butDont": "but don't ",
+        "andDo": "and do ",
+        "andDont": "and don't "
+      }
+    }
+  },
+  "settings": {
+    "sections": {
+      "ambientRecordingLanguages": "Ambient recording languages",
+      "microphone": "Microphone",
+      "general": "General",
+      "styleAndFormat": "Style & format",
+      "documents": "Documents",
+      "library": "Library",
+      "profile": "Profile"
+    },
+    "descriptions": {
+      "certifiedLanguages": "Languages that you are certified to use."
+    },
+    "subPages": {
+      "documents": {
+        "comingSoon": "Document Settings coming soon..."
+      }
+    },
+    "languages": {
+      "options": {
+        "en": "English",
+        "es": "Spanish"
+      },
+      "removeAria": {
+        "en": "Remove English",
+        "es": "Remove Spanish"
+      }
+    }
+  }
+}

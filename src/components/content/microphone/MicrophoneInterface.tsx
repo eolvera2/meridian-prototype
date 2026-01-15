@@ -26,6 +26,8 @@ import CopilotIdle from "../../../assets/Copilot.svg";
 import { DictationModeToast } from "../DictationModeToast";
 import { useStyles } from "./MicrophoneInterface.styles";
 import type { MicrophoneInterfaceProps } from "./MicrophoneInterface.types";
+import { useI18n } from "../../../i18n/I18nContext";
+import { MICROPHONE_TIMING_MS } from "./MicrophoneInterface.constants";
 
 export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
   isRecording = false,
@@ -52,6 +54,7 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
   onShowStopRecordingDialog,
 }) => {
   const styles = useStyles();
+  const { t } = useI18n();
   const [recordingTime, setRecordingTime] = useState(initialRecordingSeconds);
   const [isNoteActive, setIsNoteActive] = useState(false);
   const [isAlertActive, setIsAlertActive] = useState(false);
@@ -130,7 +133,7 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
     if (isRecording && !isInDictationMode) {
       interval = setInterval(() => {
         setRecordingTime((prev) => prev + 1);
-      }, 1000);
+        }, MICROPHONE_TIMING_MS.recordingTickInterval);
     }
     return () => clearInterval(interval);
   }, [isRecording, isInDictationMode]);
@@ -173,7 +176,7 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
 
       toastTimeoutRef.current = window.setTimeout(() => {
         setShowToast(false);
-      }, 2000);
+      }, MICROPHONE_TIMING_MS.modeToastAutoHide);
     }
   }, [micMode, onMicModeChange]);
 
@@ -291,14 +294,14 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
   }, []);
 
   const micButtonAriaLabel = shouldDisableMic
-    ? "Enable Dictation to use microphone"
+    ? t("microphone.aria.enableDictationToUseMic")
     : documentVisible
     ? isRecording
-      ? "Pause microphone session"
-      : "Resume microphone session"
+      ? t("microphone.aria.pauseMicSession")
+      : t("microphone.aria.resumeMicSession")
     : isRecording
-    ? "Stop recording"
-    : "Start recording";
+    ? t("microphone.aria.stopRecording")
+    : t("microphone.aria.startRecording");
 
   return (
     <div
@@ -318,7 +321,7 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
         {/* Left Section - Dictation Checkbox */}
         <div className={styles.leftSection}>
           <Checkbox
-            label="Dictation"
+            label={t("common.dictation")}
             checked={isDictationEnabled}
             onChange={(_ev, data) =>
               handleDictationCheckboxChange(!!data.checked)
@@ -348,7 +351,7 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
             }}
             menuButton={{
               disabled: true,
-              "aria-label": "Microphone options",
+              "aria-label": t("microphone.aria.options"),
               className: mergeClasses(
                 styles.secondaryAction,
                 styles.micSplitMenuButton,
@@ -414,8 +417,8 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
         </div>
 
         <div className={styles.rightActions}>
-          <Tooltip content="Memos" relationship="label">
-            <span style={{ display: "inline-flex" }}>
+          <Tooltip content={t("microphone.tooltip.memos")} relationship="label">
+            <span className="inline-flex">
               <ToggleButton
                 appearance="subtle"
                 icon={
@@ -428,7 +431,7 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
                 checked={isNoteActive}
                 onClick={handleNoteClick}
                 className={styles.settingsButton}
-                aria-label="Toggle document panel"
+                aria-label={t("microphone.aria.toggleDocumentPanel")}
                 disabled={disableNavigation || activeContent === "settings"}
                 style={
                   disableNavigation
@@ -439,8 +442,11 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
             </span>
           </Tooltip>
 
-          <Tooltip content="Notifications" relationship="label">
-            <span style={{ display: "inline-flex" }}>
+          <Tooltip
+            content={t("microphone.tooltip.notifications")}
+            relationship="label"
+          >
+            <span className="inline-flex">
               <ToggleButton
                 appearance="subtle"
                 icon={
@@ -453,7 +459,7 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
                 checked={isAlertActive}
                 onClick={handleAlertClick}
                 className={styles.settingsButton}
-                aria-label="Toggle alerts"
+                aria-label={t("microphone.aria.toggleAlerts")}
                 disabled={disableNavigation || activeContent === "settings"}
                 style={
                   disableNavigation
@@ -464,17 +470,25 @@ export const MicrophoneInterface: React.FC<MicrophoneInterfaceProps> = ({
             </span>
           </Tooltip>
 
-          <Tooltip content="Copilot" relationship="label">
-            <span style={{ display: "inline-flex" }}>
+          <Tooltip
+            content={t("microphone.tooltip.copilot")}
+            relationship="label"
+          >
+            <span className="inline-flex">
               <ToggleButton
                 appearance="subtle"
                 icon={
-                  <img src={CopilotIdle} alt="Copilot" width={24} height={24} />
+                  <img
+                    src={CopilotIdle}
+                    alt={t("microphone.copilotAlt")}
+                    width={24}
+                    height={24}
+                  />
                 }
                 checked={isCopilotActive}
                 onClick={handleCopilotClick}
                 className={styles.settingsButton}
-                aria-label="Toggle Copilot"
+                aria-label={t("microphone.aria.toggleCopilot")}
                 disabled={disableNavigation || activeContent === "settings"}
                 style={
                   disableNavigation

@@ -28,9 +28,11 @@ import { useFloatingMicBarStyles } from "./FloatingMicBarStyles";
 import { FloatingMemos } from "./FloatingMemos";
 import DragonLogo from "../../assets/logo.svg";
 import CopilotIdle from "../../assets/Copilot.svg";
+import { useI18n } from "../../i18n/I18nContext";
 
 export const FloatingMicBar: React.FC = () => {
   const styles = useFloatingMicBarStyles();
+  const { t } = useI18n();
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -175,7 +177,7 @@ export const FloatingMicBar: React.FC = () => {
         <div className={styles.titleBarLeft}>
           <img
             src={DragonLogo}
-            alt="Dragon Copilot"
+            alt={t("app.title")}
             className={styles.dragonLogo}
           />
         </div>
@@ -184,26 +186,28 @@ export const FloatingMicBar: React.FC = () => {
             appearance="subtle"
             icon={<Subtract20Regular />}
             className={styles.titleBarButton}
-            aria-label="Minimize"
+            aria-label={t("common.minimize")}
           />
           <Button
             appearance="subtle"
             icon={<ArrowMaximize20Regular />}
             className={styles.titleBarButton}
-            aria-label="Maximize"
+            aria-label={t("common.maximize")}
           />
           <Button
             appearance="subtle"
             icon={<Dismiss20Regular />}
             className={styles.titleBarButton}
-            aria-label="Dismiss"
+            aria-label={t("common.dismiss")}
             onClick={() => setIsVisible(false)}
           />
         </div>
       </div>
 
       {/* Select a patient label */}
-      <div className={styles.memosLabel}>&lt; Memos</div>
+      <div className={styles.memosLabel}>
+        {t("task9.floatingMicBar.memosLabel")}
+      </div>
 
       {/* Mic Button Centered Above */}
       <div className={styles.micBarMicRow}>
@@ -220,7 +224,11 @@ export const FloatingMicBar: React.FC = () => {
               setIsMemosExpanded(true);
             }
           }}
-          aria-label={isRecording ? "Stop recording" : "Start recording"}
+          aria-label={
+            isRecording
+              ? t("task9.floatingMicBar.stopRecording")
+              : t("task9.floatingMicBar.startRecording")
+          }
         >
           <div className={styles.micButtonContent}>
             <div className={styles.primaryAction}>
@@ -259,7 +267,7 @@ export const FloatingMicBar: React.FC = () => {
         <Checkbox
           checked={true}
           disabled={false}
-          label="Dictation"
+          label={t("common.dictation")}
           className={styles.dictationCheckbox}
         />
         <div className={styles.micBarToggleRowActions}>
@@ -279,7 +287,7 @@ export const FloatingMicBar: React.FC = () => {
               setIsCopilotActive(false);
             }}
             className={styles.actionButton}
-            aria-label="Toggle Memos"
+            aria-label={t("task9.floatingMicBar.toggleMemos")}
           />
           <ToggleButton
             appearance="subtle"
@@ -297,12 +305,17 @@ export const FloatingMicBar: React.FC = () => {
               setIsCopilotActive(false);
             }}
             className={styles.actionButton}
-            aria-label="Toggle Notifications"
+            aria-label={t("task9.floatingMicBar.toggleNotifications")}
           />
           <ToggleButton
             appearance="subtle"
             icon={
-              <img src={CopilotIdle} alt="Copilot" width={24} height={24} />
+              <img
+                src={CopilotIdle}
+                alt={t("microphone.tooltip.copilot")}
+                width={24}
+                height={24}
+              />
             }
             checked={isCopilotActive}
             onClick={() => {
@@ -311,7 +324,7 @@ export const FloatingMicBar: React.FC = () => {
               setIsNotificationsActive(false);
             }}
             className={styles.actionButton}
-            aria-label="Toggle Copilot"
+            aria-label={t("microphone.aria.toggleCopilot")}
           />
         </div>
       </div>

@@ -6,6 +6,7 @@
 
 export { MicrophoneInterface } from "./MicrophoneInterface";
 export { useStyles } from "./MicrophoneInterface.styles";
+export { MICROPHONE_TIMING_MS } from "./MicrophoneInterface.constants";
 export type {
   MicrophoneInterfaceProps,
   DictationState,

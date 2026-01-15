@@ -35,6 +35,7 @@ import {
 import { useStyles } from "./Worklist.styles";
 import { useWorklistContext } from "./WorklistContext";
 import type { WorklistProps, SortOrder } from "./Worklist.types";
+import { useI18n } from "../../../i18n/I18nContext";
 
 const ORDERED_GROUPS = [
   "Today",
@@ -45,6 +46,15 @@ const ORDERED_GROUPS = [
   "Later",
 ];
 
+const GROUP_LABEL_KEYS: Record<string, string> = {
+  "Today": "common.today",
+  "Yesterday": "common.yesterday",
+  "Last Week": "worklist.groups.lastWeek",
+  "Last 2 Weeks": "worklist.groups.lastTwoWeeks",
+  "Last Month": "worklist.groups.lastMonth",
+  "Later": "worklist.groups.later",
+};
+
 export const Worklist: React.FC<WorklistProps> = ({
   isCollapsed = false,
   onPatientSelect,
@@ -52,8 +62,14 @@ export const Worklist: React.FC<WorklistProps> = ({
   onMicButtonClick,
 }) => {
   const styles = useStyles();
+  const { t } = useI18n();
   const { patients } = useWorklistContext();
   const toId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+  const groupLabel = (group: string) => {
+    const key = GROUP_LABEL_KEYS[group];
+    return key ? t(key) : group;
+  };
 
   const hasValidLastModified = (value?: string) => {
     const normalized = value?.trim();
@@ -286,7 +302,7 @@ export const Worklist: React.FC<WorklistProps> = ({
             isSearchVisible ? styles.tabsSearchActive : ""
           }`}
           role="tablist"
-          aria-label="Worklist tabs"
+          aria-label={t("worklist.tabs.ariaLabel")}
         >
           {!isSearchVisible ? (
             <>
@@ -297,19 +313,23 @@ export const Worklist: React.FC<WorklistProps> = ({
                 className={styles.tabStretchList}
               >
                 <Tab className={styles.tabStretch} value="schedule">
-                  <span className={styles.tabLabel}>Schedule</span>
+                  <span className={styles.tabLabel}>
+                    {t("worklist.tabs.schedule")}
+                  </span>
                 </Tab>
                 <Tab className={styles.tabStretch} value="patient-list">
-                  <span className={styles.tabLabel}>User-added</span>
+                  <span className={styles.tabLabel}>
+                    {t("worklist.tabs.userAdded")}
+                  </span>
                 </Tab>
               </TabList>
 
-              <Tooltip content="Search" relationship="label">
-                <span style={{ display: "inline-flex" }}>
+              <Tooltip content={t("common.search")} relationship="label">
+                <span className="inline-flex">
                   <button
                     className={styles.searchButton}
                     onClick={handleSearchToggle}
-                    aria-label="Search patients"
+                    aria-label={t("worklist.search.ariaLabel")}
                   >
                     <Search20Regular />
                   </button>
@@ -320,7 +340,7 @@ export const Worklist: React.FC<WorklistProps> = ({
             <div className={styles.searchContainerActive}>
               <div className={styles.searchBox}>
                 <SearchBox
-                  placeholder="Search patients..."
+                  placeholder={t("worklist.search.placeholder")}
                   value={searchValue}
                   onChange={(_, data) => handleSearchChange(data.value || "")}
                   dismiss={{
@@ -338,7 +358,9 @@ export const Worklist: React.FC<WorklistProps> = ({
             <div className={styles.dateInput}>
               <div className={styles.dateInputContent}>
                 <CalendarLtr20Regular className={styles.dateIcon} />
-                <div className={styles.dateText}>July 23</div>
+                <div className={styles.dateText}>
+                  {t("worklist.dateRange.start")}
+                </div>
                 <ChevronDown12Regular className={styles.chevronIcon} />
               </div>
               <div className={styles.dateUnderline} />
@@ -348,10 +370,10 @@ export const Worklist: React.FC<WorklistProps> = ({
                 appearance="subtle"
                 className={styles.filterButton}
                 icon={<Filter16Regular />}
-                aria-label="Filter options"
+                aria-label={t("worklist.filter.ariaLabel")}
               />
-              <Tooltip content="Sort" relationship="label">
-                <span style={{ display: "inline-flex" }}>
+              <Tooltip content={t("worklist.sort.tooltip")} relationship="label">
+                <span className="inline-flex">
                   <Button
                     appearance="subtle"
                     className={styles.filterButton}
@@ -364,12 +386,12 @@ export const Worklist: React.FC<WorklistProps> = ({
                         <ArrowSort16Regular />
                       )
                     }
-                    aria-label={`Sort patients ${
+                    aria-label={`${t("worklist.sort.ariaLabelPrefix")} ${
                       sortOrder === "none"
-                        ? "alphabetically"
+                        ? t("worklist.sort.alphabetically")
                         : sortOrder === "asc"
-                        ? "descending"
-                        : "ascending"
+                        ? t("worklist.sort.descending")
+                        : t("worklist.sort.ascending")
                     }`}
                     onClick={handleSortToggle}
                   />
@@ -436,7 +458,10 @@ export const Worklist: React.FC<WorklistProps> = ({
                           transformOrigin: "center",
                         }}
                       />
-                      <div className={styles.groupTitle}>{group}</div>
+                      {/* Keep internal group key stable; localize display only */}
+                      <div className={styles.groupTitle}>
+                        {groupLabel(group)}
+                      </div>
                     </div>
                   </div>
 
@@ -472,14 +497,14 @@ export const Worklist: React.FC<WorklistProps> = ({
                                     )}
                                     <button
                                       className={`${styles.moreButton} more-button`}
-                                      aria-label="More options"
+                                      aria-label={t("common.moreOptions")}
                                     >
                                       <MoreVerticalFilled />
                                     </button>
                                   </div>
                                 </div>
                                 <div className={styles.description}>
-                                  Reason: {patient.reason}
+                                  {t("worklist.reasonPrefix")} {patient.reason}
                                   <br />
                                   {patient.details}
                                 </div>
@@ -489,7 +514,7 @@ export const Worklist: React.FC<WorklistProps> = ({
                                     "Today" ? null : patient.status ===
                                     "Sync initiated" ? (
                                     <div className={styles.syncPill}>
-                                      Sync initiated
+                                      {t("worklist.syncInitiated")}
                                     </div>
                                   ) : (
                                     patient.status && (
@@ -504,18 +529,18 @@ export const Worklist: React.FC<WorklistProps> = ({
                                         <div className={styles.signedPill}>
                                           <PresenceBadge />
                                           <div className={styles.signedText}>
-                                            Signed
+                                            {t("worklist.signed")}
                                           </div>
                                         </div>
                                         {shouldShowLastModified(patient) && (
                                           <div className={styles.modifiedText}>
-                                            Modified {patient.lastModified}
+                                            {t("worklist.modified")} {patient.lastModified}
                                           </div>
                                         )}
                                       </>
                                     ) : shouldShowLastModified(patient) ? (
                                       <div className={styles.modifiedText}>
-                                        Modified {patient.lastModified}
+                                        {t("worklist.modified")} {patient.lastModified}
                                       </div>
                                     ) : (
                                       <>{patient.status}</>
@@ -529,13 +554,13 @@ export const Worklist: React.FC<WorklistProps> = ({
                                   }}
                                 >
                                   <Tooltip
-                                    content="Ambient Recording"
+                                    content={t("worklist.ambientRecording")}
                                     relationship="label"
                                   >
-                                    <span style={{ display: "inline-flex" }}>
+                                    <span className="inline-flex">
                                       <button
                                         className={`${styles.micButton} mic-button`}
-                                        aria-label="Ambient Recording"
+                                        aria-label={t("worklist.ambientRecording")}
                                         onClick={(e) => {
                                           e.stopPropagation();
                                           onPatientSelect?.(patient.id);
@@ -572,34 +597,36 @@ export const Worklist: React.FC<WorklistProps> = ({
                         <div className={styles.rightSide}>
                           <button
                             className={`${styles.moreButton} more-button`}
-                            aria-label="More options"
+                            aria-label={t("common.moreOptions")}
                           >
                             <MoreVerticalFilled />
                           </button>
                         </div>
                       </div>
                       <div className={styles.description}>
-                        Reason: {patient.reason}
+                        {t("worklist.reasonPrefix")} {patient.reason}
                         <br />
                         {patient.details}
                       </div>
                       <div className={styles.statusRow}>
-                        <div className={styles.userAddedPill}>User-added</div>
+                        <div className={styles.userAddedPill}>
+                          {t("worklist.userAdded")}
+                        </div>
                         <div className={styles.createdText}>
-                          Created {patient.time}
+                          {t("worklist.created")} {patient.time}
                         </div>
                       </div>
                       <div
                         style={{ display: "flex", justifyContent: "flex-end" }}
                       >
                         <Tooltip
-                          content="Ambient Recording"
+                          content={t("worklist.ambientRecording")}
                           relationship="label"
                         >
-                          <span style={{ display: "inline-flex" }}>
+                          <span className="inline-flex">
                             <button
                               className={`${styles.micButton} mic-button`}
-                              aria-label="Ambient Recording"
+                              aria-label={t("worklist.ambientRecording")}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 onPatientSelect?.(patient.id);
@@ -623,7 +650,9 @@ export const Worklist: React.FC<WorklistProps> = ({
             onClick={handleAddPatient}
           >
             <ChatAdd24Filled className={styles.addIcon} />
-            <div className={styles.addPatientText}>Add patient</div>
+            <div className={styles.addPatientText}>
+              {t("worklist.addPatient")}
+            </div>
           </button>
         </div>
       </div>

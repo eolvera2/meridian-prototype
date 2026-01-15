@@ -4,7 +4,7 @@
  * Task1 variant of the app that navigates to success page when ambient recording stops.
  */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import logoSvg from "./assets/logo.svg";
 import MsftLogo from "./assets/MsftLogo.svg";
 import {
@@ -17,24 +17,73 @@ import { MainContent } from "./components/core/MainContent";
 import { TooltipProvider } from "./components/content/tooltip";
 import { WorklistProvider } from "./components/content/worklist";
 import { navigateToSuccess } from "./utils/navigation";
+import { useI18n } from "./i18n/I18nContext";
+import { createEnGbProgressNoteSections } from "./utils/enGbNote";
+import type { DocumentItem } from "./components/content";
 import "./styles/tokens.css";
 import "./styles/globals.css";
 import "./App.css";
 
 function AppTask1() {
+  const { t, locale, medical } = useI18n();
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [activeNavItem, setActiveNavItem] = useState<
     "home" | "avatar" | "settings" | "help" | null
   >("home");
+
+  const initialDocuments: DocumentItem[] | undefined = useMemo(() => {
+    if (locale !== "en-GB") {
+      return undefined;
+    }
+
+    return [
+      {
+        id: "letter-to-gp-1",
+        name: "Letter to GP",
+        created: "--",
+        type: "letter-to-gp",
+        sections: [
+          {
+            id: "letter-to-gp",
+            title: "Letter to GP",
+            content: "",
+            checked: false,
+          },
+        ],
+        isExpanded: true,
+      },
+      {
+        id: "1",
+        name: "Note",
+        created: "--",
+        type: "progress-note",
+        sections: createEnGbProgressNoteSections({ isEmpty: true, medical }),
+        references: [
+          {
+            id: "1",
+            title: "Transcript",
+            type: "transcript",
+          },
+        ],
+        isExpanded: true,
+      },
+    ];
+  }, [locale, medical]);
 
   // Worklist state for TitleBar integration
   const [worklistCollapsed, setWorklistCollapsed] = useState(false);
   const [patientSelected, setPatientSelected] = useState(false);
 
   const handleWindowControls = {
-    minimize: () => {},
-    maximize: () => {},
-    close: () => {},
+    minimize: () => {
+      // Window controls wired - action handled by host
+    },
+    maximize: () => {
+      // Window controls wired - action handled by host
+    },
+    close: () => {
+      // Window controls wired - action handled by host
+    },
   };
 
   // Worklist state handlers
@@ -99,15 +148,18 @@ function AppTask1() {
                   aria-hidden
                 />
                 <div className="loading-spinner">
-                  <Spinner size="tiny" label="Loading ..." />
+                  <Spinner size="tiny" label={t("common.loading")} />
                 </div>
                 <div className="loading-bottom">
-                  <img className="ms-logo" src={MsftLogo} alt="Microsoft" />
+                  <img
+                    className="ms-logo"
+                    src={MsftLogo}
+                    alt={t("common.microsoft")}
+                  />
                 </div>
               </div>
             )}
             <TitleBar
-              title="Dragon Copilot"
               onMinimize={handleWindowControls.minimize}
               onMaximize={handleWindowControls.maximize}
               onClose={handleWindowControls.close}
@@ -124,6 +176,7 @@ function AppTask1() {
                 onNavItemChange={setActiveNavItem}
                 onAmbientRecordingStop={handleAmbientRecordingStop}
                 autoDictationDisableOnDocumentView={true}
+                initialDocuments={initialDocuments}
               />
             </div>
           </div>

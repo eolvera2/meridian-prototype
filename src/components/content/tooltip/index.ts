@@ -10,3 +10,5 @@ export {
   useTooltipContext,
   useOptionalTooltipContext,
 } from "./useTooltipHooks";
+
+export { TOOLTIP_TIMING_MS } from "./Tooltip.constants";

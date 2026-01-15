@@ -17,7 +17,7 @@ export const useStyles = makeStyles({
     padding: "8px 12px 16px 12px",
     width: "100%",
     flexShrink: 0,
-    zIndex: 200,
+    zIndex: "var(--z-index-microphone)",
     position: "relative",
     overflow: "hidden",
   },
@@ -33,7 +33,7 @@ export const useStyles = makeStyles({
       backgroundImage:
         "linear-gradient(90deg, rgba(13, 145, 225, 0.2) 0%, rgba(140, 72, 255, 0.2) 25%, rgba(255, 95, 61, 0.2) 50%, rgba(242, 244, 253, 0.2) 75%, rgba(13, 145, 225, 0.2) 100%)",
       pointerEvents: "none",
-      zIndex: 0,
+      zIndex: "var(--z-index-base)",
       opacity: 0.9,
       animationDuration: "3.6s",
       animationTimingFunction: "cubic-bezier(0.6, 0, 0.4, 1)",
@@ -54,7 +54,7 @@ export const useStyles = makeStyles({
       backgroundImage:
         "linear-gradient(120deg, rgba(255, 255, 255, 0.08) 0%, rgba(140, 72, 255, 0.2) 40%, rgba(13, 145, 225, 0.15) 70%, rgba(255, 148, 41, 0.15) 100%)",
       pointerEvents: "none",
-      zIndex: 0,
+      zIndex: "var(--z-index-base)",
       opacity: 0.7,
       mixBlendMode: "screen",
       animationDuration: "5.2s",
@@ -74,12 +74,12 @@ export const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    maxWidth: "1000px",
+    maxWidth: "var(--content-max-width)",
     margin: "0 auto",
     height: "100%",
-    gap: "16px",
+    gap: "var(--gap-xxxlarge)",
     position: "relative",
-    zIndex: 1,
+    zIndex: "var(--z-index-below)",
   },
 
   leftSection: {
@@ -104,9 +104,9 @@ export const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--colorNeutralBackground1)",
     border: "1px solid transparent",
-    borderRadius: "9999px",
+    borderRadius: "var(--border-radius-circular)",
     boxShadow:
       "0px 2px 4px 0px rgba(0,0,0,0.14), 0px 0px 2px 0px rgba(0,0,0,0.12)",
     cursor: "pointer",
@@ -115,7 +115,7 @@ export const useStyles = makeStyles({
     maxHeight: "40px",
     minWidth: "32px",
     width: "auto",
-    transition: "all 0.2s cubic-bezier(0.1,0.9,0.2,1)",
+    transition: "var(--transition-fluent)",
     "&:hover:not(:disabled)": {
       boxShadow:
         "0px 4px 8px 0px rgba(0,0,0,0.16), 0px 0px 4px 0px rgba(0,0,0,0.14)",
@@ -127,7 +127,7 @@ export const useStyles = makeStyles({
       backgroundColor: tokens.colorNeutralBackgroundDisabled,
       color: tokens.colorNeutralForegroundDisabled,
       border: `1px solid ${tokens.colorNeutralStroke1}`,
-      boxShadow: "none",
+      boxShadow: "var(--shadow-none)",
       cursor: "not-allowed",
       opacity: 0.7,
     },
@@ -150,7 +150,7 @@ export const useStyles = makeStyles({
         "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
       WebkitMaskComposite: "xor",
       maskComposite: "exclude",
-      zIndex: 1,
+      zIndex: "var(--z-index-below)",
       pointerEvents: "none",
     },
   },
@@ -158,24 +158,24 @@ export const useStyles = makeStyles({
   micButtonDisabled: {
     backgroundColor: `${tokens.colorNeutralBackgroundDisabled} !important`,
     border: `1px solid ${tokens.colorNeutralStroke1}`,
-    boxShadow: "none",
+    boxShadow: "var(--shadow-none)",
     color: tokens.colorNeutralForegroundDisabled,
     pointerEvents: "none",
     "&:hover": {
       backgroundColor: `${tokens.colorNeutralBackgroundDisabled} !important`,
-      boxShadow: "none",
+      boxShadow: "var(--shadow-none)",
     },
     "&:active": {
       backgroundColor: `${tokens.colorNeutralBackgroundDisabled} !important`,
-      boxShadow: "none",
+      boxShadow: "var(--shadow-none)",
     },
     "&:focus": {
       backgroundColor: `${tokens.colorNeutralBackgroundDisabled} !important`,
-      boxShadow: "none",
+      boxShadow: "var(--shadow-none)",
     },
     "&:focus-visible": {
       backgroundColor: `${tokens.colorNeutralBackgroundDisabled} !important`,
-      boxShadow: "none",
+      boxShadow: "var(--shadow-none)",
     },
   },
 
@@ -190,7 +190,7 @@ export const useStyles = makeStyles({
     paddingTop: 0,
     paddingBottom: 0,
     paddingLeft: "16px",
-    paddingRight: "16px",
+    paddingRight: "var(--spacing-xxxlarge)",
     minHeight: "40px",
     height: "40px",
     border: "none",
@@ -281,20 +281,20 @@ export const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "6px",
+    gap: "var(--gap-medium)",
     height: "100%",
     borderRadius: "9999px 0 0 9999px",
   },
 
   primaryActionDictationCompact: {
-    gap: "4px",
+    gap: "var(--gap-small)",
   },
 
   timeDisplay: {
     fontFamily: "'Segoe UI', sans-serif",
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     fontWeight: "400",
-    color: "#424242",
+    color: "var(--colorNeutralForeground2)",
     lineHeight: "20px",
     letterSpacing: "0.5px",
     minWidth: "32px",
@@ -303,7 +303,7 @@ export const useStyles = makeStyles({
 
   timeDisplayDisabled: {
     color: tokens.colorNeutralForegroundDisabled,
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase200,
     lineHeight: "16px",
     fontWeight: 600,
   },
@@ -362,7 +362,7 @@ export const useStyles = makeStyles({
   chevronIcon: {
     width: "12px",
     height: "12px",
-    color: "#424242",
+    color: "var(--colorNeutralForeground2)",
   },
 
   chevronIconRecording: {
@@ -385,7 +385,7 @@ export const useStyles = makeStyles({
     gap: tokens.spacingHorizontalXXS,
     minWidth: "0",
     "@media (max-width: 768px)": {
-      gap: "4px",
+      gap: "var(--gap-small)",
     },
     "@media (max-width: 480px)": {
       gap: "2px",
@@ -418,7 +418,7 @@ export const useStyles = makeStyles({
   },
 
   dialogTitleText: {
-    fontSize: "20px",
+    fontSize: tokens.fontSizeBase500,
     fontWeight: 600,
     lineHeight: "28px",
     fontFamily: "'Segoe UI', sans-serif",
@@ -426,11 +426,11 @@ export const useStyles = makeStyles({
 
   dialogCloseButton: {
     minWidth: "auto",
-    padding: "4px",
+    padding: "var(--spacing-small-4)",
   },
 
   dialogContent: {
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase300,
     lineHeight: "20px",
     color: tokens.colorNeutralForeground2,
     paddingTop: tokens.spacingVerticalS,
@@ -453,30 +453,30 @@ export const useStyles = makeStyles({
     height: "32px",
     backgroundColor: "transparent",
     border: "none",
-    borderRadius: "4px",
+    borderRadius: "var(--border-radius-medium)",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    transition: "all 0.2s cubic-bezier(0.1, 0.9, 0.2, 1)",
+    transition: "var(--transition-fluent)",
     "&:hover": {
-      backgroundColor: "#f5f5f5",
+      backgroundColor: "var(--colorNeutralBackground3)",
       transform: "scale(1.05)",
     },
     "&[aria-pressed='true']": {
-      backgroundColor: "#f5f5f5",
+      backgroundColor: "var(--colorNeutralBackground3)",
     },
     "@media (max-width: 768px)": {
       width: "28px",
       height: "28px",
-      borderRadius: "3px",
+      borderRadius: "var(--border-radius-small)",
     },
   },
 
   iconActive: {
-    color: "#000000",
+    color: "var(--palette-black)",
     transform: "scale(1.1)",
-    transition: "all 0.2s cubic-bezier(0.1, 0.9, 0.2, 1)",
+    transition: "var(--transition-fluent)",
   },
 
   microphoneInterfaceMobile: {
@@ -487,14 +487,14 @@ export const useStyles = makeStyles({
       width: "100%",
       height: "70px",
       padding: "8px 12px",
-      zIndex: 200,
+      zIndex: "var(--z-index-microphone)",
     },
     "@media (max-width: 480px)": {
       position: "relative",
       left: "0 !important",
       right: "0 !important",
       width: "100%",
-      zIndex: 200,
+      zIndex: "var(--z-index-microphone)",
     },
   },
 

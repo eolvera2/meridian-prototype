@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     transform: "translate(-50%, 0)",
     // Only transition opacity/visibility, not position - prevents jitter on scroll
     transition: "opacity 0.3s ease-out, visibility 0.3s ease-out",
-    zIndex: 200, // Above RightDrawer (150) but uses portal so it's in document root
+    zIndex: "var(--z-index-microphone)", // Above RightDrawer (150) but uses portal so it's in document root
     cursor: "pointer",
     // Use will-change to hint browser for GPU acceleration
     willChange: "opacity, visibility",
@@ -60,17 +60,17 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: "12px",
+    marginBottom: "var(--spacing-xxlarge)",
   },
   icon: {
     width: "20px",
     height: "20px",
   },
   iconDictation: {
-    color: "#fff",
+    color: "var(--colorBrandForeground)",
   },
   iconAmbient: {
-    color: "#0F6CBD",
+    color: "var(--palette-blue-0f6cbd)",
   },
 });
 

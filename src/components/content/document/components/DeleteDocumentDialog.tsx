@@ -12,8 +12,10 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  tokens,
 } from "@fluentui/react-components";
 import { Dismiss24Regular } from "@fluentui/react-icons";
+import { useI18n } from "../../../../i18n/I18nContext";
 
 export interface DeleteDocumentDialogProps {
   /** Whether the dialog is open */
@@ -32,6 +34,7 @@ export const DeleteDocumentDialog: React.FC<DeleteDocumentDialogProps> = ({
   onCancel,
   onConfirm,
 }) => {
+  const { t } = useI18n();
   return (
     <Dialog
       open={open}
@@ -41,55 +44,55 @@ export const DeleteDocumentDialog: React.FC<DeleteDocumentDialogProps> = ({
         }
       }}
     >
-      <DialogSurface style={{ maxWidth: "320px", padding: "24px" }}>
+      <DialogSurface className="dialog-surface-standard">
         <DialogBody>
           <DialogTitle
             action={
               <Button
                 appearance="subtle"
-                aria-label="Close"
+                aria-label={t("common.close")}
                 icon={<Dismiss24Regular />}
                 onClick={onCancel}
                 style={{
                   minWidth: "auto",
-                  padding: "4px",
+                  padding: "var(--spacing-small-4)",
                 }}
               />
             }
             style={{
-              fontSize: "20px",
+              fontSize: tokens.fontSizeBase500,
               fontWeight: 600,
               lineHeight: "28px",
               fontFamily: "'Segoe UI', sans-serif",
-              marginBottom: "12px",
+              marginBottom: "var(--spacing-xxlarge)",
             }}
           >
-            Delete document
+            {t("document.deleteDialog.title")}
           </DialogTitle>
           <DialogContent
             style={{
-              fontSize: "14px",
+              fontSize: tokens.fontSizeBase300,
               fontWeight: 400,
               lineHeight: "20px",
               fontFamily: "'Segoe UI', sans-serif",
-              marginBottom: "24px",
+              marginBottom: "var(--spacing-huge)",
             }}
           >
-            Are you sure you want to delete "{documentName}"? This action cannot
-            be undone.
+            {t("document.deleteDialog.bodyPrefix")} "{documentName}"
+            {t("document.deleteDialog.bodySuffix")}
           </DialogContent>
           <DialogActions
             style={{
               display: "flex",
               justifyContent: "flex-end",
-              gap: "8px",
+              gap: "var(--gap-large)",
             }}
           >
             <Button appearance="secondary" onClick={onCancel}>
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button appearance="primary" onClick={onConfirm}>
-              Delete
+              {t("common.delete")}
             </Button>
           </DialogActions>
         </DialogBody>

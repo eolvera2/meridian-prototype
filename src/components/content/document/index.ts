@@ -23,6 +23,7 @@ export type {
 export {
   DICTATION_CONTENT_MAP,
   PATIENT_DOCUMENT_CONTENT,
+  DOCUMENT_TIMING_MS,
   getDictationContentForSection,
   getPatientContentForSection,
   ORDER_DICTATION_ITEMS,

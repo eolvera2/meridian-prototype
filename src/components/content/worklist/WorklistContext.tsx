@@ -15,6 +15,7 @@ import React, {
 } from "react";
 import worklistData from "../../../data/worklistData.json";
 import type { WorklistItem } from "../../shared";
+import { useI18n } from "../../../i18n/I18nContext";
 
 interface WorklistContextValue {
   /** Current worklist data */
@@ -36,6 +37,7 @@ const WorklistContext = createContext<WorklistContextValue | null>(null);
 export const WorklistProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { formatTime } = useI18n();
   const [patients, setPatients] = useState<WorklistItem[]>(
     worklistData as WorklistItem[]
   );
@@ -45,7 +47,7 @@ export const WorklistProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updatePatientLastModified = useCallback((patientId: string) => {
     const now = new Date();
-    const timeString = now.toLocaleTimeString("en-US", {
+    const timeString = formatTime(now, {
       hour: "numeric",
       minute: "2-digit",
       hour12: true,
@@ -58,7 +60,7 @@ export const WorklistProvider: React.FC<{ children: React.ReactNode }> = ({
           : patient
       )
     );
-  }, []);
+  }, [formatTime]);
 
   const updateSelectedPatientLastModified = useCallback(() => {
     if (selectedPatientId) {

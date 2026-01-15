@@ -4,6 +4,45 @@
  * Contains dictation content mappings and helper functions for document content.
  */
 
+import type { MedicalContentBundle } from "../../../i18n/resources";
+
+// ============================================================================
+// Timing Constants
+// ============================================================================
+
+export const DOCUMENT_TIMING_MS = {
+  deferToNextTick: 0,
+
+  initialScrollDelay: 100,
+  typingSimulationStartDelay: 100,
+  referralScrollDelay: 100,
+
+  typingReplacementDomUpdateDelay: 100,
+  typingReplacementScrollSettleDelay: 100,
+  typingReplacementStartDelay: 300,
+  typingReplacementCursorUpdateDelay: 0,
+  typingReplacementEndCursorDelay: 100,
+  typingReplacementCharInterval: 17,
+
+  autoSelectStartDelay: 300,
+  autoSelectAfterExpandDelay: 800,
+  autoSelectApplySelectionDelay: 800,
+
+  skeletonDefaultDuration: 3000,
+  skeletonToastDelay: 500,
+  skeletonAfterCompleteDelay: 100,
+
+  dictationCharInterval: 30,
+  tooltipAfterDictationDelay: 1000,
+
+  tooltipAfterTypingIdleDelay: 500,
+
+  aiToastDetectedDefault: 5000,
+  aiToastDetectedPronoun: 3000,
+  aiToastCompleted: 2000,
+  pronounReplacementCompletionDelay: 100,
+} as const;
+
 // ============================================================================
 // Dictation Content Mapping
 // ============================================================================
@@ -212,6 +251,28 @@ export const PATIENT_DOCUMENT_CONTENT: Record<
       "Thank you for your visit today, Ms. Petrova. Your annual physical shows you are in excellent health. Continue your outstanding exercise regimen and healthy diet. Your lab results will be sent when available. Please schedule your mammogram as it is due this year. Given your family history of osteoporosis, continue vitamin D supplementation and consider calcium intake. We look forward to seeing you at your next annual exam in one year.",
   },
 };
+
+// ============================================================================
+// Locale-specific section content helpers
+// ============================================================================
+
+export function getEnGbHealthCheckContentForSectionId(
+  sectionId: string,
+  medical: MedicalContentBundle
+): string | undefined {
+  const medicalContent = medical.medicalContent;
+  const healthCheck =
+    medicalContent && typeof medicalContent === "object"
+      ? (medicalContent as Record<string, unknown>)["healthCheck"]
+      : undefined;
+
+  if (!healthCheck || typeof healthCheck !== "object") {
+    return undefined;
+  }
+
+  const value = (healthCheck as Record<string, unknown>)[sectionId];
+  return typeof value === "string" ? value : undefined;
+}
 
 // ============================================================================
 // Helper Functions
