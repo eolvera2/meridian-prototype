@@ -65,7 +65,7 @@ function AppTask1() {
             type: "transcript",
           },
         ],
-        isExpanded: true,
+        isExpanded: false,
       },
     ];
   }, [locale, medical]);

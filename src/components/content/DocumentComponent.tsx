@@ -64,9 +64,10 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
   const [documents, setDocuments] = useState<DocumentItem[]>(propDocuments);
 
   const hasAppliedEnGbDefaultsRef = useRef(false);
-  // Expand Note by default, or use initialExpandedDocuments if provided
+  // Expand first document by default, or use initialExpandedDocuments if provided
   const [expandedDocuments, setExpandedDocuments] = useState<Set<string>>(
-    initialExpandedDocuments ?? new Set(["1"])
+    initialExpandedDocuments ??
+      (propDocuments.length > 0 ? new Set([propDocuments[0].id]) : new Set())
   );
   const [isAddNoteDialogOpen, setIsAddNoteDialogOpen] = useState(false);
   // Track documents that should auto-focus their textarea
@@ -466,6 +467,10 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
         toastDelay: 500,
         afterComplete: () => {
           // After skeleton animation, populate Orders and update timestamps
+          const letterTemplate = normalizeParagraphSpacing(
+            getMedicalContentString(medical, "letterToGp")
+          );
+
           setDocuments((prev) => {
             return prev.map((doc) => {
               if (doc.type === "orders") {
@@ -508,6 +513,17 @@ export const DocumentComponent: React.FC<DocumentComponentProps> = ({
                 };
               } else if (doc.type === "progress-note") {
                 return { ...doc, isExpanded: false, created: "12:00 PM" };
+              } else if (doc.type === "letter-to-gp" && letterTemplate) {
+                // Populate Letter to GP content and timestamp after recording stops
+                return {
+                  ...doc,
+                  created: "12:00 PM",
+                  sections: (doc.sections || []).map((s) =>
+                    s.id === "letter-to-gp"
+                      ? { ...s, content: letterTemplate }
+                      : s
+                  ),
+                };
               }
               return doc;
             });
