@@ -11,7 +11,7 @@ import { AuthContext } from "./AuthTypes";
 // Session duration: 2 hours in milliseconds
 const SESSION_DURATION_MS = 2 * 60 * 60 * 1000;
 const SESSION_KEY = "dragoncopilot_session";
-const PASSWORD = "Dr@g0nAzYb18"; // The password to access the app
+const PASSWORD = "Dragon26"; // The password to access the app
 
 interface SessionData {
   authenticated: boolean;
