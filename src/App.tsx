@@ -19,7 +19,12 @@ function App() {
   const { t } = useI18n();
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [activeNavItem, setActiveNavItem] = useState<
-    "home" | "avatar" | "settings" | "help" | null
+    | "home"
+    | "avatar"
+    | "settings"
+    | "medicationAdherence"
+    | "help"
+    | null
   >("home");
 
   // Worklist state for TitleBar integration

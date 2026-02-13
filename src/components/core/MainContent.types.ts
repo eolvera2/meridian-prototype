@@ -21,10 +21,22 @@ export interface MainContentProps {
   /** Callback when home is toggled */
   onHomeToggle?: () => void;
   /** Currently active navigation item */
-  activeNavItem?: "home" | "avatar" | "settings" | "help" | null;
+  activeNavItem?:
+    | "home"
+    | "avatar"
+    | "settings"
+    | "medicationAdherence"
+    | "help"
+    | null;
   /** Callback when navigation item changes */
   onNavItemChange?: (
-    item: "home" | "avatar" | "settings" | "help" | null
+    item:
+      | "home"
+      | "avatar"
+      | "settings"
+        | "medicationAdherence"
+      | "help"
+      | null
   ) => void;
   /** Initial patient ID to select */
   initialPatientId?: string;

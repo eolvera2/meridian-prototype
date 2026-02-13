@@ -29,7 +29,12 @@ function AppTask2Start() {
   const [worklistCollapsed, setWorklistCollapsed] = useState(true); // Worklist collapsed when patient selected
   const [patientSelected, setPatientSelected] = useState(true);
   const [activeNavItem, setActiveNavItem] = useState<
-    "home" | "avatar" | "settings" | "help" | null
+    | "home"
+    | "avatar"
+    | "settings"
+    | "medicationAdherence"
+    | "help"
+    | null
   >("home");
 
   const handleWindowControls = {

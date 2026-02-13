@@ -7,6 +7,10 @@ import {
   SettingsPanel,
   FAB,
 } from "../../content";
+import {
+  MedicationAdherenceWorklist,
+  MedicationAdherenceWorklistProvider,
+} from "../../content/medicationAdherenceWorklist";
 import { Header } from "../Header";
 import { LeftNavigation } from "../../foundation";
 import { RightDrawer } from "../../foundation/RightDrawer";
@@ -24,7 +28,13 @@ interface MobileWorkspaceProps {
   navCollapsed: boolean;
   leftNavHandlers: LeftNavigationHandlers;
   homeToggleActive: boolean;
-  activeNavItem?: "home" | "avatar" | "settings" | "help" | null;
+  activeNavItem?:
+    | "home"
+    | "avatar"
+    | "settings"
+    | "medicationAdherence"
+    | "help"
+    | null;
   worklistCollapsed: boolean;
   worklistDrawerVisible: boolean;
   usingDrawerLayout: boolean;
@@ -182,10 +192,19 @@ export const MobileWorkspace: React.FC<MobileWorkspaceProps> = ({
                   : ""
               }`}
             >
-              <Worklist
-                isCollapsed={worklistCollapsed}
-                {...handleWorklistActions}
-              />
+              {activeNavItem === "medicationAdherence" ? (
+                <MedicationAdherenceWorklistProvider>
+                  <MedicationAdherenceWorklist
+                    isCollapsed={worklistCollapsed}
+                    {...handleWorklistActions}
+                  />
+                </MedicationAdherenceWorklistProvider>
+              ) : (
+                <Worklist
+                  isCollapsed={worklistCollapsed}
+                  {...handleWorklistActions}
+                />
+              )}
             </div>
           )}
 

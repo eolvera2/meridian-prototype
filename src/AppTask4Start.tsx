@@ -31,7 +31,12 @@ function AppTask4Start() {
   const [patientSelected, setPatientSelected] = useState(true);
   const { locale, medical } = useI18n();
   const [activeNavItem, setActiveNavItem] = useState<
-    "home" | "avatar" | "settings" | "help" | null
+    | "home"
+    | "avatar"
+    | "settings"
+    | "medicationAdherence"
+    | "help"
+    | null
   >("home");
 
   const handleWindowControls = {

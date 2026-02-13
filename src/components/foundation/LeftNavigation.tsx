@@ -12,6 +12,8 @@ import {
   Settings20Filled,
   QuestionCircle20Regular,
   QuestionCircle20Filled,
+  PersonPill20Regular,
+  PersonPill20Filled,
   HomeMoreFilled,
   HomeMoreRegular,
   Person20Regular,
@@ -21,17 +23,28 @@ import { useI18n } from "../../i18n/I18nContext";
 
 // Create bundled icons for proper Fluent UI integration
 const SettingsIcon = bundleIcon(Settings20Filled, Settings20Regular);
+const MedicationAdherenceIcon = bundleIcon(
+  PersonPill20Filled,
+  PersonPill20Regular
+);
 const HelpIcon = bundleIcon(QuestionCircle20Filled, QuestionCircle20Regular);
 const HomeIcon = bundleIcon(HomeMoreFilled, HomeMoreRegular);
 
 interface LeftNavigationProps {
   open?: boolean;
   onSettingsClick?: () => void;
+  onMedicationAdherenceClick?: () => void;
   onHelpClick?: () => void;
   onProfileClick?: () => void;
   onHomeToggle?: () => void;
   homeToggleActive?: boolean;
-  activeNavItem?: "home" | "avatar" | "settings" | "help" | null;
+  activeNavItem?:
+    | "home"
+    | "avatar"
+    | "settings"
+    | "medicationAdherence"
+    | "help"
+    | null;
 }
 
 const useStyles = makeStyles({
@@ -200,6 +213,7 @@ const useStyles = makeStyles({
 export const LeftNavigation: React.FC<LeftNavigationProps> = ({
   open = true,
   onSettingsClick,
+  onMedicationAdherenceClick,
   onHelpClick,
   onProfileClick,
   onHomeToggle,
@@ -210,7 +224,7 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
   const { t } = useI18n();
 
   // Calculate pill position based on active nav item
-  // Positions: home=6px, avatar=60px (44+10+6), settings=114px (44+10+44+10+6), help=168px (44+10+44+10+44+10+6)
+  // Positions: home=6px, avatar=60px, settings=96px, medicationAdherence=142px, help=188px
   const getPillPosition = () => {
     switch (activeNavItem) {
       case "home":
@@ -219,8 +233,10 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
         return "60px";
       case "settings":
         return "96px";
-      case "help":
+      case "medicationAdherence":
         return "142px";
+      case "help":
+        return "188px";
       default:
         return "-50px"; // Hidden
     }
@@ -305,6 +321,26 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
                   aria-label={t("leftNav.aria.openSettings")}
                 >
                   <SettingsIcon />
+                </button>
+              </span>
+            </Tooltip>
+
+            <Tooltip
+              content={t("leftNav.tooltip.medicationAdherence")}
+              relationship="label"
+              positioning={"after"}
+            >
+              <span className="inline-flex">
+                <button
+                  className={mergeClasses(
+                    styles.navButton,
+                    activeNavItem === "medicationAdherence" &&
+                      styles.selectedNavButton
+                  )}
+                  onClick={onMedicationAdherenceClick}
+                  aria-label={t("leftNav.aria.openMedicationAdherence")}
+                >
+                  <MedicationAdherenceIcon />
                 </button>
               </span>
             </Tooltip>

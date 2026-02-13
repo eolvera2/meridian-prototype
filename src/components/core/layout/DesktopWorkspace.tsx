@@ -7,6 +7,10 @@ import {
   SettingsPanel,
   FAB,
 } from "../../content";
+import {
+  MedicationAdherenceWorklist,
+  MedicationAdherenceWorklistProvider,
+} from "../../content/medicationAdherenceWorklist";
 import { Header } from "../Header";
 import type { HeaderProps } from "../Header";
 import { RightDrawer } from "../../foundation/RightDrawer";
@@ -25,7 +29,13 @@ interface DesktopWorkspaceProps {
   leftNavOpen: boolean;
   leftNavHandlers: LeftNavigationHandlers;
   homeToggleActive: boolean;
-  activeNavItem?: "home" | "avatar" | "settings" | "help" | null;
+  activeNavItem?:
+    | "home"
+    | "avatar"
+    | "settings"
+    | "medicationAdherence"
+    | "help"
+    | null;
   worklistCollapsed: boolean;
   selectedPatient: HeaderProps["patient"];
   headerProps: HeaderProps;
@@ -132,6 +142,9 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
         <LeftNavigation
           open={leftNavOpen}
           onSettingsClick={leftNavHandlers.onSettingsClick}
+          onMedicationAdherenceClick={
+            leftNavHandlers.onMedicationAdherenceClick
+          }
           onHelpClick={leftNavHandlers.onHelpClick}
           onProfileClick={leftNavHandlers.onProfileClick}
           onHomeToggle={leftNavHandlers.onHomeToggle}
@@ -155,10 +168,19 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
                 worklistCollapsed ? styles.worklistContainerHidden : ""
               }`}
             >
-              <Worklist
-                isCollapsed={worklistCollapsed}
-                {...handleWorklistActions}
-              />
+              {activeNavItem === "medicationAdherence" ? (
+                <MedicationAdherenceWorklistProvider>
+                  <MedicationAdherenceWorklist
+                    isCollapsed={worklistCollapsed}
+                    {...handleWorklistActions}
+                  />
+                </MedicationAdherenceWorklistProvider>
+              ) : (
+                <Worklist
+                  isCollapsed={worklistCollapsed}
+                  {...handleWorklistActions}
+                />
+              )}
             </div>
 
             <div className={styles.headerAndContentContainer}>

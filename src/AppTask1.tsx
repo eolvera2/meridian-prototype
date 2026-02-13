@@ -28,7 +28,12 @@ function AppTask1() {
   const { t, locale, medical } = useI18n();
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [activeNavItem, setActiveNavItem] = useState<
-    "home" | "avatar" | "settings" | "help" | null
+    | "home"
+    | "avatar"
+    | "settings"
+    | "medicationAdherence"
+    | "help"
+    | null
   >("home");
 
   const initialDocuments: DocumentItem[] | undefined = useMemo(() => {

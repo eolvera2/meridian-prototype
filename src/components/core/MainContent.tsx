@@ -577,6 +577,13 @@ export const MainContent: React.FC<MainContentProps> = ({
     onNavItemChange?.("avatar");
   };
 
+  const handleMedicationAdherenceClick = () => {
+    closeRightDrawer();
+    onHomeToggle?.();
+    onNavItemChange?.("medicationAdherence");
+    triggerRecordingReset();
+  };
+
   const handleHomeToggleClick = () => {
     // Always navigate to home and close right drawer
     closeRightDrawer();
@@ -587,6 +594,7 @@ export const MainContent: React.FC<MainContentProps> = ({
 
   const leftNavHandlers = {
     onSettingsClick: handleSettingsClick,
+    onMedicationAdherenceClick: handleMedicationAdherenceClick,
     onHelpClick: handleHelpClick,
     onProfileClick: handleProfileClick,
     onHomeToggle: handleHomeToggleClick,

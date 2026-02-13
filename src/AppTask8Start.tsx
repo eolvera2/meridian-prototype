@@ -50,7 +50,12 @@ function AppTask8Start() {
   const [worklistCollapsed, setWorklistCollapsed] = useState(true);
   const [patientSelected, setPatientSelected] = useState(true);
   const [activeNavItem, setActiveNavItem] = useState<
-    "home" | "avatar" | "settings" | "help" | null
+    | "home"
+    | "avatar"
+    | "settings"
+    | "medicationAdherence"
+    | "help"
+    | null
   >("home");
 
   const handleWindowControls = {

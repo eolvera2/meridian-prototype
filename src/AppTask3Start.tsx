@@ -30,7 +30,12 @@ function AppTask3Start() {
   const [worklistCollapsed, setWorklistCollapsed] = useState(true); // Worklist collapsed when patient selected
   const [patientSelected, setPatientSelected] = useState(true);
   const [activeNavItem, setActiveNavItem] = useState<
-    "home" | "avatar" | "settings" | "help" | null
+    | "home"
+    | "avatar"
+    | "settings"
+    | "medicationAdherence"
+    | "help"
+    | null
   >("home");
   const [isSuccess, setIsSuccess] = useState(false); // Track success state for modified timestamp
 
