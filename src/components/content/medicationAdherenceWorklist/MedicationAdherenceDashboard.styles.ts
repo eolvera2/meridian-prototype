@@ -250,7 +250,7 @@ export const useDashboardStyles = makeStyles({
     color: tokens.colorNeutralForeground2,
     textAlign: "center",
     lineHeight: "14px",
-    minHeight: "14px",
+    minHeight: "28px",
   },
 
   // Contact History table
