@@ -592,37 +592,21 @@ export const useStyles = makeStyles({
     zIndex: 1,
   },
 
-  addPatientButton: {
-    backgroundColor: tokens.colorBrandBackground,
-    border: "none",
-    borderRadius: "var(--border-radius-medium)",
-    boxShadow:
-      "0px 4px 8px 0px rgba(0,0,0,0.14), 0px 0px 2px 0px rgba(0,0,0,0.12)",
-    cursor: "pointer",
+  footerContent: {
     display: "flex",
-    gap: "var(--gap-medium)",
-    height: "44px",
+    flexDirection: "column",
+    gap: "10px",
+  },
+
+  footerLabel: {
+    fontSize: tokens.fontSizeBase200,
+    color: tokens.colorNeutralForeground2,
+  },
+
+  footerActions: {
+    display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    padding: "8px 16px",
-    width: "100%",
-    ":hover": {
-      backgroundColor: tokens.colorBrandBackgroundHover,
-    },
-  },
-
-  addPatientText: {
-    fontFamily: "'Segoe UI', sans-serif",
-    fontSize: "16px",
-    lineHeight: "22px",
-    color: "var(--colorBrandForeground)",
-    fontWeight: 600,
-  },
-
-  addIcon: {
-    width: "24px",
-    height: "24px",
-    color: "var(--colorBrandForeground)",
+    gap: "8px",
   },
 
   worklistMobile: {

@@ -27,9 +27,9 @@ import {
   ArrowDown16Regular,
   ArrowSync16Regular,
   MoreVerticalFilled,
-  ChatAdd24Filled,
   Chat20Regular,
   Call20Regular,
+  CallRegular,
 } from "@fluentui/react-icons";
 
 import { useStyles } from "./MedicationAdherenceWorklist.styles";
@@ -44,7 +44,7 @@ type MedicationAdherenceTab = "urgent" | "queue" | "cleared";
 
 export const MedicationAdherenceWorklist: React.FC<
   MedicationAdherenceWorklistProps
-> = ({ isCollapsed = false, onPatientSelect, onAddPatient }) => {
+> = ({ isCollapsed = false, onPatientSelect }) => {
   const styles = useStyles();
   const { t } = useI18n();
   const { patients } = useMedicationAdherenceWorklistContext();
@@ -384,10 +384,29 @@ export const MedicationAdherenceWorklist: React.FC<
         </div>
 
         <div className={styles.footer}>
-          <button className={styles.addPatientButton} onClick={onAddPatient}>
-            <ChatAdd24Filled className={styles.addIcon} />
-            <div className={styles.addPatientText}>Add patient</div>
-          </button>
+          <div className={styles.footerContent}>
+            <div className={styles.footerLabel}>
+              Ready to contact {selectedPatients.size} patient{selectedPatients.size !== 1 ? "s" : ""}
+            </div>
+            <div className={styles.footerActions}>
+              <Button
+                appearance="primary"
+                icon={<CallRegular />}
+                disabled={selectedPatients.size === 0}
+                style={{ flex: 1 }}
+              >
+                Call
+              </Button>
+              <Button
+                appearance="secondary"
+                icon={<Chat20Regular />}
+                disabled={selectedPatients.size === 0}
+                style={{ flex: 1 }}
+              >
+                Chat
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
