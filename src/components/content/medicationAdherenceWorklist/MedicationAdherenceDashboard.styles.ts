@@ -11,7 +11,14 @@ export const useDashboardStyles = makeStyles({
     gap: "20px",
   },
 
-  // Header
+  // Header row: title left, filters right
+  headerRow: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: "16px",
+    flexWrap: "wrap",
+  },
   dashboardHeader: {
     display: "flex",
     flexDirection: "column",
@@ -28,7 +35,7 @@ export const useDashboardStyles = makeStyles({
     color: tokens.colorNeutralForeground3,
   },
 
-  // Filters bar (top-level)
+  // Filters bar (inline with header)
   filtersBar: {
     display: "flex",
     alignItems: "flex-end",

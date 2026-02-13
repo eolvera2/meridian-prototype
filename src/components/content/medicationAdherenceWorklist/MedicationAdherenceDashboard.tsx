@@ -90,28 +90,6 @@ const STATS_DATA: Record<TimeRange, { adherenceRate: number; adherenceTrend: num
   "90": { adherenceRate: 83, adherenceTrend: -2, patientsAtRisk: 18, riskHigh: 6, riskMed: 8, riskLow: 4, successfulContacts: 68, followUpNeeded: 9, followUpUrgent: 4, followUpRoutine: 5 },
 };
 
-// Missed Doses / Refill Gaps data
-const MISSED_DOSES_DATA: Record<TimeRange, { label: string; missedDoses: number; refillGaps: number }[]> = {
-  "7": [
-    { label: "Statins", missedDoses: 4, refillGaps: 1 },
-    { label: "ACE Inhibitors", missedDoses: 3, refillGaps: 2 },
-    { label: "Metformin", missedDoses: 2, refillGaps: 1 },
-    { label: "Beta-blockers", missedDoses: 1, refillGaps: 0 },
-  ],
-  "30": [
-    { label: "Statins", missedDoses: 12, refillGaps: 3 },
-    { label: "ACE Inhibitors", missedDoses: 9, refillGaps: 5 },
-    { label: "Metformin", missedDoses: 7, refillGaps: 2 },
-    { label: "Beta-blockers", missedDoses: 4, refillGaps: 1 },
-  ],
-  "90": [
-    { label: "Statins", missedDoses: 32, refillGaps: 10 },
-    { label: "ACE Inhibitors", missedDoses: 24, refillGaps: 12 },
-    { label: "Metformin", missedDoses: 18, refillGaps: 6 },
-    { label: "Beta-blockers", missedDoses: 10, refillGaps: 4 },
-  ],
-};
-
 // Outreach Effectiveness by channel
 const OUTREACH_DATA: Record<TimeRange, { channel: string; rate: number; total: number }[]> = {
   "7": [
@@ -176,7 +154,7 @@ const AdherenceTrendChart: React.FC<{ data: { label: string; adherence: number; 
   const gridLines = [100, 90, 80, 70, 60];
 
   return (
-    <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ maxHeight: 200 }}>
+    <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ maxHeight: 110 }}>
       {/* Grid lines */}
       {gridLines.map((v) => (
         <g key={v}>
@@ -216,11 +194,9 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   // Dynamic data
   const stats = STATS_DATA[timeRange];
   const trendData = TREND_DATA[timeRange];
-  const missedData = MISSED_DOSES_DATA[timeRange];
   const outreachData = OUTREACH_DATA[timeRange];
   const driversData = DRIVERS_DATA[timeRange];
 
-  const maxMissedDoses = Math.max(...missedData.map((d) => d.missedDoses + d.refillGaps));
   const maxDriverCount = Math.max(...driversData.map((d) => d.count));
 
   // Contact history
@@ -237,14 +213,14 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   return (
     <div className={styles.root}>
       {/* ── Header + Filters ── */}
-      <div className={styles.dashboardHeader}>
-        <div className={styles.title}>Medication Adherence Dashboard</div>
-        <div className={styles.subtitle}>
-          Monitor patient outreach and medication compliance
+      <div className={styles.headerRow}>
+        <div className={styles.dashboardHeader}>
+          <div className={styles.title}>Medication Adherence Dashboard</div>
+          <div className={styles.subtitle}>
+            Monitor patient outreach and medication compliance
+          </div>
         </div>
-      </div>
 
-      <div className={styles.filtersBar}>
         <div className={styles.filtersBar}>
           <div className={styles.filterGroup}>
             <span className={styles.filterLabel}>Time Range</span>
@@ -350,50 +326,25 @@ export const MedicationAdherenceDashboard: React.FC = () => {
         <AdherenceTrendChart data={trendData} />
       </div>
 
-      {/* ── Two-column: Missed Doses + Outreach Effectiveness ── */}
+      {/* ── Two-column: Top Drivers + Outreach Effectiveness ── */}
       <div className={styles.twoColumnRow}>
-        {/* Missed Doses / Refill Gaps */}
+        {/* Top Drivers of Non-Adherence */}
         <div className={styles.sectionCard}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span className={styles.sectionTitle}>Missed Doses &amp; Refill Gaps</span>
-            <div className={styles.chartLegend}>
-              <span className={styles.legendItem}>
-                <span className={styles.legendDot} style={{ backgroundColor: "#D13438" }} />
-                Missed
-              </span>
-              <span className={styles.legendItem}>
-                <span className={styles.legendDot} style={{ backgroundColor: "#CA5010" }} />
-                Refill Gap
-              </span>
-            </div>
-          </div>
-          <div className={styles.barChartList}>
-            {missedData.map((d) => (
-              <div className={styles.barRow} key={d.label}>
-                <span className={styles.barLabel}>{d.label}</span>
-                <div className={styles.barTrack}>
-                  <div style={{ display: "flex", height: "100%" }}>
-                    <div
-                      className={styles.barFill}
-                      style={{
-                        width: `${(d.missedDoses / maxMissedDoses) * 100}%`,
-                        backgroundColor: "#D13438",
-                        borderRadius: d.refillGaps > 0 ? "4px 0 0 4px" : "4px",
-                      }}
-                    />
-                    {d.refillGaps > 0 && (
-                      <div
-                        className={styles.barFill}
-                        style={{
-                          width: `${(d.refillGaps / maxMissedDoses) * 100}%`,
-                          backgroundColor: "#CA5010",
-                          borderRadius: "0 4px 4px 0",
-                        }}
-                      />
-                    )}
-                  </div>
+          <span className={styles.sectionTitle}>Top Drivers of Non-Adherence</span>
+          <div className={styles.driversRow}>
+            {driversData.map((d) => (
+              <div className={styles.driverCol} key={d.label}>
+                <span className={styles.driverValue}>{d.count}</span>
+                <div className={styles.driverBarContainer}>
+                  <div
+                    className={styles.driverBar}
+                    style={{
+                      height: `${(d.count / maxDriverCount) * 100}%`,
+                      backgroundColor: d.color,
+                    }}
+                  />
                 </div>
-                <span className={styles.barValue}>{d.missedDoses + d.refillGaps}</span>
+                <span className={styles.driverLabel}>{d.label}</span>
               </div>
             ))}
           </div>
@@ -419,28 +370,6 @@ export const MedicationAdherenceDashboard: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* ── Top Drivers of Non-Adherence ── */}
-      <div className={styles.sectionCard}>
-        <span className={styles.sectionTitle}>Top Drivers of Non-Adherence</span>
-        <div className={styles.driversRow}>
-          {driversData.map((d) => (
-            <div className={styles.driverCol} key={d.label}>
-              <span className={styles.driverValue}>{d.count}</span>
-              <div className={styles.driverBarContainer}>
-                <div
-                  className={styles.driverBar}
-                  style={{
-                    height: `${(d.count / maxDriverCount) * 100}%`,
-                    backgroundColor: d.color,
-                  }}
-                />
-              </div>
-              <span className={styles.driverLabel}>{d.label}</span>
-            </div>
-          ))}
         </div>
       </div>
 
