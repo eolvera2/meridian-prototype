@@ -116,11 +116,12 @@ export const useDashboardStyles = makeStyles({
     flexDirection: "column",
     gap: "8px",
   },
-  // Adherence Trend: chart + legend side by side
+  // Adherence Trend: chart + legend stacked
   trendRow: {
     display: "flex",
-    alignItems: "center",
-    gap: "16px",
+    flexDirection: "column",
+    gap: "6px",
+    flex: 1,
   },
   trendChartArea: {
     flex: 1,
@@ -128,8 +129,7 @@ export const useDashboardStyles = makeStyles({
   },
   trendLegendSide: {
     display: "flex",
-    flexDirection: "column",
-    gap: "8px",
+    gap: "12px",
     fontSize: "11px",
     color: tokens.colorNeutralForeground3,
     flexShrink: 0,
@@ -164,10 +164,10 @@ export const useDashboardStyles = makeStyles({
     flexShrink: 0,
   },
 
-  // Two-column row
-  twoColumnRow: {
+  // Three-column row
+  threeColumnRow: {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr",
+    gridTemplateColumns: "1fr 1fr 1fr",
     gap: "16px",
   },
 

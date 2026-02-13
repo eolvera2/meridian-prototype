@@ -308,28 +308,28 @@ export const MedicationAdherenceDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* ── Adherence Trend ── */}
-      <div className={styles.sectionCard}>
-        <span className={styles.sectionTitle}>Adherence Trend</span>
-        <div className={styles.trendRow}>
-          <div className={styles.trendChartArea}>
-            <AdherenceTrendChart data={trendData} />
-          </div>
-          <div className={styles.trendLegendSide}>
-            <span className={styles.legendItem}>
-              <span className={styles.legendDot} style={{ backgroundColor: "#0078D4" }} />
-              Adherence %
-            </span>
-            <span className={styles.legendItem}>
-              <span className={styles.legendDot} style={{ backgroundColor: "#FDE300" }} />
-              Missed Doses
-            </span>
+      {/* ── Charts Row: Adherence Trend + Top Drivers + Outreach ── */}
+      <div className={styles.threeColumnRow}>
+        {/* Adherence Trend */}
+        <div className={styles.sectionCard}>
+          <span className={styles.sectionTitle}>Adherence Trend</span>
+          <div className={styles.trendRow}>
+            <div className={styles.trendChartArea}>
+              <AdherenceTrendChart data={trendData} />
+            </div>
+            <div className={styles.trendLegendSide}>
+              <span className={styles.legendItem}>
+                <span className={styles.legendDot} style={{ backgroundColor: "#0078D4" }} />
+                Adherence %
+              </span>
+              <span className={styles.legendItem}>
+                <span className={styles.legendDot} style={{ backgroundColor: "#FDE300" }} />
+                Missed Doses
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* ── Two-column: Top Drivers + Outreach Effectiveness ── */}
-      <div className={styles.twoColumnRow}>
         {/* Top Drivers of Non-Adherence */}
         <div className={styles.sectionCard}>
           <span className={styles.sectionTitle}>Top Drivers of Non-Adherence</span>
