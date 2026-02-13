@@ -7,8 +7,8 @@ export const useDashboardStyles = makeStyles({
     height: "100%",
     overflowY: "auto",
     backgroundColor: tokens.colorNeutralBackground2,
-    padding: "24px 32px",
-    gap: "20px",
+    padding: "16px 24px",
+    gap: "12px",
   },
 
   // Header row: title left, filters right
@@ -62,8 +62,8 @@ export const useDashboardStyles = makeStyles({
   statCard: {
     display: "flex",
     flexDirection: "column",
-    gap: "2px",
-    padding: "16px",
+    gap: "0px",
+    padding: "10px 14px",
     borderRadius: "8px",
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     backgroundColor: tokens.colorNeutralBackground1,
@@ -79,12 +79,13 @@ export const useDashboardStyles = makeStyles({
     display: "flex",
     alignItems: "baseline",
     gap: "8px",
+    flexWrap: "wrap",
   },
   statValue: {
-    fontSize: "28px",
+    fontSize: "24px",
     fontWeight: 700,
     color: tokens.colorNeutralForeground1,
-    lineHeight: "36px",
+    lineHeight: "30px",
   },
   statTrendUp: {
     fontSize: "12px",
@@ -98,10 +99,9 @@ export const useDashboardStyles = makeStyles({
   },
   statBreakdown: {
     display: "flex",
-    gap: "10px",
+    gap: "8px",
     fontSize: "11px",
     color: tokens.colorNeutralForeground3,
-    marginTop: "2px",
   },
 
   // Section card (shared wrapper for chart sections)
@@ -109,10 +109,28 @@ export const useDashboardStyles = makeStyles({
     borderRadius: "8px",
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     backgroundColor: tokens.colorNeutralBackground1,
-    padding: "20px",
+    padding: "12px 16px",
     display: "flex",
     flexDirection: "column",
+    gap: "8px",
+  },
+  // Adherence Trend: chart + legend side by side
+  trendRow: {
+    display: "flex",
+    alignItems: "center",
     gap: "16px",
+  },
+  trendChartArea: {
+    flex: 1,
+    minWidth: 0,
+  },
+  trendLegendSide: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+    fontSize: "11px",
+    color: tokens.colorNeutralForeground3,
+    flexShrink: 0,
   },
   sectionTitle: {
     fontSize: "14px",
@@ -155,7 +173,7 @@ export const useDashboardStyles = makeStyles({
   barChartList: {
     display: "flex",
     flexDirection: "column",
-    gap: "12px",
+    gap: "10px",
   },
   barRow: {
     display: "flex",
@@ -191,10 +209,10 @@ export const useDashboardStyles = makeStyles({
   // Drivers section (vertical bars)
   driversRow: {
     display: "flex",
-    gap: "16px",
+    gap: "12px",
     alignItems: "flex-end",
-    height: "140px",
-    paddingTop: "12px",
+    height: "110px",
+    paddingTop: "4px",
   },
   driverCol: {
     display: "flex",
@@ -208,7 +226,7 @@ export const useDashboardStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-end",
-    height: "100px",
+    height: "70px",
     width: "100%",
   },
   driverBar: {
@@ -232,11 +250,11 @@ export const useDashboardStyles = makeStyles({
   historySection: {
     display: "flex",
     flexDirection: "column",
-    gap: "16px",
+    gap: "12px",
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: "8px",
     border: `1px solid ${tokens.colorNeutralStroke2}`,
-    padding: "20px",
+    padding: "12px 16px",
   },
   historyTitle: {
     fontSize: "14px",

@@ -140,7 +140,7 @@ const AdherenceTrendChart: React.FC<{ data: { label: string; adherence: number; 
   const padY = 20;
   const chartW = width - padX * 2;
   const chartH = height - padY * 2;
-  const minY = 60;
+  const minY = 50;
   const maxY = 100;
   const maxMissed = Math.max(...data.map((d) => d.missedDoses), 1);
 
@@ -151,10 +151,10 @@ const AdherenceTrendChart: React.FC<{ data: { label: string; adherence: number; 
   const adherenceLine = data.map((d, i) => `${toX(i)},${toYAdherence(d.adherence)}`).join(" ");
   const missedLine = data.map((d, i) => `${toX(i)},${toYMissed(d.missedDoses)}`).join(" ");
 
-  const gridLines = [100, 90, 80, 70, 60];
+  const gridLines = [100, 75, 50];
 
   return (
-    <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ maxHeight: 110 }}>
+    <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ maxHeight: 90 }}>
       {/* Grid lines */}
       {gridLines.map((v) => (
         <g key={v}>
@@ -281,11 +281,11 @@ export const MedicationAdherenceDashboard: React.FC = () => {
           <span className={styles.statLabel}>Patients at Risk</span>
           <div className={styles.statValueRow}>
             <span className={styles.statValue}>{stats.patientsAtRisk}</span>
-          </div>
-          <div className={styles.statBreakdown}>
-            <span>High: <strong>{stats.riskHigh}</strong></span>
-            <span>Med: <strong>{stats.riskMed}</strong></span>
-            <span>Low: <strong>{stats.riskLow}</strong></span>
+            <div className={styles.statBreakdown}>
+              <span>High: <strong>{stats.riskHigh}</strong></span>
+              <span>Med: <strong>{stats.riskMed}</strong></span>
+              <span>Low: <strong>{stats.riskLow}</strong></span>
+            </div>
           </div>
         </div>
 
@@ -300,19 +300,22 @@ export const MedicationAdherenceDashboard: React.FC = () => {
           <span className={styles.statLabel}>Follow-up Needed</span>
           <div className={styles.statValueRow}>
             <span className={styles.statValue}>{stats.followUpNeeded}</span>
-          </div>
-          <div className={styles.statBreakdown}>
-            <span>Urgent: <strong>{stats.followUpUrgent}</strong></span>
-            <span>Routine: <strong>{stats.followUpRoutine}</strong></span>
+            <div className={styles.statBreakdown}>
+              <span>Urgent: <strong>{stats.followUpUrgent}</strong></span>
+              <span>Routine: <strong>{stats.followUpRoutine}</strong></span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* ── Adherence Trend ── */}
       <div className={styles.sectionCard}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span className={styles.sectionTitle}>Adherence Trend</span>
-          <div className={styles.chartLegend}>
+        <span className={styles.sectionTitle}>Adherence Trend</span>
+        <div className={styles.trendRow}>
+          <div className={styles.trendChartArea}>
+            <AdherenceTrendChart data={trendData} />
+          </div>
+          <div className={styles.trendLegendSide}>
             <span className={styles.legendItem}>
               <span className={styles.legendDot} style={{ backgroundColor: "#0078D4" }} />
               Adherence %
@@ -323,7 +326,6 @@ export const MedicationAdherenceDashboard: React.FC = () => {
             </span>
           </div>
         </div>
-        <AdherenceTrendChart data={trendData} />
       </div>
 
       {/* ── Two-column: Top Drivers + Outreach Effectiveness ── */}
