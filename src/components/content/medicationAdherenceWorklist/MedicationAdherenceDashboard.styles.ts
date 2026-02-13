@@ -62,6 +62,7 @@ export const useDashboardStyles = makeStyles({
   statCard: {
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
     gap: "0px",
     padding: "10px 14px",
     borderRadius: "8px",
@@ -78,6 +79,7 @@ export const useDashboardStyles = makeStyles({
   statValueRow: {
     display: "flex",
     alignItems: "baseline",
+    justifyContent: "center",
     gap: "8px",
     flexWrap: "wrap",
   },
@@ -218,7 +220,7 @@ export const useDashboardStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "6px",
+    gap: "4px",
     flex: 1,
   },
   driverBarContainer: {
@@ -228,6 +230,7 @@ export const useDashboardStyles = makeStyles({
     justifyContent: "flex-end",
     height: "70px",
     width: "100%",
+    position: "relative",
   },
   driverBar: {
     width: "40px",
@@ -238,7 +241,6 @@ export const useDashboardStyles = makeStyles({
     fontSize: "12px",
     fontWeight: 700,
     color: tokens.colorNeutralForeground1,
-    marginBottom: "4px",
   },
   driverLabel: {
     fontSize: "11px",
