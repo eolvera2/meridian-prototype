@@ -10,6 +10,7 @@ import {
 import {
   MedicationAdherenceWorklist,
   MedicationAdherenceWorklistProvider,
+  MedicationAdherenceDashboard,
 } from "../../content/medicationAdherenceWorklist";
 import { Header } from "../Header";
 import type { HeaderProps } from "../Header";
@@ -197,13 +198,17 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
                     "document-scroll-container"
                   )}
                 >
-                  {worklistCollapsed && selectedPatient && (
-                    <DocumentComponent
-                      key={selectedPatient.id}
-                      micMode={micMode}
-                      onMicModeToggle={onMicModeToggle}
-                      {...documentHandlers}
-                    />
+                  {activeNavItem === "medicationAdherence" ? (
+                    <MedicationAdherenceDashboard />
+                  ) : (
+                    worklistCollapsed && selectedPatient && (
+                      <DocumentComponent
+                        key={selectedPatient.id}
+                        micMode={micMode}
+                        onMicModeToggle={onMicModeToggle}
+                        {...documentHandlers}
+                      />
+                    )
                   )}
                 </div>
                 <div className={styles.drawerArea}>
