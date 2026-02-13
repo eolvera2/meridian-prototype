@@ -13,12 +13,12 @@ import React, {
   useMemo,
 } from "react";
 import medicationAdherenceWorklistData from "../../../data/medicationAdherenceWorklistData.json";
-import type { WorklistItem } from "../../shared";
+import type { MedicationAdherenceWorklistItem } from "./MedicationAdherenceWorklist.types";
 import { useI18n } from "../../../i18n/I18nContext";
 
 interface MedicationAdherenceWorklistContextValue {
   /** Current worklist data */
-  patients: WorklistItem[];
+  patients: MedicationAdherenceWorklistItem[];
   /** Currently selected patient ID */
   selectedPatientId: string | null;
   /** Set the selected patient ID */
@@ -28,7 +28,7 @@ interface MedicationAdherenceWorklistContextValue {
   /** Update the currently selected patient's lastModified timestamp */
   updateSelectedPatientLastModified: () => void;
   /** Get a patient by ID */
-  getPatient: (patientId: string) => WorklistItem | undefined;
+  getPatient: (patientId: string) => MedicationAdherenceWorklistItem | undefined;
 }
 
 const MedicationAdherenceWorklistContext =
@@ -40,8 +40,8 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
   children,
 }) => {
   const { formatTime } = useI18n();
-  const [patients, setPatients] = useState<WorklistItem[]>(
-    medicationAdherenceWorklistData as WorklistItem[]
+  const [patients, setPatients] = useState<MedicationAdherenceWorklistItem[]>(
+    medicationAdherenceWorklistData as MedicationAdherenceWorklistItem[]
   );
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(
     null
