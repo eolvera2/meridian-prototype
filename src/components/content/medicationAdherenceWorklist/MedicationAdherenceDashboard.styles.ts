@@ -214,15 +214,17 @@ export const useDashboardStyles = makeStyles({
   // Drivers section (vertical bars)
   driversRow: {
     display: "flex",
-    gap: "8px",
+    gap: "20px",
     alignItems: "flex-end",
     flex: 1,
+    justifyContent: "center",
+    paddingTop: "8px",
   },
   driverCol: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "4px",
+    gap: "6px",
     flex: 1,
   },
   driverBarContainer: {
@@ -230,11 +232,11 @@ export const useDashboardStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-end",
-    height: "80px",
+    height: "100px",
     width: "100%",
   },
   driverBar: {
-    width: "40px",
+    width: "50px",
     borderRadius: "4px 4px 0 0",
     transition: "height 0.4s ease",
   },
