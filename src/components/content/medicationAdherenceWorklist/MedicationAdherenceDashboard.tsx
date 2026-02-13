@@ -136,7 +136,7 @@ const DRIVERS_DATA: Record<TimeRange, { label: string; count: number; color: str
 const AdherenceTrendChart: React.FC<{ data: { label: string; adherence: number; missedDoses: number }[] }> = ({ data }) => {
   const width = 500;
   const height = 180;
-  const padX = 40;
+  const padX = 54;
   const padY = 14;
   const padBottom = 28;
   const chartW = width - padX * 2;
@@ -199,6 +199,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   const driversData = DRIVERS_DATA[timeRange];
 
   const maxDriverCount = Math.max(...driversData.map((d) => d.count));
+  const driverTotal = driversData.reduce((sum, d) => sum + d.count, 0);
 
   // Contact history
   const filteredByTime = useMemo(
@@ -338,7 +339,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
             {driversData.map((d) => (
               <div className={styles.driverCol} key={d.label}>
                 <div className={styles.driverBarContainer}>
-                  <span className={styles.driverValue}>{d.count}</span>
+                  <span className={styles.driverValue}>{Math.round((d.count / driverTotal) * 100)}%</span>
                   <div
                     className={styles.driverBar}
                     style={{

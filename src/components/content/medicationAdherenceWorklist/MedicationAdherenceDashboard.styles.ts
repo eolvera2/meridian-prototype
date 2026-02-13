@@ -176,7 +176,9 @@ export const useDashboardStyles = makeStyles({
   barChartList: {
     display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
     gap: "10px",
+    flex: 1,
   },
   barRow: {
     display: "flex",
