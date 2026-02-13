@@ -263,6 +263,11 @@ export const useDashboardStyles = makeStyles({
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     padding: "12px 16px",
   },
+  historyHeaderRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
   historyTitle: {
     fontSize: "14px",
     fontWeight: 700,

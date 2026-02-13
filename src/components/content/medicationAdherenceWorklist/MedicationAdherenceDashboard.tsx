@@ -379,14 +379,14 @@ export const MedicationAdherenceDashboard: React.FC = () => {
 
       {/* ── Patient Contact History ── */}
       <div className={styles.historySection}>
-        <div>
-          <div className={styles.historyTitle}>Patient Contact History</div>
-          <div className={styles.historySubtitle}>
-            Review past patient contacts and mark them as reviewed
+        <div className={styles.historyHeaderRow}>
+          <div>
+            <div className={styles.historyTitle}>Patient Contact History</div>
+            <div className={styles.historySubtitle}>
+              Review past patient contacts and mark them as reviewed
+            </div>
           </div>
-        </div>
-
-        <div className={styles.summaryCounts}>
+          <div className={styles.summaryCounts}>
           <span>
             Total: <strong>{filteredByTime.length}</strong>
           </span>
@@ -402,6 +402,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
               {completedCount}
             </span>
           </span>
+          </div>
         </div>
 
         <div className={styles.filtersRow}>
