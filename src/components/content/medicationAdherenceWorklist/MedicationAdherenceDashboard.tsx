@@ -134,12 +134,13 @@ const DRIVERS_DATA: Record<TimeRange, { label: string; count: number; color: str
 // ── SVG Line Chart Helper ───────────────────────────────────
 
 const AdherenceTrendChart: React.FC<{ data: { label: string; adherence: number; missedDoses: number }[] }> = ({ data }) => {
-  const width = 800;
-  const height = 160;
-  const padX = 44;
-  const padY = 16;
+  const width = 500;
+  const height = 180;
+  const padX = 40;
+  const padY = 14;
+  const padBottom = 28;
   const chartW = width - padX * 2;
-  const chartH = height - padY * 2;
+  const chartH = height - padY - padBottom;
   const minY = 50;
   const maxY = 100;
   const maxMissed = Math.max(...data.map((d) => d.missedDoses), 1);
@@ -154,17 +155,17 @@ const AdherenceTrendChart: React.FC<{ data: { label: string; adherence: number; 
   const gridLines = [100, 75, 50];
 
   return (
-    <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ maxHeight: 100 }}>
+    <svg width="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
       {/* Grid lines */}
       {gridLines.map((v) => (
         <g key={v}>
           <line x1={padX} y1={toYAdherence(v)} x2={width - padX} y2={toYAdherence(v)} stroke="#e0e0e0" strokeDasharray="3 3" />
-          <text x={padX - 6} y={toYAdherence(v) + 5} textAnchor="end" fontSize="13" fill="#666">{v}%</text>
+          <text x={padX - 6} y={toYAdherence(v) + 5} textAnchor="end" fontSize="16" fill="#666">{v}%</text>
         </g>
       ))}
       {/* X axis labels */}
       {data.map((d, i) => (
-        <text key={d.label} x={toX(i)} y={height - 2} textAnchor="middle" fontSize="13" fill="#666">{d.label}</text>
+        <text key={d.label} x={toX(i)} y={height - 6} textAnchor="middle" fontSize="16" fill="#666">{d.label}</text>
       ))}
       {/* Missed doses line */}
       <polyline points={missedLine} fill="none" stroke="#FDE300" strokeWidth="2" strokeDasharray="5 3" />

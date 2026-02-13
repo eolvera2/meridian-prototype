@@ -129,6 +129,7 @@ export const useDashboardStyles = makeStyles({
   },
   trendLegendSide: {
     display: "flex",
+    justifyContent: "center",
     gap: "12px",
     fontSize: "11px",
     color: tokens.colorNeutralForeground3,
@@ -211,10 +212,9 @@ export const useDashboardStyles = makeStyles({
   // Drivers section (vertical bars)
   driversRow: {
     display: "flex",
-    gap: "12px",
+    gap: "8px",
     alignItems: "flex-end",
-    height: "110px",
-    paddingTop: "4px",
+    flex: 1,
   },
   driverCol: {
     display: "flex",
@@ -228,9 +228,8 @@ export const useDashboardStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-end",
-    height: "70px",
+    height: "80px",
     width: "100%",
-    position: "relative",
   },
   driverBar: {
     width: "40px",
@@ -246,6 +245,8 @@ export const useDashboardStyles = makeStyles({
     fontSize: "11px",
     color: tokens.colorNeutralForeground2,
     textAlign: "center",
+    lineHeight: "14px",
+    minHeight: "14px",
   },
 
   // Contact History table
