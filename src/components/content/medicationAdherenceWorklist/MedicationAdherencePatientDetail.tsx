@@ -19,7 +19,7 @@ import {
   Link20Regular,
   Checkmark16Regular,
   Warning16Regular,
-  NotePin20Regular,
+  ClipboardTask20Regular,
   Stethoscope20Regular,
 } from "@fluentui/react-icons";
 import { usePatientDetailStyles } from "./MedicationAdherencePatientDetail.styles";
@@ -125,7 +125,7 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
               </div>
               <div className={styles.infoItem}>
                 <div className={styles.infoItemRow}>
-                  <NotePin20Regular className={styles.infoItemIcon} />
+                  <ClipboardTask20Regular className={styles.infoItemIcon} />
                   <span className={styles.infoLabel}>DISCHARGE INSTRUCTIONS</span>
                 </div>
                 <span className={styles.infoValue}>{patient.dischargeInstructions ?? "—"}</span>
