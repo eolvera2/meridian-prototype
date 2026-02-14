@@ -437,26 +437,26 @@ export const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     gap: "var(--gap-medium)",
-    flexWrap: "wrap",
+    flexWrap: "nowrap",
   },
 
   inlineMeta: {
     display: "inline-flex",
     alignItems: "center",
-    gap: "4px",
+    gap: "3px",
     minWidth: 0,
   },
 
   inlineMetaLabel: {
     color: tokens.colorNeutralForeground3,
-    fontSize: tokens.fontSizeBase100,
+    fontSize: "10px",
     lineHeight: "1.4",
     whiteSpace: "nowrap",
   },
 
   inlineMetaValue: {
     color: tokens.colorNeutralForeground2,
-    fontSize: tokens.fontSizeBase200,
+    fontSize: "10px",
     lineHeight: "1.4",
     whiteSpace: "nowrap",
   },
@@ -466,7 +466,8 @@ export const useStyles = makeStyles({
     alignItems: "center",
     color: tokens.colorNeutralForeground3,
     "& svg": {
-      fontSize: "14px",
+      width: "12px",
+      height: "12px",
     },
   },
 
