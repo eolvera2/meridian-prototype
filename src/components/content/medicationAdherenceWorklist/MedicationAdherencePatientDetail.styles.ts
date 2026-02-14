@@ -249,7 +249,7 @@ export const usePatientDetailStyles = makeStyles({
   },
   outcomeItem: {
     display: "flex",
-    alignItems: "baseline",
+    alignItems: "center",
     gap: "6px",
     fontSize: "12px",
     color: tokens.colorNeutralForeground1,
@@ -258,8 +258,8 @@ export const usePatientDetailStyles = makeStyles({
     fontWeight: 400,
     color: tokens.colorNeutralForeground3,
     fontSize: "11px",
-    marginRight: "4px",
-    whiteSpace: "nowrap",
+    minWidth: "140px",
+    flexShrink: 0,
   },
   outcomeValue: {
     fontWeight: 600,
