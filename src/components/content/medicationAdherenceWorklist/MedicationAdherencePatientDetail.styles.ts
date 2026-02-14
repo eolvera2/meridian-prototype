@@ -307,18 +307,13 @@ export const usePatientDetailStyles = makeStyles({
   },
   medicationCard: {
     display: "flex",
-    flexDirection: "column",
-    gap: "4px",
+    alignItems: "baseline",
+    gap: "8px",
+    flexWrap: "wrap",
     padding: "10px 12px",
     borderRadius: "6px",
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     backgroundColor: tokens.colorNeutralBackground1,
-  },
-  medicationTopRow: {
-    display: "flex",
-    alignItems: "baseline",
-    gap: "8px",
-    flexWrap: "wrap",
   },
   medicationName: {
     fontSize: "13px",
