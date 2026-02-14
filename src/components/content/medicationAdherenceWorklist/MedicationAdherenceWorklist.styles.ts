@@ -298,6 +298,9 @@ export const useStyles = makeStyles({
     "&:hover .mic-button": {
       opacity: 1,
     },
+    "&:hover .action-buttons": {
+      opacity: 1,
+    },
     "&:active": {
       backgroundColor: tokens.colorNeutralBackground1Pressed,
     },
@@ -396,6 +399,8 @@ export const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     gap: "var(--gap-large)",
+    opacity: 0,
+    transition: "var(--transition-opacity-normal)",
   },
 
   actionButton: {

@@ -343,7 +343,7 @@ export const MedicationAdherenceWorklist: React.FC<
                     {patient.demographics}
                   </div>
 
-                  <div className={styles.actionButtons}>
+                  <div className={`${styles.actionButtons} action-buttons`}>
                     <Tooltip content="Call patient" relationship="label">
                       <span className="inline-flex">
                         <button
