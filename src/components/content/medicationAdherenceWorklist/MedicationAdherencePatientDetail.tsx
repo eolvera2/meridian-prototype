@@ -10,6 +10,7 @@ import {
   Call20Regular,
   Chat20Regular,
   CalendarLtr20Regular,
+  CalendarArrowRight20Regular,
   Phone20Regular,
   Mail20Regular,
   Location20Regular,
@@ -117,7 +118,7 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
               </div>
               <div className={styles.infoItem}>
                 <div className={styles.infoItemRow}>
-                  <CalendarLtr20Regular className={styles.infoItemIcon} />
+                  <CalendarArrowRight20Regular className={styles.infoItemIcon} />
                   <span className={styles.infoLabel}>DISCHARGE DATE</span>
                 </div>
                 <span className={styles.infoValue}>{patient.dischargeDate}</span>
