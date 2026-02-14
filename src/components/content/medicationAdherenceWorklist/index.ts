@@ -6,6 +6,7 @@
 
 export { MedicationAdherenceWorklist } from "./MedicationAdherenceWorklist";
 export { MedicationAdherenceDashboard } from "./MedicationAdherenceDashboard";
+export { MedicationAdherencePatientDetail } from "./MedicationAdherencePatientDetail";
 export { useStyles } from "./MedicationAdherenceWorklist.styles";
 export {
 	MedicationAdherenceWorklistProvider,

@@ -44,10 +44,10 @@ type MedicationAdherenceTab = "urgent" | "queue" | "cleared";
 
 export const MedicationAdherenceWorklist: React.FC<
   MedicationAdherenceWorklistProps
-> = ({ isCollapsed = false, onPatientSelect }) => {
+> = ({ isCollapsed = false }) => {
   const styles = useStyles();
   const { t } = useI18n();
-  const { patients } = useMedicationAdherenceWorklistContext();
+  const { patients, setSelectedPatientId } = useMedicationAdherenceWorklistContext();
 
   const [activeTab, setActiveTab] = useState<TabValue>("urgent");
   const [searchValue, setSearchValue] = useState("");
@@ -282,7 +282,7 @@ export const MedicationAdherenceWorklist: React.FC<
               data-patient-id={patient.id}
               data-patient-name={patient.name}
               data-patient-reason={patient.reason}
-              onClick={() => onPatientSelect?.(patient.id)}
+              onClick={() => setSelectedPatientId(patient.id)}
             >
               <div className={styles.listItemContent}>
                 <Checkbox

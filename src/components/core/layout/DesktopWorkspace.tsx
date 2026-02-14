@@ -11,6 +11,8 @@ import {
   MedicationAdherenceWorklist,
   MedicationAdherenceWorklistProvider,
   MedicationAdherenceDashboard,
+  MedicationAdherencePatientDetail,
+  useMedicationAdherenceWorklistContext,
 } from "../../content/medicationAdherenceWorklist";
 import { Header } from "../Header";
 import type { HeaderProps } from "../Header";
@@ -23,6 +25,16 @@ import type {
   LeftNavigationHandlers,
   DocumentHandlers,
 } from "./types";
+
+/** Inner component that reads medication adherence context to decide dashboard vs detail */
+const MedicationAdherenceContent: React.FC = () => {
+  const { selectedPatientId } = useMedicationAdherenceWorklistContext();
+  return selectedPatientId ? (
+    <MedicationAdherencePatientDetail />
+  ) : (
+    <MedicationAdherenceDashboard />
+  );
+};
 
 interface DesktopWorkspaceProps {
   styles: MainContentStyles;
@@ -164,24 +176,55 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
           </div>
         ) : (
           <div className={styles.desktopContentArea}>
-            <div
-              className={`${styles.worklistContainer} ${
-                worklistCollapsed ? styles.worklistContainerHidden : ""
-              }`}
-            >
-              {activeNavItem === "medicationAdherence" ? (
-                <MedicationAdherenceWorklistProvider>
+            {activeNavItem === "medicationAdherence" ? (
+              <MedicationAdherenceWorklistProvider>
+                <div
+                  className={`${styles.worklistContainer} ${
+                    worklistCollapsed ? styles.worklistContainerHidden : ""
+                  }`}
+                >
                   <MedicationAdherenceWorklist
                     isCollapsed={worklistCollapsed}
                     {...handleWorklistActions}
                   />
-                </MedicationAdherenceWorklistProvider>
-              ) : (
+                </div>
+
+                <div className={styles.headerAndContentContainer}>
+                  <div className={styles.contentContainer} ref={contentAreaRef}>
+                    <div
+                      className={mergeClasses(
+                        styles.documentArea,
+                        "document-scroll-container"
+                      )}
+                    >
+                      <MedicationAdherenceContent />
+                    </div>
+                    <div className={styles.drawerArea}>
+                      {rightDrawerVisible && rightDrawerContent !== "settings" && (
+                        <RightDrawer
+                          isOpen={rightDrawerVisible}
+                          content={rightDrawerContent}
+                          onClose={onCloseRightDrawer}
+                          onLibraryPromptClick={onLibraryPromptClick}
+                          type="inline"
+                          isFullWidth={!selectedPatient}
+                          style={desktopDrawerStyle}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </MedicationAdherenceWorklistProvider>
+            ) : (
+            <><div
+              className={`${styles.worklistContainer} ${
+                worklistCollapsed ? styles.worklistContainerHidden : ""
+              }`}
+            >
                 <Worklist
                   isCollapsed={worklistCollapsed}
                   {...handleWorklistActions}
                 />
-              )}
             </div>
 
             <div className={styles.headerAndContentContainer}>
@@ -198,18 +241,14 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
                     "document-scroll-container"
                   )}
                 >
-                  {activeNavItem === "medicationAdherence" ? (
-                    <MedicationAdherenceDashboard />
-                  ) : (
-                    worklistCollapsed && selectedPatient && (
+                    {worklistCollapsed && selectedPatient && (
                       <DocumentComponent
                         key={selectedPatient.id}
                         micMode={micMode}
                         onMicModeToggle={onMicModeToggle}
                         {...documentHandlers}
                       />
-                    )
-                  )}
+                    )}
                 </div>
                 <div className={styles.drawerArea}>
                   {rightDrawerVisible && rightDrawerContent !== "settings" && (
@@ -226,6 +265,8 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
                 </div>
               </div>
             </div>
+            </>
+            )}
           </div>
         )}
 
