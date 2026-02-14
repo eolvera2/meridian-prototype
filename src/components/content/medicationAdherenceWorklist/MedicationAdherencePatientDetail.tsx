@@ -18,6 +18,8 @@ import {
   Link20Regular,
   Checkmark16Regular,
   Warning16Regular,
+  NotePin20Regular,
+  Stethoscope20Regular,
 } from "@fluentui/react-icons";
 import { usePatientDetailStyles } from "./MedicationAdherencePatientDetail.styles";
 import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
@@ -121,11 +123,17 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
                 <span className={styles.infoValue}>{patient.dischargeDate}</span>
               </div>
               <div className={styles.infoItem}>
-                <span className={styles.infoLabel}>DISCHARGE INSTRUCTIONS</span>
+                <div className={styles.infoItemRow}>
+                  <NotePin20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>DISCHARGE INSTRUCTIONS</span>
+                </div>
                 <span className={styles.infoValue}>{patient.dischargeInstructions ?? "—"}</span>
               </div>
               <div className={styles.infoItem}>
-                <span className={styles.infoLabel}>PRIMARY DIAGNOSIS</span>
+                <div className={styles.infoItemRow}>
+                  <Stethoscope20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>PRIMARY DIAGNOSIS</span>
+                </div>
                 <span className={styles.infoValue}>{patient.primaryDiagnosis ?? "—"}</span>
               </div>
             </div>
