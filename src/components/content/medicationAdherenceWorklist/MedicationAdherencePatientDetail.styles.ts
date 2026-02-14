@@ -119,26 +119,49 @@ export const usePatientDetailStyles = makeStyles({
     flexDirection: "column",
     gap: "12px",
   },
+  sectionTitleRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+  sectionIcon: {
+    color: tokens.colorNeutralForeground3,
+    width: "18px",
+    height: "18px",
+    flexShrink: 0,
+  },
   sectionTitle: {
     fontSize: "14px",
     fontWeight: 700,
     color: tokens.colorNeutralForeground1,
   },
-  sectionSubtitle: {
-    fontSize: tokens.fontSizeBase200,
-    color: tokens.colorNeutralForeground3,
-  },
 
-  // ── Info grid (key-value pairs) ──
-  infoGrid: {
+  // ── Two-column patient info grid ──
+  infoColumns: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    gap: "12px 24px",
+    gap: "0 32px",
+  },
+  infoColumn: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
   },
   infoItem: {
     display: "flex",
     flexDirection: "column",
     gap: "2px",
+  },
+  infoItemRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "6px",
+  },
+  infoItemIcon: {
+    color: tokens.colorNeutralForeground3,
+    width: "16px",
+    height: "16px",
+    flexShrink: 0,
   },
   infoLabel: {
     fontSize: "11px",
@@ -151,70 +174,144 @@ export const usePatientDetailStyles = makeStyles({
     fontSize: "13px",
     fontWeight: 400,
     color: tokens.colorNeutralForeground1,
+    lineHeight: "18px",
   },
 
-  // ── Status pill ──
-  statusPill: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "6px",
-    padding: "4px 10px",
-    borderRadius: "12px",
-    fontSize: "12px",
-    fontWeight: 600,
-    width: "fit-content",
-  },
-  statusDot: {
-    width: "8px",
-    height: "8px",
-    borderRadius: "50%",
-    flexShrink: 0,
-  },
-
-  // ── Contact history entry ──
+  // ── Contact history ──
   contactEntry: {
     display: "flex",
     flexDirection: "column",
-    gap: "4px",
-    padding: "10px 0",
+    gap: "10px",
+    padding: "12px 0",
     borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
     "&:last-child": {
       borderBottom: "none",
     },
   },
-  contactHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  contactMethod: {
-    fontSize: "12px",
-    fontWeight: 600,
-    color: tokens.colorNeutralForeground1,
+  contactHeaderRow: {
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "12px",
+    flexWrap: "wrap",
   },
   contactDate: {
-    fontSize: "11px",
-    color: tokens.colorNeutralForeground3,
+    fontSize: "13px",
+    fontWeight: 600,
+    color: tokens.colorNeutralForeground1,
+  },
+  transcriptLink: {
+    fontSize: "12px",
+    fontWeight: 600,
+    color: "#107C10",
+    cursor: "pointer",
+    textDecoration: "none",
+    display: "flex",
+    alignItems: "center",
+    gap: "4px",
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  },
+  contactActions: {
+    display: "flex",
+    gap: "8px",
+    marginLeft: "auto",
+  },
+  callButton: {
+    backgroundColor: "#107C10 !important",
+    color: "#FFFFFF !important",
+    fontSize: "12px !important",
+    minWidth: "auto !important",
+    padding: "4px 12px !important",
+    "&:hover": {
+      backgroundColor: "#0E6B0E !important",
+    },
+  },
+  chatButton: {
+    fontSize: "12px !important",
+    minWidth: "auto !important",
+    padding: "4px 12px !important",
   },
   contactSummary: {
     fontSize: "12px",
     color: tokens.colorNeutralForeground2,
     lineHeight: "18px",
+    backgroundColor: tokens.colorNeutralBackground3,
+    padding: "8px 12px",
+    borderRadius: "6px",
   },
 
-  // ── Medication list ──
-  medicationItem: {
+  // ── Outcome grid (2x2) ──
+  outcomeGrid: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "8px 24px",
+  },
+  outcomeItem: {
     display: "flex",
-    justifyContent: "space-between",
     alignItems: "center",
-    padding: "8px 0",
-    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
-    "&:last-child": {
-      borderBottom: "none",
-    },
+    gap: "6px",
+    fontSize: "12px",
+    color: tokens.colorNeutralForeground1,
+  },
+  outcomeLabel: {
+    fontWeight: 400,
+    color: tokens.colorNeutralForeground3,
+    fontSize: "11px",
+    marginRight: "4px",
+  },
+  outcomeValue: {
+    fontWeight: 600,
+    fontSize: "12px",
+  },
+  outcomePositive: {
+    color: "#107C10",
+  },
+  outcomeNegative: {
+    color: "#D13438",
+  },
+  outcomeNeutral: {
+    color: tokens.colorNeutralForeground1,
+  },
+  outcomeIcon: {
+    width: "14px",
+    height: "14px",
+    flexShrink: 0,
+  },
+
+  // ── Notes ──
+  notesBox: {
+    fontSize: "12px",
+    color: tokens.colorNeutralForeground2,
+    lineHeight: "18px",
+    padding: "8px 12px",
+    borderRadius: "6px",
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    backgroundColor: tokens.colorNeutralBackground1,
+  },
+  notesLabel: {
+    fontSize: "11px",
+    fontWeight: 600,
+    color: tokens.colorNeutralForeground3,
+    textTransform: "uppercase",
+    letterSpacing: "0.5px",
+    marginBottom: "4px",
+  },
+
+  // ── Medication grid ──
+  medicationGrid: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "12px 24px",
+  },
+  medicationCard: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "2px",
+    padding: "10px 12px",
+    borderRadius: "6px",
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    backgroundColor: tokens.colorNeutralBackground1,
   },
   medicationName: {
     fontSize: "13px",
@@ -223,31 +320,25 @@ export const usePatientDetailStyles = makeStyles({
   },
   medicationDose: {
     fontSize: "12px",
-    color: tokens.colorNeutralForeground2,
+    color: tokens.colorNeutralForeground3,
   },
-  medicationAdherenceBadge: {
-    fontSize: "11px",
+  medicationMeta: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    marginTop: "4px",
+  },
+  frequencyPill: {
+    fontSize: "10px",
     fontWeight: 600,
     padding: "2px 8px",
     borderRadius: "10px",
-  },
-  adherenceGood: {
-    backgroundColor: "#DFF6DD",
+    backgroundColor: "#E8F5E9",
     color: "#107C10",
+    whiteSpace: "nowrap",
   },
-  adherenceWarning: {
-    backgroundColor: "#FFF4CE",
-    color: "#797673",
-  },
-  adherencePoor: {
-    backgroundColor: "#FDE7E9",
-    color: "#D13438",
-  },
-
-  // ── Action buttons row ──
-  actionsRow: {
-    display: "flex",
-    gap: "8px",
-    paddingTop: "4px",
+  prescribedDate: {
+    fontSize: "11px",
+    color: tokens.colorNeutralForeground3,
   },
 });

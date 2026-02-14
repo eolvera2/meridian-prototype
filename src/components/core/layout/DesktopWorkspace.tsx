@@ -27,8 +27,13 @@ import type {
 } from "./types";
 
 /** Inner component that reads medication adherence context to decide dashboard vs detail */
-const MedicationAdherenceContent: React.FC = () => {
+const MedicationAdherenceContent: React.FC<{ onPatientSelectedChange: (hasPatient: boolean) => void }> = ({ onPatientSelectedChange }) => {
   const { selectedPatientId } = useMedicationAdherenceWorklistContext();
+
+  React.useEffect(() => {
+    onPatientSelectedChange(!!selectedPatientId);
+  }, [selectedPatientId, onPatientSelectedChange]);
+
   return selectedPatientId ? (
     <MedicationAdherencePatientDetail />
   ) : (
@@ -101,6 +106,10 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
   });
   const contentAreaRef = React.useRef<HTMLDivElement>(null);
   const [isDesktop, setIsDesktop] = React.useState(false);
+  const [maPatientSelected, setMaPatientSelected] = React.useState(false);
+  const handleMaPatientChange = React.useCallback((hasPatient: boolean) => {
+    setMaPatientSelected(hasPatient);
+  }, []);
   const updateMeasurements = React.useCallback(() => {
     setLayoutOffsets({
       header: headerRef.current?.getBoundingClientRect().height ?? 0,
@@ -180,11 +189,11 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
               <MedicationAdherenceWorklistProvider>
                 <div
                   className={`${styles.worklistContainer} ${
-                    worklistCollapsed ? styles.worklistContainerHidden : ""
+                    maPatientSelected ? styles.worklistContainerHidden : ""
                   }`}
                 >
                   <MedicationAdherenceWorklist
-                    isCollapsed={worklistCollapsed}
+                    isCollapsed={maPatientSelected}
                     {...handleWorklistActions}
                   />
                 </div>
@@ -197,7 +206,7 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
                         "document-scroll-container"
                       )}
                     >
-                      <MedicationAdherenceContent />
+                      <MedicationAdherenceContent onPatientSelectedChange={handleMaPatientChange} />
                     </div>
                     <div className={styles.drawerArea}>
                       {rightDrawerVisible && rightDrawerContent !== "settings" && (

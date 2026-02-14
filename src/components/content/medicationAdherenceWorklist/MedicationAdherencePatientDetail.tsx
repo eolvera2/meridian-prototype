@@ -9,61 +9,21 @@ import {
   MoreVertical24Regular,
   Call20Regular,
   Chat20Regular,
+  CalendarLtr20Regular,
+  Phone20Regular,
+  Mail20Regular,
+  Location20Regular,
+  People20Regular,
+  Clock20Regular,
+  Link20Regular,
+  Checkmark16Regular,
+  Warning16Regular,
 } from "@fluentui/react-icons";
 import { usePatientDetailStyles } from "./MedicationAdherencePatientDetail.styles";
 import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
 import type { MedicationAdherenceWorklistItem } from "./MedicationAdherenceWorklist.types";
 
 const ChevronLeft = bundleIcon(ChevronLeft24Filled, ChevronLeft24Regular);
-
-// ── Static medication data per patient (keyed by patient id) ──
-const MEDICATIONS: Record<string, { name: string; dose: string; adherence: number }[]> = {
-  "ma-1": [
-    { name: "Warfarin 5 mg", dose: "Once daily at bedtime", adherence: 50 },
-    { name: "Metoprolol 25 mg", dose: "Twice daily with meals", adherence: 85 },
-    { name: "Aspirin 81 mg", dose: "Once daily", adherence: 100 },
-  ],
-  "ma-2": [
-    { name: "Insulin Glargine 20 units", dose: "Once daily at bedtime", adherence: 60 },
-    { name: "Metformin 1000 mg", dose: "Twice daily with meals", adherence: 90 },
-    { name: "Lisinopril 10 mg", dose: "Once daily", adherence: 95 },
-  ],
-  "ma-3": [
-    { name: "Lisinopril 20 mg", dose: "Once daily (discontinued by patient)", adherence: 0 },
-    { name: "Amlodipine 5 mg", dose: "Once daily", adherence: 85 },
-    { name: "Hydrochlorothiazide 25 mg", dose: "Once daily", adherence: 90 },
-  ],
-  "ma-4": [
-    { name: "Carvedilol 12.5 mg", dose: "Twice daily", adherence: 57 },
-    { name: "Furosemide 40 mg", dose: "Once daily", adherence: 71 },
-    { name: "Potassium Chloride 20 mEq", dose: "Once daily", adherence: 71 },
-    { name: "Lisinopril 10 mg", dose: "Once daily", adherence: 86 },
-  ],
-};
-
-// Fallback medications for patients without specific data
-const DEFAULT_MEDICATIONS = [
-  { name: "Medication details pending", dose: "Awaiting pharmacy data", adherence: 0 },
-];
-
-function getAdherenceClass(styles: ReturnType<typeof usePatientDetailStyles>, rate: number) {
-  if (rate >= 80) return styles.adherenceGood;
-  if (rate >= 50) return styles.adherenceWarning;
-  return styles.adherencePoor;
-}
-
-function getStatusColor(status?: string) {
-  const s = status?.toLowerCase() ?? "";
-  if (s.includes("urgent") || s.includes("escalat")) return { bg: "#FDE7E9", text: "#D13438", dot: "#D13438" };
-  if (s.includes("pending") || s.includes("queued")) return { bg: "#FFF4CE", text: "#797673", dot: "#FDE300" };
-  if (s.includes("cleared")) return { bg: "#DFF6DD", text: "#107C10", dot: "#107C10" };
-  if (s.includes("clinician")) return { bg: "#FDE7E9", text: "#D13438", dot: "#D13438" };
-  return { bg: "#F0F0F0", text: "#616161", dot: "#616161" };
-}
-
-function capitalizeMethod(method: string) {
-  return method.charAt(0).toUpperCase() + method.slice(1);
-}
 
 export const MedicationAdherencePatientDetail: React.FC = () => {
   const styles = usePatientDetailStyles();
@@ -76,12 +36,8 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
 
   if (!patient) return null;
 
-  const medications = MEDICATIONS[patient.id] ?? DEFAULT_MEDICATIONS;
-  const statusColor = getStatusColor(patient.status);
-
-  // Parse demographics for the header "Reason for Visit" line
-  // The patient data uses "reason" for the adherence issue description
-  const reasonText = patient.reason;
+  const contactHistory = patient.contactHistory ?? [];
+  const medications = patient.medications ?? [];
 
   return (
     <div className={styles.root}>
@@ -103,7 +59,7 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
           <div className={styles.subtitle}>
             <div className={styles.reasonRow}>
               <span className={styles.reasonLabel}>Reason for Visit:</span>
-              <span>{reasonText}</span>
+              <span>{patient.reason}</span>
             </div>
             <div className={styles.detailsRow}>{patient.demographics}</div>
           </div>
@@ -145,83 +101,211 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
 
       {/* ── Content area ── */}
       <div className={styles.content}>
-        {/* Patient Overview */}
+        {/* ── Patient Information Card ── */}
         <div className={styles.sectionCard}>
-          <span className={styles.sectionTitle}>Patient Overview</span>
-          <div
-            className={styles.statusPill}
-            style={{ backgroundColor: statusColor.bg, color: statusColor.text }}
-          >
-            <span className={styles.statusDot} style={{ backgroundColor: statusColor.dot }} />
-            {patient.status}
-          </div>
-          <div className={styles.infoGrid}>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>Language</span>
-              <span className={styles.infoValue}>{patient.languagePreference}</span>
+          <div className={styles.infoColumns}>
+            {/* Left column */}
+            <div className={styles.infoColumn}>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <CalendarLtr20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>DATE OF BIRTH</span>
+                </div>
+                <span className={styles.infoValue}>{patient.dateOfBirth ?? "—"}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <CalendarLtr20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>DISCHARGE DATE</span>
+                </div>
+                <span className={styles.infoValue}>{patient.dischargeDate}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <span className={styles.infoLabel}>DISCHARGE INSTRUCTIONS</span>
+                <span className={styles.infoValue}>{patient.dischargeInstructions ?? "—"}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <span className={styles.infoLabel}>PRIMARY DIAGNOSIS</span>
+                <span className={styles.infoValue}>{patient.primaryDiagnosis ?? "—"}</span>
+              </div>
             </div>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>Discharge Date</span>
-              <span className={styles.infoValue}>{patient.dischargeDate}</span>
+
+            {/* Right column */}
+            <div className={styles.infoColumn}>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <Phone20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>PHONE</span>
+                </div>
+                <span className={styles.infoValue}>{patient.phone ?? "—"}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <Mail20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>EMAIL</span>
+                </div>
+                <span className={styles.infoValue}>{patient.email ?? "—"}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <Location20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>ADDRESS</span>
+                </div>
+                <span className={styles.infoValue}>{patient.address ?? "—"}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <People20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>CARE TEAM</span>
+                </div>
+                <span className={styles.infoValue}>{patient.careTeam ?? "—"}</span>
+              </div>
             </div>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>Last Contact</span>
-              <span className={styles.infoValue}>{patient.lastContactDate}</span>
-            </div>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>Contact Method</span>
-              <span className={styles.infoValue}>{capitalizeMethod(patient.lastContactMethod)}</span>
-            </div>
-          </div>
-          <div className={styles.actionsRow}>
-            <Button appearance="primary" icon={<Call20Regular />} size="small">
-              Call Patient
-            </Button>
-            <Button appearance="outline" icon={<Chat20Regular />} size="small">
-              Send Message
-            </Button>
           </div>
         </div>
 
-        {/* Medications & Adherence */}
+        {/* ── Contact History ── */}
         <div className={styles.sectionCard}>
-          <span className={styles.sectionTitle}>Medications &amp; Adherence</span>
-          <span className={styles.sectionSubtitle}>Current prescriptions and adherence rates</span>
-          {medications.map((med) => (
-            <div className={styles.medicationItem} key={med.name}>
-              <div>
-                <div className={styles.medicationName}>{med.name}</div>
-                <div className={styles.medicationDose}>{med.dose}</div>
-              </div>
-              <span
-                className={mergeClasses(
-                  styles.medicationAdherenceBadge,
-                  getAdherenceClass(styles, med.adherence)
+          <div className={styles.sectionTitleRow}>
+            <Clock20Regular className={styles.sectionIcon} />
+            <span className={styles.sectionTitle}>Contact History</span>
+          </div>
+
+          {contactHistory.map((entry, idx) => (
+            <div className={styles.contactEntry} key={idx}>
+              {/* Date + transcript link + action buttons */}
+              <div className={styles.contactHeaderRow}>
+                <span className={styles.contactDate}>{entry.date}</span>
+                {entry.transcriptLink && (
+                  <span className={styles.transcriptLink}>
+                    <Script24Regular style={{ width: 14, height: 14 }} />
+                    View AI Call Transcript
+                  </span>
                 )}
-              >
-                {med.adherence}%
-              </span>
+                <div className={styles.contactActions}>
+                  <Button
+                    size="small"
+                    icon={<Call20Regular />}
+                    className={styles.callButton}
+                  >
+                    Call
+                  </Button>
+                  <Button
+                    appearance="outline"
+                    size="small"
+                    icon={<Chat20Regular />}
+                    className={styles.chatButton}
+                  >
+                    Chat
+                  </Button>
+                </div>
+              </div>
+
+              {/* Transcript summary */}
+              {entry.transcriptSummary && (
+                <div className={styles.contactSummary}>
+                  {entry.transcriptSummary}
+                </div>
+              )}
+
+              {/* Outcome grid */}
+              <div className={styles.outcomeGrid}>
+                <div className={styles.outcomeItem}>
+                  <span className={styles.outcomeLabel}>Picked up medication</span>
+                  <span className={mergeClasses(styles.outcomeValue, styles.outcomeNeutral)}>
+                    {entry.pickedUpMedication ?? "—"}
+                  </span>
+                </div>
+                <div className={styles.outcomeItem}>
+                  <span className={styles.outcomeLabel}>Taking as prescribed</span>
+                  {entry.takingAsPrescribed ? (
+                    <>
+                      {entry.takingAsPrescribed.positive ? (
+                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
+                      ) : (
+                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
+                      )}
+                      <span className={mergeClasses(
+                        styles.outcomeValue,
+                        entry.takingAsPrescribed.positive ? styles.outcomePositive : styles.outcomeNegative
+                      )}>
+                        {entry.takingAsPrescribed.value}
+                      </span>
+                    </>
+                  ) : (
+                    <span className={styles.outcomeValue}>—</span>
+                  )}
+                </div>
+                <div className={styles.outcomeItem}>
+                  <span className={styles.outcomeLabel}>Side effects</span>
+                  <span className={mergeClasses(styles.outcomeValue, styles.outcomeNeutral)}>
+                    {entry.sideEffects ?? "—"}
+                  </span>
+                </div>
+                <div className={styles.outcomeItem}>
+                  <span className={styles.outcomeLabel}>Follow-up needed</span>
+                  {entry.followUpNeeded ? (
+                    <>
+                      {entry.followUpNeeded.positive ? (
+                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
+                      ) : (
+                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
+                      )}
+                      <span className={mergeClasses(
+                        styles.outcomeValue,
+                        entry.followUpNeeded.positive ? styles.outcomePositive : styles.outcomeNegative
+                      )}>
+                        {entry.followUpNeeded.value}
+                      </span>
+                    </>
+                  ) : (
+                    <span className={styles.outcomeValue}>—</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Notes */}
+              {entry.notes && (
+                <div className={styles.notesBox}>
+                  <div className={styles.notesLabel}>Notes</div>
+                  {entry.notes}
+                </div>
+              )}
             </div>
           ))}
+
+          {contactHistory.length === 0 && (
+            <span className={styles.infoValue} style={{ fontStyle: "italic" }}>
+              No contact history available.
+            </span>
+          )}
         </div>
 
-        {/* Last Contact Summary */}
+        {/* ── Medications ── */}
         <div className={styles.sectionCard}>
-          <span className={styles.sectionTitle}>Contact History</span>
-          <div className={styles.contactEntry}>
-            <div className={styles.contactHeader}>
-              <span className={styles.contactMethod}>
-                {patient.lastContactMethod === "phone" ? (
-                  <Call20Regular />
-                ) : (
-                  <Chat20Regular />
-                )}
-                {capitalizeMethod(patient.lastContactMethod)} Contact
-              </span>
-              <span className={styles.contactDate}>{patient.lastContactDate}</span>
-            </div>
-            <span className={styles.contactSummary}>{patient.lastContactSummary}</span>
+          <div className={styles.sectionTitleRow}>
+            <Link20Regular className={styles.sectionIcon} />
+            <span className={styles.sectionTitle}>Medications</span>
           </div>
+
+          <div className={styles.medicationGrid}>
+            {medications.map((med, idx) => (
+              <div className={styles.medicationCard} key={idx}>
+                <span className={styles.medicationName}>{med.name}</span>
+                <span className={styles.medicationDose}>{med.dose}</span>
+                <div className={styles.medicationMeta}>
+                  <span className={styles.frequencyPill}>{med.frequency}</span>
+                  <span className={styles.prescribedDate}>Prescribed: {med.prescribedDate}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {medications.length === 0 && (
+            <span className={styles.infoValue} style={{ fontStyle: "italic" }}>
+              No medication data available.
+            </span>
+          )}
         </div>
       </div>
     </div>
