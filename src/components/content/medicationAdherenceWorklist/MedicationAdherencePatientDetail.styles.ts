@@ -94,7 +94,7 @@ export const usePatientDetailStyles = makeStyles({
   // ── Accent bar below header ──
   accentBar: {
     height: "3px",
-    backgroundColor: tokens.colorBrandBackground,
+    backgroundColor: tokens.colorNeutralStroke2,
     flexShrink: 0,
   },
 
