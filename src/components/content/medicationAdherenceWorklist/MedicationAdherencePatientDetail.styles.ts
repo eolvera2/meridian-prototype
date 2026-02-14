@@ -202,7 +202,7 @@ export const usePatientDetailStyles = makeStyles({
   transcriptLink: {
     fontSize: "12px",
     fontWeight: 600,
-    color: "#107C10",
+    color: tokens.colorBrandForeground1,
     cursor: "pointer",
     textDecoration: "none",
     display: "flex",
@@ -218,13 +218,13 @@ export const usePatientDetailStyles = makeStyles({
     marginLeft: "auto",
   },
   callButton: {
-    backgroundColor: "#107C10 !important",
+    backgroundColor: `${tokens.colorBrandBackground} !important`,
     color: "#FFFFFF !important",
     fontSize: "12px !important",
     minWidth: "auto !important",
     padding: "4px 12px !important",
     "&:hover": {
-      backgroundColor: "#0E6B0E !important",
+      backgroundColor: `${tokens.colorBrandBackgroundHover} !important`,
     },
   },
   chatButton: {
@@ -249,7 +249,7 @@ export const usePatientDetailStyles = makeStyles({
   },
   outcomeItem: {
     display: "flex",
-    alignItems: "center",
+    alignItems: "baseline",
     gap: "6px",
     fontSize: "12px",
     color: tokens.colorNeutralForeground1,
@@ -259,6 +259,7 @@ export const usePatientDetailStyles = makeStyles({
     color: tokens.colorNeutralForeground3,
     fontSize: "11px",
     marginRight: "4px",
+    whiteSpace: "nowrap",
   },
   outcomeValue: {
     fontWeight: 600,
@@ -307,11 +308,17 @@ export const usePatientDetailStyles = makeStyles({
   medicationCard: {
     display: "flex",
     flexDirection: "column",
-    gap: "2px",
+    gap: "4px",
     padding: "10px 12px",
     borderRadius: "6px",
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     backgroundColor: tokens.colorNeutralBackground1,
+  },
+  medicationTopRow: {
+    display: "flex",
+    alignItems: "baseline",
+    gap: "8px",
+    flexWrap: "wrap",
   },
   medicationName: {
     fontSize: "13px",
@@ -321,12 +328,6 @@ export const usePatientDetailStyles = makeStyles({
   medicationDose: {
     fontSize: "12px",
     color: tokens.colorNeutralForeground3,
-  },
-  medicationMeta: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    marginTop: "4px",
   },
   frequencyPill: {
     fontSize: "10px",

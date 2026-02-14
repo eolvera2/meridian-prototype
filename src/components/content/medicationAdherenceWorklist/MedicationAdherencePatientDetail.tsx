@@ -291,12 +291,12 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
           <div className={styles.medicationGrid}>
             {medications.map((med, idx) => (
               <div className={styles.medicationCard} key={idx}>
-                <span className={styles.medicationName}>{med.name}</span>
-                <span className={styles.medicationDose}>{med.dose}</span>
-                <div className={styles.medicationMeta}>
+                <div className={styles.medicationTopRow}>
+                  <span className={styles.medicationName}>{med.name}</span>
+                  <span className={styles.medicationDose}>{med.dose}</span>
                   <span className={styles.frequencyPill}>{med.frequency}</span>
-                  <span className={styles.prescribedDate}>Prescribed: {med.prescribedDate}</span>
                 </div>
+                <span className={styles.prescribedDate}>Prescribed: {med.prescribedDate}</span>
               </div>
             ))}
           </div>
