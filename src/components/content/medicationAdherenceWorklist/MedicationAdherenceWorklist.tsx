@@ -232,7 +232,7 @@ export const MedicationAdherenceWorklist: React.FC<
                 aria-label="Select all patients"
               />
               <div className={styles.dateText}>
-                Medication Adherence Patients
+                Select all
               </div>
             </div>
             <div className={styles.filterOptions}>
