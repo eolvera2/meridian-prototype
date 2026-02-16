@@ -47,7 +47,7 @@ export const MedicationAdherenceWorklist: React.FC<
 > = ({ isCollapsed = false }) => {
   const styles = useStyles();
   const { t } = useI18n();
-  const { patients, setSelectedPatientId } = useMedicationAdherenceWorklistContext();
+  const { patients, setSelectedPatientId, callPatients } = useMedicationAdherenceWorklistContext();
 
   const [activeTab, setActiveTab] = useState<TabValue>("urgent");
   const [searchValue, setSearchValue] = useState("");
@@ -351,6 +351,7 @@ export const MedicationAdherenceWorklist: React.FC<
                           aria-label="Call patient"
                           onClick={(e) => {
                             e.stopPropagation();
+                            callPatients([patient.id]);
                           }}
                         >
                           <Call20Regular />
@@ -394,6 +395,10 @@ export const MedicationAdherenceWorklist: React.FC<
                 icon={<CallRegular />}
                 disabled={selectedPatients.size === 0}
                 style={{ flex: 1 }}
+                onClick={() => {
+                  callPatients(Array.from(selectedPatients));
+                  setSelectedPatients(new Set());
+                }}
               >
                 Call
               </Button>

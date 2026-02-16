@@ -16,6 +16,22 @@ import medicationAdherenceWorklistData from "../../../data/medicationAdherenceWo
 import type { MedicationAdherenceWorklistItem } from "./MedicationAdherenceWorklist.types";
 import { useI18n } from "../../../i18n/I18nContext";
 
+export type CallRecordStatus = "in-progress" | "needs-review" | "completed";
+
+export interface ActiveCallRecord {
+  id: string;
+  patientId: string;
+  name: string;
+  contactDate: string;
+  contactTime: string;
+  phone: string;
+  status: CallRecordStatus;
+  pickedUpMeds: string;
+  takingAsRx: { value: string; warning: boolean };
+  sideEffects: { value: string; warning: boolean };
+  followUp: { value: string; warning: boolean };
+}
+
 interface MedicationAdherenceWorklistContextValue {
   /** Current worklist data */
   patients: MedicationAdherenceWorklistItem[];
@@ -29,10 +45,33 @@ interface MedicationAdherenceWorklistContextValue {
   updateSelectedPatientLastModified: () => void;
   /** Get a patient by ID */
   getPatient: (patientId: string) => MedicationAdherenceWorklistItem | undefined;
+  /** Active call records from patient calls */
+  activeCallRecords: ActiveCallRecord[];
+  /** Call patients: remove from worklist and add to contact history */
+  callPatients: (patientIds: string[]) => void;
+  /** Resolve a call record after the 10s timer */
+  resolveCallRecord: (recordId: string) => void;
 }
 
 const MedicationAdherenceWorklistContext =
   createContext<MedicationAdherenceWorklistContextValue | null>(null);
+
+// Realistic outcome data pools for resolved calls
+const OUTCOME_POOLS: {
+  pickedUpMeds: string;
+  takingAsRx: { value: string; warning: boolean };
+  sideEffects: { value: string; warning: boolean };
+  followUp: { value: string; warning: boolean };
+  status: CallRecordStatus;
+}[] = [
+  { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, followUp: { value: "Not needed", warning: false }, status: "completed" },
+  { pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, followUp: { value: "Yes", warning: true }, status: "needs-review" },
+  { pickedUpMeds: "No", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "None", warning: false }, followUp: { value: "Yes", warning: true }, status: "needs-review" },
+  { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "Reported", warning: true }, followUp: { value: "Yes", warning: true }, status: "needs-review" },
+  { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, followUp: { value: "Not needed", warning: false }, status: "completed" },
+];
+
+let outcomeIndex = 0;
 
 export const MedicationAdherenceWorklistProvider: React.FC<{
   children: React.ReactNode;
@@ -46,6 +85,7 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(
     null
   );
+  const [activeCallRecords, setActiveCallRecords] = useState<ActiveCallRecord[]>([]);
 
   const updatePatientLastModified = useCallback((patientId: string) => {
     const now = new Date();
@@ -77,6 +117,55 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
     [patients]
   );
 
+  const callPatients = useCallback((patientIds: string[]) => {
+    const now = new Date();
+    const dateStr = now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    const timeStr = formatTime(now, { hour: "numeric", minute: "2-digit", hour12: true });
+
+    setPatients((prev) => {
+      const calledSet = new Set(patientIds);
+      const calledPatients = prev.filter((p) => calledSet.has(p.id));
+
+      const newRecords: ActiveCallRecord[] = calledPatients.map((p) => ({
+        id: `call-${p.id}-${Date.now()}`,
+        patientId: p.id,
+        name: p.name,
+        contactDate: dateStr,
+        contactTime: timeStr,
+        phone: p.phone || "(555) 000-0000",
+        status: "in-progress" as CallRecordStatus,
+        pickedUpMeds: "--",
+        takingAsRx: { value: "--", warning: false },
+        sideEffects: { value: "--", warning: false },
+        followUp: { value: "--", warning: false },
+      }));
+
+      setActiveCallRecords((prevRecords) => [...newRecords, ...prevRecords]);
+
+      return prev.filter((p) => !calledSet.has(p.id));
+    });
+  }, [formatTime]);
+
+  const resolveCallRecord = useCallback((recordId: string) => {
+    const outcome = OUTCOME_POOLS[outcomeIndex % OUTCOME_POOLS.length];
+    outcomeIndex++;
+
+    setActiveCallRecords((prev) =>
+      prev.map((r) =>
+        r.id === recordId
+          ? {
+              ...r,
+              status: outcome.status,
+              pickedUpMeds: outcome.pickedUpMeds,
+              takingAsRx: outcome.takingAsRx,
+              sideEffects: outcome.sideEffects,
+              followUp: outcome.followUp,
+            }
+          : r
+      )
+    );
+  }, []);
+
   const value = useMemo(
     () => ({
       patients,
@@ -85,6 +174,9 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
       updatePatientLastModified,
       updateSelectedPatientLastModified,
       getPatient,
+      activeCallRecords,
+      callPatients,
+      resolveCallRecord,
     }),
     [
       patients,
@@ -92,6 +184,9 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
       updatePatientLastModified,
       updateSelectedPatientLastModified,
       getPatient,
+      activeCallRecords,
+      callPatients,
+      resolveCallRecord,
     ]
   );
 

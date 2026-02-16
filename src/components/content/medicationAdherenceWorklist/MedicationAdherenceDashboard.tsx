@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import {
   Dropdown,
   Option,
@@ -12,6 +12,8 @@ import {
   Checkmark16Regular,
 } from "@fluentui/react-icons";
 import { useDashboardStyles } from "./MedicationAdherenceDashboard.styles";
+import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
+import type { CallRecordStatus } from "./MedicationAdherenceWorklistContext";
 
 // ── Data Types ──────────────────────────────────────────────
 
@@ -187,6 +189,22 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   const styles = useDashboardStyles();
   const [timeRange, setTimeRange] = useState<TimeRange>("30");
   const [showUnreviewedOnly, setShowUnreviewedOnly] = useState(false);
+  const { activeCallRecords, resolveCallRecord } = useMedicationAdherenceWorklistContext();
+
+  // Track which records we've already started timers for
+  const resolvedTimers = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    const newInProgress = activeCallRecords.filter(
+      (r) => r.status === "in-progress" && !resolvedTimers.current.has(r.id)
+    );
+    newInProgress.forEach((record) => {
+      resolvedTimers.current.add(record.id);
+      setTimeout(() => {
+        resolveCallRecord(record.id);
+      }, 10000);
+    });
+  }, [activeCallRecords, resolveCallRecord]);
 
   const handleTimeRangeChange = (_: unknown, data: OptionOnSelectData) => {
     if (data.optionValue) setTimeRange(data.optionValue as TimeRange);
@@ -211,6 +229,22 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   const displayedRecords = showUnreviewedOnly
     ? filteredByTime.filter((r) => !r.reviewed)
     : filteredByTime;
+
+  const getStatusPillClass = (status: CallRecordStatus) => {
+    switch (status) {
+      case "in-progress": return styles.statusPillInProgress;
+      case "needs-review": return styles.statusPillNeedsReview;
+      case "completed": return styles.statusPillCompleted;
+    }
+  };
+
+  const getStatusLabel = (status: CallRecordStatus) => {
+    switch (status) {
+      case "in-progress": return "In Progress";
+      case "needs-review": return "Needs Review";
+      case "completed": return "Completed";
+    }
+  };
 
   return (
     <div className={styles.root}>
@@ -457,6 +491,60 @@ export const MedicationAdherenceDashboard: React.FC = () => {
             </tr>
           </thead>
           <tbody>
+            {activeCallRecords.map((record) => (
+              <tr key={record.id}>
+                <td className={styles.tableCell}>
+                  <span className={styles.patientLink}>{record.name}</span>
+                </td>
+                <td className={styles.tableCell}>
+                  {record.contactDate}
+                  <br />
+                  <span style={{ color: "var(--colorNeutralForeground3)" }}>
+                    {record.contactTime}
+                  </span>
+                </td>
+                <td className={styles.tableCell}>{record.phone}</td>
+                <td className={styles.tableCell}>{record.pickedUpMeds}</td>
+                <td className={styles.tableCell}>
+                  {record.takingAsRx.warning ? (
+                    <span className={styles.warningText}>
+                      ⚠ {record.takingAsRx.value}
+                    </span>
+                  ) : (
+                    <span className={styles.normalText}>
+                      {record.takingAsRx.value}
+                    </span>
+                  )}
+                </td>
+                <td className={styles.tableCell}>
+                  {record.sideEffects.warning ? (
+                    <span className={styles.warningText}>
+                      ⚠ {record.sideEffects.value}
+                    </span>
+                  ) : (
+                    <span className={styles.normalText}>
+                      {record.sideEffects.value}
+                    </span>
+                  )}
+                </td>
+                <td className={styles.tableCell}>
+                  {record.followUp.warning ? (
+                    <span className={styles.warningText}>
+                      ⚠ {record.followUp.value}
+                    </span>
+                  ) : (
+                    <span className={styles.normalText}>
+                      {record.followUp.value}
+                    </span>
+                  )}
+                </td>
+                <td className={styles.tableCell}>
+                  <span className={getStatusPillClass(record.status)}>
+                    {getStatusLabel(record.status)}
+                  </span>
+                </td>
+              </tr>
+            ))}
             {displayedRecords.map((record) => (
               <tr key={record.id}>
                 <td className={styles.tableCell}>
