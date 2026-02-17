@@ -388,8 +388,8 @@ export const useDashboardStyles = makeStyles({
     color: "#6E4B00",
   },
   countBadgeCompleted: {
-    backgroundColor: tokens.colorBrandBackground,
-    color: tokens.colorNeutralForegroundOnBrand,
+    backgroundColor: "#E8F4FD",
+    color: "#0F548C",
   },
   filtersRow: {
     display: "flex",

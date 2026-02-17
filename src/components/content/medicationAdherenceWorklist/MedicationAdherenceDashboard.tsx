@@ -8,6 +8,7 @@ import {
   PopoverTrigger,
   PopoverSurface,
   Tooltip,
+  Switch,
 } from "@fluentui/react-components";
 import type { OptionOnSelectData } from "@fluentui/react-components";
 import {
@@ -255,6 +256,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   const styles = useDashboardStyles();
   const [timeRange, setTimeRange] = useState<TimeRange>("30");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [adminView, setAdminView] = useState(false);
   const [chartsExpanded, setChartsExpanded] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
@@ -442,12 +444,24 @@ export const MedicationAdherenceDashboard: React.FC = () => {
 
   return (
     <div className={styles.root}>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Switch
+          checked={adminView}
+          onChange={(_, data) => setAdminView(data.checked)}
+          label="Admin view"
+          labelPosition="before"
+        />
+      </div>
+
+      {adminView && (
+      <>{/* ── Dashboard Overview ── */}
+      <div className={styles.historySection}>
       {/* ── Header + Filters ── */}
       <div className={styles.headerRow}>
         <div className={styles.headerLeft}>
-          <div className={styles.dashboardHeader}>
-            <div className={styles.title}>Medication Adherence Dashboard</div>
-            <div className={styles.subtitle}>
+          <div>
+            <div className={styles.historyTitle}>Medication Adherence Dashboard</div>
+            <div className={styles.historySubtitle}>
               Monitor patient outreach and medication compliance
             </div>
           </div>
@@ -660,6 +674,9 @@ export const MedicationAdherenceDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      )}
+      </div>
+      </>
       )}
 
       {/* ── Patient Contact History ── */}
