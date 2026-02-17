@@ -8,7 +8,6 @@ import {
   Library24Regular,
   MoreVertical24Regular,
   Call20Regular,
-  Chat20Regular,
   CalendarLtr20Regular,
   CalendarArrowRight20Regular,
   Phone20Regular,
@@ -198,14 +197,6 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
                     className={styles.callButton}
                   >
                     Call
-                  </Button>
-                  <Button
-                    appearance="outline"
-                    size="small"
-                    icon={<Chat20Regular />}
-                    className={styles.chatButton}
-                  >
-                    Chat
                   </Button>
                 </div>
               </div>

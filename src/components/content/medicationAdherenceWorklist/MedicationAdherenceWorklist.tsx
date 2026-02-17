@@ -27,7 +27,6 @@ import {
   ArrowDown16Regular,
   ArrowSync16Regular,
   MoreVerticalFilled,
-  Chat20Regular,
   Call20Regular,
   CallRegular,
 } from "@fluentui/react-icons";
@@ -326,13 +325,6 @@ export const MedicationAdherenceWorklist: React.FC<
                     <div className={styles.inlineMeta}>
                       <span className={styles.inlineMetaLabel}>Last contact:</span>
                       <span className={styles.inlineMetaValue}>{patient.lastContactDate}</span>
-                      <span className={styles.contactMethodIcon}>
-                        {patient.lastContactMethod === "chat" ? (
-                          <Chat20Regular />
-                        ) : (
-                          <Call20Regular />
-                        )}
-                      </span>
                     </div>
                   </div>
 
@@ -348,19 +340,6 @@ export const MedicationAdherenceWorklist: React.FC<
                           }}
                         >
                           <Call20Regular />
-                        </button>
-                      </span>
-                    </Tooltip>
-                    <Tooltip content="Chat with patient" relationship="label">
-                      <span className="inline-flex">
-                        <button
-                          className={styles.actionButton}
-                          aria-label="Chat with patient"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
-                        >
-                          <Chat20Regular />
                         </button>
                       </span>
                     </Tooltip>
@@ -398,21 +377,13 @@ export const MedicationAdherenceWorklist: React.FC<
                 appearance="primary"
                 icon={<CallRegular />}
                 disabled={selectedPatients.size === 0}
-                style={{ flex: 1 }}
+                style={{ width: "100%", height: "44px", fontSize: "16px", fontWeight: 600 }}
                 onClick={() => {
                   callPatients(Array.from(selectedPatients));
                   setSelectedPatients(new Set());
                 }}
               >
                 Call
-              </Button>
-              <Button
-                appearance="secondary"
-                icon={<Chat20Regular />}
-                disabled={selectedPatients.size === 0}
-                style={{ flex: 1 }}
-              >
-                Chat
               </Button>
             </div>
           </div>

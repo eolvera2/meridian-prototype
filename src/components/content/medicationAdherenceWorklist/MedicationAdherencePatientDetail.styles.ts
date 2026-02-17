@@ -227,11 +227,6 @@ export const usePatientDetailStyles = makeStyles({
       backgroundColor: `${tokens.colorBrandBackgroundHover} !important`,
     },
   },
-  chatButton: {
-    fontSize: "12px !important",
-    minWidth: "auto !important",
-    padding: "4px 12px !important",
-  },
   contactSummary: {
     fontSize: "12px",
     color: tokens.colorNeutralForeground2,

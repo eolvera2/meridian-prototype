@@ -19,7 +19,6 @@ export interface MedicationAdherenceWorklistItem {
   dischargeDate: string;
   languagePreference: string;
   lastContactDate: string;
-  lastContactMethod: "chat" | "phone";
   lastContactSummary: string;
   status?: string;
   signed?: boolean;
@@ -35,7 +34,7 @@ export interface MedicationAdherenceWorklistItem {
   careTeam?: string;
   contactHistory?: {
     date: string;
-    method: "phone" | "chat";
+    method: "phone";
     transcriptLink?: boolean;
     transcriptSummary?: string;
     pickedUpMedication?: string;

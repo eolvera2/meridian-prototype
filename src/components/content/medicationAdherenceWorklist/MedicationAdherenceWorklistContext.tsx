@@ -64,11 +64,11 @@ const OUTCOME_POOLS: {
   followUp: { value: string; warning: boolean };
   status: CallRecordStatus;
 }[] = [
-  { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, followUp: { value: "Not needed", warning: false }, status: "completed" },
+  { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, followUp: { value: "Not needed", warning: false }, status: "needs-review" },
   { pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, followUp: { value: "Yes", warning: true }, status: "needs-review" },
   { pickedUpMeds: "No", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "None", warning: false }, followUp: { value: "Yes", warning: true }, status: "needs-review" },
   { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "Reported", warning: true }, followUp: { value: "Yes", warning: true }, status: "needs-review" },
-  { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, followUp: { value: "Not needed", warning: false }, status: "completed" },
+  { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, followUp: { value: "Not needed", warning: false }, status: "needs-review" },
 ];
 
 let outcomeIndex = 0;

@@ -7,7 +7,6 @@
     "dischargeDate": "2/11/26",
     "languagePreference": "English",
     "lastContactDate": "2/12/26",
-    "lastContactMethod": "phone",
     "lastContactSummary": "Reached spouse; patient reported dizziness and skipped evening dose.",
     "status": "Urgent outreach",
     "lastModified": "8:05 AM",
@@ -26,16 +25,37 @@
         "transcriptLink": true,
         "transcriptSummary": "Reached spouse who confirmed patient has been dizzy and missed evening warfarin doses for 3 days. Advised to resume tonight and schedule INR lab draw.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "No", "positive": false },
+        "takingAsPrescribed": {
+          "value": "No",
+          "positive": false
+        },
         "sideEffects": "Dizziness reported",
-        "followUpNeeded": { "value": "Yes", "positive": false },
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
         "notes": "Call completed with 12 messages. Spouse agreed to reminder setup."
       }
     ],
     "medications": [
-      { "name": "Warfarin", "dose": "5mg", "frequency": "Once daily", "prescribedDate": "January 28, 2026" },
-      { "name": "Metoprolol Succinate", "dose": "25mg", "frequency": "Twice daily", "prescribedDate": "January 28, 2026" },
-      { "name": "Aspirin", "dose": "81mg", "frequency": "Once daily", "prescribedDate": "February 1, 2026" }
+      {
+        "name": "Warfarin",
+        "dose": "5mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 28, 2026"
+      },
+      {
+        "name": "Metoprolol Succinate",
+        "dose": "25mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "January 28, 2026"
+      },
+      {
+        "name": "Aspirin",
+        "dose": "81mg",
+        "frequency": "Once daily",
+        "prescribedDate": "February 1, 2026"
+      }
     ]
   },
   {
@@ -46,7 +66,6 @@
     "dischargeDate": "2/13/26",
     "languagePreference": "English",
     "lastContactDate": "2/12/26",
-    "lastContactMethod": "chat",
     "lastContactSummary": "Patient confirmed only 2 units remaining and needs same-day refill.",
     "status": "Urgent outreach",
     "lastModified": "8:14 AM",
@@ -61,20 +80,41 @@
     "contactHistory": [
       {
         "date": "February 12, 2026",
-        "method": "chat",
+        "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient confirmed only 2 units of insulin glargine remaining. Pharmacy transfer caused 5-day gap. Glucose readings at 280 and 310 mg/dL. Expedited refill submitted.",
         "pickedUpMedication": "No",
-        "takingAsPrescribed": { "value": "No", "positive": false },
+        "takingAsPrescribed": {
+          "value": "No",
+          "positive": false
+        },
         "sideEffects": "Not reported",
-        "followUpNeeded": { "value": "Yes", "positive": false },
-        "notes": "Chat completed with 18 messages. Pharmacy notified for same-day fill."
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
+        "notes": "Call completed, 9 min duration. Pharmacy notified for same-day fill."
       }
     ],
     "medications": [
-      { "name": "Insulin Glargine", "dose": "20 units", "frequency": "Once daily", "prescribedDate": "January 20, 2026" },
-      { "name": "Metformin", "dose": "1000mg", "frequency": "Twice daily", "prescribedDate": "January 20, 2026" },
-      { "name": "Lisinopril", "dose": "10mg", "frequency": "Once daily", "prescribedDate": "January 20, 2026" }
+      {
+        "name": "Insulin Glargine",
+        "dose": "20 units",
+        "frequency": "Once daily",
+        "prescribedDate": "January 20, 2026"
+      },
+      {
+        "name": "Metformin",
+        "dose": "1000mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "January 20, 2026"
+      },
+      {
+        "name": "Lisinopril",
+        "dose": "10mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 20, 2026"
+      }
     ]
   },
   {
@@ -85,7 +125,6 @@
     "dischargeDate": "2/14/26",
     "languagePreference": "Bengali",
     "lastContactDate": "2/12/26",
-    "lastContactMethod": "phone",
     "lastContactSummary": "Patient reports persistent cough; requests medication alternative urgently.",
     "status": "Needs clinician review",
     "lastModified": "8:42 AM",
@@ -95,7 +134,7 @@
     "email": "ychowdhury@email.com",
     "address": "55-12 Junction Blvd, Apt 4C, Queens, NY 11373",
     "dischargeInstructions": "Continue amlodipine 5 mg and HCTZ 25 mg daily. Monitor BP twice daily. If cough persists on ACE inhibitor, contact clinic for ARB substitution.",
-    "primaryDiagnosis": "Essential hypertension, Stage 2. ACE inhibitor–induced cough (lisinopril). Mild hyperlipidemia managed with lifestyle modifications.",
+    "primaryDiagnosis": "Essential hypertension, Stage 2. ACE inhibitor\u2013induced cough (lisinopril). Mild hyperlipidemia managed with lifestyle modifications.",
     "careTeam": "Dr. Anwar Hussain (Internal Medicine), NP Lisa Chen (Cardiology), PharmD Amir Patel (Community Pharmacy)",
     "contactHistory": [
       {
@@ -104,16 +143,37 @@
         "transcriptLink": true,
         "transcriptSummary": "Patient reports dry cough worsening over 2 weeks. Self-discontinued lisinopril 4 days ago. BP at home 158/94. Clinician review requested for ARB switch.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "No", "positive": false },
+        "takingAsPrescribed": {
+          "value": "No",
+          "positive": false
+        },
         "sideEffects": "Persistent dry cough",
-        "followUpNeeded": { "value": "Yes", "positive": false },
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
         "notes": "Call completed with 8 messages. Interpreter assistance provided for Bengali."
       }
     ],
     "medications": [
-      { "name": "Lisinopril", "dose": "20mg", "frequency": "Once daily", "prescribedDate": "January 15, 2026" },
-      { "name": "Amlodipine", "dose": "5mg", "frequency": "Once daily", "prescribedDate": "January 15, 2026" },
-      { "name": "Hydrochlorothiazide", "dose": "25mg", "frequency": "Once daily", "prescribedDate": "January 15, 2026" }
+      {
+        "name": "Lisinopril",
+        "dose": "20mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 15, 2026"
+      },
+      {
+        "name": "Amlodipine",
+        "dose": "5mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 15, 2026"
+      },
+      {
+        "name": "Hydrochlorothiazide",
+        "dose": "25mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 15, 2026"
+      }
     ]
   },
   {
@@ -124,7 +184,6 @@
     "dischargeDate": "2/13/26",
     "languagePreference": "Spanish",
     "lastContactDate": "2/12/26",
-    "lastContactMethod": "phone",
     "lastContactSummary": "Daughter answered and requested bilingual med calendar before discharge.",
     "status": "Escalated",
     "lastModified": "8:57 AM",
@@ -143,17 +202,43 @@
         "transcriptLink": true,
         "transcriptSummary": "Daughter answered. Patient confused by twice-daily vs once-daily schedule. Missed Saturday and Sunday doses of carvedilol and furosemide. Weight up 3 lbs. Bilingual med calendar requested.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "No", "positive": false },
+        "takingAsPrescribed": {
+          "value": "No",
+          "positive": false
+        },
         "sideEffects": "Not reported",
-        "followUpNeeded": { "value": "Yes", "positive": false },
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
         "notes": "Call completed with 15 messages. Spanish interpreter used. Escalated to heart failure clinic."
       }
     ],
     "medications": [
-      { "name": "Carvedilol", "dose": "12.5mg", "frequency": "Twice daily", "prescribedDate": "February 1, 2026" },
-      { "name": "Furosemide", "dose": "40mg", "frequency": "Once daily", "prescribedDate": "February 1, 2026" },
-      { "name": "Potassium Chloride", "dose": "20mEq", "frequency": "Once daily", "prescribedDate": "February 1, 2026" },
-      { "name": "Lisinopril", "dose": "10mg", "frequency": "Once daily", "prescribedDate": "February 1, 2026" }
+      {
+        "name": "Carvedilol",
+        "dose": "12.5mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "February 1, 2026"
+      },
+      {
+        "name": "Furosemide",
+        "dose": "40mg",
+        "frequency": "Once daily",
+        "prescribedDate": "February 1, 2026"
+      },
+      {
+        "name": "Potassium Chloride",
+        "dose": "20mEq",
+        "frequency": "Once daily",
+        "prescribedDate": "February 1, 2026"
+      },
+      {
+        "name": "Lisinopril",
+        "dose": "10mg",
+        "frequency": "Once daily",
+        "prescribedDate": "February 1, 2026"
+      }
     ]
   },
   {
@@ -164,7 +249,6 @@
     "dischargeDate": "2/17/26",
     "languagePreference": "English",
     "lastContactDate": "2/11/26",
-    "lastContactMethod": "chat",
     "lastContactSummary": "Patient asked for evening reminder options and refill synchronization.",
     "status": "Pending follow-up",
     "lastModified": "9:03 AM",
@@ -179,19 +263,35 @@
     "contactHistory": [
       {
         "date": "February 11, 2026",
-        "method": "chat",
+        "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient reports missing statin 2 of 7 days during business travel. Requested evening phone reminders and asked about synchronizing refill dates for both medications.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "Yes", "positive": true },
+        "takingAsPrescribed": {
+          "value": "Yes",
+          "positive": true
+        },
         "sideEffects": "Not reported",
-        "followUpNeeded": { "value": "Not needed", "positive": true },
-        "notes": "Chat completed with 10 messages. Reminder preferences recorded."
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
+        "notes": "Call completed, 5 min duration. Reminder preferences recorded."
       }
     ],
     "medications": [
-      { "name": "Atorvastatin", "dose": "40mg", "frequency": "Once daily", "prescribedDate": "January 25, 2026" },
-      { "name": "Lisinopril", "dose": "10mg", "frequency": "Once daily", "prescribedDate": "January 25, 2026" }
+      {
+        "name": "Atorvastatin",
+        "dose": "40mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 25, 2026"
+      },
+      {
+        "name": "Lisinopril",
+        "dose": "10mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 25, 2026"
+      }
     ]
   },
   {
@@ -202,7 +302,6 @@
     "dischargeDate": "2/18/26",
     "languagePreference": "Spanish",
     "lastContactDate": "2/11/26",
-    "lastContactMethod": "phone",
     "lastContactSummary": "Scheduled inhaler coaching call for tomorrow; no acute symptoms reported.",
     "status": "Queued",
     "lastModified": "9:16 AM",
@@ -221,15 +320,31 @@
         "transcriptLink": true,
         "transcriptSummary": "Patient reports using controller inhaler 3 of 7 days. Unsure about spacer technique. No acute wheezing. Coaching call scheduled for Feb 12 at 10 AM.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "No", "positive": false },
+        "takingAsPrescribed": {
+          "value": "No",
+          "positive": false
+        },
         "sideEffects": "Not reported",
-        "followUpNeeded": { "value": "Yes", "positive": false },
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
         "notes": "Call completed with 9 messages. Spanish interpreter used."
       }
     ],
     "medications": [
-      { "name": "Tiotropium Inhaler", "dose": "18mcg", "frequency": "Once daily", "prescribedDate": "February 4, 2026" },
-      { "name": "Albuterol Inhaler", "dose": "90mcg", "frequency": "As needed", "prescribedDate": "February 4, 2026" }
+      {
+        "name": "Tiotropium Inhaler",
+        "dose": "18mcg",
+        "frequency": "Once daily",
+        "prescribedDate": "February 4, 2026"
+      },
+      {
+        "name": "Albuterol Inhaler",
+        "dose": "90mcg",
+        "frequency": "As needed",
+        "prescribedDate": "February 4, 2026"
+      }
     ]
   },
   {
@@ -240,7 +355,6 @@
     "dischargeDate": "2/17/26",
     "languagePreference": "English",
     "lastContactDate": "2/11/26",
-    "lastContactMethod": "chat",
     "lastContactSummary": "Patient requested simplified morning schedule and printed instructions.",
     "status": "Pending follow-up",
     "lastModified": "9:28 AM",
@@ -249,26 +363,47 @@
     "phone": "+12025559043",
     "email": "losei73@email.com",
     "address": "1420 K Street NW, Apt 802, Washington, DC 20005",
-    "dischargeInstructions": "Take levothyroxine 75 mcg on empty stomach, 30–60 min before breakfast. Other morning meds after eating. TSH recheck in 6 weeks.",
+    "dischargeInstructions": "Take levothyroxine 75 mcg on empty stomach, 30\u201360 min before breakfast. Other morning meds after eating. TSH recheck in 6 weeks.",
     "primaryDiagnosis": "Hypothyroidism. Type 2 diabetes mellitus, controlled. Mild osteoarthritis of both knees.",
     "careTeam": "Dr. Priya Nair (Endocrinology), NP Janet Collins (Primary Care), PharmD Amir Patel (Community Pharmacy)",
     "contactHistory": [
       {
         "date": "February 11, 2026",
-        "method": "chat",
+        "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient takes levothyroxine with breakfast instead of on empty stomach. Requested a printed morning routine card separating thyroid medication from other pills.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "No", "positive": false },
+        "takingAsPrescribed": {
+          "value": "No",
+          "positive": false
+        },
         "sideEffects": "Not reported",
-        "followUpNeeded": { "value": "Yes", "positive": false },
-        "notes": "Chat completed with 14 messages. Printed schedule to be mailed."
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
+        "notes": "Call completed, 7 min duration. Printed schedule to be mailed."
       }
     ],
     "medications": [
-      { "name": "Levothyroxine", "dose": "75mcg", "frequency": "Once daily", "prescribedDate": "January 18, 2026" },
-      { "name": "Metformin", "dose": "500mg", "frequency": "Twice daily", "prescribedDate": "January 18, 2026" },
-      { "name": "Acetaminophen", "dose": "500mg", "frequency": "As needed", "prescribedDate": "January 18, 2026" }
+      {
+        "name": "Levothyroxine",
+        "dose": "75mcg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 18, 2026"
+      },
+      {
+        "name": "Metformin",
+        "dose": "500mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "January 18, 2026"
+      },
+      {
+        "name": "Acetaminophen",
+        "dose": "500mg",
+        "frequency": "As needed",
+        "prescribedDate": "January 18, 2026"
+      }
     ]
   },
   {
@@ -279,7 +414,6 @@
     "dischargeDate": "2/19/26",
     "languagePreference": "English",
     "lastContactDate": "2/11/26",
-    "lastContactMethod": "phone",
     "lastContactSummary": "Patient understands revised twice-daily schedule; check-in planned in 48 hours.",
     "status": "Queued",
     "lastModified": "9:41 AM",
@@ -298,16 +432,37 @@
         "transcriptLink": true,
         "transcriptSummary": "Patient had been taking both amlodipine and losartan together in the morning. Educated on split-dose schedule. Patient verbalized understanding. 48-hour check-in planned.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "Yes", "positive": true },
+        "takingAsPrescribed": {
+          "value": "Yes",
+          "positive": true
+        },
         "sideEffects": "Not reported",
-        "followUpNeeded": { "value": "Yes", "positive": false },
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
         "notes": "Call completed with 7 messages. Patient cooperative and motivated."
       }
     ],
     "medications": [
-      { "name": "Amlodipine", "dose": "5mg", "frequency": "Once daily", "prescribedDate": "February 2, 2026" },
-      { "name": "Losartan", "dose": "50mg", "frequency": "Once daily", "prescribedDate": "February 2, 2026" },
-      { "name": "Tamsulosin", "dose": "0.4mg", "frequency": "Once daily", "prescribedDate": "January 10, 2026" }
+      {
+        "name": "Amlodipine",
+        "dose": "5mg",
+        "frequency": "Once daily",
+        "prescribedDate": "February 2, 2026"
+      },
+      {
+        "name": "Losartan",
+        "dose": "50mg",
+        "frequency": "Once daily",
+        "prescribedDate": "February 2, 2026"
+      },
+      {
+        "name": "Tamsulosin",
+        "dose": "0.4mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 10, 2026"
+      }
     ]
   },
   {
@@ -318,7 +473,6 @@
     "dischargeDate": "2/20/26",
     "languagePreference": "Hindi",
     "lastContactDate": "2/11/26",
-    "lastContactMethod": "chat",
     "lastContactSummary": "Patient prefers weekend teaching session with spouse present.",
     "status": "Queued",
     "lastModified": "9:55 AM",
@@ -333,19 +487,35 @@
     "contactHistory": [
       {
         "date": "February 11, 2026",
-        "method": "chat",
+        "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient works rotating shifts and has been injecting semaglutide on different days each week. Requested weekend in-person session with spouse to standardize schedule.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "No", "positive": false },
+        "takingAsPrescribed": {
+          "value": "No",
+          "positive": false
+        },
         "sideEffects": "Mild nausea",
-        "followUpNeeded": { "value": "Yes", "positive": false },
-        "notes": "Chat completed with 22 messages. Weekend session scheduled Feb 15."
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
+        "notes": "Call completed, 11 min duration. Weekend session scheduled Feb 15."
       }
     ],
     "medications": [
-      { "name": "Semaglutide", "dose": "0.5mg", "frequency": "Once weekly", "prescribedDate": "January 22, 2026" },
-      { "name": "Metformin", "dose": "1000mg", "frequency": "Twice daily", "prescribedDate": "January 22, 2026" }
+      {
+        "name": "Semaglutide",
+        "dose": "0.5mg",
+        "frequency": "Once weekly",
+        "prescribedDate": "January 22, 2026"
+      },
+      {
+        "name": "Metformin",
+        "dose": "1000mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "January 22, 2026"
+      }
     ]
   },
   {
@@ -356,7 +526,6 @@
     "dischargeDate": "2/20/26",
     "languagePreference": "Swahili",
     "lastContactDate": "2/11/26",
-    "lastContactMethod": "phone",
     "lastContactSummary": "Pharmacy confirmed synchronization request; patient to pick up Friday.",
     "status": "Pending follow-up",
     "lastModified": "10:04 AM",
@@ -375,16 +544,37 @@
         "transcriptLink": true,
         "transcriptSummary": "Patient wants all three medications refilled on the same date to reduce pharmacy visits. Pharmacy confirmed sync request. Patient to pick up all meds on Friday.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "Yes", "positive": true },
+        "takingAsPrescribed": {
+          "value": "Yes",
+          "positive": true
+        },
         "sideEffects": "Not reported",
-        "followUpNeeded": { "value": "Not needed", "positive": true },
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
         "notes": "Call completed with 6 messages. Swahili interpreter used."
       }
     ],
     "medications": [
-      { "name": "Lisinopril", "dose": "20mg", "frequency": "Once daily", "prescribedDate": "January 12, 2026" },
-      { "name": "Metformin", "dose": "850mg", "frequency": "Twice daily", "prescribedDate": "January 12, 2026" },
-      { "name": "Tamsulosin", "dose": "0.4mg", "frequency": "Once daily", "prescribedDate": "January 12, 2026" }
+      {
+        "name": "Lisinopril",
+        "dose": "20mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 12, 2026"
+      },
+      {
+        "name": "Metformin",
+        "dose": "850mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "January 12, 2026"
+      },
+      {
+        "name": "Tamsulosin",
+        "dose": "0.4mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 12, 2026"
+      }
     ]
   },
   {
@@ -395,7 +585,6 @@
     "dischargeDate": "2/10/26",
     "languagePreference": "Spanish",
     "lastContactDate": "2/10/26",
-    "lastContactMethod": "phone",
     "lastContactSummary": "Patient demonstrated teach-back correctly; no additional action required.",
     "status": "Cleared",
     "lastModified": "10:22 AM",
@@ -414,15 +603,31 @@
         "transcriptLink": true,
         "transcriptSummary": "Patient successfully demonstrated teach-back on beta-blocker purpose, timing, and side effects to watch for. Refill set up for auto-delivery. No further action needed.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "Yes", "positive": true },
+        "takingAsPrescribed": {
+          "value": "Yes",
+          "positive": true
+        },
         "sideEffects": "Not reported",
-        "followUpNeeded": { "value": "Not needed", "positive": true },
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
         "notes": "Call completed with 11 messages. Patient fully adherent."
       }
     ],
     "medications": [
-      { "name": "Metoprolol Succinate", "dose": "50mg", "frequency": "Twice daily", "prescribedDate": "January 30, 2026" },
-      { "name": "Sertraline", "dose": "50mg", "frequency": "Once daily", "prescribedDate": "December 15, 2025" }
+      {
+        "name": "Metoprolol Succinate",
+        "dose": "50mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "January 30, 2026"
+      },
+      {
+        "name": "Sertraline",
+        "dose": "50mg",
+        "frequency": "Once daily",
+        "prescribedDate": "December 15, 2025"
+      }
     ]
   },
   {
@@ -433,7 +638,6 @@
     "dischargeDate": "2/9/26",
     "languagePreference": "English",
     "lastContactDate": "2/9/26",
-    "lastContactMethod": "chat",
     "lastContactSummary": "Patient confirmed pickup and daily adherence reminder is active.",
     "status": "Cleared",
     "lastModified": "10:36 AM",
@@ -448,19 +652,35 @@
     "contactHistory": [
       {
         "date": "February 9, 2026",
-        "method": "chat",
+        "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient confirmed 90-day supply pickup. Set up daily phone reminder at 9 PM. No adherence issues reported. Transitioned to routine follow-up.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "Yes", "positive": true },
+        "takingAsPrescribed": {
+          "value": "Yes",
+          "positive": true
+        },
         "sideEffects": "Not reported",
-        "followUpNeeded": { "value": "Not needed", "positive": true },
-        "notes": "Chat completed with 8 messages. Fully adherent."
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
+        "notes": "Call completed, 4 min duration. Fully adherent."
       }
     ],
     "medications": [
-      { "name": "Rosuvastatin", "dose": "20mg", "frequency": "Once daily", "prescribedDate": "January 15, 2026" },
-      { "name": "Lisinopril", "dose": "10mg", "frequency": "Once daily", "prescribedDate": "January 15, 2026" }
+      {
+        "name": "Rosuvastatin",
+        "dose": "20mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 15, 2026"
+      },
+      {
+        "name": "Lisinopril",
+        "dose": "10mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 15, 2026"
+      }
     ]
   },
   {
@@ -471,7 +691,6 @@
     "dischargeDate": "2/8/26",
     "languagePreference": "Bengali",
     "lastContactDate": "2/8/26",
-    "lastContactMethod": "phone",
     "lastContactSummary": "Caregiver now manages pill organizer; weekly check-ins not needed.",
     "status": "Cleared",
     "lastModified": "10:49 AM",
@@ -490,16 +709,37 @@
         "transcriptLink": true,
         "transcriptSummary": "Caregiver (daughter) confirmed weekly pill organizer setup. No missed doses in past 10 days. Transitioned from weekly to monthly check-in schedule.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "Yes", "positive": true },
+        "takingAsPrescribed": {
+          "value": "Yes",
+          "positive": true
+        },
         "sideEffects": "Not reported",
-        "followUpNeeded": { "value": "Not needed", "positive": true },
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
         "notes": "Call completed with 13 messages. Bengali interpreter used. Caregiver plan documented."
       }
     ],
     "medications": [
-      { "name": "Metformin", "dose": "500mg", "frequency": "Twice daily", "prescribedDate": "January 10, 2026" },
-      { "name": "Amlodipine", "dose": "5mg", "frequency": "Once daily", "prescribedDate": "January 10, 2026" },
-      { "name": "Donepezil", "dose": "5mg", "frequency": "Once daily", "prescribedDate": "January 10, 2026" }
+      {
+        "name": "Metformin",
+        "dose": "500mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "January 10, 2026"
+      },
+      {
+        "name": "Amlodipine",
+        "dose": "5mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 10, 2026"
+      },
+      {
+        "name": "Donepezil",
+        "dose": "5mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 10, 2026"
+      }
     ]
   },
   {
@@ -510,7 +750,6 @@
     "dischargeDate": "2/7/26",
     "languagePreference": "English",
     "lastContactDate": "2/7/26",
-    "lastContactMethod": "chat",
     "lastContactSummary": "No missed doses since intervention; transitioned to routine PCP follow-up.",
     "status": "Cleared",
     "lastModified": "11:03 AM",
@@ -525,20 +764,41 @@
     "contactHistory": [
       {
         "date": "February 7, 2026",
-        "method": "chat",
+        "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient reports zero missed doses over past 14 days using new medication calendar. INR within range. Transitioned to routine PCP monitoring.",
         "pickedUpMedication": "Yes",
-        "takingAsPrescribed": { "value": "Yes", "positive": true },
+        "takingAsPrescribed": {
+          "value": "Yes",
+          "positive": true
+        },
         "sideEffects": "Not reported",
-        "followUpNeeded": { "value": "Not needed", "positive": true },
-        "notes": "Chat completed with 6 messages. Adherence intervention successful."
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
+        "notes": "Call completed, 3 min duration. Adherence intervention successful."
       }
     ],
     "medications": [
-      { "name": "Warfarin", "dose": "3mg", "frequency": "Once daily", "prescribedDate": "January 5, 2026" },
-      { "name": "Metoprolol Succinate", "dose": "25mg", "frequency": "Twice daily", "prescribedDate": "January 5, 2026" },
-      { "name": "Acetaminophen", "dose": "500mg", "frequency": "As needed", "prescribedDate": "January 5, 2026" }
+      {
+        "name": "Warfarin",
+        "dose": "3mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 5, 2026"
+      },
+      {
+        "name": "Metoprolol Succinate",
+        "dose": "25mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "January 5, 2026"
+      },
+      {
+        "name": "Acetaminophen",
+        "dose": "500mg",
+        "frequency": "As needed",
+        "prescribedDate": "January 5, 2026"
+      }
     ]
   }
 ]
