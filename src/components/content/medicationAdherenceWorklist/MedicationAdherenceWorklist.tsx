@@ -39,7 +39,7 @@ import type {
 } from "./MedicationAdherenceWorklist.types";
 import { useI18n } from "../../../i18n/I18nContext";
 
-type MedicationAdherenceTab = "urgent" | "queue" | "cleared";
+type MedicationAdherenceTab = "queue" | "reviewed";
 
 export const MedicationAdherenceWorklist: React.FC<
   MedicationAdherenceWorklistProps
@@ -48,7 +48,7 @@ export const MedicationAdherenceWorklist: React.FC<
   const { t } = useI18n();
   const { patients, setSelectedPatientId, callPatients } = useMedicationAdherenceWorklistContext();
 
-  const [activeTab, setActiveTab] = useState<TabValue>("urgent");
+  const [activeTab, setActiveTab] = useState<TabValue>("queue");
   const [searchValue, setSearchValue] = useState("");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [sortOrder, setSortOrder] =
@@ -141,39 +141,19 @@ export const MedicationAdherenceWorklist: React.FC<
                 className={styles.tabStretchList}
               >
                 <Tab
-                  className={mergeClasses(styles.tabStretch, styles.tabUrgent)}
-                  value="urgent"
-                >
-                  <span className={styles.tabLabel}>
-                    <span
-                      className={`${styles.tabDot} ${styles.tabDotUrgent}`}
-                      aria-hidden="true"
-                    />
-                    Urgent
-                  </span>
-                </Tab>
-                <Tab
-                  className={mergeClasses(styles.tabStretch, styles.tabQueue)}
+                  className={styles.tabStretch}
                   value="queue"
                 >
                   <span className={styles.tabLabel}>
-                    <span
-                      className={`${styles.tabDot} ${styles.tabDotQueue}`}
-                      aria-hidden="true"
-                    />
                     Queue
                   </span>
                 </Tab>
                 <Tab
-                  className={mergeClasses(styles.tabStretch, styles.tabCleared)}
-                  value="cleared"
+                  className={styles.tabStretch}
+                  value="reviewed"
                 >
                   <span className={styles.tabLabel}>
-                    <span
-                      className={`${styles.tabDot} ${styles.tabDotCleared}`}
-                      aria-hidden="true"
-                    />
-                    Cleared
+                    Reviewed
                   </span>
                 </Tab>
               </TabList>

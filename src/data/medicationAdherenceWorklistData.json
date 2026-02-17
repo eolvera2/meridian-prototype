@@ -8,9 +8,9 @@
     "languagePreference": "English",
     "lastContactDate": "2/12/26",
     "lastContactSummary": "Reached spouse; patient reported dizziness and skipped evening dose.",
-    "status": "Urgent outreach",
+    "status": "Pending follow-up",
     "lastModified": "8:05 AM",
-    "group": "Urgent",
+    "group": "Queue",
     "dateOfBirth": "March 15, 1984",
     "phone": "+12145559821",
     "email": "fsteel@email.com",
@@ -34,7 +34,8 @@
           "value": "Yes",
           "positive": false
         },
-        "notes": "Call completed with 12 messages. Spouse agreed to reminder setup."
+        "notes": "Call completed with 12 messages. Spouse agreed to reminder setup.",
+        "painLevel": 6
       }
     ],
     "medications": [
@@ -67,9 +68,9 @@
     "languagePreference": "English",
     "lastContactDate": "2/12/26",
     "lastContactSummary": "Patient confirmed only 2 units remaining and needs same-day refill.",
-    "status": "Urgent outreach",
+    "status": "Pending follow-up",
     "lastModified": "8:14 AM",
-    "group": "Urgent",
+    "group": "Queue",
     "dateOfBirth": "September 29, 1971",
     "phone": "+13125550147",
     "email": "dcastillo71@email.com",
@@ -93,7 +94,8 @@
           "value": "Yes",
           "positive": false
         },
-        "notes": "Call completed, 9 min duration. Pharmacy notified for same-day fill."
+        "notes": "Call completed, 9 min duration. Pharmacy notified for same-day fill.",
+        "painLevel": 4
       }
     ],
     "medications": [
@@ -126,9 +128,9 @@
     "languagePreference": "Bengali",
     "lastContactDate": "2/12/26",
     "lastContactSummary": "Patient reports persistent cough; requests medication alternative urgently.",
-    "status": "Needs clinician review",
+    "status": "Pending follow-up",
     "lastModified": "8:42 AM",
-    "group": "Urgent",
+    "group": "Queue",
     "dateOfBirth": "January 5, 1965",
     "phone": "+17185553298",
     "email": "ychowdhury@email.com",
@@ -152,7 +154,8 @@
           "value": "Yes",
           "positive": false
         },
-        "notes": "Call completed with 8 messages. Interpreter assistance provided for Bengali."
+        "notes": "Call completed with 8 messages. Interpreter assistance provided for Bengali.",
+        "painLevel": 5
       }
     ],
     "medications": [
@@ -185,9 +188,9 @@
     "languagePreference": "Spanish",
     "lastContactDate": "2/12/26",
     "lastContactSummary": "Daughter answered and requested bilingual med calendar before discharge.",
-    "status": "Escalated",
+    "status": "Queued",
     "lastModified": "8:57 AM",
-    "group": "Urgent",
+    "group": "Queue",
     "dateOfBirth": "November 17, 1952",
     "phone": "+12105558734",
     "email": "mdelacruz52@email.com",
@@ -211,7 +214,8 @@
           "value": "Yes",
           "positive": false
         },
-        "notes": "Call completed with 15 messages. Spanish interpreter used. Escalated to heart failure clinic."
+        "notes": "Call completed with 15 messages. Spanish interpreter used. Escalated to heart failure clinic.",
+        "painLevel": 7
       }
     ],
     "medications": [
@@ -276,7 +280,8 @@
           "value": "Not needed",
           "positive": true
         },
-        "notes": "Call completed, 5 min duration. Reminder preferences recorded."
+        "notes": "Call completed, 5 min duration. Reminder preferences recorded.",
+        "painLevel": 2
       }
     ],
     "medications": [
@@ -329,7 +334,8 @@
           "value": "Yes",
           "positive": false
         },
-        "notes": "Call completed with 9 messages. Spanish interpreter used."
+        "notes": "Call completed with 9 messages. Spanish interpreter used.",
+        "painLevel": 3
       }
     ],
     "medications": [
@@ -382,7 +388,8 @@
           "value": "Yes",
           "positive": false
         },
-        "notes": "Call completed, 7 min duration. Printed schedule to be mailed."
+        "notes": "Call completed, 7 min duration. Printed schedule to be mailed.",
+        "painLevel": 4
       }
     ],
     "medications": [
@@ -441,7 +448,8 @@
           "value": "Yes",
           "positive": false
         },
-        "notes": "Call completed with 7 messages. Patient cooperative and motivated."
+        "notes": "Call completed with 7 messages. Patient cooperative and motivated.",
+        "painLevel": 3
       }
     ],
     "medications": [
@@ -500,7 +508,8 @@
           "value": "Yes",
           "positive": false
         },
-        "notes": "Call completed, 11 min duration. Weekend session scheduled Feb 15."
+        "notes": "Call completed, 11 min duration. Weekend session scheduled Feb 15.",
+        "painLevel": 5
       }
     ],
     "medications": [
@@ -553,7 +562,8 @@
           "value": "Not needed",
           "positive": true
         },
-        "notes": "Call completed with 6 messages. Swahili interpreter used."
+        "notes": "Call completed with 6 messages. Swahili interpreter used.",
+        "painLevel": 1
       }
     ],
     "medications": [
@@ -586,9 +596,9 @@
     "languagePreference": "Spanish",
     "lastContactDate": "2/10/26",
     "lastContactSummary": "Patient demonstrated teach-back correctly; no additional action required.",
-    "status": "Cleared",
+    "status": "Reviewed",
     "lastModified": "10:22 AM",
-    "group": "Cleared",
+    "group": "Reviewed",
     "dateOfBirth": "May 19, 1968",
     "phone": "+12135556047",
     "email": "crojas68@email.com",
@@ -612,7 +622,8 @@
           "value": "Not needed",
           "positive": true
         },
-        "notes": "Call completed with 11 messages. Patient fully adherent."
+        "notes": "Call completed with 11 messages. Patient fully adherent.",
+        "painLevel": 0
       }
     ],
     "medications": [
@@ -639,9 +650,9 @@
     "languagePreference": "English",
     "lastContactDate": "2/9/26",
     "lastContactSummary": "Patient confirmed pickup and daily adherence reminder is active.",
-    "status": "Cleared",
+    "status": "Reviewed",
     "lastModified": "10:36 AM",
-    "group": "Cleared",
+    "group": "Reviewed",
     "dateOfBirth": "August 27, 1975",
     "phone": "+15035558291",
     "email": "nwatanabe@email.com",
@@ -665,7 +676,8 @@
           "value": "Not needed",
           "positive": true
         },
-        "notes": "Call completed, 4 min duration. Fully adherent."
+        "notes": "Call completed, 4 min duration. Fully adherent.",
+        "painLevel": 1
       }
     ],
     "medications": [
@@ -692,9 +704,9 @@
     "languagePreference": "Bengali",
     "lastContactDate": "2/8/26",
     "lastContactSummary": "Caregiver now manages pill organizer; weekly check-ins not needed.",
-    "status": "Cleared",
+    "status": "Reviewed",
     "lastModified": "10:49 AM",
-    "group": "Cleared",
+    "group": "Reviewed",
     "dateOfBirth": "September 3, 1969",
     "phone": "+16465553814",
     "email": "abanerjee@email.com",
@@ -718,7 +730,8 @@
           "value": "Not needed",
           "positive": true
         },
-        "notes": "Call completed with 13 messages. Bengali interpreter used. Caregiver plan documented."
+        "notes": "Call completed with 13 messages. Bengali interpreter used. Caregiver plan documented.",
+        "painLevel": 0
       }
     ],
     "medications": [
@@ -751,9 +764,9 @@
     "languagePreference": "English",
     "lastContactDate": "2/7/26",
     "lastContactSummary": "No missed doses since intervention; transitioned to routine PCP follow-up.",
-    "status": "Cleared",
+    "status": "Reviewed",
     "lastModified": "11:03 AM",
-    "group": "Cleared",
+    "group": "Reviewed",
     "dateOfBirth": "January 24, 1955",
     "phone": "+14155559267",
     "email": "goneill55@email.com",
@@ -777,7 +790,8 @@
           "value": "Not needed",
           "positive": true
         },
-        "notes": "Call completed, 3 min duration. Adherence intervention successful."
+        "notes": "Call completed, 3 min duration. Adherence intervention successful.",
+        "painLevel": 2
       }
     ],
     "medications": [

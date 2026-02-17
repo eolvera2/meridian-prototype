@@ -40,6 +40,7 @@ export interface MedicationAdherenceWorklistItem {
     pickedUpMedication?: string;
     takingAsPrescribed?: { value: string; positive: boolean };
     sideEffects?: string;
+    painLevel?: number;
     followUpNeeded?: { value: string; positive: boolean };
     notes?: string;
   }[];

@@ -103,75 +103,6 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
 
       {/* ── Content area ── */}
       <div className={styles.content}>
-        {/* ── Patient Information Card ── */}
-        <div className={styles.sectionCard}>
-          <div className={styles.infoColumns}>
-            {/* Left column */}
-            <div className={styles.infoColumn}>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <CalendarLtr20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>DATE OF BIRTH</span>
-                </div>
-                <span className={styles.infoValue}>{patient.dateOfBirth ?? "—"}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <CalendarArrowRight20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>DISCHARGE DATE</span>
-                </div>
-                <span className={styles.infoValue}>{patient.dischargeDate}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <ClipboardTask20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>DISCHARGE INSTRUCTIONS</span>
-                </div>
-                <span className={styles.infoValue}>{patient.dischargeInstructions ?? "—"}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <Stethoscope20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>PRIMARY DIAGNOSIS</span>
-                </div>
-                <span className={styles.infoValue}>{patient.primaryDiagnosis ?? "—"}</span>
-              </div>
-            </div>
-
-            {/* Right column */}
-            <div className={styles.infoColumn}>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <Phone20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>PHONE</span>
-                </div>
-                <span className={styles.infoValue}>{patient.phone ?? "—"}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <Mail20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>EMAIL</span>
-                </div>
-                <span className={styles.infoValue}>{patient.email ?? "—"}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <Location20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>ADDRESS</span>
-                </div>
-                <span className={styles.infoValue}>{patient.address ?? "—"}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <People20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>CARE TEAM</span>
-                </div>
-                <span className={styles.infoValue}>{patient.careTeam ?? "—"}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* ── Contact History ── */}
         <div className={styles.sectionCard}>
           <div className={styles.sectionTitleRow}>
@@ -243,6 +174,22 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
                   </span>
                 </div>
                 <div className={styles.outcomeItem}>
+                  <span className={styles.outcomeLabel}>Pain level</span>
+                  {entry.painLevel != null ? (
+                    <span className={mergeClasses(
+                      styles.outcomeValue,
+                      entry.painLevel === 0 ? styles.outcomePositive
+                        : entry.painLevel <= 3 ? styles.outcomeNeutral
+                        : entry.painLevel <= 6 ? styles.outcomeNeutral
+                        : styles.outcomeNegative
+                    )}>
+                      {entry.painLevel}/10
+                    </span>
+                  ) : (
+                    <span className={styles.outcomeValue}>—</span>
+                  )}
+                </div>
+                <div className={styles.outcomeItem}>
                   <span className={styles.outcomeLabel}>Follow-up needed</span>
                   {entry.followUpNeeded ? (
                     <>
@@ -279,6 +226,75 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
               No contact history available.
             </span>
           )}
+        </div>
+
+        {/* ── Patient Information Card ── */}
+        <div className={styles.sectionCard}>
+          <div className={styles.infoColumns}>
+            {/* Left column */}
+            <div className={styles.infoColumn}>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <CalendarLtr20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>DATE OF BIRTH</span>
+                </div>
+                <span className={styles.infoValue}>{patient.dateOfBirth ?? "—"}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <CalendarArrowRight20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>DISCHARGE DATE</span>
+                </div>
+                <span className={styles.infoValue}>{patient.dischargeDate}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <ClipboardTask20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>DISCHARGE INSTRUCTIONS</span>
+                </div>
+                <span className={styles.infoValue}>{patient.dischargeInstructions ?? "—"}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <Stethoscope20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>PRIMARY DIAGNOSIS</span>
+                </div>
+                <span className={styles.infoValue}>{patient.primaryDiagnosis ?? "—"}</span>
+              </div>
+            </div>
+
+            {/* Right column */}
+            <div className={styles.infoColumn}>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <Phone20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>PHONE</span>
+                </div>
+                <span className={styles.infoValue}>{patient.phone ?? "—"}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <Mail20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>EMAIL</span>
+                </div>
+                <span className={styles.infoValue}>{patient.email ?? "—"}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <Location20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>ADDRESS</span>
+                </div>
+                <span className={styles.infoValue}>{patient.address ?? "—"}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <div className={styles.infoItemRow}>
+                  <People20Regular className={styles.infoItemIcon} />
+                  <span className={styles.infoLabel}>CARE TEAM</span>
+                </div>
+                <span className={styles.infoValue}>{patient.careTeam ?? "—"}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* ── Medications ── */}
