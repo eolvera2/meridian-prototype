@@ -457,6 +457,14 @@ export const useDashboardStyles = makeStyles({
     backgroundColor: "#DFF6DD",
     color: "#107C10",
   },
+  outcomeYellow: {
+    backgroundColor: "#FFF4CE",
+    color: "#6E4B00",
+  },
+  outcomeOrange: {
+    backgroundColor: "#FFF0E0",
+    color: "#C45100",
+  },
   outcomeBad: {
     backgroundColor: "#FDE7E9",
     color: "#D13438",

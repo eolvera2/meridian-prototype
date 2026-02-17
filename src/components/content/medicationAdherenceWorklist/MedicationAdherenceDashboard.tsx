@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect, useRef, useCallback } from "react"
 import {
   Dropdown,
   Option,
-  Checkbox,
   Button,
   mergeClasses,
   Popover,
@@ -21,13 +20,14 @@ import {
   ChevronUp16Regular,
   ArrowLeft16Regular,
   ArrowRight16Regular,
+  ArrowImport16Regular,
   ArrowExportUp16Regular,
   ShoppingBagCheckmark20Regular,
-  ShoppingBagDismiss20Regular,
+  ShoppingBagDismiss20Filled,
   ClipboardCheckmark20Regular,
-  ClipboardError20Regular,
+  ClipboardError20Filled,
   ChatMultipleCheckmark20Regular,
-  ChatMultipleMinus20Regular,
+  ChatMultipleMinus20Filled,
   ShoppingBag20Regular,
   Clipboard20Regular,
   ChatMultiple20Regular,
@@ -66,14 +66,14 @@ interface ContactRecord {
 // ── Static Data ─────────────────────────────────────────────
 
 const CONTACT_RECORDS: ContactRecord[] = [
-  { id: "cr-1", name: "Michael Chen", contactDate: "Feb 5, 2026", contactTime: "6:09 AM", daysAgo: 8, phone: "(555) 234-5678", pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 6, followUp: { value: "Yes", warning: true }, reviewed: true },
-  { id: "cr-2", name: "Patricia Martinez", contactDate: "Feb 6, 2026", contactTime: "7:30 PM", daysAgo: 7, phone: "(256) 431-7337", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 2, followUp: { value: "Not needed", warning: false }, reviewed: true },
+  { id: "cr-1", name: "Michael Chen", contactDate: "Feb 5, 2026", contactTime: "6:09 AM", daysAgo: 8, phone: "(555) 234-5678", pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 6, followUp: { value: "Yes", warning: true }, reviewed: false },
+  { id: "cr-2", name: "Patricia Martinez", contactDate: "Feb 6, 2026", contactTime: "7:30 PM", daysAgo: 7, phone: "(256) 431-7337", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 2, followUp: { value: "Not needed", warning: false }, reviewed: false },
   { id: "cr-3", name: "Sarah Johnson", contactDate: "Jan 28, 2026", contactTime: "10:15 AM", daysAgo: 16, phone: "(312) 555-0198", pickedUpMeds: "No", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "None", warning: false }, painLevel: 7, followUp: { value: "Yes", warning: true }, reviewed: false },
-  { id: "cr-4", name: "Robert Kim", contactDate: "Jan 20, 2026", contactTime: "2:45 PM", daysAgo: 24, phone: "(415) 555-0342", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "Reported", warning: true }, painLevel: 4, followUp: { value: "Yes", warning: true }, reviewed: true },
-  { id: "cr-5", name: "Linda Nguyen", contactDate: "Jan 15, 2026", contactTime: "9:00 AM", daysAgo: 29, phone: "(650) 555-0477", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 1, followUp: { value: "Not needed", warning: false }, reviewed: true },
-  { id: "cr-6", name: "James Wilson", contactDate: "Dec 20, 2025", contactTime: "11:30 AM", daysAgo: 55, phone: "(206) 555-0613", pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 8, followUp: { value: "Yes", warning: true }, reviewed: true },
+  { id: "cr-4", name: "Robert Kim", contactDate: "Jan 20, 2026", contactTime: "2:45 PM", daysAgo: 24, phone: "(415) 555-0342", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "Reported", warning: true }, painLevel: 4, followUp: { value: "Yes", warning: true }, reviewed: false },
+  { id: "cr-5", name: "Linda Nguyen", contactDate: "Jan 15, 2026", contactTime: "9:00 AM", daysAgo: 29, phone: "(650) 555-0477", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 1, followUp: { value: "Not needed", warning: false }, reviewed: false },
+  { id: "cr-6", name: "James Wilson", contactDate: "Dec 20, 2025", contactTime: "11:30 AM", daysAgo: 55, phone: "(206) 555-0613", pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 8, followUp: { value: "Yes", warning: true }, reviewed: false },
   { id: "cr-7", name: "Maria Garcia", contactDate: "Dec 10, 2025", contactTime: "4:20 PM", daysAgo: 65, phone: "(713) 555-0829", pickedUpMeds: "No", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "None", warning: false }, painLevel: 5, followUp: { value: "Yes", warning: true }, reviewed: false },
-  { id: "cr-8", name: "David Thompson", contactDate: "Nov 25, 2025", contactTime: "8:00 AM", daysAgo: 80, phone: "(503) 555-0156", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 3, followUp: { value: "Not needed", warning: false }, reviewed: true },
+  { id: "cr-8", name: "David Thompson", contactDate: "Nov 25, 2025", contactTime: "8:00 AM", daysAgo: 80, phone: "(503) 555-0156", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 3, followUp: { value: "Not needed", warning: false }, reviewed: false },
 ];
 
 type TimeRange = "7" | "30" | "90";
@@ -254,7 +254,7 @@ const getContactCardClass = (rate: number, styles: ReturnType<typeof useDashboar
 export const MedicationAdherenceDashboard: React.FC = () => {
   const styles = useDashboardStyles();
   const [timeRange, setTimeRange] = useState<TimeRange>("30");
-  const [showUnreviewedOnly, setShowUnreviewedOnly] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [chartsExpanded, setChartsExpanded] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
@@ -297,17 +297,24 @@ export const MedicationAdherenceDashboard: React.FC = () => {
     [timeRange]
   );
   const needsReviewCount = filteredByTime.filter((r) => !r.reviewed).length;
-  const completedCount = filteredByTime.filter((r) => r.reviewed).length;
-  const displayedRecords = showUnreviewedOnly
+  const inProgressCount = activeCallRecords.filter((r) => r.status === "in-progress").length;
+  const displayedRecords = statusFilter === "needs-review"
     ? filteredByTime.filter((r) => !r.reviewed)
     : filteredByTime;
 
   // Combine active call records with displayed records for pagination
   const allTableRecords = useMemo(() => {
-    const activeRows = activeCallRecords.map((r) => ({ type: "active" as const, record: r }));
-    const historyRows = displayedRecords.map((r) => ({ type: "history" as const, record: r }));
+    const filteredActive = statusFilter === "needs-review"
+      ? activeCallRecords.filter((r) => r.status === "needs-review")
+      : statusFilter === "in-progress"
+        ? activeCallRecords.filter((r) => r.status === "in-progress")
+        : activeCallRecords;
+    const activeRows = filteredActive.map((r) => ({ type: "active" as const, record: r }));
+    const historyRows = statusFilter === "in-progress"
+      ? []
+      : displayedRecords.map((r) => ({ type: "history" as const, record: r }));
     return [...activeRows, ...historyRows];
-  }, [activeCallRecords, displayedRecords]);
+  }, [activeCallRecords, displayedRecords, statusFilter]);
 
   const totalPages = Math.max(1, Math.ceil(allTableRecords.length / PAGE_SIZE));
   const paginatedRecords = allTableRecords.slice(
@@ -318,7 +325,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   // Reset page when filter changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [showUnreviewedOnly]);
+  }, [statusFilter]);
 
   const getStatusPillClass = (status: CallRecordStatus) => {
     switch (status) {
@@ -362,13 +369,13 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   const getOutcomeIcon = (label: string, isWarning: boolean) => {
     switch (label) {
       case "Picked up meds":
-        return isWarning ? <ShoppingBagDismiss20Regular aria-hidden="true" /> : <ShoppingBagCheckmark20Regular aria-hidden="true" />;
+        return isWarning ? <ShoppingBagDismiss20Filled aria-hidden="true" /> : <ShoppingBagCheckmark20Regular aria-hidden="true" />;
       case "Taking as Rx":
-        return isWarning ? <ClipboardError20Regular aria-hidden="true" /> : <ClipboardCheckmark20Regular aria-hidden="true" />;
+        return isWarning ? <ClipboardError20Filled aria-hidden="true" /> : <ClipboardCheckmark20Regular aria-hidden="true" />;
       case "Side effects":
-        return isWarning ? <ChatMultipleMinus20Regular aria-hidden="true" /> : <ChatMultipleCheckmark20Regular aria-hidden="true" />;
+        return isWarning ? <ChatMultipleMinus20Filled aria-hidden="true" /> : <ChatMultipleCheckmark20Regular aria-hidden="true" />;
       default:
-        return isWarning ? <ShoppingBagDismiss20Regular aria-hidden="true" /> : <ShoppingBagCheckmark20Regular aria-hidden="true" />;
+        return isWarning ? <ShoppingBagDismiss20Filled aria-hidden="true" /> : <ShoppingBagCheckmark20Regular aria-hidden="true" />;
     }
   };
 
@@ -407,18 +414,19 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   ];
 
   const getPainClass = (level: number) => {
-    if (level <= 3) return styles.outcomeGood;
-    if (level <= 6) return styles.outcomeBad;
+    if (level === 0) return styles.outcomeGood;
+    if (level <= 3) return styles.outcomeYellow;
+    if (level <= 6) return styles.outcomeOrange;
     return styles.outcomeBad;
   };
 
   const PainLevelIndicator: React.FC<{ level: number }> = ({ level }) => {
-    const clamped = Math.max(0, Math.min(9, level));
-    const Icon = PAIN_ICONS[clamped];
+    const clamped = Math.max(0, Math.min(10, level));
+    const Icon = clamped <= 9 ? PAIN_ICONS[clamped] : null;
     return (
-      <Tooltip content={`Pain level: ${clamped}/9`} relationship="label">
+      <Tooltip content={`Pain level: ${clamped}/10`} relationship="label">
         <span className={mergeClasses(styles.outcomeIcon, getPainClass(clamped))}>
-          <Icon aria-hidden="true" />
+          {Icon ? <Icon aria-hidden="true" /> : <span style={{ fontSize: "11px", fontWeight: 700, lineHeight: 1 }}>10</span>}
         </span>
       </Tooltip>
     );
@@ -675,12 +683,21 @@ export const MedicationAdherenceDashboard: React.FC = () => {
                 </span>
               </span>
               <span>
-                Completed:
+                In Progress:
                 <span className={mergeClasses(styles.countBadge, styles.countBadgeCompleted)}>
-                  {completedCount}
+                  {inProgressCount}
                 </span>
               </span>
             </div>
+            <Tooltip content="Import contact history" relationship="label">
+              <Button
+                appearance="subtle"
+                icon={<ArrowImport16Regular />}
+                aria-label="Import contact history"
+              >
+                Import
+              </Button>
+            </Tooltip>
             <Tooltip content="Export contact history as CSV" relationship="label">
               <Button
                 appearance="subtle"
@@ -697,20 +714,18 @@ export const MedicationAdherenceDashboard: React.FC = () => {
         <div className={styles.filtersRow}>
           <div className={styles.historyFilterGroup}>
             <span className={styles.filterLabel}>Contact Status</span>
-            <Dropdown defaultValue="All Statuses">
+            <Dropdown
+              defaultValue="All Statuses"
+              defaultSelectedOptions={["all"]}
+              onOptionSelect={(_, data) => setStatusFilter(data.optionValue ?? "all")}
+            >
               <Option value="all">All Statuses</Option>
-              <Option value="reviewed">Reviewed</Option>
+              <Option value="in-progress">In Progress</Option>
               <Option value="needs-review">Needs Review</Option>
             </Dropdown>
           </div>
           <div className={styles.filterActions}>
-            <Checkbox
-              label="Show Unreviewed Only"
-              checked={showUnreviewedOnly}
-              onChange={(_, data) =>
-                setShowUnreviewedOnly(data.checked === true)
-              }
-            />
+
             <Button
               appearance="subtle"
               icon={<ArrowSync16Regular />}
@@ -724,7 +739,6 @@ export const MedicationAdherenceDashboard: React.FC = () => {
             <tr>
               <th className={styles.tableHeader}>Patient Name</th>
               <th className={styles.tableHeader}>Contact Date</th>
-              <th className={styles.tableHeader}>Phone Number</th>
               <th className={styles.tableHeader}>Outcomes</th>
               <th className={styles.tableHeader}>Follow-up</th>
               <th className={styles.tableHeader}>Status</th>
@@ -733,7 +747,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
           <tbody>
             {paginatedRecords.length === 0 && (
               <tr>
-                <td colSpan={6} className={styles.emptyState}>
+                <td colSpan={5} className={styles.emptyState}>
                   No contact records found for the selected time range.
                 </td>
               </tr>
@@ -753,7 +767,6 @@ export const MedicationAdherenceDashboard: React.FC = () => {
                         {record.contactTime}
                       </span>
                     </td>
-                    <td className={styles.tableCell}>{record.phone}</td>
                     <td className={styles.tableCell}>
                       <div className={styles.outcomesCell}>
                         {record.status === "in-progress" ? (
@@ -808,7 +821,6 @@ export const MedicationAdherenceDashboard: React.FC = () => {
                         {record.contactTime}
                       </span>
                     </td>
-                    <td className={styles.tableCell}>{record.phone}</td>
                     <td className={styles.tableCell}>
                       <div className={styles.outcomesCell}>
                         <OutcomeIndicator label="Picked up meds" value={record.pickedUpMeds} isWarning={record.pickedUpMeds !== "Yes"} />
