@@ -1,20 +1,21 @@
-import { makeStyles, tokens } from "@fluentui/react-components";
+import { makeStyles, tokens, shorthands } from "@fluentui/react-components";
 
 export const useDashboardStyles = makeStyles({
   root: {
     display: "flex",
     flexDirection: "column",
+    width: "100%",
     height: "100%",
     overflowY: "auto",
     backgroundColor: tokens.colorNeutralBackground2,
-    padding: "16px 24px",
-    gap: "12px",
+    padding: "20px 32px",
+    gap: "20px",
   },
 
   // Header row: title left, filters right
   headerRow: {
     display: "flex",
-    alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "space-between",
     gap: "16px",
     flexWrap: "wrap",
@@ -24,6 +25,12 @@ export const useDashboardStyles = makeStyles({
     flexDirection: "column",
     gap: "4px",
   },
+  headerLeft: {
+    display: "flex",
+    alignItems: "center",
+    gap: "16px",
+    flexWrap: "wrap",
+  },
   title: {
     fontSize: "24px",
     fontWeight: 700,
@@ -31,11 +38,41 @@ export const useDashboardStyles = makeStyles({
     lineHeight: "32px",
   },
   subtitle: {
-    fontSize: tokens.fontSizeBase200,
+    fontSize: tokens.fontSizeBase300,
     color: tokens.colorNeutralForeground3,
   },
 
-  // Filters bar (inline with header)
+  // Filter popover
+  filterPopoverTrigger: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+  filterBadge: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    minWidth: "18px",
+    height: "18px",
+    borderRadius: "9px",
+    padding: "0 5px",
+    fontSize: "11px",
+    fontWeight: 700,
+    backgroundColor: tokens.colorBrandBackground,
+    color: tokens.colorNeutralForegroundOnBrand,
+  },
+  filterPopoverContent: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "16px",
+    padding: "8px",
+    minWidth: "280px",
+  },
+  filterPopoverRow: {
+    display: "flex",
+    gap: "12px",
+    flexWrap: "wrap",
+  },
   filtersBar: {
     display: "flex",
     alignItems: "flex-end",
@@ -46,9 +83,10 @@ export const useDashboardStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     gap: "4px",
+    flex: "1 1 120px",
   },
   filterLabel: {
-    fontSize: "11px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
     color: tokens.colorNeutralForeground3,
   },
@@ -58,19 +96,41 @@ export const useDashboardStyles = makeStyles({
     display: "grid",
     gridTemplateColumns: "repeat(4, 1fr)",
     gap: "16px",
+    "@media (max-width: 1024px)": {
+      gridTemplateColumns: "repeat(2, 1fr)",
+    },
+    "@media (max-width: 480px)": {
+      gridTemplateColumns: "1fr",
+    },
   },
   statCard: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "0px",
-    padding: "10px 14px",
+    gap: "4px",
+    padding: "16px 20px",
     borderRadius: "8px",
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     backgroundColor: tokens.colorNeutralBackground1,
+    transition: "box-shadow 0.2s ease, transform 0.2s ease",
+    "&:hover": {
+      boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+    },
+  },
+  statCardGood: {
+    ...shorthands.borderLeft("4px", "solid", "#107C10"),
+  },
+  statCardWarning: {
+    ...shorthands.borderLeft("4px", "solid", "#CA5010"),
+  },
+  statCardCritical: {
+    ...shorthands.borderLeft("4px", "solid", "#D13438"),
+  },
+  statCardNeutral: {
+    ...shorthands.borderLeft("4px", "solid", tokens.colorBrandBackground),
   },
   statLabel: {
-    fontSize: "10px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
     color: tokens.colorNeutralForeground3,
     textTransform: "uppercase" as const,
@@ -84,25 +144,25 @@ export const useDashboardStyles = makeStyles({
     flexWrap: "wrap",
   },
   statValue: {
-    fontSize: "24px",
+    fontSize: "28px",
     fontWeight: 700,
     color: tokens.colorNeutralForeground1,
-    lineHeight: "30px",
+    lineHeight: "34px",
   },
   statTrendUp: {
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
     color: "#107C10",
   },
   statTrendDown: {
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
     color: "#D13438",
   },
   statBreakdown: {
     display: "flex",
     gap: "8px",
-    fontSize: "11px",
+    fontSize: tokens.fontSizeBase200,
     color: tokens.colorNeutralForeground3,
   },
 
@@ -111,10 +171,31 @@ export const useDashboardStyles = makeStyles({
     borderRadius: "8px",
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     backgroundColor: tokens.colorNeutralBackground1,
-    padding: "12px 16px",
+    padding: "16px 20px",
     display: "flex",
     flexDirection: "column",
+    gap: "10px",
+    transition: "box-shadow 0.2s ease",
+    "&:hover": {
+      boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+    },
+  },
+  // Chart toggle section
+  chartToggleRow: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  chartToggleLabel: {
+    fontSize: tokens.fontSizeBase300,
+    fontWeight: 600,
+    color: tokens.colorNeutralForeground1,
+    display: "flex",
+    alignItems: "center",
     gap: "8px",
+  },
+  chartsCollapsible: {
+    // Styles applied via inline style to avoid Griffel atomic-CSS conflicts
   },
   // Adherence Trend: chart + legend stacked
   trendRow: {
@@ -131,12 +212,12 @@ export const useDashboardStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     gap: "12px",
-    fontSize: "11px",
+    fontSize: tokens.fontSizeBase200,
     color: tokens.colorNeutralForeground3,
     flexShrink: 0,
   },
   sectionTitle: {
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase400,
     fontWeight: 700,
     color: tokens.colorNeutralForeground1,
   },
@@ -150,7 +231,7 @@ export const useDashboardStyles = makeStyles({
   chartLegend: {
     display: "flex",
     gap: "16px",
-    fontSize: "11px",
+    fontSize: tokens.fontSizeBase200,
     color: tokens.colorNeutralForeground3,
   },
   legendItem: {
@@ -170,6 +251,12 @@ export const useDashboardStyles = makeStyles({
     display: "grid",
     gridTemplateColumns: "1fr 1fr 1fr",
     gap: "16px",
+    "@media (max-width: 1200px)": {
+      gridTemplateColumns: "1fr 1fr",
+    },
+    "@media (max-width: 768px)": {
+      gridTemplateColumns: "1fr",
+    },
   },
 
   // Horizontal bar chart rows (shared)
@@ -186,7 +273,7 @@ export const useDashboardStyles = makeStyles({
     gap: "12px",
   },
   barLabel: {
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase300,
     color: tokens.colorNeutralForeground2,
     minWidth: "90px",
     whiteSpace: "nowrap",
@@ -204,7 +291,7 @@ export const useDashboardStyles = makeStyles({
     transition: "width 0.4s ease",
   },
   barValue: {
-    fontSize: "11px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
     color: tokens.colorNeutralForeground2,
     minWidth: "32px",
@@ -241,15 +328,15 @@ export const useDashboardStyles = makeStyles({
     transition: "height 0.4s ease",
   },
   driverValue: {
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase300,
     fontWeight: 700,
     color: tokens.colorNeutralForeground1,
   },
   driverLabel: {
-    fontSize: "11px",
+    fontSize: tokens.fontSizeBase200,
     color: tokens.colorNeutralForeground2,
     textAlign: "center",
-    lineHeight: "14px",
+    lineHeight: "16px",
     minHeight: "28px",
   },
 
@@ -257,11 +344,11 @@ export const useDashboardStyles = makeStyles({
   historySection: {
     display: "flex",
     flexDirection: "column",
-    gap: "12px",
+    gap: "16px",
     backgroundColor: tokens.colorNeutralBackground1,
     borderRadius: "8px",
     border: `1px solid ${tokens.colorNeutralStroke2}`,
-    padding: "12px 16px",
+    padding: "16px 20px",
   },
   historyHeaderRow: {
     display: "flex",
@@ -269,7 +356,7 @@ export const useDashboardStyles = makeStyles({
     alignItems: "flex-start",
   },
   historyTitle: {
-    fontSize: "14px",
+    fontSize: tokens.fontSizeBase400,
     fontWeight: 700,
     color: tokens.colorNeutralForeground1,
   },
@@ -292,13 +379,13 @@ export const useDashboardStyles = makeStyles({
     height: "20px",
     borderRadius: "4px",
     padding: "0 6px",
-    fontSize: "11px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
     marginLeft: "4px",
   },
   countBadgeReview: {
-    backgroundColor: "#FDE300",
-    color: tokens.colorNeutralForeground1,
+    backgroundColor: "#FFF4CE",
+    color: "#6E4B00",
   },
   countBadgeCompleted: {
     backgroundColor: tokens.colorBrandBackground,
@@ -330,19 +417,94 @@ export const useDashboardStyles = makeStyles({
   },
   tableHeader: {
     textAlign: "left",
-    padding: "8px 12px",
+    padding: "10px 16px",
     fontWeight: 600,
     color: tokens.colorNeutralForeground1,
     borderBottom: `2px solid ${tokens.colorNeutralStroke1}`,
     whiteSpace: "nowrap",
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase200,
+  },
+  tableRow: {
+    cursor: "pointer",
+    transition: "background-color 0.15s ease",
+    "&:hover": {
+      backgroundColor: tokens.colorNeutralBackground1Hover,
+    },
   },
   tableCell: {
-    padding: "10px 12px",
+    padding: "12px 16px",
     borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
     color: tokens.colorNeutralForeground2,
     verticalAlign: "middle",
-    fontSize: "12px",
+    fontSize: tokens.fontSizeBase300,
+  },
+  // Consolidated outcomes cell
+  outcomesCell: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+  outcomeIcon: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "24px",
+    height: "24px",
+    borderRadius: "50%",
+    fontSize: "14px",
+  },
+  outcomeGood: {
+    backgroundColor: "#DFF6DD",
+    color: "#107C10",
+  },
+  outcomeBad: {
+    backgroundColor: "#FDE7E9",
+    color: "#D13438",
+  },
+  outcomeNeutralIcon: {
+    backgroundColor: tokens.colorNeutralBackground3,
+    color: tokens.colorNeutralForeground3,
+  },
+  // Pagination
+  paginationRow: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingTop: "8px",
+  },
+  paginationInfo: {
+    fontSize: tokens.fontSizeBase200,
+    color: tokens.colorNeutralForeground3,
+  },
+  paginationControls: {
+    display: "flex",
+    alignItems: "center",
+    gap: "4px",
+  },
+  // Empty state
+  emptyState: {
+    textAlign: "center",
+    padding: "32px 16px",
+    color: tokens.colorNeutralForeground3,
+    fontSize: tokens.fontSizeBase300,
+  },
+  // Screen reader only
+  srOnly: {
+    position: "absolute" as const,
+    width: "1px",
+    height: "1px",
+    padding: "0",
+    ...shorthands.margin("-1px"),
+    overflow: "hidden",
+    clip: "rect(0,0,0,0)",
+    whiteSpace: "nowrap",
+    ...shorthands.borderWidth("0"),
+  },
+  // Export button alignment
+  headerActionsRight: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
   },
   patientLink: {
     color: tokens.colorBrandForeground1,
@@ -371,42 +533,44 @@ export const useDashboardStyles = makeStyles({
     color: tokens.colorNeutralForegroundOnBrand,
     borderRadius: "16px",
     padding: "4px 12px",
-    fontSize: "11px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
-    cursor: "pointer",
     whiteSpace: "nowrap",
   },
   statusPillInProgress: {
     display: "inline-flex",
     alignItems: "center",
+    gap: "4px",
     borderRadius: "16px",
     padding: "4px 12px",
-    fontSize: "11px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 700,
     whiteSpace: "nowrap",
-    backgroundColor: "#DFF6DD",
-    color: "#242424",
+    backgroundColor: "#E8F4FD",
+    color: "#0F548C",
   },
   statusPillNeedsReview: {
     display: "inline-flex",
     alignItems: "center",
+    gap: "4px",
     borderRadius: "16px",
     padding: "4px 12px",
-    fontSize: "11px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 700,
     whiteSpace: "nowrap",
     backgroundColor: "#FFF4CE",
-    color: "#242424",
+    color: "#6E4B00",
   },
   statusPillCompleted: {
     display: "inline-flex",
     alignItems: "center",
+    gap: "4px",
     borderRadius: "16px",
     padding: "4px 12px",
-    fontSize: "11px",
+    fontSize: tokens.fontSizeBase200,
     fontWeight: 700,
     whiteSpace: "nowrap",
-    backgroundColor: "#E0E0E0",
-    color: "#242424",
+    backgroundColor: "#DFF6DD",
+    color: "#0E700E",
   },
 });

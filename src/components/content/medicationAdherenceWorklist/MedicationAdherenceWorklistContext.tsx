@@ -121,30 +121,26 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
     const now = new Date();
     const dateStr = now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
     const timeStr = formatTime(now, { hour: "numeric", minute: "2-digit", hour12: true });
+    const calledSet = new Set(patientIds);
+    const calledPatients = patients.filter((p) => calledSet.has(p.id));
 
-    setPatients((prev) => {
-      const calledSet = new Set(patientIds);
-      const calledPatients = prev.filter((p) => calledSet.has(p.id));
+    const newRecords: ActiveCallRecord[] = calledPatients.map((p) => ({
+      id: `call-${p.id}-${Date.now()}`,
+      patientId: p.id,
+      name: p.name,
+      contactDate: dateStr,
+      contactTime: timeStr,
+      phone: p.phone || "(555) 000-0000",
+      status: "in-progress" as CallRecordStatus,
+      pickedUpMeds: "--",
+      takingAsRx: { value: "--", warning: false },
+      sideEffects: { value: "--", warning: false },
+      followUp: { value: "--", warning: false },
+    }));
 
-      const newRecords: ActiveCallRecord[] = calledPatients.map((p) => ({
-        id: `call-${p.id}-${Date.now()}`,
-        patientId: p.id,
-        name: p.name,
-        contactDate: dateStr,
-        contactTime: timeStr,
-        phone: p.phone || "(555) 000-0000",
-        status: "in-progress" as CallRecordStatus,
-        pickedUpMeds: "--",
-        takingAsRx: { value: "--", warning: false },
-        sideEffects: { value: "--", warning: false },
-        followUp: { value: "--", warning: false },
-      }));
-
-      setActiveCallRecords((prevRecords) => [...newRecords, ...prevRecords]);
-
-      return prev.filter((p) => !calledSet.has(p.id));
-    });
-  }, [formatTime]);
+    setActiveCallRecords((prevRecords) => [...newRecords, ...prevRecords]);
+    setPatients((prev) => prev.filter((p) => !calledSet.has(p.id)));
+  }, [formatTime, patients]);
 
   const resolveCallRecord = useCallback((recordId: string) => {
     const outcome = OUTCOME_POOLS[outcomeIndex % OUTCOME_POOLS.length];

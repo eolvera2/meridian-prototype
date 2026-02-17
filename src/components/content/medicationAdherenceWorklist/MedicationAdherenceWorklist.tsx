@@ -313,11 +313,14 @@ export const MedicationAdherenceWorklist: React.FC<
                       <button
                         className={`${styles.moreButton} more-button`}
                         aria-label={t("common.moreOptions")}
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <MoreVerticalFilled />
                       </button>
                     </div>
                   </div>
+
+                  <div className={styles.summaryText}>{patient.reason}</div>
 
                   <div className={styles.metaInfoRow}>
                     <div className={styles.inlineMeta}>
@@ -331,16 +334,6 @@ export const MedicationAdherenceWorklist: React.FC<
                         )}
                       </span>
                     </div>
-                    <div className={styles.inlineMeta}>
-                      <span className={styles.inlineMetaLabel}>Discharge:</span>
-                      <span className={styles.inlineMetaValue}>{patient.dischargeDate}</span>
-                    </div>
-                  </div>
-
-                  <div className={styles.summaryText}>{patient.reason}</div>
-
-                  <div className={styles.detailsLine}>
-                    {patient.demographics}
                   </div>
 
                   <div className={`${styles.actionButtons} action-buttons`}>
@@ -387,7 +380,18 @@ export const MedicationAdherenceWorklist: React.FC<
         <div className={styles.footer}>
           <div className={styles.footerContent}>
             <div className={styles.footerLabel}>
-              Ready to contact {selectedPatients.size} patient{selectedPatients.size !== 1 ? "s" : ""}
+              {selectedPatients.size > 0 ? (
+                <>
+                  Ready to contact: {filteredPatients
+                    .filter((p) => selectedPatients.has(p.id))
+                    .map((p) => p.name)
+                    .slice(0, 3)
+                    .join(", ")}
+                  {selectedPatients.size > 3 && ` +${selectedPatients.size - 3} more`}
+                </>
+              ) : (
+                <>Select patients to contact</>
+              )}
             </div>
             <div className={styles.footerActions}>
               <Button

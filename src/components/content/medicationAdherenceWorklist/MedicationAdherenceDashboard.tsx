@@ -1,15 +1,29 @@
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import {
   Dropdown,
   Option,
   Checkbox,
   Button,
   mergeClasses,
+  Popover,
+  PopoverTrigger,
+  PopoverSurface,
+  Tooltip,
 } from "@fluentui/react-components";
 import type { OptionOnSelectData } from "@fluentui/react-components";
 import {
   ArrowSync16Regular,
   Checkmark16Regular,
+  Timer16Regular,
+  Warning16Regular,
+  Filter16Regular,
+  ChevronDown16Regular,
+  ChevronUp16Regular,
+  ArrowLeft16Regular,
+  ArrowRight16Regular,
+  ArrowExportUp16Regular,
+  CheckmarkCircle16Regular,
+  DismissCircle16Regular,
 } from "@fluentui/react-icons";
 import { useDashboardStyles } from "./MedicationAdherenceDashboard.styles";
 import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
@@ -135,6 +149,9 @@ const DRIVERS_DATA: Record<TimeRange, { label: string; count: number; color: str
 
 // ── SVG Line Chart Helper ───────────────────────────────────
 
+const ADHERENCE_COLOR = "#0078D4";
+const MISSED_DOSES_COLOR = "#9A6700";
+
 const AdherenceTrendChart: React.FC<{ data: { label: string; adherence: number; missedDoses: number }[] }> = ({ data }) => {
   const width = 500;
   const height = 180;
@@ -156,8 +173,17 @@ const AdherenceTrendChart: React.FC<{ data: { label: string; adherence: number; 
 
   const gridLines = [100, 75, 50];
 
+  const ariaDescription = data.map(d => `${d.label}: ${d.adherence}% adherence, ${d.missedDoses} missed`).join("; ");
+
   return (
-    <svg width="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
+    <svg
+      width="100%"
+      viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="xMidYMid meet"
+      role="img"
+      aria-label={`Adherence trend chart. ${ariaDescription}`}
+    >
+      <title>Adherence Trend Chart</title>
       {/* Grid lines */}
       {gridLines.map((v) => (
         <g key={v}>
@@ -170,17 +196,39 @@ const AdherenceTrendChart: React.FC<{ data: { label: string; adherence: number; 
         <text key={d.label} x={toX(i)} y={height - 6} textAnchor="middle" fontSize="16" fill="#666">{d.label}</text>
       ))}
       {/* Missed doses line */}
-      <polyline points={missedLine} fill="none" stroke="#FDE300" strokeWidth="2" strokeDasharray="5 3" />
+      <polyline points={missedLine} fill="none" stroke={MISSED_DOSES_COLOR} strokeWidth="2" strokeDasharray="5 3" />
       {data.map((d, i) => (
-        <circle key={`m-${i}`} cx={toX(i)} cy={toYMissed(d.missedDoses)} r="3" fill="#FDE300" />
+        <g key={`m-${i}`}>
+          <circle cx={toX(i)} cy={toYMissed(d.missedDoses)} r="3" fill={MISSED_DOSES_COLOR} />
+          <title>{`${d.label}: ${d.missedDoses} missed doses`}</title>
+        </g>
       ))}
       {/* Adherence line */}
-      <polyline points={adherenceLine} fill="none" stroke="#0078D4" strokeWidth="2.5" />
+      <polyline points={adherenceLine} fill="none" stroke={ADHERENCE_COLOR} strokeWidth="2.5" />
       {data.map((d, i) => (
-        <circle key={`a-${i}`} cx={toX(i)} cy={toYAdherence(d.adherence)} r="3.5" fill="#0078D4" />
+        <g key={`a-${i}`}>
+          <circle cx={toX(i)} cy={toYAdherence(d.adherence)} r="3.5" fill={ADHERENCE_COLOR} />
+          <title>{`${d.label}: ${d.adherence}% adherence`}</title>
+        </g>
       ))}
     </svg>
   );
+};
+
+// ── Helpers ─────────────────────────────────────────────────
+
+const PAGE_SIZE = 10;
+
+const getAdherenceCardClass = (rate: number, styles: ReturnType<typeof useDashboardStyles>) => {
+  if (rate >= 85) return styles.statCardGood;
+  if (rate >= 70) return styles.statCardWarning;
+  return styles.statCardCritical;
+};
+
+const getContactCardClass = (rate: number, styles: ReturnType<typeof useDashboardStyles>) => {
+  if (rate >= 70) return styles.statCardGood;
+  if (rate >= 50) return styles.statCardWarning;
+  return styles.statCardCritical;
 };
 
 // ── Component ───────────────────────────────────────────────
@@ -189,6 +237,9 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   const styles = useDashboardStyles();
   const [timeRange, setTimeRange] = useState<TimeRange>("30");
   const [showUnreviewedOnly, setShowUnreviewedOnly] = useState(false);
+  const [chartsExpanded, setChartsExpanded] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
   const { activeCallRecords, resolveCallRecord } = useMedicationAdherenceWorklistContext();
 
   // Track which records we've already started timers for
@@ -207,7 +258,10 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   }, [activeCallRecords, resolveCallRecord]);
 
   const handleTimeRangeChange = (_: unknown, data: OptionOnSelectData) => {
-    if (data.optionValue) setTimeRange(data.optionValue as TimeRange);
+    if (data.optionValue) {
+      setTimeRange(data.optionValue as TimeRange);
+      setCurrentPage(1);
+    }
   };
 
   // Dynamic data
@@ -230,6 +284,24 @@ export const MedicationAdherenceDashboard: React.FC = () => {
     ? filteredByTime.filter((r) => !r.reviewed)
     : filteredByTime;
 
+  // Combine active call records with displayed records for pagination
+  const allTableRecords = useMemo(() => {
+    const activeRows = activeCallRecords.map((r) => ({ type: "active" as const, record: r }));
+    const historyRows = displayedRecords.map((r) => ({ type: "history" as const, record: r }));
+    return [...activeRows, ...historyRows];
+  }, [activeCallRecords, displayedRecords]);
+
+  const totalPages = Math.max(1, Math.ceil(allTableRecords.length / PAGE_SIZE));
+  const paginatedRecords = allTableRecords.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
+  // Reset page when filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [showUnreviewedOnly]);
+
   const getStatusPillClass = (status: CallRecordStatus) => {
     switch (status) {
       case "in-progress": return styles.statusPillInProgress;
@@ -246,18 +318,51 @@ export const MedicationAdherenceDashboard: React.FC = () => {
     }
   };
 
+  const handleExport = useCallback(() => {
+    const headers = ["Patient Name", "Contact Date", "Phone", "Picked Up Meds", "Taking As Rx", "Side Effects", "Follow-up", "Status"];
+    const rows = displayedRecords.map((r) => [
+      r.name,
+      `${r.contactDate} ${r.contactTime}`,
+      r.phone,
+      r.pickedUpMeds,
+      r.takingAsRx.value,
+      r.sideEffects.value,
+      r.followUp.value,
+      r.reviewed ? "Reviewed" : "Needs Review",
+    ]);
+    const csvContent = [headers, ...rows].map((row) => row.map((cell) => `"${cell}"`).join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `contact-history-${timeRange}d.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }, [displayedRecords, timeRange]);
+
+  // Outcome icon helper
+  const OutcomeIndicator: React.FC<{ label: string; value: string; isWarning: boolean }> = ({ label, value, isWarning }) => (
+    <Tooltip content={`${label}: ${value}`} relationship="label">
+      <span className={mergeClasses(styles.outcomeIcon, isWarning ? styles.outcomeBad : styles.outcomeGood)}>
+        {isWarning ? <DismissCircle16Regular aria-hidden="true" /> : <CheckmarkCircle16Regular aria-hidden="true" />}
+      </span>
+    </Tooltip>
+  );
+
   return (
     <div className={styles.root}>
       {/* ── Header + Filters ── */}
       <div className={styles.headerRow}>
-        <div className={styles.dashboardHeader}>
-          <div className={styles.title}>Medication Adherence Dashboard</div>
-          <div className={styles.subtitle}>
-            Monitor patient outreach and medication compliance
+        <div className={styles.headerLeft}>
+          <div className={styles.dashboardHeader}>
+            <div className={styles.title}>Medication Adherence Dashboard</div>
+            <div className={styles.subtitle}>
+              Monitor patient outreach and medication compliance
+            </div>
           </div>
         </div>
 
-        <div className={styles.filtersBar}>
+        <div className={styles.filterPopoverTrigger}>
           <div className={styles.filterGroup}>
             <span className={styles.filterLabel}>Time Range</span>
             <Dropdown
@@ -271,39 +376,59 @@ export const MedicationAdherenceDashboard: React.FC = () => {
               <Option value="90">Last 90 days</Option>
             </Dropdown>
           </div>
-          <div className={styles.filterGroup}>
-            <span className={styles.filterLabel}>Condition</span>
-            <Dropdown defaultValue="All" style={{ minWidth: "130px" }}>
-              <Option value="all">All</Option>
-              <Option value="diabetes">Diabetes</Option>
-              <Option value="hypertension">Hypertension</Option>
-              <Option value="cardiac">Cardiac</Option>
-            </Dropdown>
-          </div>
-          <div className={styles.filterGroup}>
-            <span className={styles.filterLabel}>Risk Level</span>
-            <Dropdown defaultValue="All" style={{ minWidth: "110px" }}>
-              <Option value="all">All</Option>
-              <Option value="high">High</Option>
-              <Option value="medium">Medium</Option>
-              <Option value="low">Low</Option>
-            </Dropdown>
-          </div>
-          <div className={styles.filterGroup}>
-            <span className={styles.filterLabel}>Channel</span>
-            <Dropdown defaultValue="All" style={{ minWidth: "110px" }}>
-              <Option value="all">All</Option>
-              <Option value="phone">Phone</Option>
-              <Option value="sms">SMS</Option>
-              <Option value="portal">Portal</Option>
-            </Dropdown>
-          </div>
+
+          <Popover open={filterPopoverOpen} onOpenChange={(_, data) => setFilterPopoverOpen(data.open)}>
+            <PopoverTrigger disableButtonEnhancement>
+              <Button
+                appearance="subtle"
+                icon={<Filter16Regular />}
+                aria-label="Open filters"
+              >
+                Filters
+              </Button>
+            </PopoverTrigger>
+            <PopoverSurface>
+              <div className={styles.filterPopoverContent}>
+                <div className={styles.filterPopoverRow}>
+                  <div className={styles.filterGroup}>
+                    <span className={styles.filterLabel}>Condition</span>
+                    <Dropdown defaultValue="All" style={{ minWidth: "130px" }}>
+                      <Option value="all">All</Option>
+                      <Option value="diabetes">Diabetes</Option>
+                      <Option value="hypertension">Hypertension</Option>
+                      <Option value="cardiac">Cardiac</Option>
+                    </Dropdown>
+                  </div>
+                  <div className={styles.filterGroup}>
+                    <span className={styles.filterLabel}>Risk Level</span>
+                    <Dropdown defaultValue="All" style={{ minWidth: "110px" }}>
+                      <Option value="all">All</Option>
+                      <Option value="high">High</Option>
+                      <Option value="medium">Medium</Option>
+                      <Option value="low">Low</Option>
+                    </Dropdown>
+                  </div>
+                </div>
+                <div className={styles.filterPopoverRow}>
+                  <div className={styles.filterGroup}>
+                    <span className={styles.filterLabel}>Channel</span>
+                    <Dropdown defaultValue="All" style={{ minWidth: "110px" }}>
+                      <Option value="all">All</Option>
+                      <Option value="phone">Phone</Option>
+                      <Option value="sms">SMS</Option>
+                      <Option value="portal">Portal</Option>
+                    </Dropdown>
+                  </div>
+                </div>
+              </div>
+            </PopoverSurface>
+          </Popover>
         </div>
       </div>
 
       {/* ── Stats Row ── */}
       <div className={styles.statsGrid}>
-        <div className={styles.statCard}>
+        <div className={mergeClasses(styles.statCard, getAdherenceCardClass(stats.adherenceRate, styles))}>
           <span className={styles.statLabel}>Adherence Rate</span>
           <div className={styles.statValueRow}>
             <span className={styles.statValue}>{stats.adherenceRate}%</span>
@@ -313,7 +438,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className={styles.statCard}>
+        <div className={mergeClasses(styles.statCard, stats.riskHigh > 4 ? styles.statCardCritical : stats.riskHigh > 2 ? styles.statCardWarning : styles.statCardNeutral)}>
           <span className={styles.statLabel}>Patients at Risk</span>
           <div className={styles.statValueRow}>
             <span className={styles.statValue}>{stats.patientsAtRisk}</span>
@@ -325,14 +450,14 @@ export const MedicationAdherenceDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className={styles.statCard}>
+        <div className={mergeClasses(styles.statCard, getContactCardClass(stats.successfulContacts, styles))}>
           <span className={styles.statLabel}>Successful Contacts</span>
           <div className={styles.statValueRow}>
             <span className={styles.statValue}>{stats.successfulContacts}%</span>
           </div>
         </div>
 
-        <div className={styles.statCard}>
+        <div className={mergeClasses(styles.statCard, stats.followUpUrgent > 3 ? styles.statCardCritical : stats.followUpUrgent > 1 ? styles.statCardWarning : styles.statCardNeutral)}>
           <span className={styles.statLabel}>Follow-up Needed</span>
           <div className={styles.statValueRow}>
             <span className={styles.statValue}>{stats.followUpNeeded}</span>
@@ -344,72 +469,107 @@ export const MedicationAdherenceDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* ── Charts Toggle ── */}
+      <div className={styles.chartToggleRow}>
+        <span className={styles.chartToggleLabel}>
+          Trends & Analytics
+        </span>
+        <Button
+          appearance="subtle"
+          size="small"
+          icon={chartsExpanded ? <ChevronUp16Regular /> : <ChevronDown16Regular />}
+          onClick={() => setChartsExpanded((prev) => !prev)}
+          aria-expanded={chartsExpanded}
+          aria-controls="charts-section"
+        >
+          {chartsExpanded ? "Collapse" : "Expand"}
+        </Button>
+      </div>
+
       {/* ── Charts Row: Adherence Trend + Top Drivers + Outreach ── */}
-      <div className={styles.threeColumnRow}>
-        {/* Adherence Trend */}
-        <div className={styles.sectionCard}>
-          <span className={styles.sectionTitle}>Adherence Trend</span>
-          <div className={styles.trendRow}>
-            <div className={styles.trendChartArea}>
-              <AdherenceTrendChart data={trendData} />
+      {chartsExpanded && (
+      <div
+        id="charts-section"
+      >
+        <div className={styles.threeColumnRow}>
+          {/* Adherence Trend */}
+          <div className={styles.sectionCard}>
+            <span className={styles.sectionTitle}>Adherence Trend</span>
+            <div className={styles.trendRow}>
+              <div className={styles.trendChartArea}>
+                <AdherenceTrendChart data={trendData} />
+              </div>
+              <div className={styles.trendLegendSide}>
+                <span className={styles.legendItem}>
+                  <span className={styles.legendDot} style={{ backgroundColor: ADHERENCE_COLOR }} />
+                  Adherence %
+                </span>
+                <span className={styles.legendItem}>
+                  <span className={styles.legendDot} style={{ backgroundColor: MISSED_DOSES_COLOR }} />
+                  Missed Doses
+                </span>
+              </div>
             </div>
-            <div className={styles.trendLegendSide}>
-              <span className={styles.legendItem}>
-                <span className={styles.legendDot} style={{ backgroundColor: "#0078D4" }} />
-                Adherence %
-              </span>
-              <span className={styles.legendItem}>
-                <span className={styles.legendDot} style={{ backgroundColor: "#FDE300" }} />
-                Missed Doses
-              </span>
+            {/* Accessible data table for screen readers */}
+            <div className={styles.srOnly}>
+              <table>
+                <caption>Adherence Trend Data</caption>
+                <thead><tr><th>Period</th><th>Adherence %</th><th>Missed Doses</th></tr></thead>
+                <tbody>
+                  {trendData.map(d => <tr key={d.label}><td>{d.label}</td><td>{d.adherence}%</td><td>{d.missedDoses}</td></tr>)}
+                </tbody>
+              </table>
             </div>
           </div>
-        </div>
 
-        {/* Top Drivers of Non-Adherence */}
-        <div className={styles.sectionCard}>
-          <span className={styles.sectionTitle}>Top Drivers of Non-Adherence</span>
-          <div className={styles.driversRow}>
-            {driversData.map((d) => (
-              <div className={styles.driverCol} key={d.label}>
-                <div className={styles.driverBarContainer}>
-                  <span className={styles.driverValue}>{Math.round((d.count / driverTotal) * 100)}%</span>
-                  <div
-                    className={styles.driverBar}
-                    style={{
-                      height: `${(d.count / maxDriverCount) * 100}%`,
-                      backgroundColor: d.color,
-                    }}
-                  />
+          {/* Top Drivers of Non-Adherence */}
+          <div className={styles.sectionCard}>
+            <span className={styles.sectionTitle}>Top Drivers of Non-Adherence</span>
+            <div className={styles.driversRow}>
+              {driversData.map((d) => (
+                <div className={styles.driverCol} key={d.label}>
+                  <div className={styles.driverBarContainer}>
+                    <span className={styles.driverValue}>
+                      {Math.round((d.count / driverTotal) * 100)}% ({d.count})
+                    </span>
+                    <div
+                      className={styles.driverBar}
+                      style={{
+                        height: `${(d.count / maxDriverCount) * 100}%`,
+                        backgroundColor: d.color,
+                      }}
+                    />
+                  </div>
+                  <span className={styles.driverLabel}>{d.label}</span>
                 </div>
-                <span className={styles.driverLabel}>{d.label}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Outreach Effectiveness by Channel */}
-        <div className={styles.sectionCard}>
-          <span className={styles.sectionTitle}>Outreach Effectiveness by Channel</span>
-          <div className={styles.barChartList}>
-            {outreachData.map((d) => (
-              <div className={styles.barRow} key={d.channel}>
-                <span className={styles.barLabel}>{d.channel}</span>
-                <div className={styles.barTrack}>
-                  <div
-                    className={styles.barFill}
-                    style={{
-                      width: `${d.rate}%`,
-                      backgroundColor: "#0078D4",
-                    }}
-                  />
+          {/* Outreach Effectiveness by Channel */}
+          <div className={styles.sectionCard}>
+            <span className={styles.sectionTitle}>Outreach Effectiveness by Channel</span>
+            <div className={styles.barChartList}>
+              {outreachData.map((d) => (
+                <div className={styles.barRow} key={d.channel}>
+                  <span className={styles.barLabel}>{d.channel}</span>
+                  <div className={styles.barTrack}>
+                    <div
+                      className={styles.barFill}
+                      style={{
+                        width: `${d.rate}%`,
+                        backgroundColor: "#0078D4",
+                      }}
+                    />
+                  </div>
+                  <span className={styles.barValue}>{d.rate}% ({d.total})</span>
                 </div>
-                <span className={styles.barValue}>{d.rate}% ({d.total})</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
+      )}
 
       {/* ── Patient Contact History ── */}
       <div className={styles.historySection}>
@@ -420,22 +580,34 @@ export const MedicationAdherenceDashboard: React.FC = () => {
               Review past patient contacts and mark them as reviewed
             </div>
           </div>
-          <div className={styles.summaryCounts}>
-          <span>
-            Total: <strong>{filteredByTime.length}</strong>
-          </span>
-          <span>
-            Needs Review:
-            <span className={mergeClasses(styles.countBadge, styles.countBadgeReview)}>
-              {needsReviewCount}
-            </span>
-          </span>
-          <span>
-            Completed:
-            <span className={mergeClasses(styles.countBadge, styles.countBadgeCompleted)}>
-              {completedCount}
-            </span>
-          </span>
+          <div className={styles.headerActionsRight}>
+            <div className={styles.summaryCounts}>
+              <span>
+                Total: <strong>{filteredByTime.length}</strong>
+              </span>
+              <span>
+                Needs Review:
+                <span className={mergeClasses(styles.countBadge, styles.countBadgeReview)}>
+                  {needsReviewCount}
+                </span>
+              </span>
+              <span>
+                Completed:
+                <span className={mergeClasses(styles.countBadge, styles.countBadgeCompleted)}>
+                  {completedCount}
+                </span>
+              </span>
+            </div>
+            <Tooltip content="Export contact history as CSV" relationship="label">
+              <Button
+                appearance="subtle"
+                icon={<ArrowExportUp16Regular />}
+                aria-label="Export contact history"
+                onClick={handleExport}
+              >
+                Export
+              </Button>
+            </Tooltip>
           </div>
         </div>
 
@@ -446,19 +618,6 @@ export const MedicationAdherenceDashboard: React.FC = () => {
               <Option value="all">All Statuses</Option>
               <Option value="reviewed">Reviewed</Option>
               <Option value="needs-review">Needs Review</Option>
-            </Dropdown>
-          </div>
-          <div className={styles.historyFilterGroup}>
-            <span className={styles.filterLabel}>Date Range</span>
-            <Dropdown
-              value={TIME_RANGE_LABELS[timeRange]}
-              selectedOptions={[timeRange]}
-              onOptionSelect={handleTimeRangeChange}
-              style={{ minWidth: "160px" }}
-            >
-              <Option value="7">Last 7 Days</Option>
-              <Option value="30">Last 30 Days</Option>
-              <Option value="90">Last 90 Days</Option>
             </Dropdown>
           </div>
           <div className={styles.filterActions}>
@@ -477,132 +636,149 @@ export const MedicationAdherenceDashboard: React.FC = () => {
           </div>
         </div>
 
-        <table className={styles.table}>
+        <table className={styles.table} aria-label="Patient contact history">
           <thead>
             <tr>
               <th className={styles.tableHeader}>Patient Name</th>
               <th className={styles.tableHeader}>Contact Date</th>
               <th className={styles.tableHeader}>Phone Number</th>
-              <th className={styles.tableHeader}>Picked Up Meds</th>
-              <th className={styles.tableHeader}>Taking As Rx</th>
-              <th className={styles.tableHeader}>Side Effects</th>
+              <th className={styles.tableHeader}>Outcomes</th>
               <th className={styles.tableHeader}>Follow-up</th>
-              <th className={styles.tableHeader}></th>
+              <th className={styles.tableHeader}>Status</th>
             </tr>
           </thead>
           <tbody>
-            {activeCallRecords.map((record) => (
-              <tr key={record.id}>
-                <td className={styles.tableCell}>
-                  <span className={styles.patientLink}>{record.name}</span>
-                </td>
-                <td className={styles.tableCell}>
-                  {record.contactDate}
-                  <br />
-                  <span style={{ color: "var(--colorNeutralForeground3)" }}>
-                    {record.contactTime}
-                  </span>
-                </td>
-                <td className={styles.tableCell}>{record.phone}</td>
-                <td className={styles.tableCell}>{record.pickedUpMeds}</td>
-                <td className={styles.tableCell}>
-                  {record.takingAsRx.warning ? (
-                    <span className={styles.warningText}>
-                      ⚠ {record.takingAsRx.value}
-                    </span>
-                  ) : (
-                    <span className={styles.normalText}>
-                      {record.takingAsRx.value}
-                    </span>
-                  )}
-                </td>
-                <td className={styles.tableCell}>
-                  {record.sideEffects.warning ? (
-                    <span className={styles.warningText}>
-                      ⚠ {record.sideEffects.value}
-                    </span>
-                  ) : (
-                    <span className={styles.normalText}>
-                      {record.sideEffects.value}
-                    </span>
-                  )}
-                </td>
-                <td className={styles.tableCell}>
-                  {record.followUp.warning ? (
-                    <span className={styles.warningText}>
-                      ⚠ {record.followUp.value}
-                    </span>
-                  ) : (
-                    <span className={styles.normalText}>
-                      {record.followUp.value}
-                    </span>
-                  )}
-                </td>
-                <td className={styles.tableCell}>
-                  <span className={getStatusPillClass(record.status)}>
-                    {getStatusLabel(record.status)}
-                  </span>
+            {paginatedRecords.length === 0 && (
+              <tr>
+                <td colSpan={6} className={styles.emptyState}>
+                  No contact records found for the selected time range.
                 </td>
               </tr>
-            ))}
-            {displayedRecords.map((record) => (
-              <tr key={record.id}>
-                <td className={styles.tableCell}>
-                  <span className={styles.patientLink}>{record.name}</span>
-                </td>
-                <td className={styles.tableCell}>
-                  {record.contactDate}
-                  <br />
-                  <span style={{ color: "var(--colorNeutralForeground3)" }}>
-                    {record.contactTime}
-                  </span>
-                </td>
-                <td className={styles.tableCell}>{record.phone}</td>
-                <td className={styles.tableCell}>{record.pickedUpMeds}</td>
-                <td className={styles.tableCell}>
-                  {record.takingAsRx.warning ? (
-                    <span className={styles.warningText}>
-                      ⚠ {record.takingAsRx.value}
-                    </span>
-                  ) : (
-                    <span className={styles.normalText}>
-                      {record.takingAsRx.value}
-                    </span>
-                  )}
-                </td>
-                <td className={styles.tableCell}>
-                  {record.sideEffects.warning ? (
-                    <span className={styles.warningText}>
-                      ⚠ {record.sideEffects.value}
-                    </span>
-                  ) : (
-                    <span className={styles.normalText}>
-                      {record.sideEffects.value}
-                    </span>
-                  )}
-                </td>
-                <td className={styles.tableCell}>
-                  {record.followUp.warning ? (
-                    <span className={styles.warningText}>
-                      ⚠ {record.followUp.value}
-                    </span>
-                  ) : (
-                    <span className={styles.normalText}>
-                      {record.followUp.value}
-                    </span>
-                  )}
-                </td>
-                <td className={styles.tableCell}>
-                  {record.reviewed && (
-                    <span className={styles.reviewedBadge}>
-                      <Checkmark16Regular /> Reviewed
-                    </span>
-                  )}
-                </td>
-              </tr>
-            ))}
+            )}
+            {paginatedRecords.map((item) => {
+              if (item.type === "active") {
+                const record = item.record;
+                return (
+                  <tr key={record.id} className={styles.tableRow}>
+                    <td className={styles.tableCell}>
+                      <span className={styles.patientLink}>{record.name}</span>
+                    </td>
+                    <td className={styles.tableCell}>
+                      {record.contactDate}
+                      <br />
+                      <span style={{ color: "var(--colorNeutralForeground3)", fontSize: "12px" }}>
+                        {record.contactTime}
+                      </span>
+                    </td>
+                    <td className={styles.tableCell}>{record.phone}</td>
+                    <td className={styles.tableCell}>
+                      <div className={styles.outcomesCell}>
+                        <OutcomeIndicator label="Picked up meds" value={record.pickedUpMeds} isWarning={record.pickedUpMeds !== "Yes"} />
+                        <OutcomeIndicator label="Taking as Rx" value={record.takingAsRx.value} isWarning={record.takingAsRx.warning} />
+                        <OutcomeIndicator label="Side effects" value={record.sideEffects.value} isWarning={record.sideEffects.warning} />
+                      </div>
+                    </td>
+                    <td className={styles.tableCell}>
+                      {record.followUp.warning ? (
+                        <span className={styles.warningText} role="alert">
+                          <Warning16Regular aria-hidden="true" /> {record.followUp.value}
+                        </span>
+                      ) : (
+                        <span className={styles.normalText}>
+                          {record.followUp.value}
+                        </span>
+                      )}
+                    </td>
+                    <td className={styles.tableCell}>
+                      <span className={getStatusPillClass(record.status)}>
+                        {record.status === "in-progress" && <Timer16Regular />}
+                        {record.status === "needs-review" && <Warning16Regular />}
+                        {record.status === "completed" && <Checkmark16Regular />}
+                        {getStatusLabel(record.status)}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              } else {
+                const record = item.record;
+                return (
+                  <tr key={record.id} className={styles.tableRow}>
+                    <td className={styles.tableCell}>
+                      <span className={styles.patientLink}>{record.name}</span>
+                    </td>
+                    <td className={styles.tableCell}>
+                      {record.contactDate}
+                      <br />
+                      <span style={{ color: "var(--colorNeutralForeground3)", fontSize: "12px" }}>
+                        {record.contactTime}
+                      </span>
+                    </td>
+                    <td className={styles.tableCell}>{record.phone}</td>
+                    <td className={styles.tableCell}>
+                      <div className={styles.outcomesCell}>
+                        <OutcomeIndicator label="Picked up meds" value={record.pickedUpMeds} isWarning={record.pickedUpMeds !== "Yes"} />
+                        <OutcomeIndicator label="Taking as Rx" value={record.takingAsRx.value} isWarning={record.takingAsRx.warning} />
+                        <OutcomeIndicator label="Side effects" value={record.sideEffects.value} isWarning={record.sideEffects.warning} />
+                      </div>
+                    </td>
+                    <td className={styles.tableCell}>
+                      {record.followUp.warning ? (
+                        <span className={styles.warningText} role="alert">
+                          <Warning16Regular aria-hidden="true" /> {record.followUp.value}
+                        </span>
+                      ) : (
+                        <span className={styles.normalText}>
+                          {record.followUp.value}
+                        </span>
+                      )}
+                    </td>
+                    <td className={styles.tableCell}>
+                      {record.reviewed ? (
+                        <span className={styles.reviewedBadge}>
+                          <Checkmark16Regular /> Reviewed
+                        </span>
+                      ) : (
+                        <span className={styles.statusPillNeedsReview}>
+                          <Warning16Regular /> Needs Review
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              }
+            })}
           </tbody>
         </table>
+
+        {/* Pagination */}
+        {allTableRecords.length > PAGE_SIZE && (
+          <div className={styles.paginationRow}>
+            <span className={styles.paginationInfo}>
+              Showing {(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, allTableRecords.length)} of {allTableRecords.length}
+            </span>
+            <div className={styles.paginationControls}>
+              <Button
+                appearance="subtle"
+                size="small"
+                icon={<ArrowLeft16Regular />}
+                disabled={currentPage <= 1}
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                aria-label="Previous page"
+              />
+              <span className={styles.paginationInfo}>
+                Page {currentPage} of {totalPages}
+              </span>
+              <Button
+                appearance="subtle"
+                size="small"
+                icon={<ArrowRight16Regular />}
+                disabled={currentPage >= totalPages}
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                aria-label="Next page"
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
