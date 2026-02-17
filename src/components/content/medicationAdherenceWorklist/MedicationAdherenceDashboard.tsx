@@ -22,8 +22,15 @@ import {
   ArrowLeft16Regular,
   ArrowRight16Regular,
   ArrowExportUp16Regular,
-  CheckmarkCircle16Regular,
-  DismissCircle16Regular,
+  ShoppingBagCheckmark20Regular,
+  ShoppingBagDismiss20Regular,
+  ClipboardCheckmark20Regular,
+  ClipboardError20Regular,
+  ChatMultipleCheckmark20Regular,
+  ChatMultipleMinus20Regular,
+  ShoppingBag20Regular,
+  Clipboard20Regular,
+  ChatMultiple20Regular,
 } from "@fluentui/react-icons";
 import { useDashboardStyles } from "./MedicationAdherenceDashboard.styles";
 import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
@@ -340,11 +347,42 @@ export const MedicationAdherenceDashboard: React.FC = () => {
     URL.revokeObjectURL(url);
   }, [displayedRecords, timeRange]);
 
-  // Outcome icon helper
+  // Outcome icon helper – category-specific icons
+  const getOutcomeIcon = (label: string, isWarning: boolean) => {
+    switch (label) {
+      case "Picked up meds":
+        return isWarning ? <ShoppingBagDismiss20Regular aria-hidden="true" /> : <ShoppingBagCheckmark20Regular aria-hidden="true" />;
+      case "Taking as Rx":
+        return isWarning ? <ClipboardError20Regular aria-hidden="true" /> : <ClipboardCheckmark20Regular aria-hidden="true" />;
+      case "Side effects":
+        return isWarning ? <ChatMultipleMinus20Regular aria-hidden="true" /> : <ChatMultipleCheckmark20Regular aria-hidden="true" />;
+      default:
+        return isWarning ? <ShoppingBagDismiss20Regular aria-hidden="true" /> : <ShoppingBagCheckmark20Regular aria-hidden="true" />;
+    }
+  };
+
   const OutcomeIndicator: React.FC<{ label: string; value: string; isWarning: boolean }> = ({ label, value, isWarning }) => (
     <Tooltip content={`${label}: ${value}`} relationship="label">
       <span className={mergeClasses(styles.outcomeIcon, isWarning ? styles.outcomeBad : styles.outcomeGood)}>
-        {isWarning ? <DismissCircle16Regular aria-hidden="true" /> : <CheckmarkCircle16Regular aria-hidden="true" />}
+        {getOutcomeIcon(label, isWarning)}
+      </span>
+    </Tooltip>
+  );
+
+  // Neutral outcome icon for new/active records
+  const getNeutralIcon = (label: string) => {
+    switch (label) {
+      case "Picked up meds": return <ShoppingBag20Regular aria-hidden="true" />;
+      case "Taking as Rx": return <Clipboard20Regular aria-hidden="true" />;
+      case "Side effects": return <ChatMultiple20Regular aria-hidden="true" />;
+      default: return <ShoppingBag20Regular aria-hidden="true" />;
+    }
+  };
+
+  const NeutralOutcomeIndicator: React.FC<{ label: string }> = ({ label }) => (
+    <Tooltip content={`${label}: Pending`} relationship="label">
+      <span className={mergeClasses(styles.outcomeIcon, styles.outcomeNeutralIcon)}>
+        {getNeutralIcon(label)}
       </span>
     </Tooltip>
   );
@@ -673,9 +711,19 @@ export const MedicationAdherenceDashboard: React.FC = () => {
                     <td className={styles.tableCell}>{record.phone}</td>
                     <td className={styles.tableCell}>
                       <div className={styles.outcomesCell}>
-                        <OutcomeIndicator label="Picked up meds" value={record.pickedUpMeds} isWarning={record.pickedUpMeds !== "Yes"} />
-                        <OutcomeIndicator label="Taking as Rx" value={record.takingAsRx.value} isWarning={record.takingAsRx.warning} />
-                        <OutcomeIndicator label="Side effects" value={record.sideEffects.value} isWarning={record.sideEffects.warning} />
+                        {record.status === "in-progress" ? (
+                          <>
+                            <NeutralOutcomeIndicator label="Picked up meds" />
+                            <NeutralOutcomeIndicator label="Taking as Rx" />
+                            <NeutralOutcomeIndicator label="Side effects" />
+                          </>
+                        ) : (
+                          <>
+                            <OutcomeIndicator label="Picked up meds" value={record.pickedUpMeds} isWarning={record.pickedUpMeds !== "Yes"} />
+                            <OutcomeIndicator label="Taking as Rx" value={record.takingAsRx.value} isWarning={record.takingAsRx.warning} />
+                            <OutcomeIndicator label="Side effects" value={record.sideEffects.value} isWarning={record.sideEffects.warning} />
+                          </>
+                        )}
                       </div>
                     </td>
                     <td className={styles.tableCell}>
