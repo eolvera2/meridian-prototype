@@ -12,8 +12,8 @@ import {
   Settings20Filled,
   QuestionCircle20Regular,
   QuestionCircle20Filled,
-  PersonPill20Regular,
-  PersonPill20Filled,
+  PeopleCommunication20Regular,
+  PeopleCommunication20Filled,
   HomeMoreFilled,
   HomeMoreRegular,
   Person20Regular,
@@ -24,8 +24,8 @@ import { useI18n } from "../../i18n/I18nContext";
 // Create bundled icons for proper Fluent UI integration
 const SettingsIcon = bundleIcon(Settings20Filled, Settings20Regular);
 const MedicationAdherenceIcon = bundleIcon(
-  PersonPill20Filled,
-  PersonPill20Regular
+  PeopleCommunication20Filled,
+  PeopleCommunication20Regular
 );
 const HelpIcon = bundleIcon(QuestionCircle20Filled, QuestionCircle20Regular);
 const HomeIcon = bundleIcon(HomeMoreFilled, HomeMoreRegular);

@@ -31,6 +31,20 @@ import {
   Clipboard20Regular,
   ChatMultiple20Regular,
   NumberCircle020Regular,
+  DocumentCheckmark20Regular,
+  DocumentDismiss20Filled,
+  LeafOne20Regular,
+  LeafThree20Filled,
+  HeartPulseCheckmark20Regular,
+  HeartPulseWarning20Filled,
+  BookPulse20Regular,
+  BookDismiss20Filled,
+  FlagCheckered20Regular,
+  FlagOff20Filled,
+  History20Regular,
+  HistoryDismiss20Filled,
+  Emoji20Regular,
+  EmojiAngry20Filled,
 } from "@fluentui/react-icons";
 import { useDashboardStyles } from "./MedicationAdherenceDashboard.styles";
 import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
@@ -244,7 +258,9 @@ export const MedicationAdherenceDashboard: React.FC = () => {
 
   // Contact history
   const filteredByTime = useMemo(
-    () => contactRecords.filter((r) => r.daysAgo <= Number(timeRange) && (callTypeFilter === "all" || r.callType === callTypeFilter)),
+    () => contactRecords
+      .filter((r) => r.daysAgo <= Number(timeRange) && (callTypeFilter === "all" || r.callType === callTypeFilter))
+      .sort((a, b) => a.daysAgo - b.daysAgo),
     [timeRange, contactRecords, callTypeFilter]
   );
   const needsReviewCount = filteredByTime.filter((r) => !r.reviewed).length;
@@ -304,6 +320,20 @@ export const MedicationAdherenceDashboard: React.FC = () => {
         return isWarning ? <ClipboardError20Filled aria-hidden="true" /> : <ClipboardCheckmark20Regular aria-hidden="true" />;
       case "Side effects":
         return isWarning ? <ChatMultipleMinus20Filled aria-hidden="true" /> : <ChatMultipleCheckmark20Regular aria-hidden="true" />;
+      case "Intake Complete":
+        return isWarning ? <DocumentDismiss20Filled aria-hidden="true" /> : <DocumentCheckmark20Regular aria-hidden="true" />;
+      case "Allergies Confirmed":
+        return isWarning ? <LeafThree20Filled aria-hidden="true" /> : <LeafOne20Regular aria-hidden="true" />;
+      case "Red Flag":
+        return isWarning ? <HeartPulseWarning20Filled aria-hidden="true" /> : <HeartPulseCheckmark20Regular aria-hidden="true" />;
+      case "BP Reading":
+        return isWarning ? <BookDismiss20Filled aria-hidden="true" /> : <BookPulse20Regular aria-hidden="true" />;
+      case "BP at Goal":
+        return isWarning ? <FlagOff20Filled aria-hidden="true" /> : <FlagCheckered20Regular aria-hidden="true" />;
+      case "Med Adherence":
+        return isWarning ? <HistoryDismiss20Filled aria-hidden="true" /> : <History20Regular aria-hidden="true" />;
+      case "Escalated":
+        return isWarning ? <EmojiAngry20Filled aria-hidden="true" /> : <Emoji20Regular aria-hidden="true" />;
       default:
         return isWarning ? <ShoppingBagDismiss20Filled aria-hidden="true" /> : <ShoppingBagCheckmark20Regular aria-hidden="true" />;
     }
@@ -737,16 +767,16 @@ export const MedicationAdherenceDashboard: React.FC = () => {
                           </>
                         ) : record.callType === "patient-intake" ? (
                           <>
-                            <OutcomeIndicator label="Intake Complete" value={record.intakeCompleted ? "Yes" : "No"} isWarning={!record.intakeCompleted} />
-                            <OutcomeIndicator label="Allergies Confirmed" value={record.allergiesConfirmed ? "Yes" : "No"} isWarning={!record.allergiesConfirmed} />
-                            {record.redFlag && <OutcomeIndicator label="Red Flag" value="Yes" isWarning={true} />}
+                            <OutcomeIndicator label="Intake Complete" value={record.intakeCompleted?.value ?? "No"} isWarning={record.intakeCompleted?.warning ?? true} />
+                            <OutcomeIndicator label="Allergies Confirmed" value={record.allergiesConfirmed ?? "No"} isWarning={!record.allergiesConfirmed} />
+                            {record.redFlag && <OutcomeIndicator label="Red Flag" value={record.redFlag.value} isWarning={record.redFlag.warning} />}
                           </>
                         ) : record.callType === "hypertension-management" ? (
                           <>
-                            {record.bpReading && <OutcomeIndicator label="BP Reading" value={typeof record.bpReading === "string" ? record.bpReading : `${record.bpReading.systolic}/${record.bpReading.diastolic}`} isWarning={false} />}
-                            <OutcomeIndicator label="BP at Goal" value={record.bpAtGoal ? "Yes" : "No"} isWarning={!record.bpAtGoal} />
-                            <OutcomeIndicator label="Med Adherence" value={record.medAdherence ? "Yes" : "No"} isWarning={!record.medAdherence} />
-                            {record.escalated && <OutcomeIndicator label="Escalated" value="Yes" isWarning={true} />}
+                            {record.bpReading && <OutcomeIndicator label="BP Reading" value={typeof record.bpReading === "string" ? record.bpReading : `${record.bpReading.systolic}/${record.bpReading.diastolic}`} isWarning={record.bpAtGoal?.warning ?? false} />}
+                            <OutcomeIndicator label="BP at Goal" value={record.bpAtGoal?.value ?? "No"} isWarning={record.bpAtGoal?.warning ?? true} />
+                            <OutcomeIndicator label="Med Adherence" value={record.medAdherence?.value ?? "No"} isWarning={record.medAdherence?.warning ?? true} />
+                            {record.escalated && <OutcomeIndicator label="Escalated" value={record.escalated.value} isWarning={record.escalated.warning} />}
                           </>
                         ) : (
                           <>
@@ -810,16 +840,16 @@ export const MedicationAdherenceDashboard: React.FC = () => {
                       <div className={styles.outcomesCell}>
                         {record.callType === "patient-intake" ? (
                           <>
-                            <OutcomeIndicator label="Intake Complete" value={record.intakeCompleted ? "Yes" : "No"} isWarning={!record.intakeCompleted} />
-                            <OutcomeIndicator label="Allergies Confirmed" value={record.allergiesConfirmed ? "Yes" : "No"} isWarning={!record.allergiesConfirmed} />
-                            {record.redFlag && <OutcomeIndicator label="Red Flag" value="Yes" isWarning={true} />}
+                            <OutcomeIndicator label="Intake Complete" value={record.intakeCompleted?.value ?? "No"} isWarning={record.intakeCompleted?.warning ?? true} />
+                            <OutcomeIndicator label="Allergies Confirmed" value={record.allergiesConfirmed ?? "No"} isWarning={!record.allergiesConfirmed} />
+                            {record.redFlag && <OutcomeIndicator label="Red Flag" value={record.redFlag.value} isWarning={record.redFlag.warning} />}
                           </>
                         ) : record.callType === "hypertension-management" ? (
                           <>
-                            {record.bpReading && <OutcomeIndicator label="BP Reading" value={typeof record.bpReading === "string" ? record.bpReading : `${record.bpReading.systolic}/${record.bpReading.diastolic}`} isWarning={false} />}
-                            <OutcomeIndicator label="BP at Goal" value={record.bpAtGoal ? "Yes" : "No"} isWarning={!record.bpAtGoal} />
-                            <OutcomeIndicator label="Med Adherence" value={record.medAdherence ? "Yes" : "No"} isWarning={!record.medAdherence} />
-                            {record.escalated && <OutcomeIndicator label="Escalated" value="Yes" isWarning={true} />}
+                            {record.bpReading && <OutcomeIndicator label="BP Reading" value={typeof record.bpReading === "string" ? record.bpReading : `${record.bpReading.systolic}/${record.bpReading.diastolic}`} isWarning={record.bpAtGoal?.warning ?? false} />}
+                            <OutcomeIndicator label="BP at Goal" value={record.bpAtGoal?.value ?? "No"} isWarning={record.bpAtGoal?.warning ?? true} />
+                            <OutcomeIndicator label="Med Adherence" value={record.medAdherence?.value ?? "No"} isWarning={record.medAdherence?.warning ?? true} />
+                            {record.escalated && <OutcomeIndicator label="Escalated" value={record.escalated.value} isWarning={record.escalated.warning} />}
                           </>
                         ) : (
                           <>

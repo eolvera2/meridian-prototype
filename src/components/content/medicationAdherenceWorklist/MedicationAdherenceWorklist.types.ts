@@ -10,7 +10,7 @@ export type CallType = "medication-adherence" | "patient-intake" | "hypertension
 export const CALL_TYPE_LABELS: Record<CallType, string> = {
   "medication-adherence": "Med Adherence",
   "patient-intake": "Patient Intake",
-  "hypertension-management": "BP Management",
+  "hypertension-management": "Chronic Care",
 };
 
 export interface MedicationAdherenceWorklistProps {
