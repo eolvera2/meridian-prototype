@@ -11,6 +11,7 @@ import React, {
   useState,
   useCallback,
   useMemo,
+  useRef,
 } from "react";
 import medicationAdherenceWorklistData from "../../../data/medicationAdherenceWorklistData.json";
 import type { MedicationAdherenceWorklistItem } from "./MedicationAdherenceWorklist.types";
@@ -88,6 +89,15 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
     null
   );
   const [activeCallRecords, setActiveCallRecords] = useState<ActiveCallRecord[]>([]);
+  // Ref mirror of activeCallRecords so resolveCallRecord can read without closing over state
+  const activeCallRecordsRef = useRef<ActiveCallRecord[]>([]);
+
+  // Registry preserves full patient data even after patients are removed from the worklist via callPatients
+  const patientRegistryRef = useRef<Map<string, MedicationAdherenceWorklistItem>>(
+    new Map(
+      (medicationAdherenceWorklistData as MedicationAdherenceWorklistItem[]).map(p => [p.id, p])
+    )
+  );
 
   const updatePatientLastModified = useCallback((patientId: string) => {
     const now = new Date();
@@ -114,7 +124,7 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
 
   const getPatient = useCallback(
     (patientId: string) => {
-      return patients.find((p) => p.id === patientId);
+      return patients.find((p) => p.id === patientId) ?? patientRegistryRef.current.get(patientId);
     },
     [patients]
   );
@@ -141,16 +151,57 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
       followUp: { value: "--", warning: false },
     }));
 
-    setActiveCallRecords((prevRecords) => [...newRecords, ...prevRecords]);
+    // Preserve full patient data in registry before removing from worklist
+    calledPatients.forEach(p => {
+      patientRegistryRef.current.set(p.id, { ...p });
+    });
+
+    setActiveCallRecords((prevRecords) => {
+      const next = [...newRecords, ...prevRecords];
+      activeCallRecordsRef.current = next;
+      return next;
+    });
     setPatients((prev) => prev.filter((p) => !calledSet.has(p.id)));
   }, [formatTime, patients]);
 
+  const resolvedRecordIds = useRef<Set<string>>(new Set());
+
   const resolveCallRecord = useCallback((recordId: string) => {
+    // Guard against double-invocation (React StrictMode / concurrent re-renders)
+    if (resolvedRecordIds.current.has(recordId)) return;
+    resolvedRecordIds.current.add(recordId);
+
     const outcome = OUTCOME_POOLS[outcomeIndex % OUTCOME_POOLS.length];
     outcomeIndex++;
 
-    setActiveCallRecords((prev) =>
-      prev.map((r) =>
+    // Mutate registry OUTSIDE the state updater to prevent double-mutation
+    const record = activeCallRecordsRef.current.find(r => r.id === recordId);
+    if (record) {
+      const patient = patientRegistryRef.current.get(record.patientId);
+      if (patient) {
+        const sideEffectText = outcome.sideEffects.value === "None" ? "Not reported" : outcome.sideEffects.value;
+        const newEntry: NonNullable<MedicationAdherenceWorklistItem["contactHistory"]>[number] = {
+          date: record.contactDate,
+          method: "phone",
+          transcriptLink: true,
+          transcriptSummary: `AI call completed. Medication pickup: ${outcome.pickedUpMeds}. Taking as prescribed: ${outcome.takingAsRx.value}. Side effects: ${sideEffectText}. Pain level: ${outcome.painLevel}/10.`,
+          pickedUpMedication: outcome.pickedUpMeds,
+          takingAsPrescribed: { value: outcome.takingAsRx.value, positive: !outcome.takingAsRx.warning },
+          sideEffects: sideEffectText,
+          painLevel: outcome.painLevel,
+          followUpNeeded: { value: outcome.followUp.value, positive: !outcome.followUp.warning },
+          reminderSet: outcome.followUp.warning ? "No" : "Yes",
+          notes: `Automated call at ${record.contactTime}. Outcomes recorded and pending review.`,
+        };
+        patientRegistryRef.current.set(record.patientId, {
+          ...patient,
+          contactHistory: [newEntry, ...(patient.contactHistory ?? [])],
+        });
+      }
+    }
+
+    setActiveCallRecords((prev) => {
+      const next = prev.map((r) =>
         r.id === recordId
           ? {
               ...r,
@@ -162,8 +213,10 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
               followUp: outcome.followUp,
             }
           : r
-      )
-    );
+      );
+      activeCallRecordsRef.current = next;
+      return next;
+    });
   }, []);
 
   const value = useMemo(

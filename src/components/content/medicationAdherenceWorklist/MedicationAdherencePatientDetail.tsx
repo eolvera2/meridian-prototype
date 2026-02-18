@@ -7,7 +7,6 @@ import {
   Script24Regular,
   Library24Regular,
   MoreVertical24Regular,
-  Call20Regular,
   CalendarLtr20Regular,
   CalendarArrowRight20Regular,
   Phone20Regular,
@@ -20,6 +19,8 @@ import {
   Warning16Regular,
   ClipboardTask20Regular,
   Stethoscope20Regular,
+  ClipboardCheckmark20Regular,
+  Pill20Regular,
 } from "@fluentui/react-icons";
 import { usePatientDetailStyles } from "./MedicationAdherencePatientDetail.styles";
 import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
@@ -108,11 +109,19 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
           <div className={styles.sectionTitleRow}>
             <Clock20Regular className={styles.sectionIcon} />
             <span className={styles.sectionTitle}>Contact History</span>
+            <Button
+              appearance="primary"
+              size="small"
+              icon={<ClipboardCheckmark20Regular />}
+              style={{ marginLeft: "auto" }}
+            >
+              Mark as Reviewed
+            </Button>
           </div>
 
           {contactHistory.map((entry, idx) => (
             <div className={styles.contactEntry} key={idx}>
-              {/* Date + transcript link + action buttons */}
+              {/* Date + transcript link */}
               <div className={styles.contactHeaderRow}>
                 <span className={styles.contactDate}>{entry.date}</span>
                 {entry.transcriptLink && (
@@ -121,15 +130,6 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
                     View AI Call Transcript
                   </span>
                 )}
-                <div className={styles.contactActions}>
-                  <Button
-                    size="small"
-                    icon={<Call20Regular />}
-                    className={styles.callButton}
-                  >
-                    Call
-                  </Button>
-                </div>
               </div>
 
               {/* Transcript summary */}
@@ -203,6 +203,26 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
                         entry.followUpNeeded.positive ? styles.outcomePositive : styles.outcomeNegative
                       )}>
                         {entry.followUpNeeded.value}
+                      </span>
+                    </>
+                  ) : (
+                    <span className={styles.outcomeValue}>—</span>
+                  )}
+                </div>
+                <div className={styles.outcomeItem}>
+                  <span className={styles.outcomeLabel}>Reminder set</span>
+                  {entry.reminderSet ? (
+                    <>
+                      {entry.reminderSet === "Yes" ? (
+                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
+                      ) : (
+                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
+                      )}
+                      <span className={mergeClasses(
+                        styles.outcomeValue,
+                        entry.reminderSet === "Yes" ? styles.outcomePositive : styles.outcomeNegative
+                      )}>
+                        {entry.reminderSet}
                       </span>
                     </>
                   ) : (
@@ -307,10 +327,31 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
           <div className={styles.medicationGrid}>
             {medications.map((med, idx) => (
               <div className={styles.medicationCard} key={idx}>
+                <div className={styles.medicationInfo}>
                   <span className={styles.medicationName}>{med.name}</span>
                   <span className={styles.medicationDose}>{med.dose}</span>
                   <span className={styles.frequencyPill}>{med.frequency}</span>
                   <span className={styles.prescribedDate}>Prescribed: {med.prescribedDate}</span>
+                </div>
+                <div className={styles.medicationRefill}>
+                  {(med.refillsAvailable ?? 0) > 0 ? (
+                    <Button
+                      appearance="secondary"
+                      size="small"
+                      icon={<Pill20Regular />}
+                    >
+                      Order Refill
+                    </Button>
+                  ) : (
+                    <Button
+                      appearance="secondary"
+                      size="small"
+                      disabled
+                    >
+                      No Refills Available
+                    </Button>
+                  )}
+                </div>
               </div>
             ))}
           </div>

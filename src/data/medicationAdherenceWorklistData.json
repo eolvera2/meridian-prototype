@@ -20,7 +20,7 @@
     "careTeam": "Dr. Sarah Lin (Cardiology), NP James Okafor (Primary Care), PharmD Rita Desai (Clinical Pharmacy)",
     "contactHistory": [
       {
-        "date": "February 12, 2026",
+        "date": "Feb 12, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Reached spouse who confirmed patient has been dizzy and missed evening warfarin doses for 3 days. Advised to resume tonight and schedule INR lab draw.",
@@ -35,7 +35,8 @@
           "positive": false
         },
         "notes": "Call completed with 12 messages. Spouse agreed to reminder setup.",
-        "painLevel": 6
+        "painLevel": 6,
+        "reminderSet": "Yes"
       }
     ],
     "medications": [
@@ -43,19 +44,22 @@
         "name": "Warfarin",
         "dose": "5mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 28, 2026"
+        "prescribedDate": "January 28, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Metoprolol Succinate",
         "dose": "25mg",
         "frequency": "Twice daily",
-        "prescribedDate": "January 28, 2026"
+        "prescribedDate": "January 28, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Aspirin",
         "dose": "81mg",
         "frequency": "Once daily",
-        "prescribedDate": "February 1, 2026"
+        "prescribedDate": "February 1, 2026",
+        "refillsAvailable": 0
       }
     ]
   },
@@ -80,7 +84,7 @@
     "careTeam": "Dr. Maria Gonzalez (Endocrinology), RN Kevin Park (Diabetes Educator), PharmD Rita Desai (Clinical Pharmacy)",
     "contactHistory": [
       {
-        "date": "February 12, 2026",
+        "date": "Feb 12, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient confirmed only 2 units of insulin glargine remaining. Pharmacy transfer caused 5-day gap. Glucose readings at 280 and 310 mg/dL. Expedited refill submitted.",
@@ -95,7 +99,8 @@
           "positive": false
         },
         "notes": "Call completed, 9 min duration. Pharmacy notified for same-day fill.",
-        "painLevel": 4
+        "painLevel": 4,
+        "reminderSet": "No"
       }
     ],
     "medications": [
@@ -103,19 +108,22 @@
         "name": "Insulin Glargine",
         "dose": "20 units",
         "frequency": "Once daily",
-        "prescribedDate": "January 20, 2026"
+        "prescribedDate": "January 20, 2026",
+        "refillsAvailable": 3
       },
       {
         "name": "Metformin",
         "dose": "1000mg",
         "frequency": "Twice daily",
-        "prescribedDate": "January 20, 2026"
+        "prescribedDate": "January 20, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Lisinopril",
         "dose": "10mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 20, 2026"
+        "prescribedDate": "January 20, 2026",
+        "refillsAvailable": 5
       }
     ]
   },
@@ -136,11 +144,11 @@
     "email": "ychowdhury@email.com",
     "address": "55-12 Junction Blvd, Apt 4C, Queens, NY 11373",
     "dischargeInstructions": "Continue amlodipine 5 mg and HCTZ 25 mg daily. Monitor BP twice daily. If cough persists on ACE inhibitor, contact clinic for ARB substitution.",
-    "primaryDiagnosis": "Essential hypertension, Stage 2. ACE inhibitor\u2013induced cough (lisinopril). Mild hyperlipidemia managed with lifestyle modifications.",
+    "primaryDiagnosis": "Essential hypertension, Stage 2. ACE inhibitor–induced cough (lisinopril). Mild hyperlipidemia managed with lifestyle modifications.",
     "careTeam": "Dr. Anwar Hussain (Internal Medicine), NP Lisa Chen (Cardiology), PharmD Amir Patel (Community Pharmacy)",
     "contactHistory": [
       {
-        "date": "February 12, 2026",
+        "date": "Feb 12, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient reports dry cough worsening over 2 weeks. Self-discontinued lisinopril 4 days ago. BP at home 158/94. Clinician review requested for ARB switch.",
@@ -155,7 +163,8 @@
           "positive": false
         },
         "notes": "Call completed with 8 messages. Interpreter assistance provided for Bengali.",
-        "painLevel": 5
+        "painLevel": 5,
+        "reminderSet": "No"
       }
     ],
     "medications": [
@@ -163,19 +172,22 @@
         "name": "Lisinopril",
         "dose": "20mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 15, 2026"
+        "prescribedDate": "January 15, 2026",
+        "refillsAvailable": 4
       },
       {
         "name": "Amlodipine",
         "dose": "5mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 15, 2026"
+        "prescribedDate": "January 15, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Hydrochlorothiazide",
         "dose": "25mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 15, 2026"
+        "prescribedDate": "January 15, 2026",
+        "refillsAvailable": 5
       }
     ]
   },
@@ -200,7 +212,7 @@
     "careTeam": "Dr. Roberto Vega (Cardiology), RN Maria Santos (Heart Failure Clinic), SW Ana Gutierrez (Social Work), PharmD Rita Desai (Clinical Pharmacy)",
     "contactHistory": [
       {
-        "date": "February 12, 2026",
+        "date": "Feb 12, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Daughter answered. Patient confused by twice-daily vs once-daily schedule. Missed Saturday and Sunday doses of carvedilol and furosemide. Weight up 3 lbs. Bilingual med calendar requested.",
@@ -215,7 +227,8 @@
           "positive": false
         },
         "notes": "Call completed with 15 messages. Spanish interpreter used. Escalated to heart failure clinic.",
-        "painLevel": 7
+        "painLevel": 7,
+        "reminderSet": "Yes"
       }
     ],
     "medications": [
@@ -223,25 +236,29 @@
         "name": "Carvedilol",
         "dose": "12.5mg",
         "frequency": "Twice daily",
-        "prescribedDate": "February 1, 2026"
+        "prescribedDate": "February 1, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Furosemide",
         "dose": "40mg",
         "frequency": "Once daily",
-        "prescribedDate": "February 1, 2026"
+        "prescribedDate": "February 1, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Potassium Chloride",
         "dose": "20mEq",
         "frequency": "Once daily",
-        "prescribedDate": "February 1, 2026"
+        "prescribedDate": "February 1, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Lisinopril",
         "dose": "10mg",
         "frequency": "Once daily",
-        "prescribedDate": "February 1, 2026"
+        "prescribedDate": "February 1, 2026",
+        "refillsAvailable": 5
       }
     ]
   },
@@ -266,7 +283,7 @@
     "careTeam": "Dr. Karen Mitchell (Internal Medicine), NP Daniel Brooks (Cardiology Prevention)",
     "contactHistory": [
       {
-        "date": "February 11, 2026",
+        "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient reports missing statin 2 of 7 days during business travel. Requested evening phone reminders and asked about synchronizing refill dates for both medications.",
@@ -281,7 +298,8 @@
           "positive": true
         },
         "notes": "Call completed, 5 min duration. Reminder preferences recorded.",
-        "painLevel": 2
+        "painLevel": 2,
+        "reminderSet": "Yes"
       }
     ],
     "medications": [
@@ -289,13 +307,15 @@
         "name": "Atorvastatin",
         "dose": "40mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 25, 2026"
+        "prescribedDate": "January 25, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Lisinopril",
         "dose": "10mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 25, 2026"
+        "prescribedDate": "January 25, 2026",
+        "refillsAvailable": 5
       }
     ]
   },
@@ -320,7 +340,7 @@
     "careTeam": "Dr. Elena Reyes (Pulmonology), RT Michael Torres (Respiratory Therapy), NP Sofia Ruiz (Primary Care)",
     "contactHistory": [
       {
-        "date": "February 11, 2026",
+        "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient reports using controller inhaler 3 of 7 days. Unsure about spacer technique. No acute wheezing. Coaching call scheduled for Feb 12 at 10 AM.",
@@ -335,7 +355,8 @@
           "positive": false
         },
         "notes": "Call completed with 9 messages. Spanish interpreter used.",
-        "painLevel": 3
+        "painLevel": 3,
+        "reminderSet": "No"
       }
     ],
     "medications": [
@@ -343,13 +364,15 @@
         "name": "Tiotropium Inhaler",
         "dose": "18mcg",
         "frequency": "Once daily",
-        "prescribedDate": "February 4, 2026"
+        "prescribedDate": "February 4, 2026",
+        "refillsAvailable": 2
       },
       {
         "name": "Albuterol Inhaler",
         "dose": "90mcg",
         "frequency": "As needed",
-        "prescribedDate": "February 4, 2026"
+        "prescribedDate": "February 4, 2026",
+        "refillsAvailable": 3
       }
     ]
   },
@@ -369,12 +392,12 @@
     "phone": "+12025559043",
     "email": "losei73@email.com",
     "address": "1420 K Street NW, Apt 802, Washington, DC 20005",
-    "dischargeInstructions": "Take levothyroxine 75 mcg on empty stomach, 30\u201360 min before breakfast. Other morning meds after eating. TSH recheck in 6 weeks.",
+    "dischargeInstructions": "Take levothyroxine 75 mcg on empty stomach, 30–60 min before breakfast. Other morning meds after eating. TSH recheck in 6 weeks.",
     "primaryDiagnosis": "Hypothyroidism. Type 2 diabetes mellitus, controlled. Mild osteoarthritis of both knees.",
     "careTeam": "Dr. Priya Nair (Endocrinology), NP Janet Collins (Primary Care), PharmD Amir Patel (Community Pharmacy)",
     "contactHistory": [
       {
-        "date": "February 11, 2026",
+        "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient takes levothyroxine with breakfast instead of on empty stomach. Requested a printed morning routine card separating thyroid medication from other pills.",
@@ -389,7 +412,8 @@
           "positive": false
         },
         "notes": "Call completed, 7 min duration. Printed schedule to be mailed.",
-        "painLevel": 4
+        "painLevel": 4,
+        "reminderSet": "Yes"
       }
     ],
     "medications": [
@@ -397,19 +421,22 @@
         "name": "Levothyroxine",
         "dose": "75mcg",
         "frequency": "Once daily",
-        "prescribedDate": "January 18, 2026"
+        "prescribedDate": "January 18, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Metformin",
         "dose": "500mg",
         "frequency": "Twice daily",
-        "prescribedDate": "January 18, 2026"
+        "prescribedDate": "January 18, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Acetaminophen",
         "dose": "500mg",
         "frequency": "As needed",
-        "prescribedDate": "January 18, 2026"
+        "prescribedDate": "January 18, 2026",
+        "refillsAvailable": 0
       }
     ]
   },
@@ -434,7 +461,7 @@
     "careTeam": "Dr. William Park (Cardiology), NP Rachel Adams (Internal Medicine)",
     "contactHistory": [
       {
-        "date": "February 11, 2026",
+        "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient had been taking both amlodipine and losartan together in the morning. Educated on split-dose schedule. Patient verbalized understanding. 48-hour check-in planned.",
@@ -449,7 +476,8 @@
           "positive": false
         },
         "notes": "Call completed with 7 messages. Patient cooperative and motivated.",
-        "painLevel": 3
+        "painLevel": 3,
+        "reminderSet": "Yes"
       }
     ],
     "medications": [
@@ -457,19 +485,22 @@
         "name": "Amlodipine",
         "dose": "5mg",
         "frequency": "Once daily",
-        "prescribedDate": "February 2, 2026"
+        "prescribedDate": "February 2, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Losartan",
         "dose": "50mg",
         "frequency": "Once daily",
-        "prescribedDate": "February 2, 2026"
+        "prescribedDate": "February 2, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Tamsulosin",
         "dose": "0.4mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 10, 2026"
+        "prescribedDate": "January 10, 2026",
+        "refillsAvailable": 5
       }
     ]
   },
@@ -494,7 +525,7 @@
     "careTeam": "Dr. Anjali Sharma (Endocrinology), RN David Kim (Diabetes Educator), PharmD Rita Desai (Clinical Pharmacy)",
     "contactHistory": [
       {
-        "date": "February 11, 2026",
+        "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient works rotating shifts and has been injecting semaglutide on different days each week. Requested weekend in-person session with spouse to standardize schedule.",
@@ -509,7 +540,8 @@
           "positive": false
         },
         "notes": "Call completed, 11 min duration. Weekend session scheduled Feb 15.",
-        "painLevel": 5
+        "painLevel": 5,
+        "reminderSet": "No"
       }
     ],
     "medications": [
@@ -517,13 +549,15 @@
         "name": "Semaglutide",
         "dose": "0.5mg",
         "frequency": "Once weekly",
-        "prescribedDate": "January 22, 2026"
+        "prescribedDate": "January 22, 2026",
+        "refillsAvailable": 2
       },
       {
         "name": "Metformin",
         "dose": "1000mg",
         "frequency": "Twice daily",
-        "prescribedDate": "January 22, 2026"
+        "prescribedDate": "January 22, 2026",
+        "refillsAvailable": 5
       }
     ]
   },
@@ -548,7 +582,7 @@
     "careTeam": "Dr. James Mwangi (Internal Medicine), PharmD Amir Patel (Community Pharmacy)",
     "contactHistory": [
       {
-        "date": "February 11, 2026",
+        "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient wants all three medications refilled on the same date to reduce pharmacy visits. Pharmacy confirmed sync request. Patient to pick up all meds on Friday.",
@@ -563,7 +597,8 @@
           "positive": true
         },
         "notes": "Call completed with 6 messages. Swahili interpreter used.",
-        "painLevel": 1
+        "painLevel": 1,
+        "reminderSet": "Yes"
       }
     ],
     "medications": [
@@ -571,19 +606,22 @@
         "name": "Lisinopril",
         "dose": "20mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 12, 2026"
+        "prescribedDate": "January 12, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Metformin",
         "dose": "850mg",
         "frequency": "Twice daily",
-        "prescribedDate": "January 12, 2026"
+        "prescribedDate": "January 12, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Tamsulosin",
         "dose": "0.4mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 12, 2026"
+        "prescribedDate": "January 12, 2026",
+        "refillsAvailable": 5
       }
     ]
   },
@@ -608,7 +646,7 @@
     "careTeam": "Dr. Carlos Mendez (Cardiology), NP Sofia Ruiz (Primary Care)",
     "contactHistory": [
       {
-        "date": "February 10, 2026",
+        "date": "Feb 10, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient successfully demonstrated teach-back on beta-blocker purpose, timing, and side effects to watch for. Refill set up for auto-delivery. No further action needed.",
@@ -623,7 +661,8 @@
           "positive": true
         },
         "notes": "Call completed with 11 messages. Patient fully adherent.",
-        "painLevel": 0
+        "painLevel": 0,
+        "reminderSet": "Yes"
       }
     ],
     "medications": [
@@ -631,13 +670,15 @@
         "name": "Metoprolol Succinate",
         "dose": "50mg",
         "frequency": "Twice daily",
-        "prescribedDate": "January 30, 2026"
+        "prescribedDate": "January 30, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Sertraline",
         "dose": "50mg",
         "frequency": "Once daily",
-        "prescribedDate": "December 15, 2025"
+        "prescribedDate": "December 15, 2025",
+        "refillsAvailable": 5
       }
     ]
   },
@@ -662,7 +703,7 @@
     "careTeam": "Dr. Karen Mitchell (Internal Medicine), PharmD Amir Patel (Community Pharmacy)",
     "contactHistory": [
       {
-        "date": "February 9, 2026",
+        "date": "Feb 9, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient confirmed 90-day supply pickup. Set up daily phone reminder at 9 PM. No adherence issues reported. Transitioned to routine follow-up.",
@@ -677,7 +718,8 @@
           "positive": true
         },
         "notes": "Call completed, 4 min duration. Fully adherent.",
-        "painLevel": 1
+        "painLevel": 1,
+        "reminderSet": "Yes"
       }
     ],
     "medications": [
@@ -685,13 +727,15 @@
         "name": "Rosuvastatin",
         "dose": "20mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 15, 2026"
+        "prescribedDate": "January 15, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Lisinopril",
         "dose": "10mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 15, 2026"
+        "prescribedDate": "January 15, 2026",
+        "refillsAvailable": 5
       }
     ]
   },
@@ -716,7 +760,7 @@
     "careTeam": "Dr. Priya Nair (Endocrinology), SW Ana Gutierrez (Social Work), RN Kevin Park (Diabetes Educator)",
     "contactHistory": [
       {
-        "date": "February 8, 2026",
+        "date": "Feb 8, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Caregiver (daughter) confirmed weekly pill organizer setup. No missed doses in past 10 days. Transitioned from weekly to monthly check-in schedule.",
@@ -731,7 +775,8 @@
           "positive": true
         },
         "notes": "Call completed with 13 messages. Bengali interpreter used. Caregiver plan documented.",
-        "painLevel": 0
+        "painLevel": 0,
+        "reminderSet": "Yes"
       }
     ],
     "medications": [
@@ -739,19 +784,22 @@
         "name": "Metformin",
         "dose": "500mg",
         "frequency": "Twice daily",
-        "prescribedDate": "January 10, 2026"
+        "prescribedDate": "January 10, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Amlodipine",
         "dose": "5mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 10, 2026"
+        "prescribedDate": "January 10, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Donepezil",
         "dose": "5mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 10, 2026"
+        "prescribedDate": "January 10, 2026",
+        "refillsAvailable": 3
       }
     ]
   },
@@ -776,7 +824,7 @@
     "careTeam": "Dr. Sarah Lin (Cardiology), NP Rachel Adams (Internal Medicine), PharmD Rita Desai (Clinical Pharmacy)",
     "contactHistory": [
       {
-        "date": "February 7, 2026",
+        "date": "Feb 7, 2026",
         "method": "phone",
         "transcriptLink": true,
         "transcriptSummary": "Patient reports zero missed doses over past 14 days using new medication calendar. INR within range. Transitioned to routine PCP monitoring.",
@@ -791,7 +839,8 @@
           "positive": true
         },
         "notes": "Call completed, 3 min duration. Adherence intervention successful.",
-        "painLevel": 2
+        "painLevel": 2,
+        "reminderSet": "Yes"
       }
     ],
     "medications": [
@@ -799,19 +848,541 @@
         "name": "Warfarin",
         "dose": "3mg",
         "frequency": "Once daily",
-        "prescribedDate": "January 5, 2026"
+        "prescribedDate": "January 5, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Metoprolol Succinate",
         "dose": "25mg",
         "frequency": "Twice daily",
-        "prescribedDate": "January 5, 2026"
+        "prescribedDate": "January 5, 2026",
+        "refillsAvailable": 5
       },
       {
         "name": "Acetaminophen",
         "dose": "500mg",
         "frequency": "As needed",
-        "prescribedDate": "January 5, 2026"
+        "prescribedDate": "January 5, 2026",
+        "refillsAvailable": 0
+      }
+    ]
+  },
+  {
+    "id": "ch-1",
+    "name": "Michael Chen",
+    "reason": "Post-surgical pain management with opioid taper and NSAID transition.",
+    "demographics": "Male, 38 YO, 04/12/1987, MRN302101",
+    "dischargeDate": "2/3/26",
+    "languagePreference": "English",
+    "lastContactDate": "2/5/26",
+    "lastContactSummary": "Patient reports pain level 6/10 and inconsistent opioid taper schedule.",
+    "status": "Pending follow-up",
+    "lastModified": "6:09 AM",
+    "group": "ContactHistory",
+    "dateOfBirth": "April 12, 1987",
+    "phone": "(555) 234-5678",
+    "email": "mchen87@email.com",
+    "address": "1847 Pine Street, San Francisco, CA 94109",
+    "dischargeInstructions": "Taper oxycodone as directed over 7 days. Transition to ibuprofen 400 mg every 6 hours with food. Ice and elevate surgical site. Return if pain worsens or signs of infection.",
+    "primaryDiagnosis": "Post-operative pain following right knee arthroscopy. History of mild anxiety. No prior opioid use.",
+    "careTeam": "Dr. Brian Foster (Orthopedic Surgery), NP Anna Liu (Pain Management), PharmD Rita Desai (Clinical Pharmacy)",
+    "contactHistory": [
+      {
+        "date": "Feb 5, 2026",
+        "method": "phone",
+        "transcriptLink": true,
+        "transcriptSummary": "Patient reports pain level 6/10 and has not been taking oxycodone at prescribed intervals due to fear of dependence. Using only ibuprofen intermittently. Dizziness noted as side effect.",
+        "pickedUpMedication": "Yes",
+        "takingAsPrescribed": {
+          "value": "No",
+          "positive": false
+        },
+        "sideEffects": "Dizziness reported",
+        "painLevel": 6,
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
+        "notes": "Patient counseled on safe opioid taper schedule. Pain management follow-up scheduled.",
+        "reminderSet": "No"
+      }
+    ],
+    "medications": [
+      {
+        "name": "Oxycodone",
+        "dose": "5mg",
+        "frequency": "Every 6 hours as needed",
+        "prescribedDate": "February 1, 2026",
+        "refillsAvailable": 0
+      },
+      {
+        "name": "Ibuprofen",
+        "dose": "400mg",
+        "frequency": "Every 6 hours with food",
+        "prescribedDate": "February 1, 2026",
+        "refillsAvailable": 2
+      },
+      {
+        "name": "Acetaminophen",
+        "dose": "500mg",
+        "frequency": "As needed",
+        "prescribedDate": "February 1, 2026",
+        "refillsAvailable": 0
+      }
+    ]
+  },
+  {
+    "id": "ch-2",
+    "name": "Patricia Martinez",
+    "reason": "Antibiotic course completion for community-acquired pneumonia.",
+    "demographics": "Female, 44 YO, 08/21/1981, MRN302215",
+    "dischargeDate": "2/4/26",
+    "languagePreference": "English",
+    "lastContactDate": "2/6/26",
+    "lastContactSummary": "Patient on Day 4 of levofloxacin with no issues; cough improving.",
+    "status": "Pending follow-up",
+    "lastModified": "7:30 PM",
+    "group": "ContactHistory",
+    "dateOfBirth": "August 21, 1981",
+    "phone": "(256) 431-7337",
+    "email": "pmartinez81@email.com",
+    "address": "520 Madison Ave, Huntsville, AL 35801",
+    "dischargeInstructions": "Complete full 7-day course of levofloxacin 750 mg daily. Rest and hydrate. Return if fever recurs or breathing worsens.",
+    "primaryDiagnosis": "Community-acquired pneumonia, moderate. Mild asthma. Seasonal allergies.",
+    "careTeam": "Dr. Margaret Walsh (Pulmonology), NP Thomas Green (Primary Care)",
+    "contactHistory": [
+      {
+        "date": "Feb 6, 2026",
+        "method": "phone",
+        "transcriptLink": true,
+        "transcriptSummary": "Patient reports completing Day 4 of levofloxacin with no issues. Temperature normal. Cough improving. No side effects reported.",
+        "pickedUpMedication": "Yes",
+        "takingAsPrescribed": {
+          "value": "Yes",
+          "positive": true
+        },
+        "sideEffects": "Not reported",
+        "painLevel": 2,
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
+        "notes": "Call completed, 4 min duration. Patient well on track for full course completion.",
+        "reminderSet": "No"
+      }
+    ],
+    "medications": [
+      {
+        "name": "Levofloxacin",
+        "dose": "750mg",
+        "frequency": "Once daily",
+        "prescribedDate": "February 2, 2026",
+        "refillsAvailable": 0
+      },
+      {
+        "name": "Albuterol Inhaler",
+        "dose": "90mcg",
+        "frequency": "As needed",
+        "prescribedDate": "January 15, 2026",
+        "refillsAvailable": 3
+      },
+      {
+        "name": "Cetirizine",
+        "dose": "10mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 15, 2026",
+        "refillsAvailable": 0
+      }
+    ]
+  },
+  {
+    "id": "ch-3",
+    "name": "Sarah Johnson",
+    "reason": "Chronic migraine prophylaxis adherence monitoring.",
+    "demographics": "Female, 35 YO, 05/17/1990, MRN302329",
+    "dischargeDate": "1/25/26",
+    "languagePreference": "English",
+    "lastContactDate": "1/28/26",
+    "lastContactSummary": "Patient has not picked up topiramate; reports fear of side effects.",
+    "status": "Pending follow-up",
+    "lastModified": "10:15 AM",
+    "group": "ContactHistory",
+    "dateOfBirth": "May 17, 1990",
+    "phone": "(312) 555-0198",
+    "email": "sjohnson90@email.com",
+    "address": "2130 N Halsted St, Apt 3B, Chicago, IL 60614",
+    "dischargeInstructions": "Take topiramate 50 mg twice daily. Pick up prescription from pharmacy within 48 hours. Keep headache diary. Follow up with neurology in 4 weeks.",
+    "primaryDiagnosis": "Chronic migraine with aura, 12+ days per month. Tension-type headache. Mild depression.",
+    "careTeam": "Dr. David Park (Neurology), NP Emily Richards (Headache Center)",
+    "contactHistory": [
+      {
+        "date": "Jan 28, 2026",
+        "method": "phone",
+        "transcriptLink": true,
+        "transcriptSummary": "Patient has not picked up topiramate prescription. Reports fear of side effects after online research. Migraine frequency unchanged at 4/week. Pain level 7/10 during episodes.",
+        "pickedUpMedication": "No",
+        "takingAsPrescribed": {
+          "value": "No",
+          "positive": false
+        },
+        "sideEffects": "Not reported",
+        "painLevel": 7,
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
+        "notes": "Patient counseled on benefits vs risks of topiramate. Neurology callback scheduled.",
+        "reminderSet": "No"
+      }
+    ],
+    "medications": [
+      {
+        "name": "Topiramate",
+        "dose": "50mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "January 25, 2026",
+        "refillsAvailable": 3
+      },
+      {
+        "name": "Sumatriptan",
+        "dose": "100mg",
+        "frequency": "As needed for acute migraine",
+        "prescribedDate": "January 25, 2026",
+        "refillsAvailable": 2
+      },
+      {
+        "name": "Escitalopram",
+        "dose": "10mg",
+        "frequency": "Once daily",
+        "prescribedDate": "November 10, 2025",
+        "refillsAvailable": 5
+      }
+    ]
+  },
+  {
+    "id": "ch-4",
+    "name": "Robert Kim",
+    "reason": "GERD medication adjustment and symptom monitoring.",
+    "demographics": "Male, 56 YO, 03/08/1969, MRN302437",
+    "dischargeDate": "1/18/26",
+    "languagePreference": "English",
+    "lastContactDate": "1/20/26",
+    "lastContactSummary": "Patient taking omeprazole as prescribed; mild nausea side effect reported.",
+    "status": "Pending follow-up",
+    "lastModified": "2:45 PM",
+    "group": "ContactHistory",
+    "dateOfBirth": "March 8, 1969",
+    "phone": "(415) 555-0342",
+    "email": "rkim69@email.com",
+    "address": "880 Bush St, Apt 5A, San Francisco, CA 94108",
+    "dischargeInstructions": "Take omeprazole 40 mg 30 minutes before breakfast. Avoid spicy foods, caffeine, and alcohol. Elevate head of bed. Follow up in 4 weeks for symptom reassessment.",
+    "primaryDiagnosis": "Gastroesophageal reflux disease (GERD), persistent. Mild Barrett's esophagus under surveillance. Insomnia.",
+    "careTeam": "Dr. Helen Chang (Gastroenterology), NP Rachel Adams (Internal Medicine)",
+    "contactHistory": [
+      {
+        "date": "Jan 20, 2026",
+        "method": "phone",
+        "transcriptLink": true,
+        "transcriptSummary": "Patient reports taking omeprazole as prescribed but experiencing mild nausea. Heartburn reduced from daily to 2–3 times per week. Abdominal discomfort noted.",
+        "pickedUpMedication": "Yes",
+        "takingAsPrescribed": {
+          "value": "Yes",
+          "positive": true
+        },
+        "sideEffects": "Mild nausea reported",
+        "painLevel": 4,
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
+        "notes": "Side effects documented. GI follow-up scheduled for reassessment and possible dose adjustment.",
+        "reminderSet": "Yes"
+      }
+    ],
+    "medications": [
+      {
+        "name": "Omeprazole",
+        "dose": "40mg",
+        "frequency": "Once daily before breakfast",
+        "prescribedDate": "January 18, 2026",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Famotidine",
+        "dose": "20mg",
+        "frequency": "As needed",
+        "prescribedDate": "January 18, 2026",
+        "refillsAvailable": 0
+      },
+      {
+        "name": "Melatonin",
+        "dose": "3mg",
+        "frequency": "Once daily at bedtime",
+        "prescribedDate": "December 5, 2025",
+        "refillsAvailable": 0
+      }
+    ]
+  },
+  {
+    "id": "ch-5",
+    "name": "Linda Nguyen",
+    "reason": "Post-partum thyroid function check and medication adherence.",
+    "demographics": "Female, 32 YO, 11/03/1993, MRN302545",
+    "dischargeDate": "1/12/26",
+    "languagePreference": "English",
+    "lastContactDate": "1/15/26",
+    "lastContactSummary": "Patient fully adherent; energy improving and labs scheduled.",
+    "status": "Reviewed",
+    "lastModified": "9:00 AM",
+    "group": "ContactHistory",
+    "dateOfBirth": "November 3, 1993",
+    "phone": "(650) 555-0477",
+    "email": "lnguyen93@email.com",
+    "address": "4205 El Camino Real, Palo Alto, CA 94306",
+    "dischargeInstructions": "Continue levothyroxine 50 mcg daily on empty stomach, 30 min before breakfast. TSH recheck in 6 weeks. Continue prenatal vitamins. Follow up with endocrinology.",
+    "primaryDiagnosis": "Post-partum hypothyroidism. Iron deficiency anemia, resolving. No other chronic conditions.",
+    "careTeam": "Dr. Anjali Sharma (Endocrinology), OB/GYN Dr. Lisa Park (Obstetrics)",
+    "contactHistory": [
+      {
+        "date": "Jan 15, 2026",
+        "method": "phone",
+        "transcriptLink": true,
+        "transcriptSummary": "Patient taking all medications correctly. Energy levels improving. No side effects reported. TSH lab draw scheduled for February 15.",
+        "pickedUpMedication": "Yes",
+        "takingAsPrescribed": {
+          "value": "Yes",
+          "positive": true
+        },
+        "sideEffects": "Not reported",
+        "painLevel": 1,
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
+        "notes": "Call completed, 3 min duration. Patient fully adherent and feeling better.",
+        "reminderSet": "Yes"
+      }
+    ],
+    "medications": [
+      {
+        "name": "Levothyroxine",
+        "dose": "50mcg",
+        "frequency": "Once daily on empty stomach",
+        "prescribedDate": "January 8, 2026",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Ferrous Sulfate",
+        "dose": "325mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 8, 2026",
+        "refillsAvailable": 3
+      },
+      {
+        "name": "Prenatal Vitamin",
+        "dose": "1 tablet",
+        "frequency": "Once daily",
+        "prescribedDate": "June 1, 2025",
+        "refillsAvailable": 0
+      }
+    ]
+  },
+  {
+    "id": "ch-6",
+    "name": "James Wilson",
+    "reason": "Chronic back pain management with multiple medication adjustments.",
+    "demographics": "Male, 62 YO, 09/14/1963, MRN302658",
+    "dischargeDate": "12/17/25",
+    "languagePreference": "English",
+    "lastContactDate": "12/20/25",
+    "lastContactSummary": "Severe pain despite gabapentin; inconsistent dosing due to drowsiness.",
+    "status": "Pending follow-up",
+    "lastModified": "11:30 AM",
+    "group": "ContactHistory",
+    "dateOfBirth": "September 14, 1963",
+    "phone": "(206) 555-0613",
+    "email": "jwilson63@email.com",
+    "address": "1520 12th Ave, Seattle, WA 98122",
+    "dischargeInstructions": "Gabapentin 300 mg three times daily. Cyclobenzaprine 10 mg at bedtime as needed. Physical therapy 3x/week. Avoid heavy lifting. Follow up with pain clinic in 2 weeks.",
+    "primaryDiagnosis": "Chronic lumbar radiculopathy. Lumbar spinal stenosis (L4-L5). Mild depression secondary to chronic pain. Prediabetes.",
+    "careTeam": "Dr. Kenneth Lee (Pain Management), PT Sarah Brooks (Physical Therapy), NP Daniel Brooks (Primary Care)",
+    "contactHistory": [
+      {
+        "date": "Dec 20, 2025",
+        "method": "phone",
+        "transcriptLink": true,
+        "transcriptSummary": "Patient reports severe pain 8/10 despite gabapentin. Taking doses inconsistently due to drowsiness. Reports burning sensation in feet. Missed 3 of 6 scheduled PT sessions due to pain.",
+        "pickedUpMedication": "Yes",
+        "takingAsPrescribed": {
+          "value": "No",
+          "positive": false
+        },
+        "sideEffects": "Drowsiness and burning feet reported",
+        "painLevel": 8,
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
+        "notes": "Escalated to pain clinic for medication re-evaluation. PT schedule adjusted to accommodate symptoms.",
+        "reminderSet": "No"
+      }
+    ],
+    "medications": [
+      {
+        "name": "Gabapentin",
+        "dose": "300mg",
+        "frequency": "Three times daily",
+        "prescribedDate": "December 10, 2025",
+        "refillsAvailable": 3
+      },
+      {
+        "name": "Cyclobenzaprine",
+        "dose": "10mg",
+        "frequency": "At bedtime as needed",
+        "prescribedDate": "December 10, 2025",
+        "refillsAvailable": 1
+      },
+      {
+        "name": "Duloxetine",
+        "dose": "30mg",
+        "frequency": "Once daily",
+        "prescribedDate": "December 10, 2025",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Acetaminophen",
+        "dose": "500mg",
+        "frequency": "As needed",
+        "prescribedDate": "December 10, 2025",
+        "refillsAvailable": 0
+      }
+    ]
+  },
+  {
+    "id": "ch-7",
+    "name": "Maria Garcia",
+    "reason": "Diabetes medication non-pickup after insurance formulary change.",
+    "demographics": "Female, 49 YO, 07/22/1976, MRN302762",
+    "dischargeDate": "12/8/25",
+    "languagePreference": "Spanish",
+    "lastContactDate": "12/10/25",
+    "lastContactSummary": "Has not picked up diabetes medications; insurance cost barrier identified.",
+    "status": "Pending follow-up",
+    "lastModified": "4:20 PM",
+    "group": "ContactHistory",
+    "dateOfBirth": "July 22, 1976",
+    "phone": "(713) 555-0829",
+    "email": "mgarcia76@email.com",
+    "address": "3401 Harrisburg Blvd, Houston, TX 77003",
+    "dischargeInstructions": "Continue metformin 1000 mg twice daily with meals. Glipizide 5 mg before breakfast. Monitor fasting glucose daily. Follow up with endocrinology in 2 weeks.",
+    "primaryDiagnosis": "Type 2 diabetes mellitus, uncontrolled (A1C 9.1%). Obesity (BMI 34). Mild hypertension.",
+    "careTeam": "Dr. Maria Gonzalez (Endocrinology), SW Ana Gutierrez (Social Work), PharmD Amir Patel (Community Pharmacy)",
+    "contactHistory": [
+      {
+        "date": "Dec 10, 2025",
+        "method": "phone",
+        "transcriptLink": true,
+        "transcriptSummary": "Patient has not picked up either diabetes medication due to insurance formulary change. Cost barrier identified. Glucose readings 250–320 mg/dL. Social worker referral initiated for patient assistance program.",
+        "pickedUpMedication": "No",
+        "takingAsPrescribed": {
+          "value": "No",
+          "positive": false
+        },
+        "sideEffects": "Not reported",
+        "painLevel": 5,
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
+        "notes": "Prior authorization initiated for both medications. Social worker to assist with patient assistance program application.",
+        "reminderSet": "No"
+      }
+    ],
+    "medications": [
+      {
+        "name": "Metformin",
+        "dose": "1000mg",
+        "frequency": "Twice daily with meals",
+        "prescribedDate": "November 28, 2025",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Glipizide",
+        "dose": "5mg",
+        "frequency": "Once daily before breakfast",
+        "prescribedDate": "November 28, 2025",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Lisinopril",
+        "dose": "10mg",
+        "frequency": "Once daily",
+        "prescribedDate": "November 28, 2025",
+        "refillsAvailable": 5
+      }
+    ]
+  },
+  {
+    "id": "ch-8",
+    "name": "David Thompson",
+    "reason": "Blood pressure medication stabilization after dose adjustment.",
+    "demographics": "Male, 55 YO, 12/19/1970, MRN302876",
+    "dischargeDate": "11/22/25",
+    "languagePreference": "English",
+    "lastContactDate": "11/25/25",
+    "lastContactSummary": "BP well controlled on new dose; fully adherent.",
+    "status": "Reviewed",
+    "lastModified": "8:00 AM",
+    "group": "ContactHistory",
+    "dateOfBirth": "December 19, 1970",
+    "phone": "(503) 555-0156",
+    "email": "dthompson70@email.com",
+    "address": "7845 SE Division St, Portland, OR 97206",
+    "dischargeInstructions": "Continue amlodipine 10 mg daily and chlorthalidone 25 mg daily. Monitor BP twice daily. Low-sodium diet. Follow up with PCP in 30 days.",
+    "primaryDiagnosis": "Essential hypertension, Stage 2, well-controlled after recent dose adjustment. Mild hyperlipidemia. Vitamin D deficiency.",
+    "careTeam": "Dr. Karen Mitchell (Internal Medicine), PharmD Amir Patel (Community Pharmacy)",
+    "contactHistory": [
+      {
+        "date": "Nov 25, 2025",
+        "method": "phone",
+        "transcriptLink": true,
+        "transcriptSummary": "Patient reports BP readings averaging 128/82 on adjusted dose. No dizziness or swelling. Taking both medications consistently at same time each morning.",
+        "pickedUpMedication": "Yes",
+        "takingAsPrescribed": {
+          "value": "Yes",
+          "positive": true
+        },
+        "sideEffects": "Not reported",
+        "painLevel": 3,
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
+        "notes": "Call completed, 4 min duration. BP well controlled. Routine PCP follow-up only.",
+        "reminderSet": "Yes"
+      }
+    ],
+    "medications": [
+      {
+        "name": "Amlodipine",
+        "dose": "10mg",
+        "frequency": "Once daily",
+        "prescribedDate": "November 15, 2025",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Chlorthalidone",
+        "dose": "25mg",
+        "frequency": "Once daily",
+        "prescribedDate": "November 15, 2025",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Vitamin D3",
+        "dose": "2000 IU",
+        "frequency": "Once daily",
+        "prescribedDate": "October 1, 2025",
+        "refillsAvailable": 0
       }
     ]
   }

@@ -42,6 +42,7 @@ export interface MedicationAdherenceWorklistItem {
     sideEffects?: string;
     painLevel?: number;
     followUpNeeded?: { value: string; positive: boolean };
+    reminderSet?: string;
     notes?: string;
   }[];
   medications?: {
@@ -49,6 +50,7 @@ export interface MedicationAdherenceWorklistItem {
     dose: string;
     frequency: string;
     prescribedDate: string;
+    refillsAvailable?: number;
   }[];
 }
 

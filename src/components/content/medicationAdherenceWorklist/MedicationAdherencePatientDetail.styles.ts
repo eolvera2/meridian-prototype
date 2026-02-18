@@ -296,19 +296,30 @@ export const usePatientDetailStyles = makeStyles({
 
   // ── Medication grid ──
   medicationGrid: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "12px 24px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
   },
   medicationCard: {
     display: "flex",
-    alignItems: "baseline",
-    gap: "8px",
-    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "12px",
     padding: "10px 12px",
     borderRadius: "6px",
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     backgroundColor: tokens.colorNeutralBackground1,
+  },
+  medicationInfo: {
+    display: "flex",
+    alignItems: "baseline",
+    gap: "8px",
+    flexWrap: "wrap",
+    flex: 1,
+    minWidth: 0,
+  },
+  medicationRefill: {
+    flexShrink: 0,
   },
   medicationName: {
     fontSize: "13px",
