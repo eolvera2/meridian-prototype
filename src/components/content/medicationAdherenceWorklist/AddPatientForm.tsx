@@ -6,6 +6,7 @@ import {
   Textarea,
   Dropdown,
   Option,
+  Checkbox,
 } from "@fluentui/react-components";
 import {
   Dismiss24Regular,
@@ -17,7 +18,8 @@ import {
   Pill20Regular,
 } from "@fluentui/react-icons";
 import { useAddPatientFormStyles } from "./AddPatientForm.styles";
-import type { MedicationAdherenceWorklistItem } from "./MedicationAdherenceWorklist.types";
+import type { MedicationAdherenceWorklistItem, CallType } from "./MedicationAdherenceWorklist.types";
+import { CALL_TYPE_LABELS } from "./MedicationAdherenceWorklist.types";
 
 interface MedicationEntry {
   name: string;
@@ -32,6 +34,9 @@ interface AddPatientFormProps {
 
 export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel }) => {
   const styles = useAddPatientFormStyles();
+
+  // Call type
+  const [callType, setCallType] = useState<CallType>("medication-adherence");
 
   // Patient info
   const [firstName, setFirstName] = useState("");
@@ -59,6 +64,21 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
   const [medications, setMedications] = useState<MedicationEntry[]>([
     { name: "", dose: "", frequency: "" },
   ]);
+
+  // Patient Intake fields
+  const [allergies, setAllergies] = useState("");
+  const [medicalHistory, setMedicalHistory] = useState("");
+  const [surgicalHistory, setSurgicalHistory] = useState("");
+  const [apptDate, setApptDate] = useState("");
+  const [apptTime, setApptTime] = useState("");
+  const [apptProvider, setApptProvider] = useState("");
+  const [apptLocation, setApptLocation] = useState("");
+
+  // Hypertension fields
+  const [lastSystolic, setLastSystolic] = useState("");
+  const [lastDiastolic, setLastDiastolic] = useState("");
+  const [homeMonitor, setHomeMonitor] = useState(false);
+  const [lifestyleNotes, setLifestyleNotes] = useState("");
 
   const addMedication = useCallback(() => {
     setMedications((prev) => [...prev, { name: "", dose: "", frequency: "" }]);
@@ -105,6 +125,7 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
     const newPatient: MedicationAdherenceWorklistItem = {
       id: `ma-new-${Date.now()}`,
       name: `${firstName} ${lastName}`.trim(),
+      callType,
       reason,
       demographics,
       dischargeDate: dischargeFmt,
@@ -129,6 +150,28 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
           frequency: m.frequency,
           prescribedDate: todayShort,
         })),
+      ...(callType === "patient-intake" && {
+        allergies: allergies ? allergies.split(",").map((a) => a.trim()).filter(Boolean) : [],
+        medicalHistory,
+        surgicalHistory,
+        upcomingAppointment: apptDate ? {
+          date: apptDate,
+          time: apptTime,
+          provider: apptProvider,
+          type: "Follow-up",
+          location: apptLocation,
+        } : undefined,
+      }),
+      ...(callType === "hypertension-management" && {
+        bpReadings: lastSystolic && lastDiastolic ? [{
+          date: todayShort,
+          systolic: Number(lastSystolic),
+          diastolic: Number(lastDiastolic),
+          atGoal: Number(lastSystolic) < 130 && Number(lastDiastolic) < 80,
+        }] : [],
+        homeMonitor,
+        lifestyleNotes,
+      }),
     };
 
     onSave(newPatient);
@@ -150,6 +193,28 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
 
         {/* Body */}
         <div className={styles.body}>
+          {/* Call Type Selector */}
+          <div>
+            <div className={styles.sectionTitle}>
+              Call Type
+            </div>
+            <div className={styles.fieldGrid}>
+              <div className={styles.fieldFullWidth}>
+                <Label htmlFor="callType" required>Call Type</Label>
+                <Dropdown
+                  id="callType"
+                  value={CALL_TYPE_LABELS[callType]}
+                  onOptionSelect={(_, d) => setCallType((d.optionValue ?? "medication-adherence") as CallType)}
+                  style={{ width: "100%" }}
+                >
+                  <Option value="medication-adherence">{CALL_TYPE_LABELS["medication-adherence"]}</Option>
+                  <Option value="patient-intake">{CALL_TYPE_LABELS["patient-intake"]}</Option>
+                  <Option value="hypertension-management">{CALL_TYPE_LABELS["hypertension-management"]}</Option>
+                </Dropdown>
+              </div>
+            </div>
+          </div>
+
           {/* Patient Information */}
           <div>
             <div className={styles.sectionTitle}>
@@ -253,7 +318,8 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
             </div>
           </div>
 
-          {/* Medications */}
+          {/* Medications — show only for Med Adherence */}
+          {callType === "medication-adherence" && (
           <div>
             <div className={styles.sectionTitle}>
               <Pill20Regular className={styles.sectionIcon} />
@@ -310,6 +376,78 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
               </Button>
             </div>
           </div>
+          )}
+
+          {/* Patient Intake sections */}
+          {callType === "patient-intake" && (
+          <div>
+            <div className={styles.sectionTitle}>
+              <Stethoscope20Regular className={styles.sectionIcon} />
+              Intake Details
+            </div>
+            <div className={styles.fieldGrid}>
+              <div className={styles.fieldFullWidth}>
+                <Label htmlFor="allergies">Allergies (comma-separated)</Label>
+                <Input id="allergies" value={allergies} onChange={(_, d) => setAllergies(d.value)} placeholder="e.g. Penicillin, Sulfa" style={{ width: "100%" }} />
+              </div>
+              <div className={styles.fieldFullWidth}>
+                <Label htmlFor="medicalHistory">Medical History</Label>
+                <Textarea id="medicalHistory" value={medicalHistory} onChange={(_, d) => setMedicalHistory(d.value)} placeholder="Relevant medical history" resize="vertical" style={{ width: "100%" }} />
+              </div>
+              <div className={styles.fieldFullWidth}>
+                <Label htmlFor="surgicalHistory">Surgical History</Label>
+                <Textarea id="surgicalHistory" value={surgicalHistory} onChange={(_, d) => setSurgicalHistory(d.value)} placeholder="Previous surgeries" resize="vertical" style={{ width: "100%" }} />
+              </div>
+              <div>
+                <Label htmlFor="apptDate">Upcoming Appointment Date</Label>
+                <Input id="apptDate" type="date" value={apptDate} onChange={(_, d) => setApptDate(d.value)} style={{ width: "100%" }} />
+              </div>
+              <div>
+                <Label htmlFor="apptTime">Appointment Time</Label>
+                <Input id="apptTime" value={apptTime} onChange={(_, d) => setApptTime(d.value)} placeholder="e.g. 10:00 AM" style={{ width: "100%" }} />
+              </div>
+              <div>
+                <Label htmlFor="apptProvider">Provider</Label>
+                <Input id="apptProvider" value={apptProvider} onChange={(_, d) => setApptProvider(d.value)} placeholder="e.g. Dr. Smith" style={{ width: "100%" }} />
+              </div>
+              <div>
+                <Label htmlFor="apptLocation">Location</Label>
+                <Input id="apptLocation" value={apptLocation} onChange={(_, d) => setApptLocation(d.value)} placeholder="e.g. Main Campus, Bldg A" style={{ width: "100%" }} />
+              </div>
+            </div>
+          </div>
+          )}
+
+          {/* Hypertension fields */}
+          {callType === "hypertension-management" && (
+          <div>
+            <div className={styles.sectionTitle}>
+              <Stethoscope20Regular className={styles.sectionIcon} />
+              Blood Pressure &amp; Lifestyle
+            </div>
+            <div className={styles.fieldGrid}>
+              <div>
+                <Label htmlFor="lastSystolic">Last Systolic (mmHg)</Label>
+                <Input id="lastSystolic" type="number" value={lastSystolic} onChange={(_, d) => setLastSystolic(d.value)} placeholder="e.g. 145" style={{ width: "100%" }} />
+              </div>
+              <div>
+                <Label htmlFor="lastDiastolic">Last Diastolic (mmHg)</Label>
+                <Input id="lastDiastolic" type="number" value={lastDiastolic} onChange={(_, d) => setLastDiastolic(d.value)} placeholder="e.g. 92" style={{ width: "100%" }} />
+              </div>
+              <div className={styles.fieldFullWidth}>
+                <Checkbox
+                  checked={homeMonitor}
+                  onChange={(_, d) => setHomeMonitor(!!d.checked)}
+                  label="Patient has a home BP monitor"
+                />
+              </div>
+              <div className={styles.fieldFullWidth}>
+                <Label htmlFor="lifestyleNotes">Lifestyle Notes</Label>
+                <Textarea id="lifestyleNotes" value={lifestyleNotes} onChange={(_, d) => setLifestyleNotes(d.value)} placeholder="Diet, exercise, smoking status…" resize="vertical" style={{ width: "100%" }} />
+              </div>
+            </div>
+          </div>
+          )}
         </div>
 
         {/* Footer */}

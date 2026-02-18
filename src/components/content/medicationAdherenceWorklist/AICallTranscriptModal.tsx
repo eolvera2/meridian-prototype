@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { Button, Card, mergeClasses } from "@fluentui/react-components";
 import { Dismiss24Regular, Bot20Regular, Person20Regular } from "@fluentui/react-icons";
 import { useAICallTranscriptModalStyles } from "./AICallTranscriptModal.styles";
+import type { CallType } from "./MedicationAdherenceWorklist.types";
 
 interface TranscriptMessage {
   speaker: "AI System" | "Patient";
@@ -123,13 +124,53 @@ const TRANSCRIPT: TranscriptMessage[] = [
   },
 ];
 
+const INTAKE_TRANSCRIPT: TranscriptMessage[] = [
+  { speaker: "AI System", initials: "AI", timestamp: "9:00 AM", content: "Hello, this is Ava, an AI assistant from Contoso Hospital. I'm calling to help you prepare for your upcoming appointment. May I speak with the patient, please?" },
+  { speaker: "Patient", initials: "GM", timestamp: "9:00 AM", content: "Yes, this is George speaking." },
+  { speaker: "AI System", initials: "AI", timestamp: "9:00 AM", content: "Thank you, George. I'd like to confirm some details and collect information ahead of your visit. First, can you confirm your date of birth for verification?" },
+  { speaker: "Patient", initials: "GM", timestamp: "9:01 AM", content: "Sure, March 12, 1958." },
+  { speaker: "AI System", initials: "AI", timestamp: "9:01 AM", content: "Thank you. Do you have any known allergies to medications, foods, or environmental substances?", event: "Identity verified" },
+  { speaker: "Patient", initials: "GM", timestamp: "9:01 AM", content: "Yes, I'm allergic to Penicillin — I get hives. And I have a mild allergy to shellfish.", event: "Allergies confirmed: Penicillin, Shellfish" },
+  { speaker: "AI System", initials: "AI", timestamp: "9:02 AM", content: "Thank you for sharing that. Now, could you tell me about your medical history? Any ongoing conditions or past diagnoses?" },
+  { speaker: "Patient", initials: "GM", timestamp: "9:02 AM", content: "I have Type 2 diabetes, diagnosed about ten years ago. I also have high blood pressure. I had my appendix removed when I was 25.", event: "Medical history collected" },
+  { speaker: "AI System", initials: "AI", timestamp: "9:03 AM", content: "I've noted that. Are you currently experiencing any symptoms you'd like to discuss at your appointment?" },
+  { speaker: "Patient", initials: "GM", timestamp: "9:03 AM", content: "I've been having some numbness in my feet recently. It's mostly at night.", event: "Symptoms reported: Numbness in feet" },
+  { speaker: "AI System", initials: "AI", timestamp: "9:03 AM", content: "I've recorded that symptom. Our clinical team will review this before your visit. Is there anything else you'd like to mention?" },
+  { speaker: "Patient", initials: "GM", timestamp: "9:04 AM", content: "No, I think that covers everything. Thank you." },
+  { speaker: "AI System", initials: "AI", timestamp: "9:04 AM", content: "You're all set, George. Your appointment is confirmed for January 20, 2025 at 10:00 AM with Dr. Elaine Rivera at the Main Campus. Please arrive 15 minutes early. Have a great day!", event: "Intake complete" },
+];
+
+const HYPERTENSION_TRANSCRIPT: TranscriptMessage[] = [
+  { speaker: "AI System", initials: "AI", timestamp: "2:00 PM", content: "Hello, this is Ava from Contoso Hospital calling about your blood pressure management. May I speak with Donna, please?" },
+  { speaker: "Patient", initials: "DF", timestamp: "2:00 PM", content: "Yes, this is Donna." },
+  { speaker: "AI System", initials: "AI", timestamp: "2:00 PM", content: "Thank you, Donna. I'm following up on your hypertension management. Have you been checking your blood pressure at home?" },
+  { speaker: "Patient", initials: "DF", timestamp: "2:01 PM", content: "Yes, I check it every morning. This morning it was 142 over 88.", event: "BP reading reported: 142/88" },
+  { speaker: "AI System", initials: "AI", timestamp: "2:01 PM", content: "Thank you for monitoring regularly. Your target is below 130/80. Are you taking your Lisinopril 20mg daily as prescribed?" },
+  { speaker: "Patient", initials: "DF", timestamp: "2:01 PM", content: "Yes, I've been taking it every morning with breakfast.", event: "Medication adherence: Yes" },
+  { speaker: "AI System", initials: "AI", timestamp: "2:02 PM", content: "Good to hear. Have you experienced any symptoms like headaches, dizziness, or shortness of breath?" },
+  { speaker: "Patient", initials: "DF", timestamp: "2:02 PM", content: "I've had a mild headache the past couple of days, but nothing severe.", event: "Symptoms: Mild headaches" },
+  { speaker: "AI System", initials: "AI", timestamp: "2:02 PM", content: "I'll note that for your care team. How has your diet and exercise been? Have you been able to reduce sodium intake?" },
+  { speaker: "Patient", initials: "DF", timestamp: "2:03 PM", content: "I've been trying. I cut out a lot of processed food, and I walk 30 minutes most days." },
+  { speaker: "AI System", initials: "AI", timestamp: "2:03 PM", content: "That's excellent progress. I'll share this update with Dr. Kumar. Since your readings are still above target, the team may want to adjust your treatment. Would you like a follow-up call next week?" },
+  { speaker: "Patient", initials: "DF", timestamp: "2:03 PM", content: "Yes, that would be helpful. Thank you." },
+  { speaker: "AI System", initials: "AI", timestamp: "2:04 PM", content: "Great, I'll schedule that. Keep up the great work with your lifestyle changes, Donna. Have a wonderful day!", event: "Follow-up scheduled" },
+];
+
+const TRANSCRIPTS: Record<string, TranscriptMessage[]> = {
+  "medication-adherence": TRANSCRIPT,
+  "patient-intake": INTAKE_TRANSCRIPT,
+  "hypertension-management": HYPERTENSION_TRANSCRIPT,
+};
+
 interface AICallTranscriptModalProps {
   onClose: () => void;
+  callType?: CallType;
 }
 
-export const AICallTranscriptModal: React.FC<AICallTranscriptModalProps> = ({ onClose }) => {
+export const AICallTranscriptModal: React.FC<AICallTranscriptModalProps> = ({ onClose, callType }) => {
   const styles = useAICallTranscriptModalStyles();
   const bodyRef = useRef<HTMLDivElement>(null);
+  const messages = TRANSCRIPTS[callType || "medication-adherence"] || TRANSCRIPT;
 
   useEffect(() => {
     bodyRef.current?.scrollTo(0, 0);
@@ -151,7 +192,7 @@ export const AICallTranscriptModal: React.FC<AICallTranscriptModalProps> = ({ on
 
         {/* Body */}
         <div className={styles.body} ref={bodyRef}>
-          {TRANSCRIPT.map((msg, idx) => (
+          {messages.map((msg, idx) => (
             <Card key={idx} className={styles.messageCard} appearance="filled">
               <div className={styles.messageHeader}>
                 <div className={styles.speakerSection}>

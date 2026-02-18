@@ -13,7 +13,6 @@ import {
   Checkbox,
   Divider,
   Tooltip,
-  mergeClasses,
 } from "@fluentui/react-components";
 import type {
   SelectTabEvent,
@@ -37,7 +36,9 @@ import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWork
 import type {
   MedicationAdherenceWorklistProps,
   MedicationAdherenceSortOrder,
+  CallType,
 } from "./MedicationAdherenceWorklist.types";
+import { CALL_TYPE_LABELS } from "./MedicationAdherenceWorklist.types";
 import { useI18n } from "../../../i18n/I18nContext";
 import { AddPatientForm } from "./AddPatientForm";
 
@@ -312,7 +313,11 @@ export const MedicationAdherenceWorklist: React.FC<
                   <div className={styles.listItemHeader}>
                     <div className={styles.patientName}>{patient.name}</div>
                     <div className={styles.headerActions}>
-                      {patient.status ? (
+                      {patient.callType ? (
+                        <div className={`${styles.callTypePill} ${styles[`callType_${patient.callType.replace(/-/g, "_")}` as keyof typeof styles] || ""}`}>
+                          {CALL_TYPE_LABELS[patient.callType as CallType] || patient.callType}
+                        </div>
+                      ) : patient.status ? (
                         <div className={styles.statusPill}>{patient.status}</div>
                       ) : null}
                       <button

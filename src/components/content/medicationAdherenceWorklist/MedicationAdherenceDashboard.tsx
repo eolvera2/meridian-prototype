@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Dropdown,
   Option,
@@ -21,8 +21,6 @@ import {
   ChevronUp16Regular,
   ArrowLeft16Regular,
   ArrowRight16Regular,
-  ArrowImport16Regular,
-  ArrowExportUp16Regular,
   ShoppingBagCheckmark20Regular,
   ShoppingBagDismiss20Filled,
   ClipboardCheckmark20Regular,
@@ -36,7 +34,9 @@ import {
 } from "@fluentui/react-icons";
 import { useDashboardStyles } from "./MedicationAdherenceDashboard.styles";
 import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
-import type { CallRecordStatus, ContactRecord } from "./MedicationAdherenceWorklistContext";
+import type { CallRecordStatus } from "./MedicationAdherenceWorklistContext";
+import type { CallType } from "./MedicationAdherenceWorklist.types";
+import { CALL_TYPE_LABELS } from "./MedicationAdherenceWorklist.types";
 
 // ── Data Types ──────────────────────────────────────────────
 
@@ -223,6 +223,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   const [chartsExpanded, setChartsExpanded] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
+  const [callTypeFilter, setCallTypeFilter] = useState<"all" | CallType>("all");
   const { activeCallRecords, setSelectedPatientId, contactRecords } = useMedicationAdherenceWorklistContext();
 
   const handleTimeRangeChange = (_: unknown, data: OptionOnSelectData) => {
@@ -243,8 +244,8 @@ export const MedicationAdherenceDashboard: React.FC = () => {
 
   // Contact history
   const filteredByTime = useMemo(
-    () => contactRecords.filter((r) => r.daysAgo <= Number(timeRange)),
-    [timeRange, contactRecords]
+    () => contactRecords.filter((r) => r.daysAgo <= Number(timeRange) && (callTypeFilter === "all" || r.callType === callTypeFilter)),
+    [timeRange, contactRecords, callTypeFilter]
   );
   const needsReviewCount = filteredByTime.filter((r) => !r.reviewed).length;
   const inProgressCount = activeCallRecords.filter((r) => r.status === "in-progress").length;
@@ -254,17 +255,18 @@ export const MedicationAdherenceDashboard: React.FC = () => {
 
   // Combine active call records with displayed records for pagination
   const allTableRecords = useMemo(() => {
+    const typeFiltered = callTypeFilter === "all" ? activeCallRecords : activeCallRecords.filter((r) => r.callType === callTypeFilter);
     const filteredActive = statusFilter === "needs-review"
-      ? activeCallRecords.filter((r) => r.status === "needs-review")
+      ? typeFiltered.filter((r) => r.status === "needs-review")
       : statusFilter === "in-progress"
-        ? activeCallRecords.filter((r) => r.status === "in-progress")
-        : activeCallRecords;
+        ? typeFiltered.filter((r) => r.status === "in-progress")
+        : typeFiltered;
     const activeRows = filteredActive.map((r) => ({ type: "active" as const, record: r }));
     const historyRows = statusFilter === "in-progress"
       ? []
       : displayedRecords.map((r) => ({ type: "history" as const, record: r }));
     return [...activeRows, ...historyRows];
-  }, [activeCallRecords, displayedRecords, statusFilter]);
+  }, [activeCallRecords, displayedRecords, statusFilter, callTypeFilter]);
 
   const totalPages = Math.max(1, Math.ceil(allTableRecords.length / PAGE_SIZE));
   const paginatedRecords = allTableRecords.slice(
@@ -377,9 +379,9 @@ export const MedicationAdherenceDashboard: React.FC = () => {
       <div className={styles.headerRow}>
         <div className={styles.headerLeft}>
           <div>
-            <div className={styles.historyTitle}>Medication Adherence Dashboard</div>
+            <div className={styles.historyTitle}>Care Coordination Dashboard</div>
             <div className={styles.historySubtitle}>
-              Monitor patient outreach and medication compliance
+              Monitor patient outreach and care coordination activities
             </div>
           </div>
         </div>
@@ -396,6 +398,21 @@ export const MedicationAdherenceDashboard: React.FC = () => {
               <Option value="7">Last 7 days</Option>
               <Option value="30">Last 30 days</Option>
               <Option value="90">Last 90 days</Option>
+            </Dropdown>
+          </div>
+
+          <div className={styles.filterGroup}>
+            <span className={styles.filterLabel}>Call Type</span>
+            <Dropdown
+              value={callTypeFilter === "all" ? "All Types" : CALL_TYPE_LABELS[callTypeFilter]}
+              selectedOptions={[callTypeFilter]}
+              onOptionSelect={(_, data) => { setCallTypeFilter((data.optionValue ?? "all") as "all" | CallType); setCurrentPage(1); }}
+              style={{ minWidth: "150px" }}
+            >
+              <Option value="all">All Types</Option>
+              <Option value="medication-adherence">{CALL_TYPE_LABELS["medication-adherence"]}</Option>
+              <Option value="patient-intake">{CALL_TYPE_LABELS["patient-intake"]}</Option>
+              <Option value="hypertension-management">{CALL_TYPE_LABELS["hypertension-management"]}</Option>
             </Dropdown>
           </div>
 
@@ -639,6 +656,19 @@ export const MedicationAdherenceDashboard: React.FC = () => {
               <Option value="needs-review">Needs Review</Option>
             </Dropdown>
           </div>
+          <div className={styles.historyFilterGroup}>
+            <span className={styles.filterLabel}>Call Type</span>
+            <Dropdown
+              value={callTypeFilter === "all" ? "All Types" : CALL_TYPE_LABELS[callTypeFilter]}
+              selectedOptions={[callTypeFilter]}
+              onOptionSelect={(_, data) => { setCallTypeFilter((data.optionValue ?? "all") as "all" | CallType); setCurrentPage(1); }}
+            >
+              <Option value="all">All Types</Option>
+              <Option value="medication-adherence">{CALL_TYPE_LABELS["medication-adherence"]}</Option>
+              <Option value="patient-intake">{CALL_TYPE_LABELS["patient-intake"]}</Option>
+              <Option value="hypertension-management">{CALL_TYPE_LABELS["hypertension-management"]}</Option>
+            </Dropdown>
+          </div>
           <div className={styles.filterActions}>
 
             <Button
@@ -653,6 +683,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
           <thead>
             <tr>
               <th className={styles.tableHeader}>Patient Name</th>
+              <th className={styles.tableHeader}>Call Type</th>
               <th className={styles.tableHeader}>Contact Date</th>
               <th className={styles.tableHeader}>Outcomes</th>
               <th className={styles.tableHeader}>Follow-up</th>
@@ -662,7 +693,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
           <tbody>
             {paginatedRecords.length === 0 && (
               <tr>
-                <td colSpan={5} className={styles.emptyState}>
+                <td colSpan={6} className={styles.emptyState}>
                   No contact records found for the selected time range.
                 </td>
               </tr>
@@ -684,6 +715,11 @@ export const MedicationAdherenceDashboard: React.FC = () => {
                       </span>
                     </td>
                     <td className={styles.tableCell}>
+                      <span className={`${styles.callTypePillSmall} ${styles[`callType_${(record.callType || "medication-adherence").replace(/-/g, "_")}` as keyof typeof styles] || ""}`}>
+                        {CALL_TYPE_LABELS[(record.callType || "medication-adherence") as CallType]}
+                      </span>
+                    </td>
+                    <td className={styles.tableCell}>
                       {record.contactDate}
                       <br />
                       <span style={{ color: "var(--colorNeutralForeground3)", fontSize: "12px" }}>
@@ -698,6 +734,19 @@ export const MedicationAdherenceDashboard: React.FC = () => {
                             <NeutralOutcomeIndicator label="Taking as Rx" />
                             <NeutralOutcomeIndicator label="Side effects" />
                             <NeutralPainIndicator />
+                          </>
+                        ) : record.callType === "patient-intake" ? (
+                          <>
+                            <OutcomeIndicator label="Intake Complete" value={record.intakeCompleted ? "Yes" : "No"} isWarning={!record.intakeCompleted} />
+                            <OutcomeIndicator label="Allergies Confirmed" value={record.allergiesConfirmed ? "Yes" : "No"} isWarning={!record.allergiesConfirmed} />
+                            {record.redFlag && <OutcomeIndicator label="Red Flag" value="Yes" isWarning={true} />}
+                          </>
+                        ) : record.callType === "hypertension-management" ? (
+                          <>
+                            {record.bpReading && <OutcomeIndicator label="BP Reading" value={typeof record.bpReading === "string" ? record.bpReading : `${record.bpReading.systolic}/${record.bpReading.diastolic}`} isWarning={false} />}
+                            <OutcomeIndicator label="BP at Goal" value={record.bpAtGoal ? "Yes" : "No"} isWarning={!record.bpAtGoal} />
+                            <OutcomeIndicator label="Med Adherence" value={record.medAdherence ? "Yes" : "No"} isWarning={!record.medAdherence} />
+                            {record.escalated && <OutcomeIndicator label="Escalated" value="Yes" isWarning={true} />}
                           </>
                         ) : (
                           <>
@@ -746,6 +795,11 @@ export const MedicationAdherenceDashboard: React.FC = () => {
                       </span>
                     </td>
                     <td className={styles.tableCell}>
+                      <span className={`${styles.callTypePillSmall} ${styles[`callType_${(record.callType || "medication-adherence").replace(/-/g, "_")}` as keyof typeof styles] || ""}`}>
+                        {CALL_TYPE_LABELS[(record.callType || "medication-adherence") as CallType]}
+                      </span>
+                    </td>
+                    <td className={styles.tableCell}>
                       {record.contactDate}
                       <br />
                       <span style={{ color: "var(--colorNeutralForeground3)", fontSize: "12px" }}>
@@ -754,10 +808,27 @@ export const MedicationAdherenceDashboard: React.FC = () => {
                     </td>
                     <td className={styles.tableCell}>
                       <div className={styles.outcomesCell}>
-                        <OutcomeIndicator label="Picked up meds" value={record.pickedUpMeds} isWarning={record.pickedUpMeds !== "Yes"} />
-                        <OutcomeIndicator label="Taking as Rx" value={record.takingAsRx.value} isWarning={record.takingAsRx.warning} />
-                        <OutcomeIndicator label="Side effects" value={record.sideEffects.value} isWarning={record.sideEffects.warning} />
-                        <PainLevelIndicator level={record.painLevel} />
+                        {record.callType === "patient-intake" ? (
+                          <>
+                            <OutcomeIndicator label="Intake Complete" value={record.intakeCompleted ? "Yes" : "No"} isWarning={!record.intakeCompleted} />
+                            <OutcomeIndicator label="Allergies Confirmed" value={record.allergiesConfirmed ? "Yes" : "No"} isWarning={!record.allergiesConfirmed} />
+                            {record.redFlag && <OutcomeIndicator label="Red Flag" value="Yes" isWarning={true} />}
+                          </>
+                        ) : record.callType === "hypertension-management" ? (
+                          <>
+                            {record.bpReading && <OutcomeIndicator label="BP Reading" value={typeof record.bpReading === "string" ? record.bpReading : `${record.bpReading.systolic}/${record.bpReading.diastolic}`} isWarning={false} />}
+                            <OutcomeIndicator label="BP at Goal" value={record.bpAtGoal ? "Yes" : "No"} isWarning={!record.bpAtGoal} />
+                            <OutcomeIndicator label="Med Adherence" value={record.medAdherence ? "Yes" : "No"} isWarning={!record.medAdherence} />
+                            {record.escalated && <OutcomeIndicator label="Escalated" value="Yes" isWarning={true} />}
+                          </>
+                        ) : (
+                          <>
+                            <OutcomeIndicator label="Picked up meds" value={record.pickedUpMeds} isWarning={record.pickedUpMeds !== "Yes"} />
+                            <OutcomeIndicator label="Taking as Rx" value={record.takingAsRx.value} isWarning={record.takingAsRx.warning} />
+                            <OutcomeIndicator label="Side effects" value={record.sideEffects.value} isWarning={record.sideEffects.warning} />
+                            <PainLevelIndicator level={record.painLevel} />
+                          </>
+                        )}
                       </div>
                     </td>
                     <td className={styles.tableCell}>

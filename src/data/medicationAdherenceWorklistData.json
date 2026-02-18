@@ -61,7 +61,8 @@
         "prescribedDate": "February 1, 2026",
         "refillsAvailable": 0
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-2",
@@ -125,7 +126,8 @@
         "prescribedDate": "January 20, 2026",
         "refillsAvailable": 5
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-3",
@@ -189,7 +191,8 @@
         "prescribedDate": "January 15, 2026",
         "refillsAvailable": 5
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-4",
@@ -260,7 +263,8 @@
         "prescribedDate": "February 1, 2026",
         "refillsAvailable": 5
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-5",
@@ -317,7 +321,8 @@
         "prescribedDate": "January 25, 2026",
         "refillsAvailable": 5
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-6",
@@ -374,7 +379,8 @@
         "prescribedDate": "February 4, 2026",
         "refillsAvailable": 3
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-7",
@@ -438,7 +444,8 @@
         "prescribedDate": "January 18, 2026",
         "refillsAvailable": 0
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-8",
@@ -502,7 +509,8 @@
         "prescribedDate": "January 10, 2026",
         "refillsAvailable": 5
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-9",
@@ -559,7 +567,8 @@
         "prescribedDate": "January 22, 2026",
         "refillsAvailable": 5
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-10",
@@ -623,7 +632,8 @@
         "prescribedDate": "January 12, 2026",
         "refillsAvailable": 5
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-11",
@@ -680,7 +690,8 @@
         "prescribedDate": "December 15, 2025",
         "refillsAvailable": 5
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-12",
@@ -737,7 +748,8 @@
         "prescribedDate": "January 15, 2026",
         "refillsAvailable": 5
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-13",
@@ -801,7 +813,8 @@
         "prescribedDate": "January 10, 2026",
         "refillsAvailable": 3
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ma-14",
@@ -865,7 +878,8 @@
         "prescribedDate": "January 5, 2026",
         "refillsAvailable": 0
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ch-1",
@@ -929,7 +943,8 @@
         "prescribedDate": "February 1, 2026",
         "refillsAvailable": 0
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ch-2",
@@ -993,7 +1008,8 @@
         "prescribedDate": "January 15, 2026",
         "refillsAvailable": 0
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ch-3",
@@ -1057,7 +1073,8 @@
         "prescribedDate": "November 10, 2025",
         "refillsAvailable": 5
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ch-4",
@@ -1121,7 +1138,8 @@
         "prescribedDate": "December 5, 2025",
         "refillsAvailable": 0
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ch-5",
@@ -1185,7 +1203,8 @@
         "prescribedDate": "June 1, 2025",
         "refillsAvailable": 0
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ch-6",
@@ -1256,7 +1275,8 @@
         "prescribedDate": "December 10, 2025",
         "refillsAvailable": 0
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ch-7",
@@ -1320,7 +1340,8 @@
         "prescribedDate": "November 28, 2025",
         "refillsAvailable": 5
       }
-    ]
+    ],
+    "callType": "medication-adherence"
   },
   {
     "id": "ch-8",
@@ -1383,6 +1404,879 @@
         "frequency": "Once daily",
         "prescribedDate": "October 1, 2025",
         "refillsAvailable": 0
+      }
+    ],
+    "callType": "medication-adherence"
+  },
+  {
+    "id": "pi-1",
+    "callType": "patient-intake",
+    "name": "Alex Turner",
+    "reason": "Pre-visit intake for annual physical with Dr. Chen.",
+    "demographics": "Male, 42 YO, 07/14/1983, MRN400101",
+    "dischargeDate": "",
+    "languagePreference": "English",
+    "lastContactDate": "2/16/26",
+    "lastContactSummary": "Intake questionnaire completed. No red flags identified.",
+    "status": "Pending follow-up",
+    "lastModified": "9:15 AM",
+    "group": "Queue",
+    "dateOfBirth": "July 14, 1983",
+    "phone": "+14155551234",
+    "email": "aturner83@email.com",
+    "address": "220 Market St, San Francisco, CA 94105",
+    "primaryDiagnosis": "Hypertension, controlled. Hyperlipidemia.",
+    "careTeam": "Dr. Alan Chen (Primary Care), NP Maria Santos (Internal Medicine)",
+    "allergies": [
+      "Penicillin (rash)",
+      "Shellfish"
+    ],
+    "medicalHistory": "High blood pressure diagnosed 2020. High cholesterol diagnosed 2021. No hospitalizations.",
+    "surgicalHistory": "Gallbladder removal (cholecystectomy) 2016.",
+    "upcomingAppointment": {
+      "date": "Feb 20, 2026",
+      "time": "10:00 AM",
+      "provider": "Dr. Alan Chen",
+      "type": "Annual Physical",
+      "location": "Contoso Health Clinic - Main"
+    },
+    "contactHistory": [
+      {
+        "date": "Feb 16, 2026",
+        "method": "phone",
+        "callType": "patient-intake",
+        "transcriptLink": true,
+        "transcriptSummary": "Pre-visit intake completed. Patient confirmed medications lisinopril and atorvastatin unchanged. Penicillin allergy confirmed. No new symptoms or concerns. Annual physical appointment confirmed for Feb 20.",
+        "intakeCompleted": {
+          "value": "Yes",
+          "positive": true
+        },
+        "allergiesConfirmed": "Penicillin (rash), Shellfish",
+        "medicalHistoryCollected": {
+          "value": "Yes",
+          "positive": true
+        },
+        "symptomsReported": "None",
+        "redFlagIdentified": {
+          "value": "None",
+          "positive": true
+        },
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
+        "notes": "Routine intake call. Patient cooperative. No concerns for appointment."
+      }
+    ],
+    "medications": [
+      {
+        "name": "Lisinopril",
+        "dose": "10mg",
+        "frequency": "Once daily",
+        "prescribedDate": "June 15, 2025",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Atorvastatin",
+        "dose": "20mg",
+        "frequency": "Once daily at bedtime",
+        "prescribedDate": "June 15, 2025",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Daily Multivitamin",
+        "dose": "1 tablet",
+        "frequency": "Once daily",
+        "prescribedDate": "N/A",
+        "refillsAvailable": 0
+      }
+    ]
+  },
+  {
+    "id": "pi-2",
+    "callType": "patient-intake",
+    "name": "Jamie Patel",
+    "reason": "Pre-visit intake for headache evaluation with Dr. Patel.",
+    "demographics": "Female, 29 YO, 11/22/1996, MRN400215",
+    "dischargeDate": "",
+    "languagePreference": "English",
+    "lastContactDate": "2/17/26",
+    "lastContactSummary": "Intake partially completed. Patient unsure of migraine medication name.",
+    "status": "Pending follow-up",
+    "lastModified": "2:30 PM",
+    "group": "Queue",
+    "dateOfBirth": "November 22, 1996",
+    "phone": "+13125559876",
+    "email": "jpatel96@email.com",
+    "address": "1445 N State St, Apt 8B, Chicago, IL 60610",
+    "primaryDiagnosis": "Chronic migraines, recurring for 3+ years.",
+    "careTeam": "Dr. Rajesh Patel (Neurology), NP Emily Richards (Headache Center)",
+    "allergies": [],
+    "medicalHistory": "Migraines on and off for years. No other chronic conditions.",
+    "surgicalHistory": "None",
+    "upcomingAppointment": {
+      "date": "Feb 19, 2026",
+      "time": "2:00 PM",
+      "provider": "Dr. Rajesh Patel",
+      "type": "Headache Evaluation",
+      "location": "Contoso Neurology Center"
+    },
+    "logisticalNeeds": "None reported",
+    "contactHistory": [
+      {
+        "date": "Feb 17, 2026",
+        "method": "phone",
+        "callType": "patient-intake",
+        "transcriptLink": true,
+        "transcriptSummary": "Patient reports headaches daily for 2 weeks, severity 6-7/10 with light sensitivity. Cannot remember migraine medication name. Takes ibuprofen sometimes. No known allergies. No surgeries. Advised to bring medication bottles to appointment.",
+        "intakeCompleted": {
+          "value": "Partial",
+          "positive": false
+        },
+        "allergiesConfirmed": "No known allergies",
+        "medicalHistoryCollected": {
+          "value": "Yes",
+          "positive": true
+        },
+        "symptomsReported": "Daily headaches 6-7/10, light sensitivity",
+        "redFlagIdentified": {
+          "value": "None",
+          "positive": true
+        },
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
+        "notes": "Patient could not recall migraine medication name. Advised to bring medication bottles. Appointment confirmed."
+      }
+    ],
+    "medications": [
+      {
+        "name": "Unknown migraine medication",
+        "dose": "Unknown",
+        "frequency": "As needed",
+        "prescribedDate": "Unknown",
+        "refillsAvailable": 0
+      },
+      {
+        "name": "Ibuprofen",
+        "dose": "200mg",
+        "frequency": "As needed",
+        "prescribedDate": "OTC",
+        "refillsAvailable": 0
+      }
+    ]
+  },
+  {
+    "id": "pi-3",
+    "callType": "patient-intake",
+    "name": "Taylor Robinson",
+    "reason": "Pre-visit intake for shortness of breath evaluation.",
+    "demographics": "Non-binary, 55 YO, 04/08/1970, MRN400329",
+    "dischargeDate": "",
+    "languagePreference": "English",
+    "lastContactDate": "2/14/26",
+    "lastContactSummary": "Red flag identified: worsening dyspnea with swollen ankles. Escalated to clinical team.",
+    "status": "Queued",
+    "lastModified": "11:00 AM",
+    "group": "Queue",
+    "dateOfBirth": "April 8, 1970",
+    "phone": "+12065553456",
+    "email": "trobinson70@email.com",
+    "address": "903 Pike St, Apt 4A, Seattle, WA 98101",
+    "primaryDiagnosis": "Heart failure (known). Asthma.",
+    "careTeam": "Dr. William Park (Cardiology), NP Rachel Adams (Internal Medicine)",
+    "allergies": [
+      "Sulfa drugs"
+    ],
+    "medicalHistory": "Heart failure diagnosed 2022. Asthma since childhood. Takes furosemide daily.",
+    "surgicalHistory": "None",
+    "upcomingAppointment": {
+      "date": "Feb 21, 2026",
+      "time": "9:30 AM",
+      "provider": "Dr. William Park",
+      "type": "Shortness of Breath Evaluation",
+      "location": "Contoso Cardiology Center"
+    },
+    "logisticalNeeds": "Uses inhaler, may need assistance with stairs",
+    "contactHistory": [
+      {
+        "date": "Feb 14, 2026",
+        "method": "phone",
+        "callType": "patient-intake",
+        "transcriptLink": true,
+        "transcriptSummary": "Patient reports worsening shortness of breath over 2 days, even at rest. Ankles are swollen. Ran out of furosemide (water pill) a few days ago. Chest tightness reported. Sulfa allergy confirmed. Clinical team alerted immediately—patient advised to seek care before Friday appointment if symptoms worsen.",
+        "intakeCompleted": {
+          "value": "Yes",
+          "positive": true
+        },
+        "allergiesConfirmed": "Sulfa drugs",
+        "medicalHistoryCollected": {
+          "value": "Yes",
+          "positive": true
+        },
+        "symptomsReported": "Worsening dyspnea at rest, swollen ankles, chest tightness",
+        "redFlagIdentified": {
+          "value": "Urgent: dyspnea + edema + missed diuretic",
+          "positive": false
+        },
+        "followUpNeeded": {
+          "value": "Urgent",
+          "positive": false
+        },
+        "notes": "ESCALATED: Clinical team notified immediately. Patient at risk for decompensated heart failure. Instructed to call 911 if breathing worsens."
+      }
+    ],
+    "medications": [
+      {
+        "name": "Furosemide",
+        "dose": "40mg",
+        "frequency": "Once daily",
+        "prescribedDate": "October 1, 2025",
+        "refillsAvailable": 0
+      },
+      {
+        "name": "Albuterol Inhaler",
+        "dose": "90mcg",
+        "frequency": "As needed",
+        "prescribedDate": "January 10, 2026",
+        "refillsAvailable": 2
+      }
+    ]
+  },
+  {
+    "id": "pi-4",
+    "callType": "patient-intake",
+    "name": "Sandra Kowalski",
+    "reason": "Pre-visit intake completed for routine follow-up.",
+    "demographics": "Female, 68 YO, 06/12/1957, MRN400437",
+    "dischargeDate": "",
+    "languagePreference": "English",
+    "lastContactDate": "2/10/26",
+    "lastContactSummary": "Intake completed. Medications confirmed, no concerns raised.",
+    "status": "Reviewed",
+    "lastModified": "3:45 PM",
+    "group": "Reviewed",
+    "dateOfBirth": "June 12, 1957",
+    "phone": "+16175552345",
+    "email": "skowalski57@email.com",
+    "address": "89 Beacon St, Boston, MA 02108",
+    "primaryDiagnosis": "Type 2 diabetes, controlled. Osteoporosis.",
+    "careTeam": "Dr. Karen Mitchell (Internal Medicine)",
+    "allergies": [
+      "Aspirin (GI upset)"
+    ],
+    "medicalHistory": "Diabetes diagnosed 2015. Osteoporosis diagnosed 2020. Hip fracture 2019.",
+    "surgicalHistory": "Right hip replacement 2019.",
+    "upcomingAppointment": {
+      "date": "Feb 12, 2026",
+      "time": "11:00 AM",
+      "provider": "Dr. Karen Mitchell",
+      "type": "Routine Follow-up",
+      "location": "Contoso Health Clinic - East"
+    },
+    "contactHistory": [
+      {
+        "date": "Feb 10, 2026",
+        "method": "phone",
+        "callType": "patient-intake",
+        "transcriptLink": true,
+        "transcriptSummary": "Intake completed successfully. Patient confirmed metformin and alendronate. Aspirin allergy confirmed. No new symptoms. Routine follow-up visit on Feb 12.",
+        "intakeCompleted": {
+          "value": "Yes",
+          "positive": true
+        },
+        "allergiesConfirmed": "Aspirin (GI upset)",
+        "medicalHistoryCollected": {
+          "value": "Yes",
+          "positive": true
+        },
+        "symptomsReported": "None",
+        "redFlagIdentified": {
+          "value": "None",
+          "positive": true
+        },
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
+        "notes": "Routine intake. All information on file confirmed accurate."
+      }
+    ],
+    "medications": [
+      {
+        "name": "Metformin",
+        "dose": "500mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "January 5, 2026",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Alendronate",
+        "dose": "70mg",
+        "frequency": "Once weekly",
+        "prescribedDate": "January 5, 2026",
+        "refillsAvailable": 3
+      },
+      {
+        "name": "Calcium + Vitamin D",
+        "dose": "600mg/400IU",
+        "frequency": "Once daily",
+        "prescribedDate": "January 5, 2026",
+        "refillsAvailable": 0
+      }
+    ]
+  },
+  {
+    "id": "ht-1",
+    "callType": "hypertension-management",
+    "name": "Laura Bennett",
+    "reason": "Hypertension follow-up: BP well controlled on current regimen.",
+    "demographics": "Female, 51 YO, 09/03/1974, MRN500101",
+    "dischargeDate": "",
+    "languagePreference": "English",
+    "lastContactDate": "2/15/26",
+    "lastContactSummary": "BP 122/78, excellent control. Patient adherent to medication and lifestyle changes.",
+    "status": "Reviewed",
+    "lastModified": "10:30 AM",
+    "group": "Reviewed",
+    "dateOfBirth": "September 3, 1974",
+    "phone": "+14045551122",
+    "email": "lbennett74@email.com",
+    "address": "245 Peachtree Center Ave, Atlanta, GA 30303",
+    "primaryDiagnosis": "Essential hypertension, well-controlled.",
+    "careTeam": "Dr. Karen Mitchell (Internal Medicine)",
+    "bpReadings": [
+      {
+        "date": "Feb 15, 2026",
+        "systolic": 122,
+        "diastolic": 78,
+        "atGoal": true
+      },
+      {
+        "date": "Feb 8, 2026",
+        "systolic": 126,
+        "diastolic": 80,
+        "atGoal": true
+      },
+      {
+        "date": "Feb 1, 2026",
+        "systolic": 130,
+        "diastolic": 82,
+        "atGoal": true
+      },
+      {
+        "date": "Jan 25, 2026",
+        "systolic": 128,
+        "diastolic": 79,
+        "atGoal": true
+      }
+    ],
+    "homeMonitor": true,
+    "lifestyleNotes": "Walking most days, cutting back on salt. Good routine.",
+    "contactHistory": [
+      {
+        "date": "Feb 15, 2026",
+        "method": "phone",
+        "callType": "hypertension-management",
+        "transcriptLink": true,
+        "transcriptSummary": "BP 122/78, within goal. Patient taking amlodipine every morning consistently. No side effects. Walking regularly and reducing sodium. Next check-in in a few weeks.",
+        "bpReading": {
+          "systolic": 122,
+          "diastolic": 78
+        },
+        "bpAtGoal": {
+          "value": "Yes",
+          "positive": true
+        },
+        "medicationAdherence": {
+          "value": "Yes",
+          "positive": true
+        },
+        "sideEffects": "Not reported",
+        "symptomsPresent": {
+          "value": "None",
+          "positive": true
+        },
+        "escalated": {
+          "value": "No",
+          "positive": true
+        },
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
+        "notes": "Excellent BP control. Patient engaged in lifestyle modifications. Routine follow-up."
+      }
+    ],
+    "medications": [
+      {
+        "name": "Amlodipine",
+        "dose": "5mg",
+        "frequency": "Once daily",
+        "prescribedDate": "November 1, 2025",
+        "refillsAvailable": 5
+      }
+    ]
+  },
+  {
+    "id": "ht-2",
+    "callType": "hypertension-management",
+    "name": "Marcus Johnson",
+    "reason": "Hypertension follow-up: BP elevated at 150/92, adherence issues.",
+    "demographics": "Male, 47 YO, 03/18/1978, MRN500215",
+    "dischargeDate": "",
+    "languagePreference": "English",
+    "lastContactDate": "2/16/26",
+    "lastContactSummary": "BP 150/92 at pharmacy. Misses medication 1-2x/week. Stress and diet concerns.",
+    "status": "Pending follow-up",
+    "lastModified": "1:20 PM",
+    "group": "Queue",
+    "dateOfBirth": "March 18, 1978",
+    "phone": "+17135554567",
+    "email": "mjohnson78@email.com",
+    "address": "5601 Main St, Houston, TX 77004",
+    "primaryDiagnosis": "Essential hypertension, uncontrolled. Work-related stress.",
+    "careTeam": "Dr. William Park (Cardiology), NP Rachel Adams (Internal Medicine)",
+    "bpReadings": [
+      {
+        "date": "Feb 16, 2026",
+        "systolic": 150,
+        "diastolic": 92,
+        "atGoal": false
+      },
+      {
+        "date": "Feb 9, 2026",
+        "systolic": 146,
+        "diastolic": 90,
+        "atGoal": false
+      },
+      {
+        "date": "Feb 2, 2026",
+        "systolic": 142,
+        "diastolic": 88,
+        "atGoal": false
+      },
+      {
+        "date": "Jan 26, 2026",
+        "systolic": 148,
+        "diastolic": 91,
+        "atGoal": false
+      }
+    ],
+    "homeMonitor": false,
+    "lifestyleNotes": "High stress at work, eats out frequently, limited exercise.",
+    "contactHistory": [
+      {
+        "date": "Feb 16, 2026",
+        "method": "phone",
+        "callType": "hypertension-management",
+        "transcriptLink": true,
+        "transcriptSummary": "BP 150/92 at pharmacy. Patient forgets medication 1-2x per week due to busy mornings. No side effects. Stressed at work and eating out frequently. Phone reminder set up. Provider will be notified of elevated readings. Check-in in 1 week.",
+        "bpReading": {
+          "systolic": 150,
+          "diastolic": 92
+        },
+        "bpAtGoal": {
+          "value": "No",
+          "positive": false
+        },
+        "medicationAdherence": {
+          "value": "Partial (5-6/7 days)",
+          "positive": false
+        },
+        "sideEffects": "Not reported",
+        "symptomsPresent": {
+          "value": "None",
+          "positive": true
+        },
+        "escalated": {
+          "value": "No",
+          "positive": true
+        },
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
+        "notes": "Phone reminders set up. Lifestyle counseling provided. Provider notified of sub-optimal control."
+      }
+    ],
+    "medications": [
+      {
+        "name": "Losartan",
+        "dose": "50mg",
+        "frequency": "Once daily",
+        "prescribedDate": "December 1, 2025",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Hydrochlorothiazide",
+        "dose": "12.5mg",
+        "frequency": "Once daily",
+        "prescribedDate": "December 1, 2025",
+        "refillsAvailable": 5
+      }
+    ]
+  },
+  {
+    "id": "ht-3",
+    "callType": "hypertension-management",
+    "name": "Priya Sharma",
+    "reason": "Hypertension crisis: BP 204/101, stopped medication due to supply issue.",
+    "demographics": "Female, 72 YO, 08/25/1953, MRN500329",
+    "dischargeDate": "",
+    "languagePreference": "Hindi",
+    "lastContactDate": "2/17/26",
+    "lastContactSummary": "URGENT: BP 204/101. Patient stopped medication 5 days ago (ran out). Escalated to clinical team.",
+    "status": "Pending follow-up",
+    "lastModified": "3:00 PM",
+    "group": "Queue",
+    "dateOfBirth": "August 25, 1953",
+    "phone": "+14085558901",
+    "email": "psharma53@email.com",
+    "address": "1100 S De Anza Blvd, Cupertino, CA 95014",
+    "primaryDiagnosis": "Hypertension, Stage 2. Type 2 diabetes. Chronic kidney disease Stage 2.",
+    "careTeam": "Dr. Anjali Sharma (Endocrinology), NP James Okafor (Primary Care), PharmD Rita Desai (Clinical Pharmacy)",
+    "bpReadings": [
+      {
+        "date": "Feb 17, 2026",
+        "systolic": 204,
+        "diastolic": 101,
+        "atGoal": false
+      },
+      {
+        "date": "Feb 10, 2026",
+        "systolic": 138,
+        "diastolic": 86,
+        "atGoal": true
+      },
+      {
+        "date": "Feb 3, 2026",
+        "systolic": 135,
+        "diastolic": 84,
+        "atGoal": true
+      },
+      {
+        "date": "Jan 27, 2026",
+        "systolic": 140,
+        "diastolic": 88,
+        "atGoal": false
+      }
+    ],
+    "homeMonitor": true,
+    "lifestyleNotes": "Lives alone. Relies on daughter for pharmacy visits. Limited mobility.",
+    "contactHistory": [
+      {
+        "date": "Feb 17, 2026",
+        "method": "phone",
+        "callType": "hypertension-management",
+        "transcriptLink": true,
+        "transcriptSummary": "URGENT: BP reading 204/101. Patient stopped amlodipine 5 days ago after running out. No symptoms currently (no chest pain, headache, or dizziness). Swollen ankles noted. Escalated to clinical team immediately. Patient instructed to call 911 if symptoms develop.",
+        "bpReading": {
+          "systolic": 204,
+          "diastolic": 101
+        },
+        "bpAtGoal": {
+          "value": "No — Critical",
+          "positive": false
+        },
+        "medicationAdherence": {
+          "value": "Stopped (ran out)",
+          "positive": false
+        },
+        "sideEffects": "Not reported",
+        "symptomsPresent": {
+          "value": "Swollen ankles, no acute symptoms",
+          "positive": false
+        },
+        "escalated": {
+          "value": "Yes — Urgent",
+          "positive": false
+        },
+        "followUpNeeded": {
+          "value": "Urgent",
+          "positive": false
+        },
+        "notes": "ESCALATED to nurse/clinician immediately. Patient to be contacted within 24 hours. Instructed not to restart or stop medication until clinician guidance."
+      }
+    ],
+    "medications": [
+      {
+        "name": "Amlodipine",
+        "dose": "10mg",
+        "frequency": "Once daily",
+        "prescribedDate": "September 15, 2025",
+        "refillsAvailable": 0
+      },
+      {
+        "name": "Metformin",
+        "dose": "850mg",
+        "frequency": "Twice daily",
+        "prescribedDate": "September 15, 2025",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Lisinopril",
+        "dose": "20mg",
+        "frequency": "Once daily",
+        "prescribedDate": "September 15, 2025",
+        "refillsAvailable": 0
+      }
+    ]
+  },
+  {
+    "id": "ht-4",
+    "callType": "hypertension-management",
+    "name": "William Chang",
+    "reason": "Hypertension management: routine quarterly check-in.",
+    "demographics": "Male, 60 YO, 01/15/1966, MRN500437",
+    "dischargeDate": "",
+    "languagePreference": "English",
+    "lastContactDate": "2/12/26",
+    "lastContactSummary": "BP stable at 132/84. Fully adherent. No concerns.",
+    "status": "Reviewed",
+    "lastModified": "9:00 AM",
+    "group": "Reviewed",
+    "dateOfBirth": "January 15, 1966",
+    "phone": "+15035556789",
+    "email": "wchang66@email.com",
+    "address": "4200 NE Broadway, Portland, OR 97213",
+    "primaryDiagnosis": "Essential hypertension, well-controlled. Mild hyperlipidemia.",
+    "careTeam": "Dr. Karen Mitchell (Internal Medicine), PharmD Amir Patel (Community Pharmacy)",
+    "bpReadings": [
+      {
+        "date": "Feb 12, 2026",
+        "systolic": 132,
+        "diastolic": 84,
+        "atGoal": true
+      },
+      {
+        "date": "Jan 15, 2026",
+        "systolic": 130,
+        "diastolic": 82,
+        "atGoal": true
+      },
+      {
+        "date": "Dec 18, 2025",
+        "systolic": 134,
+        "diastolic": 86,
+        "atGoal": true
+      },
+      {
+        "date": "Nov 20, 2025",
+        "systolic": 136,
+        "diastolic": 85,
+        "atGoal": true
+      }
+    ],
+    "homeMonitor": true,
+    "lifestyleNotes": "Regular exercise 4x/week. Low-sodium diet. Good sleep habits.",
+    "contactHistory": [
+      {
+        "date": "Feb 12, 2026",
+        "method": "phone",
+        "callType": "hypertension-management",
+        "transcriptLink": true,
+        "transcriptSummary": "BP 132/84, within goal. Patient fully adherent to losartan and HCTZ. No side effects. Exercises regularly, maintains low-sodium diet. Next quarterly check-in in May.",
+        "bpReading": {
+          "systolic": 132,
+          "diastolic": 84
+        },
+        "bpAtGoal": {
+          "value": "Yes",
+          "positive": true
+        },
+        "medicationAdherence": {
+          "value": "Yes",
+          "positive": true
+        },
+        "sideEffects": "Not reported",
+        "symptomsPresent": {
+          "value": "None",
+          "positive": true
+        },
+        "escalated": {
+          "value": "No",
+          "positive": true
+        },
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
+        "notes": "Routine quarterly check-in. Excellent control. Continue current plan."
+      }
+    ],
+    "medications": [
+      {
+        "name": "Losartan",
+        "dose": "50mg",
+        "frequency": "Once daily",
+        "prescribedDate": "April 1, 2025",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Hydrochlorothiazide",
+        "dose": "25mg",
+        "frequency": "Once daily",
+        "prescribedDate": "April 1, 2025",
+        "refillsAvailable": 5
+      },
+      {
+        "name": "Atorvastatin",
+        "dose": "10mg",
+        "frequency": "Once daily at bedtime",
+        "prescribedDate": "April 1, 2025",
+        "refillsAvailable": 5
+      }
+    ]
+  },
+  {
+    "id": "pi-5",
+    "callType": "patient-intake",
+    "name": "George Martinez",
+    "reason": "Pre-visit intake for diabetes management follow-up.",
+    "demographics": "Male, 61 YO, 12/02/1964, MRN400545",
+    "dischargeDate": "",
+    "languagePreference": "Spanish",
+    "lastContactDate": "2/8/26",
+    "lastContactSummary": "Intake completed. New allergy to metformin reported.",
+    "status": "Pending follow-up",
+    "lastModified": "4:00 PM",
+    "group": "ContactHistory",
+    "dateOfBirth": "December 2, 1964",
+    "phone": "(713) 555-0934",
+    "email": "gmartinez64@email.com",
+    "address": "2800 Navigation Blvd, Houston, TX 77003",
+    "primaryDiagnosis": "Type 2 diabetes. Moderate obesity.",
+    "careTeam": "Dr. Maria Gonzalez (Endocrinology)",
+    "allergies": [
+      "Metformin (GI intolerance)",
+      "Latex"
+    ],
+    "medicalHistory": "Diabetes since 2018. No cardiac history.",
+    "surgicalHistory": "Appendectomy 1995.",
+    "upcomingAppointment": {
+      "date": "Feb 10, 2026",
+      "time": "1:00 PM",
+      "provider": "Dr. Maria Gonzalez",
+      "type": "Diabetes Follow-up",
+      "location": "Contoso Diabetes Center"
+    },
+    "contactHistory": [
+      {
+        "date": "Feb 8, 2026",
+        "method": "phone",
+        "callType": "patient-intake",
+        "transcriptLink": true,
+        "transcriptSummary": "Intake completed. Patient reported new metformin intolerance (GI upset). Currently on glipizide only. Latex allergy noted. Previous appendectomy. No acute symptoms.",
+        "intakeCompleted": {
+          "value": "Yes",
+          "positive": true
+        },
+        "allergiesConfirmed": "Metformin (GI intolerance), Latex",
+        "medicalHistoryCollected": {
+          "value": "Yes",
+          "positive": true
+        },
+        "symptomsReported": "None acute",
+        "redFlagIdentified": {
+          "value": "None",
+          "positive": true
+        },
+        "followUpNeeded": {
+          "value": "Not needed",
+          "positive": true
+        },
+        "notes": "Important: Metformin intolerance flagged for provider review."
+      }
+    ],
+    "medications": [
+      {
+        "name": "Glipizide",
+        "dose": "5mg",
+        "frequency": "Once daily",
+        "prescribedDate": "January 1, 2026",
+        "refillsAvailable": 5
+      }
+    ]
+  },
+  {
+    "id": "ht-5",
+    "callType": "hypertension-management",
+    "name": "Donna Fischer",
+    "reason": "Hypertension follow-up: mild elevation, lifestyle adjustment needed.",
+    "demographics": "Female, 58 YO, 05/10/1967, MRN500545",
+    "dischargeDate": "",
+    "languagePreference": "English",
+    "lastContactDate": "2/1/26",
+    "lastContactSummary": "BP 142/90. Taking medication but high salt diet identified.",
+    "status": "Pending follow-up",
+    "lastModified": "2:15 PM",
+    "group": "ContactHistory",
+    "dateOfBirth": "May 10, 1967",
+    "phone": "(206) 555-0789",
+    "email": "dfischer67@email.com",
+    "address": "1200 Westlake Ave N, Seattle, WA 98109",
+    "primaryDiagnosis": "Hypertension, borderline uncontrolled. Prediabetes.",
+    "careTeam": "Dr. Kenneth Lee (Internal Medicine)",
+    "bpReadings": [
+      {
+        "date": "Feb 1, 2026",
+        "systolic": 142,
+        "diastolic": 90,
+        "atGoal": false
+      },
+      {
+        "date": "Jan 25, 2026",
+        "systolic": 138,
+        "diastolic": 87,
+        "atGoal": true
+      }
+    ],
+    "homeMonitor": true,
+    "lifestyleNotes": "High sodium diet identified. Sedentary lifestyle. Willing to make changes.",
+    "contactHistory": [
+      {
+        "date": "Feb 1, 2026",
+        "method": "phone",
+        "callType": "hypertension-management",
+        "transcriptLink": true,
+        "transcriptSummary": "BP 142/90 today, slightly above goal. Patient taking lisinopril daily. High sodium diet identified as primary barrier. Counseled on DASH diet. Check-in scheduled for 2 weeks.",
+        "bpReading": {
+          "systolic": 142,
+          "diastolic": 90
+        },
+        "bpAtGoal": {
+          "value": "No — Borderline",
+          "positive": false
+        },
+        "medicationAdherence": {
+          "value": "Yes",
+          "positive": true
+        },
+        "sideEffects": "Not reported",
+        "symptomsPresent": {
+          "value": "None",
+          "positive": true
+        },
+        "escalated": {
+          "value": "No",
+          "positive": true
+        },
+        "followUpNeeded": {
+          "value": "Yes",
+          "positive": false
+        },
+        "notes": "Lifestyle counseling on sodium reduction. DASH diet materials sent. 2-week follow-up."
+      }
+    ],
+    "medications": [
+      {
+        "name": "Lisinopril",
+        "dose": "20mg",
+        "frequency": "Once daily",
+        "prescribedDate": "October 1, 2025",
+        "refillsAvailable": 5
       }
     ]
   }

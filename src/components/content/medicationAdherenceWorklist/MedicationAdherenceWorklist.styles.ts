@@ -345,6 +345,32 @@ export const useStyles = makeStyles({
     whiteSpace: "nowrap",
   },
 
+  callTypePill: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "16px",
+    padding: "2px 8px",
+    fontSize: "10px",
+    fontWeight: 600,
+    whiteSpace: "nowrap",
+  },
+
+  callType_medication_adherence: {
+    backgroundColor: "#E8F0FE",
+    color: "#1B6EC2",
+  },
+
+  callType_patient_intake: {
+    backgroundColor: "#E1F5F0",
+    color: "#0E7C6B",
+  },
+
+  callType_hypertension_management: {
+    backgroundColor: "#F3E8FD",
+    color: "#7B2D8E",
+  },
+
   patientName: {
     fontWeight: 600,
     color: tokens.colorNeutralForeground1,
