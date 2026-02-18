@@ -594,8 +594,8 @@ export const useDashboardStyles = makeStyles({
     fontSize: tokens.fontSizeBase200,
     fontWeight: 700,
     whiteSpace: "nowrap",
-    backgroundColor: "#FFF4CE",
-    color: "#6E4B00",
+    backgroundColor: "#DFF6DD",
+    color: "#0E700E",
   },
   statusPillCompleted: {
     display: "inline-flex",

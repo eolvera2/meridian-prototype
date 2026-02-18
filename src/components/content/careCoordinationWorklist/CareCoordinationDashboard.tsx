@@ -306,7 +306,7 @@ export const CareCoordinationDashboard: React.FC = () => {
   const getStatusLabel = (status: CallRecordStatus) => {
     switch (status) {
       case "in-progress": return "In Progress";
-      case "needs-review": return "Needs Review";
+      case "needs-review": return "Ready for Review";
       case "completed": return "Completed";
     }
   };
@@ -325,9 +325,9 @@ export const CareCoordinationDashboard: React.FC = () => {
       case "Allergies Confirmed":
         return isWarning ? <LeafThree20Filled aria-hidden="true" /> : <LeafOne20Regular aria-hidden="true" />;
       case "Red Flag":
-        return isWarning ? <HeartPulseWarning20Filled aria-hidden="true" /> : <HeartPulseCheckmark20Regular aria-hidden="true" />;
-      case "BP Reading":
         return isWarning ? <BookDismiss20Filled aria-hidden="true" /> : <BookPulse20Regular aria-hidden="true" />;
+      case "BP Reading":
+        return isWarning ? <HeartPulseWarning20Filled aria-hidden="true" /> : <HeartPulseCheckmark20Regular aria-hidden="true" />;
       case "BP at Goal":
         return isWarning ? <FlagOff20Filled aria-hidden="true" /> : <FlagCheckered20Regular aria-hidden="true" />;
       case "Med Adherence":
@@ -802,7 +802,7 @@ export const CareCoordinationDashboard: React.FC = () => {
                     <td className={styles.tableCell}>
                       <span className={getStatusPillClass(record.status)}>
                         {record.status === "in-progress" && <Timer16Regular />}
-                        {record.status === "needs-review" && <Warning16Regular />}
+                        {record.status === "needs-review" && <Checkmark16Regular />}
                         {record.status === "completed" && <Checkmark16Regular />}
                         {getStatusLabel(record.status)}
                       </span>
@@ -879,7 +879,7 @@ export const CareCoordinationDashboard: React.FC = () => {
                         </span>
                       ) : (
                         <span className={styles.statusPillNeedsReview}>
-                          <Warning16Regular /> Needs Review
+                          <Checkmark16Regular /> Ready for Review
                         </span>
                       )}
                     </td>
