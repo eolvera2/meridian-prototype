@@ -80,6 +80,137 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
   const [homeMonitor, setHomeMonitor] = useState(false);
   const [lifestyleNotes, setLifestyleNotes] = useState("");
 
+  // ── Auto-fill on MRN blur ──
+  const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+  const randInt = (lo: number, hi: number) => Math.floor(Math.random() * (hi - lo + 1)) + lo;
+  const pad2 = (n: number) => String(n).padStart(2, "0");
+
+  const handleMrnBlur = useCallback(() => {
+    if (!mrn.trim()) return;
+    // Only auto-fill if the core fields are still empty
+    if (firstName || lastName) return;
+
+    const firstNames = {
+      Male: ["James","Robert","Michael","William","David","Richard","Thomas","Daniel","Matthew","Andrew"],
+      Female: ["Mary","Patricia","Jennifer","Linda","Elizabeth","Barbara","Susan","Jessica","Sarah","Karen"],
+      Other: ["Alex","Jordan","Taylor","Morgan","Casey","Riley","Quinn","Avery","Jamie","Dakota"],
+    } as Record<string, string[]>;
+    const lastNames = ["Johnson","Williams","Brown","Garcia","Martinez","Davis","Rodriguez","Anderson","Wilson","Taylor","Thomas","Moore","Jackson","Martin","Lee","Thompson","White","Harris","Clark","Lewis"];
+    const cities = ["Seattle","Portland","Austin","Denver","Phoenix","Chicago","Boston","Atlanta","Dallas","Miami"];
+    const states = ["WA","OR","TX","CO","AZ","IL","MA","GA","TX","FL"];
+    const streets = ["Oak St","Maple Ave","Pine Dr","Cedar Ln","Elm Blvd","Birch Way","Walnut Ct","Cherry Rd"];
+    const providers = ["Dr. Sarah Chen","Dr. Michael Patel","Dr. Emily Torres","Dr. James Wilson","Dr. Lisa Nguyen","Dr. Robert Kim"];
+    const nurses = ["RN Adams","RN Baker","RN Clark","RN Davis"];
+    const locations = ["Main Campus, Bldg A","West Clinic","East Medical Center","Downtown Office","Northside Health Center"];
+
+    const g = gender || pick(["Male","Female"]);
+    const fName = pick(firstNames[g] ?? firstNames["Male"]);
+    const lName = pick(lastNames);
+    const birthYear = randInt(1945, 2000);
+    const birthMonth = randInt(1, 12);
+    const birthDay = randInt(1, 28);
+    const dob = `${birthYear}-${pad2(birthMonth)}-${pad2(birthDay)}`;
+    const cityIdx = randInt(0, cities.length - 1);
+    const provider = pick(providers);
+    const nurse = pick(nurses);
+
+    if (!gender) setGender(g);
+    setFirstName(fName);
+    setLastName(lName);
+    setDateOfBirth(dob);
+    setPhone(`(${randInt(200,999)}) ${randInt(200,999)}-${pad2(randInt(0,99))}${pad2(randInt(0,99))}`);
+    setEmail(`${fName.toLowerCase()}.${lName.toLowerCase()}@email.com`);
+    setAddressLine1(`${randInt(100,9999)} ${pick(streets)}`);
+    setAddressLine2(Math.random() > 0.6 ? `Apt ${randInt(1,300)}` : "");
+    setCity(cities[cityIdx]);
+    setState(states[cityIdx]);
+    setZip(String(randInt(10000, 99999)));
+    setCareTeam(`${provider}, ${nurse}`);
+    setLanguagePreference(pick(["English","English","English","Spanish"]));
+
+    const dischDate = new Date();
+    dischDate.setDate(dischDate.getDate() - randInt(1, 14));
+    setDischargeDate(`${dischDate.getFullYear()}-${pad2(dischDate.getMonth()+1)}-${pad2(dischDate.getDate())}`);
+
+    if (callType === "medication-adherence") {
+      setReason(pick([
+        "Post-discharge medication reconciliation",
+        "14-day follow-up: medication compliance check",
+        "New prescription adherence monitoring",
+        "Medication side-effect follow-up",
+        "Refill coordination and adherence review",
+      ]));
+      setPrimaryDiagnosis(pick(["Atrial Fibrillation","Type 2 Diabetes","Heart Failure","COPD","Hyperlipidemia","Chronic Kidney Disease"]));
+      setDischargeInstructions(pick([
+        "Continue all medications as prescribed. Follow up in 2 weeks.",
+        "Avoid NSAIDs. Take blood thinner with food. Monitor for bruising.",
+        "Low-sodium diet. Weigh daily. Call if weight gain >3 lbs in a day.",
+        "Check blood glucose twice daily. Adjust insulin per sliding scale.",
+      ]));
+      const medSets: MedicationEntry[][] = [
+        [{ name: "Warfarin", dose: "5 mg", frequency: "Once daily" },{ name: "Metoprolol", dose: "25 mg", frequency: "Twice daily" }],
+        [{ name: "Lisinopril", dose: "10 mg", frequency: "Once daily" },{ name: "Atorvastatin", dose: "40 mg", frequency: "Once daily at bedtime" }],
+        [{ name: "Metformin", dose: "500 mg", frequency: "Twice daily" },{ name: "Glipizide", dose: "5 mg", frequency: "Once daily before breakfast" }],
+        [{ name: "Amlodipine", dose: "5 mg", frequency: "Once daily" },{ name: "Furosemide", dose: "20 mg", frequency: "Once daily" },{ name: "Potassium Chloride", dose: "20 mEq", frequency: "Once daily" }],
+      ];
+      setMedications(pick(medSets));
+    } else if (callType === "patient-intake") {
+      setReason(pick([
+        "New patient intake and onboarding",
+        "Pre-visit registration and history collection",
+        "Transfer patient intake assessment",
+        "Annual wellness visit intake",
+      ]));
+      setPrimaryDiagnosis(pick(["General Check-up","Asthma","Migraine","Anxiety Disorder","Low Back Pain","Hypothyroidism"]));
+      setDischargeInstructions("");
+      setAllergies(pick(["Penicillin, Sulfa","None known","Latex, Codeine","Aspirin","Shellfish, Iodine","Amoxicillin"]));
+      setMedicalHistory(pick([
+        "Hypertension (5 years), Seasonal allergies",
+        "Type 2 Diabetes (3 years), Obesity",
+        "Asthma since childhood, GERD",
+        "No significant past medical history",
+        "Hypothyroidism (10 years), Vitamin D deficiency",
+      ]));
+      setSurgicalHistory(pick(["Appendectomy (2015)","None","Cholecystectomy (2018)","C-section (2020)","Right knee arthroscopy (2017)"]));
+      const appt = new Date();
+      appt.setDate(appt.getDate() + randInt(3, 21));
+      setApptDate(`${appt.getFullYear()}-${pad2(appt.getMonth()+1)}-${pad2(appt.getDate())}`);
+      setApptTime(pick(["9:00 AM","10:30 AM","1:00 PM","2:30 PM","3:45 PM"]));
+      setApptProvider(provider);
+      setApptLocation(pick(locations));
+    } else if (callType === "hypertension-management") {
+      setReason(pick([
+        "Quarterly BP management follow-up",
+        "Uncontrolled hypertension monitoring",
+        "New hypertension diagnosis — lifestyle coaching",
+        "Post-medication adjustment BP check",
+        "Home BP log review and medication titration",
+      ]));
+      setPrimaryDiagnosis(pick(["Essential Hypertension","Resistant Hypertension","Hypertension with CKD","Hypertensive Heart Disease"]));
+      setDischargeInstructions(pick([
+        "Low-sodium DASH diet. Exercise 30 min/day. Monitor BP daily.",
+        "Reduce caffeine. Take medication at same time each day.",
+        "Limit alcohol. Record BP readings twice daily in log.",
+      ]));
+      setLastSystolic(String(randInt(128, 168)));
+      setLastDiastolic(String(randInt(78, 102)));
+      setHomeMonitor(Math.random() > 0.3);
+      setLifestyleNotes(pick([
+        "Sedentary lifestyle. High sodium diet. Non-smoker.",
+        "Walks 20min daily. Moderate alcohol use. Former smoker.",
+        "Active lifestyle. Low-salt diet. No tobacco or alcohol.",
+        "Limited exercise due to knee pain. Smokes 1/2 pack/day.",
+        "DASH diet adherent. Exercises 4x/week. No substances.",
+      ]));
+      const medSets: MedicationEntry[][] = [
+        [{ name: "Amlodipine", dose: "10 mg", frequency: "Once daily" },{ name: "Lisinopril", dose: "20 mg", frequency: "Once daily" }],
+        [{ name: "Losartan", dose: "50 mg", frequency: "Once daily" },{ name: "Hydrochlorothiazide", dose: "25 mg", frequency: "Once daily" }],
+        [{ name: "Metoprolol", dose: "50 mg", frequency: "Twice daily" }],
+      ];
+      setMedications(pick(medSets));
+    }
+  }, [mrn, firstName, lastName, gender, callType]);
+
   const addMedication = useCallback(() => {
     setMedications((prev) => [...prev, { name: "", dose: "", frequency: "" }]);
   }, []);
@@ -240,7 +371,7 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
               </div>
               <div>
                 <Label htmlFor="mrn" required>MRN</Label>
-                <Input id="mrn" value={mrn} onChange={(_, d) => setMrn(d.value)} placeholder="e.g. 100234" style={{ width: "100%" }} />
+                <Input id="mrn" value={mrn} onChange={(_, d) => setMrn(d.value)} onBlur={handleMrnBlur} placeholder="e.g. 100234" style={{ width: "100%" }} />
               </div>
               <div>
                 <Label htmlFor="language">Language Preference</Label>
