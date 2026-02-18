@@ -384,12 +384,16 @@ export const useDashboardStyles = makeStyles({
     marginLeft: "4px",
   },
   countBadgeReview: {
-    backgroundColor: "#FFF4CE",
-    color: "#6E4B00",
+    backgroundColor: "#DFF6DD",
+    color: "#0E700E",
   },
   countBadgeCompleted: {
     backgroundColor: "#E8F4FD",
     color: "#0F548C",
+  },
+  countBadgeRetry: {
+    backgroundColor: "#F3E8FD",
+    color: "#5B2D8E",
   },
   filtersRow: {
     display: "flex",
@@ -608,5 +612,17 @@ export const useDashboardStyles = makeStyles({
     whiteSpace: "nowrap",
     backgroundColor: "#DFF6DD",
     color: "#0E700E",
+  },
+  statusPillRetry: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "4px",
+    borderRadius: "16px",
+    padding: "4px 12px",
+    fontSize: tokens.fontSizeBase200,
+    fontWeight: 700,
+    whiteSpace: "nowrap",
+    backgroundColor: "#F3E8FD",
+    color: "#5B2D8E",
   },
 });

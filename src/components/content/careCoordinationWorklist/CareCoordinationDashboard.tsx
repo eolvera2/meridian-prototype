@@ -15,6 +15,7 @@ import {
   ArrowSync16Regular,
   Checkmark16Regular,
   Timer16Regular,
+  HourglassRegular,
   Warning16Regular,
   Filter16Regular,
   ChevronDown16Regular,
@@ -263,10 +264,13 @@ export const CareCoordinationDashboard: React.FC = () => {
       .sort((a, b) => a.daysAgo - b.daysAgo),
     [timeRange, contactRecords, callTypeFilter]
   );
-  const needsReviewCount = filteredByTime.filter((r) => !r.reviewed).length;
+  const needsReviewCount = filteredByTime.filter((r) => !r.reviewed && !r.scheduledForRetry).length;
   const inProgressCount = activeCallRecords.filter((r) => r.status === "in-progress").length;
+  const retryCount = filteredByTime.filter((r) => r.scheduledForRetry).length;
   const displayedRecords = statusFilter === "needs-review"
-    ? filteredByTime.filter((r) => !r.reviewed)
+    ? filteredByTime.filter((r) => !r.reviewed && !r.scheduledForRetry)
+    : statusFilter === "scheduled-for-retry"
+    ? filteredByTime.filter((r) => r.scheduledForRetry)
     : filteredByTime;
 
   // Combine active call records with displayed records for pagination
@@ -276,6 +280,8 @@ export const CareCoordinationDashboard: React.FC = () => {
       ? typeFiltered.filter((r) => r.status === "needs-review")
       : statusFilter === "in-progress"
         ? typeFiltered.filter((r) => r.status === "in-progress")
+        : statusFilter === "scheduled-for-retry"
+        ? []
         : typeFiltered;
     const activeRows = filteredActive.map((r) => ({ type: "active" as const, record: r }));
     const historyRows = statusFilter === "in-progress"
@@ -300,6 +306,7 @@ export const CareCoordinationDashboard: React.FC = () => {
       case "in-progress": return styles.statusPillInProgress;
       case "needs-review": return styles.statusPillNeedsReview;
       case "completed": return styles.statusPillCompleted;
+      case "scheduled-for-retry": return styles.statusPillRetry;
     }
   };
 
@@ -308,6 +315,7 @@ export const CareCoordinationDashboard: React.FC = () => {
       case "in-progress": return "In Progress";
       case "needs-review": return "Ready for Review";
       case "completed": return "Completed";
+      case "scheduled-for-retry": return "Scheduled for Retry";
     }
   };
 
@@ -670,6 +678,12 @@ export const CareCoordinationDashboard: React.FC = () => {
                   {inProgressCount}
                 </span>
               </span>
+              <span>
+                Will Retry:
+                <span className={mergeClasses(styles.countBadge, styles.countBadgeRetry)}>
+                  {retryCount}
+                </span>
+              </span>
             </div>
           </div>
         </div>
@@ -684,7 +698,8 @@ export const CareCoordinationDashboard: React.FC = () => {
             >
               <Option value="all">All Statuses</Option>
               <Option value="in-progress">In Progress</Option>
-              <Option value="needs-review">Needs Review</Option>
+              <Option value="needs-review">Ready for Review</Option>
+              <Option value="scheduled-for-retry">Scheduled for Retry</Option>
             </Dropdown>
           </div>
           <div className={styles.historyFilterGroup}>
@@ -759,7 +774,7 @@ export const CareCoordinationDashboard: React.FC = () => {
                     </td>
                     <td className={styles.tableCell}>
                       <div className={styles.outcomesCell}>
-                        {record.status === "in-progress" ? (
+                        {(record.status === "in-progress" || record.status === "scheduled-for-retry") ? (
                           <>
                             <NeutralOutcomeIndicator label="Picked up meds" />
                             <NeutralOutcomeIndicator label="Taking as Rx" />
@@ -805,6 +820,7 @@ export const CareCoordinationDashboard: React.FC = () => {
                         {record.status === "in-progress" && <Timer16Regular />}
                         {record.status === "needs-review" && <Checkmark16Regular />}
                         {record.status === "completed" && <Checkmark16Regular />}
+                        {record.status === "scheduled-for-retry" && <HourglassRegular />}
                         {getStatusLabel(record.status)}
                       </span>
                     </td>
@@ -839,7 +855,14 @@ export const CareCoordinationDashboard: React.FC = () => {
                     </td>
                     <td className={styles.tableCell}>
                       <div className={styles.outcomesCell}>
-                        {record.callType === "patient-intake" ? (
+                        {record.scheduledForRetry ? (
+                          <>
+                            <NeutralOutcomeIndicator label="Picked up meds" />
+                            <NeutralOutcomeIndicator label="Taking as Rx" />
+                            <NeutralOutcomeIndicator label="Side effects" />
+                            <NeutralPainIndicator />
+                          </>
+                        ) : record.callType === "patient-intake" ? (
                           <>
                             <OutcomeIndicator label="Intake Complete" value={record.intakeCompleted?.value ?? "No"} isWarning={record.intakeCompleted?.warning ?? true} />
                             <OutcomeIndicator label="Allergies Confirmed" value={record.allergiesConfirmed ?? "No"} isWarning={!record.allergiesConfirmed} />
@@ -874,7 +897,11 @@ export const CareCoordinationDashboard: React.FC = () => {
                       )}
                     </td>
                     <td className={styles.tableCell}>
-                      {record.reviewed ? (
+                      {record.scheduledForRetry ? (
+                        <span className={styles.statusPillRetry}>
+                          <HourglassRegular /> Scheduled for Retry
+                        </span>
+                      ) : record.reviewed ? (
                         <span className={styles.reviewedBadge}>
                           <Checkmark16Regular /> Reviewed
                         </span>

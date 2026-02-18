@@ -18,7 +18,7 @@ import type { CareCoordinationWorklistItem, CallType, ContactHistoryEntry } from
 import { useI18n } from "../../../i18n/I18nContext";
 import { TeamsDialerPopup } from "./TeamsDialerPopup";
 
-export type CallRecordStatus = "in-progress" | "needs-review" | "completed";
+export type CallRecordStatus = "in-progress" | "needs-review" | "completed" | "scheduled-for-retry";
 
 export interface ContactRecord {
   id: string;
@@ -47,16 +47,17 @@ export interface ContactRecord {
   symptomsPresent?: { value: string; warning: boolean };
   escalated?: { value: string; warning: boolean };
   reviewed: boolean;
+  scheduledForRetry?: boolean;
 }
 
 const INITIAL_CONTACT_RECORDS: ContactRecord[] = [
   // Medication Adherence
   { id: "cr-1", patientId: "ch-1", name: "Michael Chen", callType: "medication-adherence", contactDate: "Feb 5, 2026", contactTime: "6:09 AM", daysAgo: 8, phone: "(555) 234-5678", pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 6, followUp: { value: "Yes", warning: true }, reviewed: false },
   { id: "cr-2", patientId: "ch-2", name: "Patricia Martinez", callType: "medication-adherence", contactDate: "Feb 6, 2026", contactTime: "7:30 PM", daysAgo: 7, phone: "(256) 431-7337", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 2, followUp: { value: "Not needed", warning: false }, reviewed: false },
-  { id: "cr-3", patientId: "ch-3", name: "Sarah Johnson", callType: "medication-adherence", contactDate: "Jan 28, 2026", contactTime: "10:15 AM", daysAgo: 16, phone: "(312) 555-0198", pickedUpMeds: "No", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "None", warning: false }, painLevel: 7, followUp: { value: "Yes", warning: true }, reviewed: false },
+  { id: "cr-3", patientId: "ch-3", name: "Sarah Johnson", callType: "medication-adherence", contactDate: "Jan 28, 2026", contactTime: "10:15 AM", daysAgo: 16, phone: "(312) 555-0198", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, reviewed: false, scheduledForRetry: true },
   { id: "cr-4", patientId: "ch-4", name: "Robert Kim", callType: "medication-adherence", contactDate: "Jan 20, 2026", contactTime: "2:45 PM", daysAgo: 24, phone: "(415) 555-0342", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "Reported", warning: true }, painLevel: 4, followUp: { value: "Yes", warning: true }, reviewed: false },
   { id: "cr-5", patientId: "ch-5", name: "Linda Nguyen", callType: "medication-adherence", contactDate: "Jan 15, 2026", contactTime: "9:00 AM", daysAgo: 29, phone: "(650) 555-0477", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 1, followUp: { value: "Not needed", warning: false }, reviewed: false },
-  { id: "cr-6", patientId: "ch-6", name: "James Wilson", callType: "medication-adherence", contactDate: "Dec 20, 2025", contactTime: "11:30 AM", daysAgo: 55, phone: "(206) 555-0613", pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 8, followUp: { value: "Yes", warning: true }, reviewed: false },
+  { id: "cr-6", patientId: "ch-6", name: "James Wilson", callType: "medication-adherence", contactDate: "Dec 20, 2025", contactTime: "11:30 AM", daysAgo: 55, phone: "(206) 555-0613", pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 8, followUp: { value: "Yes", warning: true }, reviewed: false, scheduledForRetry: true },
   { id: "cr-7", patientId: "ch-7", name: "Maria Garcia", callType: "medication-adherence", contactDate: "Dec 10, 2025", contactTime: "4:20 PM", daysAgo: 65, phone: "(713) 555-0829", pickedUpMeds: "No", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "None", warning: false }, painLevel: 5, followUp: { value: "Yes", warning: true }, reviewed: false },
   { id: "cr-8", patientId: "ch-8", name: "David Thompson", callType: "medication-adherence", contactDate: "Nov 25, 2025", contactTime: "8:00 AM", daysAgo: 80, phone: "(503) 555-0156", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 3, followUp: { value: "Not needed", warning: false }, reviewed: false },
   // Patient Intake
