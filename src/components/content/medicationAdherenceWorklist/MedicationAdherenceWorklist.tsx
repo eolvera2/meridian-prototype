@@ -80,6 +80,18 @@ export const MedicationAdherenceWorklist: React.FC<
       next.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortOrder === "desc") {
       next.sort((a, b) => b.name.localeCompare(a.name));
+    } else {
+      // Default: sort by lastContactDate descending (most recent first)
+      // Date format is M/D/YY
+      const parseDate = (d: string) => {
+        const parts = d.split("/");
+        if (parts.length === 3) {
+          const year = 2000 + Number(parts[2]);
+          return new Date(year, Number(parts[0]) - 1, Number(parts[1])).getTime();
+        }
+        return 0;
+      };
+      next.sort((a, b) => parseDate(b.lastContactDate) - parseDate(a.lastContactDate));
     }
 
     return next;

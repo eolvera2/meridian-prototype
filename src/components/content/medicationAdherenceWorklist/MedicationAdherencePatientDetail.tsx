@@ -30,7 +30,7 @@ const ChevronLeft = bundleIcon(ChevronLeft24Filled, ChevronLeft24Regular);
 
 export const MedicationAdherencePatientDetail: React.FC = () => {
   const styles = usePatientDetailStyles();
-  const { selectedPatientId, getPatient, setSelectedPatientId } =
+  const { selectedPatientId, getPatient, setSelectedPatientId, markPatientAsReviewed, isPatientNeedsReview } =
     useMedicationAdherenceWorklistContext();
 
   const patient: MedicationAdherenceWorklistItem | undefined = selectedPatientId
@@ -41,6 +41,7 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
 
   const contactHistory = patient.contactHistory ?? [];
   const medications = patient.medications ?? [];
+  const needsReview = selectedPatientId ? isPatientNeedsReview(selectedPatientId) : false;
 
   return (
     <div className={styles.root}>
@@ -114,6 +115,13 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
               size="small"
               icon={<ClipboardCheckmark20Regular />}
               style={{ marginLeft: "auto" }}
+              disabled={!needsReview}
+              onClick={() => {
+                if (selectedPatientId) {
+                  markPatientAsReviewed(selectedPatientId);
+                  setSelectedPatientId(null);
+                }
+              }}
             >
               Mark as Reviewed
             </Button>

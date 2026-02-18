@@ -33,50 +33,12 @@ import {
   Clipboard20Regular,
   ChatMultiple20Regular,
   NumberCircle020Regular,
-  NumberCircle120Regular,
-  NumberCircle220Regular,
-  NumberCircle320Regular,
-  NumberCircle420Regular,
-  NumberCircle520Regular,
-  NumberCircle620Regular,
-  NumberCircle720Regular,
-  NumberCircle820Regular,
-  NumberCircle920Regular,
 } from "@fluentui/react-icons";
 import { useDashboardStyles } from "./MedicationAdherenceDashboard.styles";
 import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
-import type { CallRecordStatus } from "./MedicationAdherenceWorklistContext";
+import type { CallRecordStatus, ContactRecord } from "./MedicationAdherenceWorklistContext";
 
 // ── Data Types ──────────────────────────────────────────────
-
-interface ContactRecord {
-  id: string;
-  patientId: string;
-  name: string;
-  contactDate: string;
-  contactTime: string;
-  daysAgo: number;
-  phone: string;
-  pickedUpMeds: string;
-  takingAsRx: { value: string; warning: boolean };
-  sideEffects: { value: string; warning: boolean };
-  painLevel: number;
-  followUp: { value: string; warning: boolean };
-  reviewed: boolean;
-}
-
-// ── Static Data ─────────────────────────────────────────────
-
-const CONTACT_RECORDS: ContactRecord[] = [
-  { id: "cr-1", patientId: "ch-1", name: "Michael Chen", contactDate: "Feb 5, 2026", contactTime: "6:09 AM", daysAgo: 8, phone: "(555) 234-5678", pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 6, followUp: { value: "Yes", warning: true }, reviewed: false },
-  { id: "cr-2", patientId: "ch-2", name: "Patricia Martinez", contactDate: "Feb 6, 2026", contactTime: "7:30 PM", daysAgo: 7, phone: "(256) 431-7337", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 2, followUp: { value: "Not needed", warning: false }, reviewed: false },
-  { id: "cr-3", patientId: "ch-3", name: "Sarah Johnson", contactDate: "Jan 28, 2026", contactTime: "10:15 AM", daysAgo: 16, phone: "(312) 555-0198", pickedUpMeds: "No", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "None", warning: false }, painLevel: 7, followUp: { value: "Yes", warning: true }, reviewed: false },
-  { id: "cr-4", patientId: "ch-4", name: "Robert Kim", contactDate: "Jan 20, 2026", contactTime: "2:45 PM", daysAgo: 24, phone: "(415) 555-0342", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "Reported", warning: true }, painLevel: 4, followUp: { value: "Yes", warning: true }, reviewed: false },
-  { id: "cr-5", patientId: "ch-5", name: "Linda Nguyen", contactDate: "Jan 15, 2026", contactTime: "9:00 AM", daysAgo: 29, phone: "(650) 555-0477", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 1, followUp: { value: "Not needed", warning: false }, reviewed: false },
-  { id: "cr-6", patientId: "ch-6", name: "James Wilson", contactDate: "Dec 20, 2025", contactTime: "11:30 AM", daysAgo: 55, phone: "(206) 555-0613", pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 8, followUp: { value: "Yes", warning: true }, reviewed: false },
-  { id: "cr-7", patientId: "ch-7", name: "Maria Garcia", contactDate: "Dec 10, 2025", contactTime: "4:20 PM", daysAgo: 65, phone: "(713) 555-0829", pickedUpMeds: "No", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "None", warning: false }, painLevel: 5, followUp: { value: "Yes", warning: true }, reviewed: false },
-  { id: "cr-8", patientId: "ch-8", name: "David Thompson", contactDate: "Nov 25, 2025", contactTime: "8:00 AM", daysAgo: 80, phone: "(503) 555-0156", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 3, followUp: { value: "Not needed", warning: false }, reviewed: false },
-];
 
 type TimeRange = "7" | "30" | "90";
 
@@ -261,7 +223,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   const [chartsExpanded, setChartsExpanded] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
-  const { activeCallRecords, resolveCallRecord, setSelectedPatientId } = useMedicationAdherenceWorklistContext();
+  const { activeCallRecords, resolveCallRecord, setSelectedPatientId, contactRecords } = useMedicationAdherenceWorklistContext();
 
   // Track which records we've already started timers for
   const resolvedTimers = useRef<Set<string>>(new Set());
@@ -296,8 +258,8 @@ export const MedicationAdherenceDashboard: React.FC = () => {
 
   // Contact history
   const filteredByTime = useMemo(
-    () => CONTACT_RECORDS.filter((r) => r.daysAgo <= Number(timeRange)),
-    [timeRange]
+    () => contactRecords.filter((r) => r.daysAgo <= Number(timeRange)),
+    [timeRange, contactRecords]
   );
   const needsReviewCount = filteredByTime.filter((r) => !r.reviewed).length;
   const inProgressCount = activeCallRecords.filter((r) => r.status === "in-progress").length;
@@ -408,28 +370,19 @@ export const MedicationAdherenceDashboard: React.FC = () => {
     </Tooltip>
   );
 
-  // Pain level icon mapping
-  const PAIN_ICONS = [
-    NumberCircle020Regular, NumberCircle120Regular, NumberCircle220Regular,
-    NumberCircle320Regular, NumberCircle420Regular, NumberCircle520Regular,
-    NumberCircle620Regular, NumberCircle720Regular, NumberCircle820Regular,
-    NumberCircle920Regular,
-  ];
-
   const getPainClass = (level: number) => {
     if (level === 0) return styles.outcomeGood;
     if (level <= 3) return styles.outcomeYellow;
     if (level <= 6) return styles.outcomeOrange;
-    return styles.outcomeBad;
+    return level >= 7 ? styles.outcomeBadFilled : styles.outcomeBad;
   };
 
   const PainLevelIndicator: React.FC<{ level: number }> = ({ level }) => {
     const clamped = Math.max(0, Math.min(10, level));
-    const Icon = clamped <= 9 ? PAIN_ICONS[clamped] : null;
     return (
       <Tooltip content={`Pain level: ${clamped}/10`} relationship="label">
         <span className={mergeClasses(styles.outcomeIcon, getPainClass(clamped))}>
-          {Icon ? <Icon aria-hidden="true" /> : <span style={{ fontSize: "11px", fontWeight: 700, lineHeight: 1 }}>10</span>}
+          {clamped}
         </span>
       </Tooltip>
     );

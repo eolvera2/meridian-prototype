@@ -469,6 +469,11 @@ export const useDashboardStyles = makeStyles({
     backgroundColor: "#FDE7E9",
     color: "#D13438",
   },
+  outcomeBadFilled: {
+    backgroundColor: "#D13438",
+    color: "#FFFFFF",
+    fontWeight: 700,
+  },
   outcomeNeutralIcon: {
     backgroundColor: tokens.colorNeutralBackground3,
     color: tokens.colorNeutralForeground3,
