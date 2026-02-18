@@ -308,28 +308,6 @@ export const MedicationAdherenceDashboard: React.FC = () => {
     }
   };
 
-  const handleExport = useCallback(() => {
-    const headers = ["Patient Name", "Contact Date", "Phone", "Picked Up Meds", "Taking As Rx", "Side Effects", "Follow-up", "Status"];
-    const rows = displayedRecords.map((r) => [
-      r.name,
-      `${r.contactDate} ${r.contactTime}`,
-      r.phone,
-      r.pickedUpMeds,
-      r.takingAsRx.value,
-      r.sideEffects.value,
-      r.followUp.value,
-      r.reviewed ? "Reviewed" : "Needs Review",
-    ]);
-    const csvContent = [headers, ...rows].map((row) => row.map((cell) => `"${cell}"`).join(",")).join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `contact-history-${timeRange}d.csv`;
-    link.click();
-    URL.revokeObjectURL(url);
-  }, [displayedRecords, timeRange]);
-
   // Outcome icon helper – category-specific icons
   const getOutcomeIcon = (label: string, isWarning: boolean) => {
     switch (label) {
@@ -660,25 +638,6 @@ export const MedicationAdherenceDashboard: React.FC = () => {
                 </span>
               </span>
             </div>
-            <Tooltip content="Import contact history" relationship="label">
-              <Button
-                appearance="subtle"
-                icon={<ArrowImport16Regular />}
-                aria-label="Import contact history"
-              >
-                Import
-              </Button>
-            </Tooltip>
-            <Tooltip content="Export contact history as CSV" relationship="label">
-              <Button
-                appearance="subtle"
-                icon={<ArrowExportUp16Regular />}
-                aria-label="Export contact history"
-                onClick={handleExport}
-              >
-                Export
-              </Button>
-            </Tooltip>
           </div>
         </div>
 

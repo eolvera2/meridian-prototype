@@ -278,6 +278,7 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
       const reviewedPatient = {
         ...patient,
         group: "reviewed",
+        status: "Reviewed",
         ...(latestEntry && {
           lastContactDate: formattedDate,
           lastContactSummary: latestEntry.transcriptSummary ?? patient.lastContactSummary,
