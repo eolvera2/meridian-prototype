@@ -32,9 +32,9 @@ import {
   DeviceEqRegular,
 } from "@fluentui/react-icons";
 
-import { useStyles } from "./Worklist.styles";
-import { useWorklistContext } from "./WorklistContext";
-import type { WorklistProps, SortOrder } from "./Worklist.types";
+import { useStyles } from "./CareCoordinationWorklist.styles";
+import { useWorklistContext } from "./CareCoordinationWorklistContext";
+import type { WorklistProps, SortOrder } from "./CareCoordinationWorklist.types";
 import { useI18n } from "../../../i18n/I18nContext";
 
 const ORDERED_GROUPS = [
