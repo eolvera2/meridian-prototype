@@ -88,7 +88,7 @@ interface MedicationAdherenceWorklistContextValue {
   /** Check if a patient currently has "needs-review" status */
   isPatientNeedsReview: (patientId: string) => boolean;
   /** Active dialer call info for popup */
-  activeDialerCall: { name: string; phone: string } | null;
+  activeDialerCall: { name: string; phone: string; recordId: string } | null;
   /** Dismiss the dialer popup */
   dismissDialer: () => void;
 }
@@ -130,7 +130,7 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
   // Ref mirror of activeCallRecords so resolveCallRecord can read without closing over state
   const activeCallRecordsRef = useRef<ActiveCallRecord[]>([]);
   const [contactRecords, setContactRecords] = useState<ContactRecord[]>(INITIAL_CONTACT_RECORDS);
-  const [activeDialerCall, setActiveDialerCall] = useState<{ name: string; phone: string } | null>(null);
+  const [activeDialerCall, setActiveDialerCall] = useState<{ name: string; phone: string; recordId: string } | null>(null);
 
   // Registry preserves full patient data even after patients are removed from the worklist via callPatients
   const patientRegistryRef = useRef<Map<string, MedicationAdherenceWorklistItem>>(
@@ -206,7 +206,8 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
     // Show dialer popup for single-patient calls
     if (patientIds.length === 1 && calledPatients.length === 1) {
       const p = calledPatients[0];
-      setActiveDialerCall({ name: p.name, phone: p.phone || "(555) 000-0000" });
+      const recordId = newRecords[0].id;
+      setActiveDialerCall({ name: p.name, phone: p.phone || "(555) 000-0000", recordId });
     }
   }, [formatTime, patients]);
 
@@ -316,8 +317,13 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
   }, [contactRecords, activeCallRecords]);
 
   const dismissDialer = useCallback(() => {
-    setActiveDialerCall(null);
-  }, []);
+    setActiveDialerCall((prev) => {
+      if (prev?.recordId) {
+        resolveCallRecord(prev.recordId);
+      }
+      return null;
+    });
+  }, [resolveCallRecord]);
 
   const value = useMemo(
     () => ({

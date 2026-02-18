@@ -28,12 +28,48 @@ export const TeamsDialerPopup: React.FC<TeamsDialerPopupProps> = ({
   const [elapsed, setElapsed] = useState(0);
   const [micOn, setMicOn] = useState(true);
   const [speakerOn, setSpeakerOn] = useState(true);
+  const [position, setPosition] = useState({ x: window.innerWidth - 380, y: 80 });
+  const dragging = useRef(false);
+  const dragOffset = useRef({ x: 0, y: 0 });
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     intervalRef.current = setInterval(() => setElapsed((s) => s + 1), 1000);
+
+    // Play audio file on mount
+    const audio = new Audio("/MedAdhCall1.wav");
+    audio.play().catch(() => { /* autoplay may be blocked */ });
+    audioRef.current = audio;
+
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    // Don't start drag if clicking a button
+    if ((e.target as HTMLElement).closest("button")) return;
+    dragging.current = true;
+    dragOffset.current = { x: e.clientX - position.x, y: e.clientY - position.y };
+    e.preventDefault();
+  }, [position]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!dragging.current) return;
+      setPosition({ x: e.clientX - dragOffset.current.x, y: e.clientY - dragOffset.current.y });
+    };
+    const handleMouseUp = () => { dragging.current = false; };
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
 
@@ -46,9 +82,9 @@ export const TeamsDialerPopup: React.FC<TeamsDialerPopupProps> = ({
 
   return (
     <div className={styles.overlay}>
-      <div className={styles.popup}>
-        {/* Title bar */}
-        <div className={styles.titleBar}>
+      <div className={styles.popup} style={{ left: position.x, top: position.y }}>
+        {/* Title bar — drag handle */}
+        <div className={styles.titleBar} onMouseDown={handleMouseDown} style={{ cursor: "grab" }}>
           <div className={styles.titleLeft}>
             <svg className={styles.teamsIcon} viewBox="0 0 24 24" fill="none">
               <rect width="24" height="24" rx="4" fill="#5059C9" />

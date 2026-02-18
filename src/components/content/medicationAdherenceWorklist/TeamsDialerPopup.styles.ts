@@ -12,8 +12,6 @@ export const useTeamsDialerStyles = makeStyles({
   },
   popup: {
     position: "absolute",
-    top: "80px",
-    right: "40px",
     width: "340px",
     borderRadius: "8px",
     overflow: "hidden",

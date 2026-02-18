@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import {
   Dropdown,
   Option,
@@ -223,22 +223,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   const [chartsExpanded, setChartsExpanded] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
-  const { activeCallRecords, resolveCallRecord, setSelectedPatientId, contactRecords } = useMedicationAdherenceWorklistContext();
-
-  // Track which records we've already started timers for
-  const resolvedTimers = useRef<Set<string>>(new Set());
-
-  useEffect(() => {
-    const newInProgress = activeCallRecords.filter(
-      (r) => r.status === "in-progress" && !resolvedTimers.current.has(r.id)
-    );
-    newInProgress.forEach((record) => {
-      resolvedTimers.current.add(record.id);
-      setTimeout(() => {
-        resolveCallRecord(record.id);
-      }, 10000);
-    });
-  }, [activeCallRecords, resolveCallRecord]);
+  const { activeCallRecords, setSelectedPatientId, contactRecords } = useMedicationAdherenceWorklistContext();
 
   const handleTimeRangeChange = (_: unknown, data: OptionOnSelectData) => {
     if (data.optionValue) {
