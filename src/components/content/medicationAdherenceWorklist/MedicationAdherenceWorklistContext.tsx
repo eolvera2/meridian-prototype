@@ -218,11 +218,13 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
     if (resolvedRecordIds.current.has(recordId)) return;
     resolvedRecordIds.current.add(recordId);
 
-    const outcome = OUTCOME_POOLS[outcomeIndex % OUTCOME_POOLS.length];
-    outcomeIndex++;
-
     // Mutate registry OUTSIDE the state updater to prevent double-mutation
     const record = activeCallRecordsRef.current.find(r => r.id === recordId);
+
+    // Fixed outcomes for Robert Williams (ma-1)
+    const outcome = record?.patientId === "ma-1"
+      ? { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "Nausea reported", warning: true }, painLevel: 0, followUp: { value: "Not needed", warning: false }, status: "needs-review" as CallRecordStatus }
+      : OUTCOME_POOLS[outcomeIndex++ % OUTCOME_POOLS.length];
     if (record) {
       const patient = patientRegistryRef.current.get(record.patientId);
       if (patient) {
@@ -292,6 +294,9 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
         ...patient,
         group: "reviewed",
         status: "Reviewed",
+        ...(patientId === "ma-1" && {
+          reason: "Warfarin 5mg picked up, taking as Rx. Mild nausea resolved.",
+        }),
         ...(latestEntry && {
           lastContactDate: formattedDate,
           lastContactSummary: latestEntry.transcriptSummary ?? patient.lastContactSummary,

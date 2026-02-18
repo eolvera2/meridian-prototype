@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Tooltip, mergeClasses } from "@fluentui/react-components";
 import {
   bundleIcon,
@@ -25,6 +25,7 @@ import {
 import { usePatientDetailStyles } from "./MedicationAdherencePatientDetail.styles";
 import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
 import type { MedicationAdherenceWorklistItem } from "./MedicationAdherenceWorklist.types";
+import { AICallTranscriptModal } from "./AICallTranscriptModal";
 
 const ChevronLeft = bundleIcon(ChevronLeft24Filled, ChevronLeft24Regular);
 
@@ -42,6 +43,7 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
   const contactHistory = patient.contactHistory ?? [];
   const medications = patient.medications ?? [];
   const needsReview = selectedPatientId ? isPatientNeedsReview(selectedPatientId) : false;
+  const [transcriptOpen, setTranscriptOpen] = useState(false);
 
   return (
     <div className={styles.root}>
@@ -133,7 +135,7 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
               <div className={styles.contactHeaderRow}>
                 <span className={styles.contactDate}>{entry.date}</span>
                 {entry.transcriptLink && (
-                  <span className={styles.transcriptLink}>
+                  <span className={styles.transcriptLink} onClick={() => setTranscriptOpen(true)}>
                     <Script24Regular style={{ width: 14, height: 14 }} />
                     View AI Call Transcript
                   </span>
@@ -371,6 +373,7 @@ export const MedicationAdherencePatientDetail: React.FC = () => {
           )}
         </div>
       </div>
+      {transcriptOpen && <AICallTranscriptModal onClose={() => setTranscriptOpen(false)} />}
     </div>
   );
 };
