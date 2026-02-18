@@ -25,7 +25,7 @@ export interface MainContentProps {
     | "home"
     | "avatar"
     | "settings"
-    | "medicationAdherence"
+    | "careCoordination"
     | "help"
     | null;
   /** Callback when navigation item changes */
@@ -34,7 +34,7 @@ export interface MainContentProps {
       | "home"
       | "avatar"
       | "settings"
-        | "medicationAdherence"
+        | "careCoordination"
       | "help"
       | null
   ) => void;

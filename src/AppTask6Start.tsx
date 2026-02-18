@@ -52,7 +52,7 @@ function AppTask6Start() {
     | "home"
     | "avatar"
     | "settings"
-    | "medicationAdherence"
+    | "careCoordination"
     | "help"
     | null
   >("home");

@@ -1,16 +1,16 @@
 /**
- * Worklist Component
+ * CareCoordinationWorklist Component
  *
- * Displays a list of patients grouped by date with search and filter functionality.
+ * Standalone clone of the Home worklist for independent medication adherence customization.
  */
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
-  PresenceBadge,
   TabList,
   Tab,
   SearchBox,
   Button,
+  Checkbox,
   Divider,
   Tooltip,
 } from "@fluentui/react-components";
@@ -21,274 +21,118 @@ import type {
 } from "@fluentui/react-components";
 import {
   Search20Regular,
-  CalendarLtr20Regular,
-  ChevronDown12Regular,
-  Filter16Regular,
   ArrowSort16Regular,
   ArrowUp16Regular,
   ArrowDown16Regular,
+  ArrowSync16Regular,
   MoreVerticalFilled,
-  ChatAdd24Filled,
-  DeviceEqRegular,
+  Call20Regular,
+  CallRegular,
+  PersonAdd20Regular,
 } from "@fluentui/react-icons";
 
 import { useStyles } from "./CareCoordinationWorklist.styles";
-import { useWorklistContext } from "./CareCoordinationWorklistContext";
-import type { WorklistProps, SortOrder } from "./CareCoordinationWorklist.types";
+import { useCareCoordinationWorklistContext } from "./CareCoordinationWorklistContext";
+import type {
+  CareCoordinationWorklistProps,
+  CareCoordinationSortOrder,
+  CallType,
+} from "./CareCoordinationWorklist.types";
+import { CALL_TYPE_LABELS } from "./CareCoordinationWorklist.types";
 import { useI18n } from "../../../i18n/I18nContext";
+import { AddPatientForm } from "./AddPatientForm";
 
-const ORDERED_GROUPS = [
-  "Today",
-  "Yesterday",
-  "Last Week",
-  "Last 2 Weeks",
-  "Last Month",
-  "Later",
-];
+type CareCoordinationTab = "queue" | "reviewed";
 
-const GROUP_LABEL_KEYS: Record<string, string> = {
-  "Today": "common.today",
-  "Yesterday": "common.yesterday",
-  "Last Week": "worklist.groups.lastWeek",
-  "Last 2 Weeks": "worklist.groups.lastTwoWeeks",
-  "Last Month": "worklist.groups.lastMonth",
-  "Later": "worklist.groups.later",
-};
-
-export const Worklist: React.FC<WorklistProps> = ({
-  isCollapsed = false,
-  onPatientSelect,
-  onAddPatient,
-  onMicButtonClick,
-}) => {
+export const CareCoordinationWorklist: React.FC<
+  CareCoordinationWorklistProps
+> = ({ isCollapsed = false }) => {
   const styles = useStyles();
   const { t } = useI18n();
-  const { patients } = useWorklistContext();
-  const toId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const { patients, setSelectedPatientId, callPatients, addPatient } = useCareCoordinationWorklistContext();
 
-  const groupLabel = (group: string) => {
-    const key = GROUP_LABEL_KEYS[group];
-    return key ? t(key) : group;
-  };
-
-  const hasValidLastModified = (value?: string) => {
-    const normalized = value?.trim();
-    return Boolean(normalized && normalized !== "--" && normalized !== "0");
-  };
-
-  const shouldShowLastModified = (patient: (typeof patients)[number]) => {
-    const recordingSeconds = patient.initialRecordingSeconds ?? 0;
-    return recordingSeconds > 0 && hasValidLastModified(patient.lastModified);
-  };
-
-  const [activeTab, setActiveTab] = useState<TabValue>("schedule");
+  const [activeTab, setActiveTab] = useState<TabValue>("queue");
   const [searchValue, setSearchValue] = useState("");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [filteredPatients, setFilteredPatients] = useState(patients);
-  const [sortOrder, setSortOrder] = useState<SortOrder>("none");
+  const [sortOrder, setSortOrder] =
+    useState<CareCoordinationSortOrder>("none");
+  const [selectedPatients, setSelectedPatients] = useState<Set<string>>(new Set());
+  const [addPatientOpen, setAddPatientOpen] = useState(false);
 
-  // Update filteredPatients when context patients change (e.g., lastModified updated)
-  React.useEffect(() => {
-    if (searchValue.length < 3 && sortOrder === "none") {
-      setFilteredPatients(patients);
+  const activeCareCoordinationTab = activeTab as CareCoordinationTab;
+
+  const tabbedPatients = useMemo(
+    () =>
+      patients.filter(
+        (patient) => patient.group?.toLowerCase() === activeCareCoordinationTab
+      ),
+    [patients, activeCareCoordinationTab]
+  );
+
+  const filteredPatients = useMemo(() => {
+    let next = [...tabbedPatients];
+
+    if (searchValue.trim().length >= 2) {
+      const searchLower = searchValue.trim().toLowerCase();
+      next = next.filter((patient) => {
+        const searchableText = `${patient.name} ${patient.reason} ${patient.languagePreference} ${patient.lastContactSummary}`.toLowerCase();
+        return searchableText.includes(searchLower);
+      });
     }
-  }, [patients, searchValue, sortOrder]);
+
+    if (sortOrder === "asc") {
+      next.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOrder === "desc") {
+      next.sort((a, b) => b.name.localeCompare(a.name));
+    } else {
+      // Default: sort by lastContactDate descending (most recent first)
+      // Date format is M/D/YY
+      const parseDate = (d: string) => {
+        const parts = d.split("/");
+        if (parts.length === 3) {
+          const year = 2000 + Number(parts[2]);
+          return new Date(year, Number(parts[0]) - 1, Number(parts[1])).getTime();
+        }
+        return 0;
+      };
+      next.sort((a, b) => parseDate(b.lastContactDate) - parseDate(a.lastContactDate));
+    }
+
+    return next;
+  }, [tabbedPatients, searchValue, sortOrder]);
 
   const handleTabSelect = (_: SelectTabEvent, data: SelectTabData) => {
     setActiveTab(data.value);
+    setSearchValue("");
+    setIsSearchVisible(false);
+    setSortOrder("none");
+    setSelectedPatients(new Set());
   };
 
   const handleSearchToggle = () => {
-    setIsSearchVisible(!isSearchVisible);
+    setIsSearchVisible((prev) => !prev);
     if (isSearchVisible) {
       setSearchValue("");
-      setFilteredPatients(patients);
-      setSortOrder("none");
-      setExpandedGroups(
-        ORDERED_GROUPS.reduce((acc, g) => {
-          acc[g] = g === "Today";
-          return acc;
-        }, {} as Record<string, boolean>)
-      );
     }
   };
 
   const handleSortToggle = () => {
-    const nextOrder: SortOrder =
+    const nextOrder: CareCoordinationSortOrder =
       sortOrder === "none" ? "asc" : sortOrder === "asc" ? "desc" : "none";
     setSortOrder(nextOrder);
-
-    let sortedPatients = [...filteredPatients];
-    if (nextOrder === "asc") {
-      sortedPatients.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (nextOrder === "desc") {
-      sortedPatients.sort((a, b) => b.name.localeCompare(a.name));
-    } else {
-      sortedPatients =
-        searchValue.length >= 3
-          ? patients.filter((patient) => {
-              const names = patient.name.toLowerCase().split(" ");
-              const searchLower = searchValue.toLowerCase();
-              return (
-                names.some((name) => name.includes(searchLower)) ||
-                patient.name.toLowerCase().includes(searchLower)
-              );
-            })
-          : patients;
-    }
-    setFilteredPatients(sortedPatients);
   };
-
-  const handleSearchChange = (value: string) => {
-    setSearchValue(value);
-
-    let filtered: typeof patients;
-    if (value.length >= 3) {
-      filtered = patients.filter((patient) => {
-        const names = patient.name.toLowerCase().split(" ");
-        const searchLower = value.toLowerCase();
-        return (
-          names.some((name) => name.includes(searchLower)) ||
-          patient.name.toLowerCase().includes(searchLower)
-        );
-      });
-
-      const groupsWithResults = [
-        ...new Set(filtered.map((patient) => patient.group)),
-      ];
-      setExpandedGroups((prev) => {
-        const updated = { ...prev };
-        groupsWithResults.forEach((group) => {
-          if (group) {
-            updated[group] = true;
-          }
-        });
-        return updated;
-      });
-    } else {
-      filtered = patients;
-    }
-
-    if (sortOrder === "asc") {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortOrder === "desc") {
-      filtered.sort((a, b) => b.name.localeCompare(a.name));
-    }
-
-    setFilteredPatients(filtered);
-  };
-
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>(
-    ORDERED_GROUPS.reduce((acc, g) => {
-      acc[g] = g === "Today";
-      return acc;
-    }, {} as Record<string, boolean>)
-  );
-
-  const groups = ORDERED_GROUPS.filter((g) =>
-    filteredPatients.some((p) => p.group === g)
-  );
-
-  // Refs for auto-expand calculation
-  const worklistBodyRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const groupRefs = useRef<Map<string, HTMLDivElement>>(new Map());
-  const hasAutoExpandedRef = useRef(false);
-
-  const estimateGroupContentHeight = useCallback(
-    (groupName: string) => {
-      const patientsInGroup = filteredPatients.filter(
-        (p) => p.group === groupName
-      );
-      const heightPerPatient = 140;
-      return patientsInGroup.length * heightPerPatient;
-    },
-    [filteredPatients]
-  );
-
-  useEffect(() => {
-    if (hasAutoExpandedRef.current || isCollapsed || !worklistBodyRef.current) {
-      return;
-    }
-
-    const timeoutId = setTimeout(() => {
-      if (!worklistBodyRef.current || !contentRef.current) return;
-
-      const worklistBodyHeight = worklistBodyRef.current.clientHeight;
-      const footerHeight = 80;
-      const availableHeight = worklistBodyHeight - footerHeight;
-
-      const headerHeight = 48;
-      const groupsWithPatients = groups;
-      const totalHeadersHeight = groupsWithPatients.length * headerHeight;
-      const todayContentHeight = estimateGroupContentHeight("Today");
-      const currentHeight = totalHeadersHeight + todayContentHeight;
-
-      let remainingSpace = availableHeight - currentHeight;
-
-      if (remainingSpace > 100) {
-        const sectionsToExpand: string[] = [];
-
-        for (const group of groupsWithPatients) {
-          if (group === "Today") continue;
-
-          const groupContentHeight = estimateGroupContentHeight(group);
-
-          if (remainingSpace >= groupContentHeight) {
-            sectionsToExpand.push(group);
-            remainingSpace -= groupContentHeight;
-          } else if (remainingSpace > 100) {
-            if (groupContentHeight <= remainingSpace * 2) {
-              sectionsToExpand.push(group);
-              break;
-            }
-          }
-
-          if (remainingSpace < 100) break;
-        }
-
-        if (sectionsToExpand.length > 0) {
-          setExpandedGroups((prev) => {
-            const updated = { ...prev };
-            sectionsToExpand.forEach((group) => {
-              updated[group] = true;
-            });
-            return updated;
-          });
-        }
-      }
-
-      hasAutoExpandedRef.current = true;
-    }, 100);
-
-    return () => clearTimeout(timeoutId);
-  }, [groups, isCollapsed, estimateGroupContentHeight]);
-
-  const handlePatientClick = (patientId: string) =>
-    onPatientSelect?.(patientId);
-  const handleAddPatient = () => onAddPatient?.();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape" && isSearchVisible) {
         setIsSearchVisible(false);
         setSearchValue("");
-        setFilteredPatients(patients);
-        setSortOrder("none");
-        setExpandedGroups(
-          ORDERED_GROUPS.reduce((acc, g) => {
-            acc[g] = g === "Today";
-            return acc;
-          }, {} as Record<string, boolean>)
-        );
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isSearchVisible, patients]);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isSearchVisible]);
 
   return (
     <div
@@ -302,7 +146,7 @@ export const Worklist: React.FC<WorklistProps> = ({
             isSearchVisible ? styles.tabsSearchActive : ""
           }`}
           role="tablist"
-          aria-label={t("worklist.tabs.ariaLabel")}
+          aria-label="Medication adherence tabs"
         >
           {!isSearchVisible ? (
             <>
@@ -312,24 +156,41 @@ export const Worklist: React.FC<WorklistProps> = ({
                 size="small"
                 className={styles.tabStretchList}
               >
-                <Tab className={styles.tabStretch} value="schedule">
+                <Tab
+                  className={styles.tabStretch}
+                  value="queue"
+                >
                   <span className={styles.tabLabel}>
-                    {t("worklist.tabs.schedule")}
+                    Queue
                   </span>
                 </Tab>
-                <Tab className={styles.tabStretch} value="patient-list">
+                <Tab
+                  className={styles.tabStretch}
+                  value="reviewed"
+                >
                   <span className={styles.tabLabel}>
-                    {t("worklist.tabs.userAdded")}
+                    Reviewed
                   </span>
                 </Tab>
               </TabList>
 
+              <Tooltip content="Add Patient" relationship="label">
+                <span className="inline-flex">
+                  <button
+                    className={styles.searchButton}
+                    onClick={() => setAddPatientOpen(true)}
+                    aria-label="Add patient"
+                  >
+                    <PersonAdd20Regular />
+                  </button>
+                </span>
+              </Tooltip>
               <Tooltip content={t("common.search")} relationship="label">
                 <span className="inline-flex">
                   <button
                     className={styles.searchButton}
                     onClick={handleSearchToggle}
-                    aria-label={t("worklist.search.ariaLabel")}
+                    aria-label="Search medication adherence patients"
                   >
                     <Search20Regular />
                   </button>
@@ -340,9 +201,9 @@ export const Worklist: React.FC<WorklistProps> = ({
             <div className={styles.searchContainerActive}>
               <div className={styles.searchBox}>
                 <SearchBox
-                  placeholder={t("worklist.search.placeholder")}
+                  placeholder="Search patients..."
                   value={searchValue}
-                  onChange={(_, data) => handleSearchChange(data.value || "")}
+                  onChange={(_, data) => setSearchValue(data.value || "")}
                   dismiss={{
                     onClick: handleSearchToggle,
                   }}
@@ -352,26 +213,48 @@ export const Worklist: React.FC<WorklistProps> = ({
             </div>
           )}
         </div>
+
         <Divider />
+
         <div className={styles.calendarFilter}>
           <div className={styles.dateRange}>
-            <div className={styles.dateInput}>
-              <div className={styles.dateInputContent}>
-                <CalendarLtr20Regular className={styles.dateIcon} />
-                <div className={styles.dateText}>
-                  {t("worklist.dateRange.start")}
-                </div>
-                <ChevronDown12Regular className={styles.chevronIcon} />
+            <div className={styles.selectAllRow}>
+              <Checkbox
+                checked={
+                  filteredPatients.length > 0 &&
+                  filteredPatients.every((p) => selectedPatients.has(p.id))
+                    ? true
+                    : filteredPatients.some((p) => selectedPatients.has(p.id))
+                    ? "mixed"
+                    : false
+                }
+                onChange={(_, data) => {
+                  if (data.checked) {
+                    setSelectedPatients(new Set(filteredPatients.map((p) => p.id)));
+                  } else {
+                    setSelectedPatients(new Set());
+                  }
+                }}
+                aria-label="Select all patients"
+              />
+              <div className={styles.dateText}>
+                Select all
               </div>
-              <div className={styles.dateUnderline} />
             </div>
             <div className={styles.filterOptions}>
-              <Button
-                appearance="subtle"
-                className={styles.filterButton}
-                icon={<Filter16Regular />}
-                aria-label={t("worklist.filter.ariaLabel")}
-              />
+              <Tooltip content="Refresh" relationship="label">
+                <span className="inline-flex">
+                  <Button
+                    appearance="subtle"
+                    className={styles.filterButton}
+                    icon={<ArrowSync16Regular />}
+                    aria-label="Refresh patient list"
+                    onClick={() => {
+                      setSelectedPatients(new Set());
+                    }}
+                  />
+                </span>
+              </Tooltip>
               <Tooltip content={t("worklist.sort.tooltip")} relationship="label">
                 <span className="inline-flex">
                   <Button
@@ -386,13 +269,7 @@ export const Worklist: React.FC<WorklistProps> = ({
                         <ArrowSort16Regular />
                       )
                     }
-                    aria-label={`${t("worklist.sort.ariaLabelPrefix")} ${
-                      sortOrder === "none"
-                        ? t("worklist.sort.alphabetically")
-                        : sortOrder === "asc"
-                        ? t("worklist.sort.descending")
-                        : t("worklist.sort.ascending")
-                    }`}
+                    aria-label="Sort medication adherence patients"
                     onClick={handleSortToggle}
                   />
                 </span>
@@ -402,262 +279,139 @@ export const Worklist: React.FC<WorklistProps> = ({
         </div>
       </div>
 
-      <div className={styles.worklistBody} ref={worklistBodyRef}>
-        <div
-          className={styles.content}
-          ref={contentRef}
-          role="tabpanel"
-          id={
-            activeTab === "schedule"
-              ? "worklist-panel-schedule"
-              : "worklist-panel-patient-list"
-          }
-          aria-labelledby={
-            activeTab === "schedule"
-              ? "worklist-tab-schedule"
-              : "worklist-tab-patient-list"
-          }
-        >
-          {activeTab === "schedule"
-            ? groups.map((group) => (
-                <div
-                  key={group}
-                  ref={(el) => {
-                    if (el) groupRefs.current.set(group, el);
-                  }}
-                >
-                  <div
-                    className={styles.groupHeader}
-                    role="button"
-                    tabIndex={0}
-                    aria-expanded={!!expandedGroups[group]}
-                    aria-controls={`worklist-group-${toId(group)}-content`}
-                    id={`worklist-group-${toId(group)}-header`}
-                    onClick={() =>
-                      setExpandedGroups((s) => ({ ...s, [group]: !s[group] }))
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        setExpandedGroups((s) => ({
-                          ...s,
-                          [group]: !s[group],
-                        }));
+      <div className={styles.worklistBody}>
+        <div className={styles.content} role="tabpanel">
+          {filteredPatients.map((patient) => (
+            <div
+              key={patient.id}
+              className={styles.listItem}
+              data-patient-id={patient.id}
+              data-patient-name={patient.name}
+              data-patient-reason={patient.reason}
+              onClick={() => setSelectedPatientId(patient.id)}
+            >
+              <div className={styles.listItemContent}>
+                <Checkbox
+                  className={styles.patientCheckbox}
+                  checked={selectedPatients.has(patient.id)}
+                  onChange={(e, data) => {
+                    e.stopPropagation();
+                    setSelectedPatients((prev) => {
+                      const next = new Set(prev);
+                      if (data.checked) {
+                        next.add(patient.id);
+                      } else {
+                        next.delete(patient.id);
                       }
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <ChevronDown12Regular
-                        className={styles.headerChevron}
-                        aria-hidden="true"
-                        style={{
-                          transform: expandedGroups[group]
-                            ? "rotate(0deg)"
-                            : "rotate(-90deg)",
-                          transition: "transform 120ms ease",
-                          transformOrigin: "center",
-                        }}
-                      />
-                      {/* Keep internal group key stable; localize display only */}
-                      <div className={styles.groupTitle}>
-                        {groupLabel(group)}
-                      </div>
-                    </div>
-                  </div>
-
-                  {expandedGroups[group] && (
-                    <div
-                      role="region"
-                      id={`worklist-group-${toId(group)}-content`}
-                      aria-labelledby={`worklist-group-${toId(group)}-header`}
-                    >
-                      {filteredPatients
-                        .filter((p) => p.group === group)
-                        .map((patient) => (
-                          <div
-                            key={patient.id}
-                            className={styles.listItem}
-                            data-patient-id={patient.id}
-                            data-patient-name={patient.name}
-                            data-patient-reason={patient.reason}
-                            data-patient-time={patient.time}
-                            onClick={() => handlePatientClick(patient.id)}
-                          >
-                            <div className={styles.listItemContent}>
-                              <div className={styles.listItemMain}>
-                                <div className={styles.listItemHeader}>
-                                  <div className={styles.patientName}>
-                                    {patient.name}
-                                  </div>
-                                  <div className={styles.rightSide}>
-                                    {activeTab === "schedule" && (
-                                      <div className={styles.timeText}>
-                                        {patient.time}
-                                      </div>
-                                    )}
-                                    <button
-                                      className={`${styles.moreButton} more-button`}
-                                      aria-label={t("common.moreOptions")}
-                                    >
-                                      <MoreVerticalFilled />
-                                    </button>
-                                  </div>
-                                </div>
-                                <div className={styles.description}>
-                                  {t("worklist.reasonPrefix")} {patient.reason}
-                                  <br />
-                                  {patient.details}
-                                </div>
-                                <div className={styles.statusRow}>
-                                  {patient.signed &&
-                                  patient.group ===
-                                    "Today" ? null : patient.status ===
-                                    "Sync initiated" ? (
-                                    <div className={styles.syncPill}>
-                                      {t("worklist.syncInitiated")}
-                                    </div>
-                                  ) : (
-                                    patient.status && (
-                                      <div className={styles.statusBadge} />
-                                    )
-                                  )}
-
-                                  <div className={styles.statusText}>
-                                    {patient.signed &&
-                                    patient.group === "Today" ? (
-                                      <>
-                                        <div className={styles.signedPill}>
-                                          <PresenceBadge />
-                                          <div className={styles.signedText}>
-                                            {t("worklist.signed")}
-                                          </div>
-                                        </div>
-                                        {shouldShowLastModified(patient) && (
-                                          <div className={styles.modifiedText}>
-                                            {t("worklist.modified")} {patient.lastModified}
-                                          </div>
-                                        )}
-                                      </>
-                                    ) : shouldShowLastModified(patient) ? (
-                                      <div className={styles.modifiedText}>
-                                        {t("worklist.modified")} {patient.lastModified}
-                                      </div>
-                                    ) : (
-                                      <>{patient.status}</>
-                                    )}
-                                  </div>
-                                </div>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "flex-end",
-                                  }}
-                                >
-                                  <Tooltip
-                                    content={t("worklist.ambientRecording")}
-                                    relationship="label"
-                                  >
-                                    <span className="inline-flex">
-                                      <button
-                                        className={`${styles.micButton} mic-button`}
-                                        aria-label={t("worklist.ambientRecording")}
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          onPatientSelect?.(patient.id);
-                                          onMicButtonClick?.(patient.id);
-                                        }}
-                                      >
-                                        <DeviceEqRegular />
-                                      </button>
-                                    </span>
-                                  </Tooltip>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  )}
-                </div>
-              ))
-            : filteredPatients.map((patient) => (
-                <div
-                  key={patient.id}
-                  className={styles.listItem}
-                  data-patient-id={patient.id}
-                  data-patient-name={patient.name}
-                  data-patient-reason={patient.reason}
-                  data-patient-time={patient.time}
-                  onClick={() => handlePatientClick(patient.id)}
-                >
-                  <div className={styles.listItemContent}>
-                    <div className={styles.listItemMain}>
-                      <div className={styles.listItemHeader}>
-                        <div className={styles.patientName}>{patient.name}</div>
-                        <div className={styles.rightSide}>
-                          <button
-                            className={`${styles.moreButton} more-button`}
-                            aria-label={t("common.moreOptions")}
-                          >
-                            <MoreVerticalFilled />
-                          </button>
+                      return next;
+                    });
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                  aria-label={`Select ${patient.name}`}
+                />
+                <div className={styles.listItemMain}>
+                  <div className={styles.listItemHeader}>
+                    <div className={styles.patientName}>{patient.name}</div>
+                    <div className={styles.headerActions}>
+                      {patient.callType ? (
+                        <div className={`${styles.callTypePill} ${styles[`callType_${patient.callType.replace(/-/g, "_")}` as keyof typeof styles] || ""}`}>
+                          {CALL_TYPE_LABELS[patient.callType as CallType] || patient.callType}
                         </div>
-                      </div>
-                      <div className={styles.description}>
-                        {t("worklist.reasonPrefix")} {patient.reason}
-                        <br />
-                        {patient.details}
-                      </div>
-                      <div className={styles.statusRow}>
-                        <div className={styles.userAddedPill}>
-                          {t("worklist.userAdded")}
-                        </div>
-                        <div className={styles.createdText}>
-                          {t("worklist.created")} {patient.time}
-                        </div>
-                      </div>
-                      <div
-                        style={{ display: "flex", justifyContent: "flex-end" }}
+                      ) : patient.status ? (
+                        <div className={styles.statusPill}>{patient.status}</div>
+                      ) : null}
+                      <button
+                        className={`${styles.moreButton} more-button`}
+                        aria-label={t("common.moreOptions")}
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        <Tooltip
-                          content={t("worklist.ambientRecording")}
-                          relationship="label"
-                        >
-                          <span className="inline-flex">
-                            <button
-                              className={`${styles.micButton} mic-button`}
-                              aria-label={t("worklist.ambientRecording")}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onPatientSelect?.(patient.id);
-                                onMicButtonClick?.(patient.id);
-                              }}
-                            >
-                              <DeviceEqRegular />
-                            </button>
-                          </span>
-                        </Tooltip>
-                      </div>
+                        <MoreVerticalFilled />
+                      </button>
                     </div>
                   </div>
+
+                  <div className={styles.summaryText}>{patient.reason}</div>
+
+                  <div className={styles.metaInfoRow}>
+                    <div className={styles.inlineMeta}>
+                      <span className={styles.inlineMetaLabel}>Last contact:</span>
+                      <span className={styles.inlineMetaValue}>{patient.lastContactDate}</span>
+                    </div>
+                  </div>
+
+                  <div className={`${styles.actionButtons} action-buttons`}>
+                    <Tooltip content="Call patient" relationship="label">
+                      <span className="inline-flex">
+                        <button
+                          className={styles.actionButton}
+                          aria-label="Call patient"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            callPatients([patient.id]);
+                          }}
+                        >
+                          <Call20Regular />
+                        </button>
+                      </span>
+                    </Tooltip>
+                  </div>
                 </div>
-              ))}
+              </div>
+            </div>
+          ))}
+
+          {filteredPatients.length === 0 && (
+            <div className={styles.groupHeader}>
+              <div className={styles.groupTitle}>No patients in this tab</div>
+            </div>
+          )}
         </div>
 
         <div className={styles.footer}>
-          <button
-            className={styles.addPatientButton}
-            onClick={handleAddPatient}
-          >
-            <ChatAdd24Filled className={styles.addIcon} />
-            <div className={styles.addPatientText}>
-              {t("worklist.addPatient")}
+          <div className={styles.footerContent}>
+            <div className={styles.footerLabel}>
+              {selectedPatients.size > 0 ? (
+                <>
+                  Ready to contact: {filteredPatients
+                    .filter((p) => selectedPatients.has(p.id))
+                    .map((p) => p.name)
+                    .slice(0, 3)
+                    .join(", ")}
+                  {selectedPatients.size > 3 && ` +${selectedPatients.size - 3} more`}
+                </>
+              ) : (
+                <>Select patients to contact</>
+              )}
             </div>
-          </button>
+            <div className={styles.footerActions}>
+              <Button
+                appearance="primary"
+                icon={<CallRegular />}
+                disabled={selectedPatients.size === 0}
+                style={{ width: "100%", height: "44px", fontSize: "16px", fontWeight: 600 }}
+                onClick={() => {
+                  callPatients(Array.from(selectedPatients));
+                  setSelectedPatients(new Set());
+                }}
+              >
+                Call
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
+
+      {addPatientOpen && (
+        <AddPatientForm
+          onSave={(patient) => {
+            addPatient(patient);
+            setAddPatientOpen(false);
+          }}
+          onCancel={() => setAddPatientOpen(false)}
+        />
+      )}
     </div>
   );
 };
 
-export default Worklist;
+export default CareCoordinationWorklist;

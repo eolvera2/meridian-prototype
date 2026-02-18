@@ -9,7 +9,7 @@ export interface WorklistActions {
 
 export interface LeftNavigationHandlers {
   onSettingsClick: () => void;
-  onMedicationAdherenceClick: () => void;
+  onCareCoordinationClick: () => void;
   onHelpClick: () => void;
   onProfileClick: () => void;
   onHomeToggle: () => void;

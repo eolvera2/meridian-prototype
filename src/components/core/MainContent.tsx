@@ -577,10 +577,10 @@ export const MainContent: React.FC<MainContentProps> = ({
     onNavItemChange?.("avatar");
   };
 
-  const handleMedicationAdherenceClick = () => {
+  const handleCareCoordinationClick = () => {
     closeRightDrawer();
     onHomeToggle?.();
-    onNavItemChange?.("medicationAdherence");
+    onNavItemChange?.("careCoordination");
     triggerRecordingReset();
   };
 
@@ -594,7 +594,7 @@ export const MainContent: React.FC<MainContentProps> = ({
 
   const leftNavHandlers = {
     onSettingsClick: handleSettingsClick,
-    onMedicationAdherenceClick: handleMedicationAdherenceClick,
+    onCareCoordinationClick: handleCareCoordinationClick,
     onHelpClick: handleHelpClick,
     onProfileClick: handleProfileClick,
     onHomeToggle: handleHomeToggleClick,

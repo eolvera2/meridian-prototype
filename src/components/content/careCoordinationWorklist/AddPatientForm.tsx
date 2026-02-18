@@ -18,8 +18,8 @@ import {
   Pill20Regular,
 } from "@fluentui/react-icons";
 import { useAddPatientFormStyles } from "./AddPatientForm.styles";
-import type { MedicationAdherenceWorklistItem, CallType } from "./MedicationAdherenceWorklist.types";
-import { CALL_TYPE_LABELS } from "./MedicationAdherenceWorklist.types";
+import type { CareCoordinationWorklistItem, CallType } from "./CareCoordinationWorklist.types";
+import { CALL_TYPE_LABELS } from "./CareCoordinationWorklist.types";
 
 interface MedicationEntry {
   name: string;
@@ -28,7 +28,7 @@ interface MedicationEntry {
 }
 
 interface AddPatientFormProps {
-  onSave: (patient: MedicationAdherenceWorklistItem) => void;
+  onSave: (patient: CareCoordinationWorklistItem) => void;
   onCancel: () => void;
 }
 
@@ -122,7 +122,7 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
       : "";
     const todayShort = `${now.getMonth() + 1}/${now.getDate()}/${String(now.getFullYear()).slice(-2)}`;
 
-    const newPatient: MedicationAdherenceWorklistItem = {
+    const newPatient: CareCoordinationWorklistItem = {
       id: `ma-new-${Date.now()}`,
       name: `${firstName} ${lastName}`.trim(),
       callType,

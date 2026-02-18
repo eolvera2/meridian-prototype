@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { Button, Card, mergeClasses } from "@fluentui/react-components";
 import { Dismiss24Regular, Bot20Regular, Person20Regular } from "@fluentui/react-icons";
 import { useAICallTranscriptModalStyles } from "./AICallTranscriptModal.styles";
-import type { CallType } from "./MedicationAdherenceWorklist.types";
+import type { CallType } from "./CareCoordinationWorklist.types";
 
 interface TranscriptMessage {
   speaker: "AI System" | "Patient";

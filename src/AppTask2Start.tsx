@@ -32,7 +32,7 @@ function AppTask2Start() {
     | "home"
     | "avatar"
     | "settings"
-    | "medicationAdherence"
+    | "careCoordination"
     | "help"
     | null
   >("home");

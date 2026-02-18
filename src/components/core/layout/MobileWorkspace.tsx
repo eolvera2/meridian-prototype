@@ -8,9 +8,9 @@ import {
   FAB,
 } from "../../content";
 import {
-  MedicationAdherenceWorklist,
-  MedicationAdherenceWorklistProvider,
-} from "../../content/medicationAdherenceWorklist";
+  CareCoordinationWorklist,
+  CareCoordinationWorklistProvider,
+} from "../../content/careCoordinationWorklist";
 import { Header } from "../Header";
 import { LeftNavigation } from "../../foundation";
 import { RightDrawer } from "../../foundation/RightDrawer";
@@ -32,7 +32,7 @@ interface MobileWorkspaceProps {
     | "home"
     | "avatar"
     | "settings"
-    | "medicationAdherence"
+    | "careCoordination"
     | "help"
     | null;
   worklistCollapsed: boolean;
@@ -192,13 +192,13 @@ export const MobileWorkspace: React.FC<MobileWorkspaceProps> = ({
                   : ""
               }`}
             >
-              {activeNavItem === "medicationAdherence" ? (
-                <MedicationAdherenceWorklistProvider>
-                  <MedicationAdherenceWorklist
+              {activeNavItem === "careCoordination" ? (
+                <CareCoordinationWorklistProvider>
+                  <CareCoordinationWorklist
                     isCollapsed={worklistCollapsed}
                     {...handleWorklistActions}
                   />
-                </MedicationAdherenceWorklistProvider>
+                </CareCoordinationWorklistProvider>
               ) : (
                 <Worklist
                   isCollapsed={worklistCollapsed}

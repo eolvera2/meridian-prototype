@@ -302,14 +302,14 @@
       "home": "Home",
       "account": "Account",
       "settings": "Settings",
-      "medicationAdherence": "Care Coordination",
+      "careCoordination": "Care Coordination",
       "help": "Help"
     },
     "aria": {
       "returnToSchedule": "Return to schedule",
       "profile": "Profile",
       "openSettings": "Open settings",
-      "openMedicationAdherence": "Open Care Coordination",
+      "openCareCoordination": "Open Care Coordination",
       "getHelp": "Get help"
     }
   },

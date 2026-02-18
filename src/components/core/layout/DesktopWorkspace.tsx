@@ -8,12 +8,12 @@ import {
   FAB,
 } from "../../content";
 import {
-  MedicationAdherenceWorklist,
-  MedicationAdherenceWorklistProvider,
-  MedicationAdherenceDashboard,
-  MedicationAdherencePatientDetail,
-  useMedicationAdherenceWorklistContext,
-} from "../../content/medicationAdherenceWorklist";
+  CareCoordinationWorklist,
+  CareCoordinationWorklistProvider,
+  CareCoordinationDashboard,
+  CareCoordinationPatientDetail,
+  useCareCoordinationWorklistContext,
+} from "../../content/careCoordinationWorklist";
 import { Header } from "../Header";
 import type { HeaderProps } from "../Header";
 import { RightDrawer } from "../../foundation/RightDrawer";
@@ -27,17 +27,17 @@ import type {
 } from "./types";
 
 /** Inner component that reads medication adherence context to decide dashboard vs detail */
-const MedicationAdherenceContent: React.FC<{ onPatientSelectedChange: (hasPatient: boolean) => void }> = ({ onPatientSelectedChange }) => {
-  const { selectedPatientId } = useMedicationAdherenceWorklistContext();
+const CareCoordinationContent: React.FC<{ onPatientSelectedChange: (hasPatient: boolean) => void }> = ({ onPatientSelectedChange }) => {
+  const { selectedPatientId } = useCareCoordinationWorklistContext();
 
   React.useEffect(() => {
     onPatientSelectedChange(!!selectedPatientId);
   }, [selectedPatientId, onPatientSelectedChange]);
 
   return selectedPatientId ? (
-    <MedicationAdherencePatientDetail />
+    <CareCoordinationPatientDetail />
   ) : (
-    <MedicationAdherenceDashboard />
+    <CareCoordinationDashboard />
   );
 };
 
@@ -51,7 +51,7 @@ interface DesktopWorkspaceProps {
     | "home"
     | "avatar"
     | "settings"
-    | "medicationAdherence"
+    | "careCoordination"
     | "help"
     | null;
   worklistCollapsed: boolean;
@@ -164,8 +164,8 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
         <LeftNavigation
           open={leftNavOpen}
           onSettingsClick={leftNavHandlers.onSettingsClick}
-          onMedicationAdherenceClick={
-            leftNavHandlers.onMedicationAdherenceClick
+          onCareCoordinationClick={
+            leftNavHandlers.onCareCoordinationClick
           }
           onHelpClick={leftNavHandlers.onHelpClick}
           onProfileClick={leftNavHandlers.onProfileClick}
@@ -185,14 +185,14 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
           </div>
         ) : (
           <div className={styles.desktopContentArea}>
-            {activeNavItem === "medicationAdherence" ? (
-              <MedicationAdherenceWorklistProvider>
+            {activeNavItem === "careCoordination" ? (
+              <CareCoordinationWorklistProvider>
                 <div
                   className={`${styles.worklistContainer} ${
                     maPatientSelected ? styles.worklistContainerHidden : ""
                   }`}
                 >
-                  <MedicationAdherenceWorklist
+                  <CareCoordinationWorklist
                     isCollapsed={maPatientSelected}
                     {...handleWorklistActions}
                   />
@@ -206,7 +206,7 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
                         "document-scroll-container"
                       )}
                     >
-                      <MedicationAdherenceContent onPatientSelectedChange={handleMaPatientChange} />
+                      <CareCoordinationContent onPatientSelectedChange={handleMaPatientChange} />
                     </div>
                     <div className={styles.drawerArea}>
                       {rightDrawerVisible && rightDrawerContent !== "settings" && (
@@ -223,7 +223,7 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
                     </div>
                   </div>
                 </div>
-              </MedicationAdherenceWorklistProvider>
+              </CareCoordinationWorklistProvider>
             ) : (
             <><div
               className={`${styles.worklistContainer} ${

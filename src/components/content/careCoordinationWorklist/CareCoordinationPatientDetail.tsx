@@ -22,20 +22,20 @@ import {
   ClipboardCheckmark20Regular,
   Pill20Regular,
 } from "@fluentui/react-icons";
-import { usePatientDetailStyles } from "./MedicationAdherencePatientDetail.styles";
-import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
-import type { MedicationAdherenceWorklistItem, CallType } from "./MedicationAdherenceWorklist.types";
-import { CALL_TYPE_LABELS } from "./MedicationAdherenceWorklist.types";
+import { usePatientDetailStyles } from "./CareCoordinationPatientDetail.styles";
+import { useCareCoordinationWorklistContext } from "./CareCoordinationWorklistContext";
+import type { CareCoordinationWorklistItem, CallType } from "./CareCoordinationWorklist.types";
+import { CALL_TYPE_LABELS } from "./CareCoordinationWorklist.types";
 import { AICallTranscriptModal } from "./AICallTranscriptModal";
 
 const ChevronLeft = bundleIcon(ChevronLeft24Filled, ChevronLeft24Regular);
 
-export const MedicationAdherencePatientDetail: React.FC = () => {
+export const CareCoordinationPatientDetail: React.FC = () => {
   const styles = usePatientDetailStyles();
   const { selectedPatientId, getPatient, setSelectedPatientId, markPatientAsReviewed, isPatientNeedsReview } =
-    useMedicationAdherenceWorklistContext();
+    useCareCoordinationWorklistContext();
 
-  const patient: MedicationAdherenceWorklistItem | undefined = selectedPatientId
+  const patient: CareCoordinationWorklistItem | undefined = selectedPatientId
     ? getPatient(selectedPatientId)
     : undefined;
 

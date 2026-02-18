@@ -34,7 +34,7 @@ function AppTask4Start() {
     | "home"
     | "avatar"
     | "settings"
-    | "medicationAdherence"
+    | "careCoordination"
     | "help"
     | null
   >("home");

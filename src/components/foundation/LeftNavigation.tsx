@@ -23,7 +23,7 @@ import { useI18n } from "../../i18n/I18nContext";
 
 // Create bundled icons for proper Fluent UI integration
 const SettingsIcon = bundleIcon(Settings20Filled, Settings20Regular);
-const MedicationAdherenceIcon = bundleIcon(
+const CareCoordinationIcon = bundleIcon(
   PeopleCommunication20Filled,
   PeopleCommunication20Regular
 );
@@ -33,7 +33,7 @@ const HomeIcon = bundleIcon(HomeMoreFilled, HomeMoreRegular);
 interface LeftNavigationProps {
   open?: boolean;
   onSettingsClick?: () => void;
-  onMedicationAdherenceClick?: () => void;
+  onCareCoordinationClick?: () => void;
   onHelpClick?: () => void;
   onProfileClick?: () => void;
   onHomeToggle?: () => void;
@@ -42,7 +42,7 @@ interface LeftNavigationProps {
     | "home"
     | "avatar"
     | "settings"
-    | "medicationAdherence"
+    | "careCoordination"
     | "help"
     | null;
 }
@@ -213,7 +213,7 @@ const useStyles = makeStyles({
 export const LeftNavigation: React.FC<LeftNavigationProps> = ({
   open = true,
   onSettingsClick,
-  onMedicationAdherenceClick,
+  onCareCoordinationClick,
   onHelpClick,
   onProfileClick,
   onHomeToggle,
@@ -224,7 +224,7 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
   const { t } = useI18n();
 
   // Calculate pill position based on active nav item
-  // Positions: home=6px, avatar=60px, settings=96px, medicationAdherence=142px, help=188px
+  // Positions: home=6px, avatar=60px, settings=96px, careCoordination=142px, help=188px
   const getPillPosition = () => {
     switch (activeNavItem) {
       case "home":
@@ -233,7 +233,7 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
         return "60px";
       case "settings":
         return "96px";
-      case "medicationAdherence":
+      case "careCoordination":
         return "142px";
       case "help":
         return "188px";
@@ -326,7 +326,7 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
             </Tooltip>
 
             <Tooltip
-              content={t("leftNav.tooltip.medicationAdherence")}
+              content={t("leftNav.tooltip.careCoordination")}
               relationship="label"
               positioning={"after"}
             >
@@ -334,13 +334,13 @@ export const LeftNavigation: React.FC<LeftNavigationProps> = ({
                 <button
                   className={mergeClasses(
                     styles.navButton,
-                    activeNavItem === "medicationAdherence" &&
+                    activeNavItem === "careCoordination" &&
                       styles.selectedNavButton
                   )}
-                  onClick={onMedicationAdherenceClick}
-                  aria-label={t("leftNav.aria.openMedicationAdherence")}
+                  onClick={onCareCoordinationClick}
+                  aria-label={t("leftNav.aria.openCareCoordination")}
                 >
-                  <MedicationAdherenceIcon />
+                  <CareCoordinationIcon />
                 </button>
               </span>
             </Tooltip>

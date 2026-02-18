@@ -1,10 +1,19 @@
 /**
- * Worklist Module
+ * Care Coordination Worklist Module
  *
- * Re-exports all worklist-related components, types, and styles.
+ * Re-exports all care coordination worklist-related components, types, and styles.
  */
 
-export { Worklist } from "./CareCoordinationWorklist";
+export { CareCoordinationWorklist } from "./CareCoordinationWorklist";
+export { CareCoordinationDashboard } from "./CareCoordinationDashboard";
+export { CareCoordinationPatientDetail } from "./CareCoordinationPatientDetail";
 export { useStyles } from "./CareCoordinationWorklist.styles";
-export { WorklistProvider, useWorklistContext } from "./CareCoordinationWorklistContext";
-export type { WorklistProps, WorklistItem, SortOrder } from "./CareCoordinationWorklist.types";
+export {
+	CareCoordinationWorklistProvider,
+	useCareCoordinationWorklistContext,
+} from "./CareCoordinationWorklistContext";
+export type {
+	CareCoordinationWorklistProps,
+	CareCoordinationWorklistItem,
+	CareCoordinationSortOrder,
+} from "./CareCoordinationWorklist.types";

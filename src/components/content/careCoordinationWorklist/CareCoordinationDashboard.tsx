@@ -46,11 +46,11 @@ import {
   Emoji20Regular,
   EmojiAngry20Filled,
 } from "@fluentui/react-icons";
-import { useDashboardStyles } from "./MedicationAdherenceDashboard.styles";
-import { useMedicationAdherenceWorklistContext } from "./MedicationAdherenceWorklistContext";
-import type { CallRecordStatus } from "./MedicationAdherenceWorklistContext";
-import type { CallType } from "./MedicationAdherenceWorklist.types";
-import { CALL_TYPE_LABELS } from "./MedicationAdherenceWorklist.types";
+import { useDashboardStyles } from "./CareCoordinationDashboard.styles";
+import { useCareCoordinationWorklistContext } from "./CareCoordinationWorklistContext";
+import type { CallRecordStatus } from "./CareCoordinationWorklistContext";
+import type { CallType } from "./CareCoordinationWorklist.types";
+import { CALL_TYPE_LABELS } from "./CareCoordinationWorklist.types";
 
 // ── Data Types ──────────────────────────────────────────────
 
@@ -229,7 +229,7 @@ const getContactCardClass = (rate: number, styles: ReturnType<typeof useDashboar
 
 // ── Component ───────────────────────────────────────────────
 
-export const MedicationAdherenceDashboard: React.FC = () => {
+export const CareCoordinationDashboard: React.FC = () => {
   const styles = useDashboardStyles();
   const [timeRange, setTimeRange] = useState<TimeRange>("30");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -238,7 +238,7 @@ export const MedicationAdherenceDashboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
   const [callTypeFilter, setCallTypeFilter] = useState<"all" | CallType>("all");
-  const { activeCallRecords, setSelectedPatientId, contactRecords } = useMedicationAdherenceWorklistContext();
+  const { activeCallRecords, setSelectedPatientId, contactRecords } = useCareCoordinationWorklistContext();
 
   const handleTimeRangeChange = (_: unknown, data: OptionOnSelectData) => {
     if (data.optionValue) {

@@ -79,7 +79,7 @@ export const useStyles = makeStyles({
     flex: "1 1 0",
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     boxSizing: "border-box",
     paddingInline: tokens.spacingHorizontalS,
     minWidth: 0,
@@ -88,19 +88,61 @@ export const useStyles = makeStyles({
       textOverflow: "unset",
       width: "100%",
       display: "flex",
-      justifyContent: "flex-start",
-      textAlign: "left",
+      justifyContent: "center",
+      textAlign: "center",
+    },
+  },
+
+  tabUrgent: {
+    "&[aria-selected='true']::after": {
+      borderBottomColor: "#D13438 !important",
+      backgroundColor: "#D13438 !important",
+    },
+  },
+
+  tabQueue: {
+    "&[aria-selected='true']::after": {
+      borderBottomColor: "#FDE300 !important",
+      backgroundColor: "#FDE300 !important",
+    },
+  },
+
+  tabCleared: {
+    "&[aria-selected='true']::after": {
+      borderBottomColor: "#107C10 !important",
+      backgroundColor: "#107C10 !important",
     },
   },
 
   tabLabel: {
-    display: "block",
-    flex: 1,
-    minWidth: 0,
-    width: "100%",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: tokens.spacingHorizontalXS,
+    maxWidth: "100%",
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
+  },
+
+  tabDot: {
+    width: "8px",
+    height: "8px",
+    borderRadius: "50%",
+    flexShrink: 0,
+    display: "inline-block",
+  },
+
+  tabDotUrgent: {
+    backgroundColor: "#D13438",
+  },
+
+  tabDotQueue: {
+    backgroundColor: "#FDE300",
+  },
+
+  tabDotCleared: {
+    backgroundColor: "#107C10",
   },
 
   tabsSearchActive: {
@@ -162,6 +204,12 @@ export const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-between",
     gap: "var(--gap-large)",
+  },
+
+  selectAllRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "var(--gap-medium)",
   },
 
   dateInput: {
@@ -237,7 +285,7 @@ export const useStyles = makeStyles({
   },
 
   listItem: {
-    padding: "var(--spacing-xxlarge)",
+    padding: "var(--spacing-xxlarge) var(--spacing-xxlarge) var(--spacing-xxlarge) 8px",
     borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
     cursor: "pointer",
     transition: "var(--transition-fluent)",
@@ -250,6 +298,9 @@ export const useStyles = makeStyles({
     "&:hover .mic-button": {
       opacity: 1,
     },
+    "&:hover .action-buttons": {
+      opacity: 1,
+    },
     "&:active": {
       backgroundColor: tokens.colorNeutralBackground1Pressed,
     },
@@ -257,7 +308,8 @@ export const useStyles = makeStyles({
 
   listItemContent: {
     display: "flex",
-    gap: "var(--gap-large)",
+    gap: "var(--gap-medium)",
+    alignItems: "flex-start",
   },
 
   listItemMain: {
@@ -274,9 +326,59 @@ export const useStyles = makeStyles({
     gap: "var(--gap-large)",
   },
 
+  headerActions: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+
+  statusPill: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: tokens.colorNeutralBackground4,
+    color: tokens.colorNeutralForeground2,
+    borderRadius: "16px",
+    padding: "2px 8px",
+    fontSize: "10px",
+    fontWeight: 600,
+    whiteSpace: "nowrap",
+  },
+
+  callTypePill: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "16px",
+    padding: "2px 8px",
+    fontSize: "10px",
+    fontWeight: 600,
+    whiteSpace: "nowrap",
+  },
+
+  callType_medication_adherence: {
+    backgroundColor: "#E8F0FE",
+    color: "#1B6EC2",
+  },
+
+  callType_patient_intake: {
+    backgroundColor: "#E1F5F0",
+    color: "#0E7C6B",
+  },
+
+  callType_hypertension_management: {
+    backgroundColor: "#F3E8FD",
+    color: "#7B2D8E",
+  },
+
   patientName: {
     fontWeight: 600,
     color: tokens.colorNeutralForeground1,
+  },
+
+  patientCheckbox: {
+    marginTop: "-2px",
+    flexShrink: 0,
   },
 
   rightSide: {
@@ -319,15 +421,125 @@ export const useStyles = makeStyles({
     },
   },
 
-  description: {
+  actionButtons: {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "var(--gap-large)",
+    opacity: 0,
+    transition: "var(--transition-opacity-normal)",
+  },
+
+  actionButton: {
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    padding: "var(--spacing-small-4)",
+    color: tokens.colorBrandForeground1,
+    fontSize: tokens.fontSizeBase500,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "&:hover": {
+      color: tokens.colorBrandForeground2,
+    },
+    "&:active": {
+      color: tokens.colorBrandForeground2,
+    },
+  },
+
+  summaryText: {
     color: tokens.colorNeutralForeground2,
     fontSize: tokens.fontSizeBase200,
+    lineHeight: "1.4",
     display: "-webkit-box",
     WebkitLineClamp: "2",
     WebkitBoxOrient: "vertical",
     overflow: "hidden",
     textOverflow: "ellipsis",
+  },
+
+  detailsLine: {
+    color: tokens.colorNeutralForeground3,
+    fontSize: tokens.fontSizeBase200,
     lineHeight: "1.4",
+  },
+
+  metaInfoRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "var(--gap-medium)",
+    flexWrap: "nowrap",
+  },
+
+  inlineMeta: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "3px",
+    minWidth: 0,
+  },
+
+  inlineMetaLabel: {
+    color: tokens.colorNeutralForeground3,
+    fontSize: "10px",
+    lineHeight: "1.4",
+    whiteSpace: "nowrap",
+  },
+
+  inlineMetaValue: {
+    color: tokens.colorNeutralForeground2,
+    fontSize: "10px",
+    lineHeight: "1.4",
+    whiteSpace: "nowrap",
+  },
+
+  contactMethodIcon: {
+    display: "inline-flex",
+    alignItems: "center",
+    color: tokens.colorNeutralForeground3,
+    "& svg": {
+      width: "12px",
+      height: "12px",
+    },
+  },
+
+  patientMetaGrid: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--gap-small)",
+  },
+
+  patientMetaRow: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "var(--gap-medium)",
+  },
+
+  patientMetaLabel: {
+    color: tokens.colorNeutralForeground3,
+    fontSize: tokens.fontSizeBase100,
+    fontWeight: 600,
+    whiteSpace: "nowrap",
+  },
+
+  patientMetaValue: {
+    color: tokens.colorNeutralForeground2,
+    fontSize: tokens.fontSizeBase200,
+    textAlign: "right",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "var(--gap-small)",
+  },
+
+  contactMethod: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "var(--gap-small)",
+    color: tokens.colorNeutralForeground2,
+    fontSize: tokens.fontSizeBase100,
+    "& svg": {
+      fontSize: "14px",
+    },
   },
 
   statusRow: {
@@ -361,7 +573,7 @@ export const useStyles = makeStyles({
 
   modifiedText: {
     color: tokens.colorNeutralForeground3,
-    fontSize: "10px",
+    fontSize: "12px",
     fontWeight: 400,
   },
 
@@ -412,37 +624,21 @@ export const useStyles = makeStyles({
     zIndex: 1,
   },
 
-  addPatientButton: {
-    backgroundColor: tokens.colorBrandBackground,
-    border: "none",
-    borderRadius: "var(--border-radius-medium)",
-    boxShadow:
-      "0px 4px 8px 0px rgba(0,0,0,0.14), 0px 0px 2px 0px rgba(0,0,0,0.12)",
-    cursor: "pointer",
+  footerContent: {
     display: "flex",
-    gap: "var(--gap-medium)",
-    height: "44px",
+    flexDirection: "column",
+    gap: "10px",
+  },
+
+  footerLabel: {
+    fontSize: tokens.fontSizeBase200,
+    color: tokens.colorNeutralForeground2,
+  },
+
+  footerActions: {
+    display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    padding: "8px 16px",
-    width: "100%",
-    ":hover": {
-      backgroundColor: tokens.colorBrandBackgroundHover,
-    },
-  },
-
-  addPatientText: {
-    fontFamily: "'Segoe UI', sans-serif",
-    fontSize: "16px",
-    lineHeight: "22px",
-    color: "var(--colorBrandForeground)",
-    fontWeight: 600,
-  },
-
-  addIcon: {
-    width: "24px",
-    height: "24px",
-    color: "var(--colorBrandForeground)",
+    gap: "8px",
   },
 
   worklistMobile: {
