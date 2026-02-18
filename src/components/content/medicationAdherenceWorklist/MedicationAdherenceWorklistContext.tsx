@@ -91,6 +91,8 @@ interface MedicationAdherenceWorklistContextValue {
   activeDialerCall: { name: string; phone: string; recordId: string } | null;
   /** Dismiss the dialer popup */
   dismissDialer: () => void;
+  /** Add a new patient to the worklist */
+  addPatient: (patient: MedicationAdherenceWorklistItem) => void;
 }
 
 const MedicationAdherenceWorklistContext =
@@ -330,6 +332,11 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
     });
   }, [resolveCallRecord]);
 
+  const addPatient = useCallback((patient: MedicationAdherenceWorklistItem) => {
+    patientRegistryRef.current.set(patient.id, patient);
+    setPatients((prev) => [patient, ...prev]);
+  }, []);
+
   const value = useMemo(
     () => ({
       patients,
@@ -346,6 +353,7 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
       isPatientNeedsReview,
       activeDialerCall,
       dismissDialer,
+      addPatient,
     }),
     [
       patients,
@@ -361,6 +369,7 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
       isPatientNeedsReview,
       activeDialerCall,
       dismissDialer,
+      addPatient,
     ]
   );
 

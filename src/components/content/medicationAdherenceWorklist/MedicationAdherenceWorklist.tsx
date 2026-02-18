@@ -29,6 +29,7 @@ import {
   MoreVerticalFilled,
   Call20Regular,
   CallRegular,
+  PersonAdd20Regular,
 } from "@fluentui/react-icons";
 
 import { useStyles } from "./MedicationAdherenceWorklist.styles";
@@ -38,6 +39,7 @@ import type {
   MedicationAdherenceSortOrder,
 } from "./MedicationAdherenceWorklist.types";
 import { useI18n } from "../../../i18n/I18nContext";
+import { AddPatientForm } from "./AddPatientForm";
 
 type MedicationAdherenceTab = "queue" | "reviewed";
 
@@ -46,7 +48,7 @@ export const MedicationAdherenceWorklist: React.FC<
 > = ({ isCollapsed = false }) => {
   const styles = useStyles();
   const { t } = useI18n();
-  const { patients, setSelectedPatientId, callPatients } = useMedicationAdherenceWorklistContext();
+  const { patients, setSelectedPatientId, callPatients, addPatient } = useMedicationAdherenceWorklistContext();
 
   const [activeTab, setActiveTab] = useState<TabValue>("queue");
   const [searchValue, setSearchValue] = useState("");
@@ -54,6 +56,7 @@ export const MedicationAdherenceWorklist: React.FC<
   const [sortOrder, setSortOrder] =
     useState<MedicationAdherenceSortOrder>("none");
   const [selectedPatients, setSelectedPatients] = useState<Set<string>>(new Set());
+  const [addPatientOpen, setAddPatientOpen] = useState(false);
 
   const activeMedicationTab = activeTab as MedicationAdherenceTab;
 
@@ -170,6 +173,17 @@ export const MedicationAdherenceWorklist: React.FC<
                 </Tab>
               </TabList>
 
+              <Tooltip content="Add Patient" relationship="label">
+                <span className="inline-flex">
+                  <button
+                    className={styles.searchButton}
+                    onClick={() => setAddPatientOpen(true)}
+                    aria-label="Add patient"
+                  >
+                    <PersonAdd20Regular />
+                  </button>
+                </span>
+              </Tooltip>
               <Tooltip content={t("common.search")} relationship="label">
                 <span className="inline-flex">
                   <button
@@ -381,6 +395,16 @@ export const MedicationAdherenceWorklist: React.FC<
           </div>
         </div>
       </div>
+
+      {addPatientOpen && (
+        <AddPatientForm
+          onSave={(patient) => {
+            addPatient(patient);
+            setAddPatientOpen(false);
+          }}
+          onCancel={() => setAddPatientOpen(false)}
+        />
+      )}
     </div>
   );
 };
