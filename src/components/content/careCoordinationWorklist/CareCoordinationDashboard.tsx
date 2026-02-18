@@ -234,7 +234,7 @@ export const CareCoordinationDashboard: React.FC = () => {
   const [timeRange, setTimeRange] = useState<TimeRange>("30");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [adminView, setAdminView] = useState(false);
-  const [chartsExpanded, setChartsExpanded] = useState(false);
+  const [chartsExpanded, setChartsExpanded] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
   const [callTypeFilter, setCallTypeFilter] = useState<"all" | CallType>("all");
@@ -643,7 +643,8 @@ export const CareCoordinationDashboard: React.FC = () => {
       </>
       )}
 
-      {/* ── Patient Contact History ── */}
+      {!adminView && (
+      <>{/* ── Patient Contact History ── */}
       <div className={styles.historySection}>
         <div className={styles.historyHeaderRow}>
           <div>
@@ -920,6 +921,8 @@ export const CareCoordinationDashboard: React.FC = () => {
           </div>
         )}
       </div>
+      </>
+      )}
     </div>
   );
 };
