@@ -340,11 +340,11 @@ export const CareCoordinationWorklist: React.FC<
                   </div>
 
                   <div className={`${styles.actionButtons} action-buttons`}>
-                    <Tooltip content="Call patient" relationship="label">
+                    <Tooltip content="Schedule Call" relationship="label">
                       <span className="inline-flex">
                         <button
                           className={styles.actionButton}
-                          aria-label="Call patient"
+                          aria-label="Schedule Call"
                           onClick={(e) => {
                             e.stopPropagation();
                             callPatients([patient.id]);
@@ -394,7 +394,7 @@ export const CareCoordinationWorklist: React.FC<
                   setSelectedPatients(new Set());
                 }}
               >
-                Call
+                Schedule Call
               </Button>
             </div>
           </div>
