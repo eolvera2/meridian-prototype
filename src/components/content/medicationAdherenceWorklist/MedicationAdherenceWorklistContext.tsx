@@ -16,6 +16,7 @@ import React, {
 import medicationAdherenceWorklistData from "../../../data/medicationAdherenceWorklistData.json";
 import type { MedicationAdherenceWorklistItem } from "./MedicationAdherenceWorklist.types";
 import { useI18n } from "../../../i18n/I18nContext";
+import { TeamsDialerPopup } from "./TeamsDialerPopup";
 
 export type CallRecordStatus = "in-progress" | "needs-review" | "completed";
 
@@ -86,6 +87,10 @@ interface MedicationAdherenceWorklistContextValue {
   markPatientAsReviewed: (patientId: string) => void;
   /** Check if a patient currently has "needs-review" status */
   isPatientNeedsReview: (patientId: string) => boolean;
+  /** Active dialer call info for popup */
+  activeDialerCall: { name: string; phone: string } | null;
+  /** Dismiss the dialer popup */
+  dismissDialer: () => void;
 }
 
 const MedicationAdherenceWorklistContext =
@@ -125,6 +130,7 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
   // Ref mirror of activeCallRecords so resolveCallRecord can read without closing over state
   const activeCallRecordsRef = useRef<ActiveCallRecord[]>([]);
   const [contactRecords, setContactRecords] = useState<ContactRecord[]>(INITIAL_CONTACT_RECORDS);
+  const [activeDialerCall, setActiveDialerCall] = useState<{ name: string; phone: string } | null>(null);
 
   // Registry preserves full patient data even after patients are removed from the worklist via callPatients
   const patientRegistryRef = useRef<Map<string, MedicationAdherenceWorklistItem>>(
@@ -196,6 +202,12 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
       return next;
     });
     setPatients((prev) => prev.filter((p) => !calledSet.has(p.id)));
+
+    // Show dialer popup for single-patient calls
+    if (patientIds.length === 1 && calledPatients.length === 1) {
+      const p = calledPatients[0];
+      setActiveDialerCall({ name: p.name, phone: p.phone || "(555) 000-0000" });
+    }
   }, [formatTime, patients]);
 
   const resolvedRecordIds = useRef<Set<string>>(new Set());
@@ -303,6 +315,10 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
     return inContactRecords || inActiveRecords;
   }, [contactRecords, activeCallRecords]);
 
+  const dismissDialer = useCallback(() => {
+    setActiveDialerCall(null);
+  }, []);
+
   const value = useMemo(
     () => ({
       patients,
@@ -317,6 +333,8 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
       contactRecords,
       markPatientAsReviewed,
       isPatientNeedsReview,
+      activeDialerCall,
+      dismissDialer,
     }),
     [
       patients,
@@ -330,12 +348,21 @@ export const MedicationAdherenceWorklistProvider: React.FC<{
       contactRecords,
       markPatientAsReviewed,
       isPatientNeedsReview,
+      activeDialerCall,
+      dismissDialer,
     ]
   );
 
   return (
     <MedicationAdherenceWorklistContext.Provider value={value}>
       {children}
+      {activeDialerCall && (
+        <TeamsDialerPopup
+          patientName={activeDialerCall.name}
+          phoneNumber={activeDialerCall.phone}
+          onHangUp={dismissDialer}
+        />
+      )}
     </MedicationAdherenceWorklistContext.Provider>
   );
 };
