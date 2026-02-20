@@ -117,3 +117,6 @@ storybook-static/
 docs/generated/
 docs/build/
 docs/dist/
+dist_v1.0_CareCoord.zip
+.gitignore
+dist_v1.1_FixesReadyForDemo.zip
