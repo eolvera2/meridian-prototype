@@ -6,18 +6,22 @@
 
 import React, { useMemo, useState, useEffect } from "react";
 import {
-  TabList,
-  Tab,
   SearchBox,
   Button,
   Checkbox,
   Divider,
   Tooltip,
+  Menu,
+  MenuTrigger,
+  MenuPopover,
+  MenuList,
+  MenuItem,
+  MenuItemRadio,
+  MenuGroup,
+  MenuGroupHeader,
 } from "@fluentui/react-components";
 import type {
-  SelectTabEvent,
-  SelectTabData,
-  TabValue,
+  MenuCheckedValueChangeData,
 } from "@fluentui/react-components";
 import {
   Search20Regular,
@@ -25,6 +29,7 @@ import {
   ArrowUp16Regular,
   ArrowDown16Regular,
   ArrowSync16Regular,
+  Filter16Regular,
   MoreVerticalFilled,
   Call20Regular,
   CallRegular,
@@ -42,16 +47,13 @@ import { CALL_TYPE_LABELS } from "./CareCoordinationWorklist.types";
 import { useI18n } from "../../../i18n/I18nContext";
 import { AddPatientForm } from "./AddPatientForm";
 
-type CareCoordinationTab = "queue" | "reviewed";
-
 export const CareCoordinationWorklist: React.FC<
   CareCoordinationWorklistProps
 > = ({ isCollapsed = false }) => {
   const styles = useStyles();
   const { t } = useI18n();
-  const { patients, setSelectedPatientId, callPatients, addPatient } = useCareCoordinationWorklistContext();
+  const { patients, setSelectedPatientId, callPatients, addPatient, callTypeFilter, setCallTypeFilter } = useCareCoordinationWorklistContext();
 
-  const [activeTab, setActiveTab] = useState<TabValue>("queue");
   const [searchValue, setSearchValue] = useState("");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [sortOrder, setSortOrder] =
@@ -59,18 +61,20 @@ export const CareCoordinationWorklist: React.FC<
   const [selectedPatients, setSelectedPatients] = useState<Set<string>>(new Set());
   const [addPatientOpen, setAddPatientOpen] = useState(false);
 
-  const activeCareCoordinationTab = activeTab as CareCoordinationTab;
-
   const tabbedPatients = useMemo(
     () =>
       patients.filter(
-        (patient) => patient.group?.toLowerCase() === activeCareCoordinationTab
+        (patient) => patient.group?.toLowerCase() === "queue"
       ),
-    [patients, activeCareCoordinationTab]
+    [patients]
   );
 
   const filteredPatients = useMemo(() => {
     let next = [...tabbedPatients];
+
+    if (callTypeFilter !== "all") {
+      next = next.filter((p) => p.callType === callTypeFilter);
+    }
 
     if (searchValue.trim().length >= 2) {
       const searchLower = searchValue.trim().toLowerCase();
@@ -99,15 +103,7 @@ export const CareCoordinationWorklist: React.FC<
     }
 
     return next;
-  }, [tabbedPatients, searchValue, sortOrder]);
-
-  const handleTabSelect = (_: SelectTabEvent, data: SelectTabData) => {
-    setActiveTab(data.value);
-    setSearchValue("");
-    setIsSearchVisible(false);
-    setSortOrder("none");
-    setSelectedPatients(new Set());
-  };
+  }, [tabbedPatients, searchValue, sortOrder, callTypeFilter]);
 
   const handleSearchToggle = () => {
     setIsSearchVisible((prev) => !prev);
@@ -150,29 +146,11 @@ export const CareCoordinationWorklist: React.FC<
         >
           {!isSearchVisible ? (
             <>
-              <TabList
-                selectedValue={activeTab}
-                onTabSelect={handleTabSelect}
-                size="small"
-                className={styles.tabStretchList}
-              >
-                <Tab
-                  className={styles.tabStretch}
-                  value="queue"
-                >
-                  <span className={styles.tabLabel}>
-                    Queue
-                  </span>
-                </Tab>
-                <Tab
-                  className={styles.tabStretch}
-                  value="reviewed"
-                >
-                  <span className={styles.tabLabel}>
-                    Reviewed
-                  </span>
-                </Tab>
-              </TabList>
+              <div className={styles.tabStretchList} style={{ alignItems: "center", paddingLeft: "8px" }}>
+                <span className={styles.tabLabel} style={{ fontWeight: 600, fontSize: "16px" }}>
+                  Queue
+                </span>
+              </div>
 
               <Tooltip content="Add Patient" relationship="label">
                 <span className="inline-flex">
@@ -242,6 +220,38 @@ export const CareCoordinationWorklist: React.FC<
               </div>
             </div>
             <div className={styles.filterOptions}>
+              <Menu
+                checkedValues={{ callType: [callTypeFilter] }}
+                onCheckedValueChange={(_: unknown, data: MenuCheckedValueChangeData) => {
+                  setCallTypeFilter((data.checkedItems[0] || "all") as "all" | CallType);
+                  setSelectedPatients(new Set());
+                }}
+              >
+                <MenuTrigger disableButtonEnhancement>
+                  <Tooltip content="Filter by call type" relationship="label">
+                    <span className="inline-flex">
+                      <Button
+                        appearance="subtle"
+                        className={styles.filterButton}
+                        icon={<Filter16Regular />}
+                        aria-label="Filter by call type"
+                        style={callTypeFilter !== "all" ? { color: "var(--colorBrandForeground1)" } : undefined}
+                      />
+                    </span>
+                  </Tooltip>
+                </MenuTrigger>
+                <MenuPopover>
+                  <MenuList>
+                    <MenuGroup>
+                      <MenuGroupHeader>Call Type</MenuGroupHeader>
+                      <MenuItemRadio name="callType" value="all">All Types</MenuItemRadio>
+                      <MenuItemRadio name="callType" value="medication-adherence">Med Adherence</MenuItemRadio>
+                      <MenuItemRadio name="callType" value="patient-intake">Patient Intake</MenuItemRadio>
+                      <MenuItemRadio name="callType" value="hypertension-management">Chronic Care</MenuItemRadio>
+                    </MenuGroup>
+                  </MenuList>
+                </MenuPopover>
+              </Menu>
               <Tooltip content="Refresh" relationship="label">
                 <span className="inline-flex">
                   <Button

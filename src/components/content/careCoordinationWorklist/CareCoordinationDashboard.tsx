@@ -238,8 +238,7 @@ export const CareCoordinationDashboard: React.FC = () => {
   const [chartsExpanded, setChartsExpanded] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
-  const [callTypeFilter, setCallTypeFilter] = useState<"all" | CallType>("all");
-  const { activeCallRecords, setSelectedPatientId, contactRecords } = useCareCoordinationWorklistContext();
+  const { activeCallRecords, setSelectedPatientId, contactRecords, callTypeFilter, setCallTypeFilter } = useCareCoordinationWorklistContext();
 
   const handleTimeRangeChange = (_: unknown, data: OptionOnSelectData) => {
     if (data.optionValue) {

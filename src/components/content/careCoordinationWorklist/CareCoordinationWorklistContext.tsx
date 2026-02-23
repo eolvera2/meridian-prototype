@@ -125,6 +125,10 @@ interface CareCoordinationWorklistContextValue {
   dismissDialer: () => void;
   /** Add a new patient to the worklist */
   addPatient: (patient: CareCoordinationWorklistItem) => void;
+  /** Shared call type filter across all panels */
+  callTypeFilter: "all" | CallType;
+  /** Set the shared call type filter */
+  setCallTypeFilter: (filter: "all" | CallType) => void;
 }
 
 const CareCoordinationWorklistContext =
@@ -174,6 +178,7 @@ export const CareCoordinationWorklistProvider: React.FC<{
   const activeCallRecordsRef = useRef<ActiveCallRecord[]>([]);
   const [contactRecords, setContactRecords] = useState<ContactRecord[]>(INITIAL_CONTACT_RECORDS);
   const [activeDialerCall, setActiveDialerCall] = useState<{ name: string; phone: string; recordId: string } | null>(null);
+  const [callTypeFilter, setCallTypeFilter] = useState<"all" | CallType>("all");
 
   // Registry preserves full patient data even after patients are removed from the worklist via callPatients
   const patientRegistryRef = useRef<Map<string, CareCoordinationWorklistItem>>(
@@ -462,6 +467,8 @@ export const CareCoordinationWorklistProvider: React.FC<{
       activeDialerCall,
       dismissDialer,
       addPatient,
+      callTypeFilter,
+      setCallTypeFilter,
     }),
     [
       patients,
@@ -478,6 +485,7 @@ export const CareCoordinationWorklistProvider: React.FC<{
       activeDialerCall,
       dismissDialer,
       addPatient,
+      callTypeFilter,
     ]
   );
 

@@ -64,6 +64,16 @@ export const useMainContentStyles = makeStyles({
     display: "none",
   },
 
+  reviewedPanelContainer: {
+    width: "var(--content-min-width)",
+    flexShrink: 0,
+    overflow: "hidden",
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    minHeight: 0,
+  },
+
   mobileWorklistContainer: {
     "@media (max-width: 768px)": {
       flex: 1,
