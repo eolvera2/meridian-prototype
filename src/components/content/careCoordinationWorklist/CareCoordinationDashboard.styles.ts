@@ -371,6 +371,13 @@ export const useDashboardStyles = makeStyles({
     fontSize: tokens.fontSizeBase200,
     color: tokens.colorNeutralForeground2,
   },
+  summaryCountsGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, auto)",
+    gap: "4px 16px",
+    fontSize: tokens.fontSizeBase200,
+    color: tokens.colorNeutralForeground2,
+  },
   countBadge: {
     display: "inline-flex",
     alignItems: "center",
@@ -394,6 +401,10 @@ export const useDashboardStyles = makeStyles({
   countBadgeRetry: {
     backgroundColor: "#F3E8FD",
     color: "#5B2D8E",
+  },
+  countBadgeReviewed: {
+    backgroundColor: "#F0F0F0",
+    color: "#424242",
   },
   filtersRow: {
     display: "flex",
@@ -614,6 +625,30 @@ export const useDashboardStyles = makeStyles({
     color: "#0E700E",
   },
   statusPillRetry: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "4px",
+    borderRadius: "16px",
+    padding: "4px 12px",
+    fontSize: tokens.fontSizeBase200,
+    fontWeight: 700,
+    whiteSpace: "nowrap",
+    backgroundColor: "#F3E8FD",
+    color: "#5B2D8E",
+  },
+  statusPillReviewed: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "4px",
+    borderRadius: "16px",
+    padding: "4px 12px",
+    fontSize: tokens.fontSizeBase200,
+    fontWeight: 700,
+    whiteSpace: "nowrap",
+    backgroundColor: "#F0F0F0",
+    color: "#424242",
+  },
+  statusPillScheduled: {
     display: "inline-flex",
     alignItems: "center",
     gap: "4px",

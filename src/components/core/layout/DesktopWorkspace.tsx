@@ -9,7 +9,6 @@ import {
 } from "../../content";
 import {
   CareCoordinationWorklist,
-  CareCoordinationReviewedPanel,
   CareCoordinationWorklistProvider,
   CareCoordinationDashboard,
   CareCoordinationPatientDetail,
@@ -210,10 +209,6 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
                       <CareCoordinationContent onPatientSelectedChange={handleMaPatientChange} />
                     </div>
                   </div>
-                </div>
-
-                <div className={styles.reviewedPanelContainer}>
-                  <CareCoordinationReviewedPanel />
                 </div>
               </CareCoordinationWorklistProvider>
             ) : (

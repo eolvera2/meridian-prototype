@@ -9,6 +9,7 @@ import {
   PopoverSurface,
   Tooltip,
   Switch,
+  Combobox,
 } from "@fluentui/react-components";
 import type { OptionOnSelectData } from "@fluentui/react-components";
 import {
@@ -233,11 +234,12 @@ const getContactCardClass = (rate: number, styles: ReturnType<typeof useDashboar
 export const CareCoordinationDashboard: React.FC = () => {
   const styles = useDashboardStyles();
   const [timeRange, setTimeRange] = useState<TimeRange>("30");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all-active");
   const [adminView, setAdminView] = useState(false);
   const [chartsExpanded, setChartsExpanded] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
+  const [patientSearch, setPatientSearch] = useState("");
   const { activeCallRecords, setSelectedPatientId, contactRecords, callTypeFilter, setCallTypeFilter } = useCareCoordinationWorklistContext();
 
   const handleTimeRangeChange = (_: unknown, data: OptionOnSelectData) => {
@@ -256,21 +258,37 @@ export const CareCoordinationDashboard: React.FC = () => {
   const maxDriverCount = Math.max(...driversData.map((d) => d.count));
   const driverTotal = driversData.reduce((sum, d) => sum + d.count, 0);
 
-  // Contact history
+  // Contact history — scheduled records (daysAgo === 0) are always included regardless of time range
   const filteredByTime = useMemo(
     () => contactRecords
-      .filter((r) => r.daysAgo <= Number(timeRange) && (callTypeFilter === "all" || r.callType === callTypeFilter))
+      .filter((r) => (r.scheduled || r.daysAgo <= Number(timeRange)) && (callTypeFilter === "all" || r.callType === callTypeFilter))
       .sort((a, b) => a.daysAgo - b.daysAgo),
     [timeRange, contactRecords, callTypeFilter]
   );
-  const needsReviewCount = filteredByTime.filter((r) => !r.reviewed && !r.scheduledForRetry).length;
+  const needsReviewCount = filteredByTime.filter((r) => !r.reviewed && !r.scheduledForRetry && !r.scheduled).length;
   const inProgressCount = activeCallRecords.filter((r) => r.status === "in-progress").length;
   const retryCount = filteredByTime.filter((r) => r.scheduledForRetry).length;
+  const scheduledCount = filteredByTime.filter((r) => r.scheduled).length;
+  const reviewedCount = filteredByTime.filter((r) => r.reviewed).length + activeCallRecords.filter((r) => r.status === "reviewed").length;
   const displayedRecords = statusFilter === "needs-review"
-    ? filteredByTime.filter((r) => !r.reviewed && !r.scheduledForRetry)
+    ? filteredByTime.filter((r) => !r.reviewed && !r.scheduledForRetry && !r.scheduled)
     : statusFilter === "scheduled-for-retry"
     ? filteredByTime.filter((r) => r.scheduledForRetry)
+    : statusFilter === "scheduled"
+    ? filteredByTime.filter((r) => r.scheduled)
+    : statusFilter === "reviewed"
+    ? filteredByTime.filter((r) => r.reviewed)
+    : statusFilter === "all-active"
+    ? filteredByTime.filter((r) => !r.reviewed)
     : filteredByTime;
+
+  // Unique patient names for search dropdown
+  const allPatientNames = useMemo(() => {
+    const nameSet = new Set<string>();
+    contactRecords.forEach((r) => nameSet.add(r.name));
+    activeCallRecords.forEach((r) => nameSet.add(r.name));
+    return Array.from(nameSet).sort();
+  }, [contactRecords, activeCallRecords]);
 
   // Combine active call records with displayed records for pagination
   const allTableRecords = useMemo(() => {
@@ -281,13 +299,23 @@ export const CareCoordinationDashboard: React.FC = () => {
         ? typeFiltered.filter((r) => r.status === "in-progress")
         : statusFilter === "scheduled-for-retry"
         ? []
+        : statusFilter === "scheduled"
+        ? typeFiltered.filter((r) => r.status === "scheduled")
+        : statusFilter === "reviewed"
+        ? typeFiltered.filter((r) => r.status === "reviewed")
+        : statusFilter === "all-active"
+        ? typeFiltered.filter((r) => r.status !== "reviewed")
         : typeFiltered;
     const activeRows = filteredActive.map((r) => ({ type: "active" as const, record: r }));
     const historyRows = statusFilter === "in-progress"
       ? []
       : displayedRecords.map((r) => ({ type: "history" as const, record: r }));
-    return [...activeRows, ...historyRows];
-  }, [activeCallRecords, displayedRecords, statusFilter, callTypeFilter]);
+    // Apply patient search filter
+    const combined = [...activeRows, ...historyRows];
+    if (!patientSearch.trim()) return combined;
+    const searchLower = patientSearch.trim().toLowerCase();
+    return combined.filter((item) => item.record.name.toLowerCase().includes(searchLower));
+  }, [activeCallRecords, displayedRecords, statusFilter, callTypeFilter, patientSearch]);
 
   const totalPages = Math.max(1, Math.ceil(allTableRecords.length / PAGE_SIZE));
   const paginatedRecords = allTableRecords.slice(
@@ -298,7 +326,7 @@ export const CareCoordinationDashboard: React.FC = () => {
   // Reset page when filter changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [statusFilter]);
+  }, [statusFilter, patientSearch]);
 
   const getStatusPillClass = (status: CallRecordStatus) => {
     switch (status) {
@@ -306,6 +334,8 @@ export const CareCoordinationDashboard: React.FC = () => {
       case "needs-review": return styles.statusPillNeedsReview;
       case "completed": return styles.statusPillCompleted;
       case "scheduled-for-retry": return styles.statusPillRetry;
+      case "reviewed": return styles.statusPillReviewed;
+      case "scheduled": return styles.statusPillScheduled;
     }
   };
 
@@ -315,6 +345,8 @@ export const CareCoordinationDashboard: React.FC = () => {
       case "needs-review": return "Ready for Review";
       case "completed": return "Completed";
       case "scheduled-for-retry": return "Scheduled for Retry";
+      case "reviewed": return "Reviewed";
+      case "scheduled": return "Scheduled";
     }
   };
 
@@ -655,9 +687,9 @@ export const CareCoordinationDashboard: React.FC = () => {
       <div className={styles.historySection}>
         <div className={styles.historyHeaderRow}>
           <div>
-            <div className={styles.historyTitle}>Patient Contact History</div>
+            <div className={styles.historyTitle}>Patient Contact List</div>
             <div className={styles.historySubtitle}>
-              Review past patient contacts and mark them as reviewed
+              Review ongoing patient contacts and work on those ready to be reviewed
             </div>
           </div>
           <div className={styles.headerActionsRight}>
@@ -665,24 +697,38 @@ export const CareCoordinationDashboard: React.FC = () => {
               <span>
                 Total: <strong>{filteredByTime.length}</strong>
               </span>
-              <span>
-                Needs Review:
-                <span className={mergeClasses(styles.countBadge, styles.countBadgeReview)}>
-                  {needsReviewCount}
+              <div className={styles.summaryCountsGrid}>
+                <span>
+                  Need Review:
+                  <span className={mergeClasses(styles.countBadge, styles.countBadgeReview)}>
+                    {needsReviewCount}
+                  </span>
                 </span>
-              </span>
-              <span>
-                In Progress:
-                <span className={mergeClasses(styles.countBadge, styles.countBadgeCompleted)}>
-                  {inProgressCount}
+                <span>
+                  In Progress:
+                  <span className={mergeClasses(styles.countBadge, styles.countBadgeCompleted)}>
+                    {inProgressCount}
+                  </span>
                 </span>
-              </span>
-              <span>
-                Will Retry:
-                <span className={mergeClasses(styles.countBadge, styles.countBadgeRetry)}>
-                  {retryCount}
+                <span>
+                  Reviewed:
+                  <span className={mergeClasses(styles.countBadge, styles.countBadgeReviewed)}>
+                    {reviewedCount}
+                  </span>
                 </span>
-              </span>
+                <span>
+                  Scheduled:
+                  <span className={mergeClasses(styles.countBadge, styles.countBadgeRetry)}>
+                    {scheduledCount}
+                  </span>
+                </span>
+                <span>
+                  Will Retry:
+                  <span className={mergeClasses(styles.countBadge, styles.countBadgeRetry)}>
+                    {retryCount}
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -691,14 +737,17 @@ export const CareCoordinationDashboard: React.FC = () => {
           <div className={styles.historyFilterGroup}>
             <span className={styles.filterLabel}>Contact Status</span>
             <Dropdown
-              defaultValue="All Statuses"
-              defaultSelectedOptions={["all"]}
-              onOptionSelect={(_, data) => setStatusFilter(data.optionValue ?? "all")}
+              defaultValue="All Active Statuses"
+              defaultSelectedOptions={["all-active"]}
+              onOptionSelect={(_, data) => setStatusFilter(data.optionValue ?? "all-active")}
             >
+              <Option value="all-active"><strong>All Active Statuses</strong></Option>
               <Option value="all">All Statuses</Option>
               <Option value="in-progress">In Progress</Option>
               <Option value="needs-review">Ready for Review</Option>
+              <Option value="scheduled">Scheduled</Option>
               <Option value="scheduled-for-retry">Scheduled for Retry</Option>
+              <Option value="reviewed">Reviewed</Option>
             </Dropdown>
           </div>
           <div className={styles.historyFilterGroup}>
@@ -713,6 +762,23 @@ export const CareCoordinationDashboard: React.FC = () => {
               <Option value="patient-intake">{CALL_TYPE_LABELS["patient-intake"]}</Option>
               <Option value="hypertension-management">{CALL_TYPE_LABELS["hypertension-management"]}</Option>
             </Dropdown>
+          </div>
+          <div className={styles.historyFilterGroup}>
+            <span className={styles.filterLabel}>Patient Search</span>
+            <Combobox
+              placeholder="Search by name..."
+              freeform
+              value={patientSearch}
+              onInput={(e) => { setPatientSearch((e.target as HTMLInputElement).value); }}
+              onOptionSelect={(_, data) => { setPatientSearch(data.optionText ?? ""); }}
+              style={{ minWidth: "180px" }}
+            >
+              {allPatientNames
+                .filter((name) => !patientSearch || name.toLowerCase().includes(patientSearch.toLowerCase()))
+                .map((name) => (
+                  <Option key={name} value={name}>{name}</Option>
+                ))}
+            </Combobox>
           </div>
           <div className={styles.filterActions}>
 
@@ -773,7 +839,7 @@ export const CareCoordinationDashboard: React.FC = () => {
                     </td>
                     <td className={styles.tableCell}>
                       <div className={styles.outcomesCell}>
-                        {(record.status === "in-progress" || record.status === "scheduled-for-retry") ? (
+                        {(record.status === "in-progress" || record.status === "scheduled-for-retry" || record.status === "scheduled") ? (
                           <>
                             <NeutralOutcomeIndicator label="Picked up meds" />
                             <NeutralOutcomeIndicator label="Taking as Rx" />
@@ -820,6 +886,8 @@ export const CareCoordinationDashboard: React.FC = () => {
                         {record.status === "needs-review" && <Checkmark16Regular />}
                         {record.status === "completed" && <Checkmark16Regular />}
                         {record.status === "scheduled-for-retry" && <HourglassRegular />}
+                        {record.status === "reviewed" && <Checkmark16Regular />}
+                        {record.status === "scheduled" && <HourglassRegular />}
                         {getStatusLabel(record.status)}
                       </span>
                     </td>
@@ -854,7 +922,7 @@ export const CareCoordinationDashboard: React.FC = () => {
                     </td>
                     <td className={styles.tableCell}>
                       <div className={styles.outcomesCell}>
-                        {record.scheduledForRetry ? (
+                        {(record.scheduledForRetry || record.scheduled) ? (
                           <>
                             <NeutralOutcomeIndicator label="Picked up meds" />
                             <NeutralOutcomeIndicator label="Taking as Rx" />
@@ -896,12 +964,16 @@ export const CareCoordinationDashboard: React.FC = () => {
                       )}
                     </td>
                     <td className={styles.tableCell}>
-                      {record.scheduledForRetry ? (
+                      {record.scheduled ? (
+                        <span className={styles.statusPillScheduled}>
+                          <HourglassRegular /> Scheduled
+                        </span>
+                      ) : record.scheduledForRetry ? (
                         <span className={styles.statusPillRetry}>
                           <HourglassRegular /> Scheduled for Retry
                         </span>
                       ) : record.reviewed ? (
-                        <span className={styles.reviewedBadge}>
+                        <span className={styles.statusPillReviewed}>
                           <Checkmark16Regular /> Reviewed
                         </span>
                       ) : (

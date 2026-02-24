@@ -18,7 +18,7 @@ import type { CareCoordinationWorklistItem, CallType, ContactHistoryEntry } from
 import { useI18n } from "../../../i18n/I18nContext";
 import { TeamsDialerPopup } from "./TeamsDialerPopup";
 
-export type CallRecordStatus = "in-progress" | "needs-review" | "completed" | "scheduled-for-retry";
+export type CallRecordStatus = "in-progress" | "needs-review" | "completed" | "scheduled-for-retry" | "reviewed" | "scheduled";
 
 export interface ContactRecord {
   id: string;
@@ -48,6 +48,7 @@ export interface ContactRecord {
   escalated?: { value: string; warning: boolean };
   reviewed: boolean;
   scheduledForRetry?: boolean;
+  scheduled?: boolean;
 }
 
 const INITIAL_CONTACT_RECORDS: ContactRecord[] = [
@@ -64,6 +65,22 @@ const INITIAL_CONTACT_RECORDS: ContactRecord[] = [
   { id: "cr-9", patientId: "pi-5", name: "George Martinez", callType: "patient-intake", contactDate: "Feb 8, 2026", contactTime: "4:00 PM", daysAgo: 5, phone: "(713) 555-0934", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, intakeCompleted: { value: "Yes", warning: false }, allergiesConfirmed: "Metformin, Latex", redFlag: { value: "None", warning: false }, symptomsReported: "None acute", reviewed: false },
   // Hypertension Management
   { id: "cr-10", patientId: "ht-5", name: "Donna Fischer", callType: "hypertension-management", contactDate: "Feb 1, 2026", contactTime: "2:15 PM", daysAgo: 12, phone: "(206) 555-0789", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Yes", warning: true }, bpReading: { systolic: 142, diastolic: 90 }, bpAtGoal: { value: "No", warning: true }, medAdherence: { value: "Yes", warning: false }, symptomsPresent: { value: "None", warning: false }, escalated: { value: "No", warning: false }, reviewed: false },
+  // Reviewed — Medication Adherence
+  { id: "cr-11", patientId: "ma-11", name: "Camila Rojas", callType: "medication-adherence", contactDate: "Feb 10, 2026", contactTime: "9:15 AM", daysAgo: 3, phone: "(213) 555-6047", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, reviewed: true },
+  { id: "cr-12", patientId: "ma-12", name: "Noah Watanabe", callType: "medication-adherence", contactDate: "Feb 9, 2026", contactTime: "11:00 AM", daysAgo: 4, phone: "(503) 555-8291", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 1, followUp: { value: "Not needed", warning: false }, reviewed: true },
+  { id: "cr-13", patientId: "ma-13", name: "Aisha Banerjee", callType: "medication-adherence", contactDate: "Feb 8, 2026", contactTime: "2:30 PM", daysAgo: 5, phone: "(646) 555-3814", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, reviewed: true },
+  { id: "cr-14", patientId: "ma-14", name: "Gareth O'Neill", callType: "medication-adherence", contactDate: "Feb 7, 2026", contactTime: "10:45 AM", daysAgo: 6, phone: "(415) 555-9267", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 2, followUp: { value: "Not needed", warning: false }, reviewed: true },
+  // Reviewed — Patient Intake
+  { id: "cr-15", patientId: "pi-4", name: "Sandra Kowalski", callType: "patient-intake", contactDate: "Feb 10, 2026", contactTime: "3:00 PM", daysAgo: 3, phone: "(617) 555-2345", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, intakeCompleted: { value: "Yes", warning: false }, allergiesConfirmed: "Aspirin (GI upset)", redFlag: { value: "None", warning: false }, symptomsReported: "None", reviewed: true },
+  // Reviewed — Hypertension Management
+  { id: "cr-16", patientId: "ht-1", name: "Laura Bennett", callType: "hypertension-management", contactDate: "Feb 15, 2026", contactTime: "1:30 PM", daysAgo: 0, phone: "(404) 555-1122", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, bpReading: { systolic: 122, diastolic: 78 }, bpAtGoal: { value: "Yes", warning: false }, medAdherence: { value: "Yes", warning: false }, symptomsPresent: { value: "None", warning: false }, escalated: { value: "No", warning: false }, reviewed: true },
+  { id: "cr-17", patientId: "ht-4", name: "William Chang", callType: "hypertension-management", contactDate: "Feb 12, 2026", contactTime: "4:15 PM", daysAgo: 1, phone: "(503) 555-6789", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, bpReading: { systolic: 132, diastolic: 84 }, bpAtGoal: { value: "Yes", warning: false }, medAdherence: { value: "Yes", warning: false }, symptomsPresent: { value: "None", warning: false }, escalated: { value: "No", warning: false }, reviewed: true },
+  // Scheduled
+  { id: "cr-18", patientId: "ma-6", name: "Rafael Montes", callType: "medication-adherence", contactDate: "Feb 17, 2026", contactTime: "9:00 AM", daysAgo: 0, phone: "(305) 555-4891", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, reviewed: false, scheduled: true },
+  { id: "cr-19", patientId: "pi-2", name: "Jamie Patel", callType: "patient-intake", contactDate: "Feb 18, 2026", contactTime: "10:30 AM", daysAgo: 0, phone: "(312) 555-9876", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, intakeCompleted: { value: "--", warning: false }, allergiesConfirmed: "--", redFlag: { value: "--", warning: false }, symptomsReported: "--", reviewed: false, scheduled: true },
+  { id: "cr-20", patientId: "ht-3", name: "Priya Sharma", callType: "hypertension-management", contactDate: "Feb 18, 2026", contactTime: "2:00 PM", daysAgo: 0, phone: "(408) 555-8901", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, bpReading: undefined, bpAtGoal: { value: "--", warning: false }, medAdherence: { value: "--", warning: false }, symptomsPresent: { value: "--", warning: false }, escalated: { value: "--", warning: false }, reviewed: false, scheduled: true },
+  { id: "cr-21", patientId: "ma-9", name: "Priyanka Menon", callType: "medication-adherence", contactDate: "Feb 19, 2026", contactTime: "8:30 AM", daysAgo: 0, phone: "(408) 555-1726", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, reviewed: false, scheduled: true },
+  { id: "cr-22", patientId: "ma-10", name: "Howard Kimani", callType: "medication-adherence", contactDate: "Feb 20, 2026", contactTime: "11:00 AM", daysAgo: 0, phone: "(206) 555-7483", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, reviewed: false, scheduled: true },
 ];
 
 export interface ActiveCallRecord {
@@ -113,7 +130,7 @@ interface CareCoordinationWorklistContextValue {
   callPatients: (patientIds: string[]) => void;
   /** Resolve a call record after the 10s timer */
   resolveCallRecord: (recordId: string) => void;
-  /** Contact records for the Dashboard's Patient Contact History table */
+  /** Contact records for the Dashboard's Patient Contact List table */
   contactRecords: ContactRecord[];
   /** Mark a patient as reviewed: remove from contact history, add to reviewed tab */
   markPatientAsReviewed: (patientId: string) => void;
@@ -384,11 +401,11 @@ export const CareCoordinationWorklistProvider: React.FC<{
   }, []);
 
   const markPatientAsReviewed = useCallback((patientId: string) => {
-    // Remove from contactRecords (static ch-* patients)
-    setContactRecords((prev) => prev.filter((r) => r.patientId !== patientId));
-    // Remove from activeCallRecords (dynamically called patients)
+    // Mark contact records as reviewed (static ch-* patients)
+    setContactRecords((prev) => prev.map((r) => r.patientId === patientId ? { ...r, reviewed: true } : r));
+    // Mark active call records as reviewed (dynamically called patients)
     setActiveCallRecords((prev) => {
-      const next = prev.filter((r) => r.patientId !== patientId);
+      const next = prev.map((r) => r.patientId === patientId ? { ...r, status: "reviewed" as CallRecordStatus } : r);
       activeCallRecordsRef.current = next;
       return next;
     });
@@ -429,8 +446,8 @@ export const CareCoordinationWorklistProvider: React.FC<{
   }, []);
 
   const isPatientNeedsReview = useCallback((patientId: string) => {
-    // Check static contact records
-    const inContactRecords = contactRecords.some((r) => r.patientId === patientId && !r.reviewed);
+    // Check static contact records (only unreviewed, non-scheduled)
+    const inContactRecords = contactRecords.some((r) => r.patientId === patientId && !r.reviewed && !r.scheduledForRetry);
     // Check active call records
     const inActiveRecords = activeCallRecords.some((r) => r.patientId === patientId && r.status === "needs-review");
     return inContactRecords || inActiveRecords;
