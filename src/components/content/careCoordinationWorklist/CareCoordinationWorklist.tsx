@@ -34,6 +34,8 @@ import {
   Call20Regular,
   CallRegular,
   PersonAdd20Regular,
+  DeleteRegular,
+  Delete20Regular,
 } from "@fluentui/react-icons";
 
 import { useStyles } from "./CareCoordinationWorklist.styles";
@@ -52,7 +54,7 @@ export const CareCoordinationWorklist: React.FC<
 > = ({ isCollapsed = false }) => {
   const styles = useStyles();
   const { t } = useI18n();
-  const { patients, setSelectedPatientId, callPatients, addPatient, callTypeFilter, setCallTypeFilter } = useCareCoordinationWorklistContext();
+  const { patients, setSelectedPatientId, callPatients, removeFromQueue, addPatient, callTypeFilter, setCallTypeFilter } = useCareCoordinationWorklistContext();
 
   const [searchValue, setSearchValue] = useState("");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -350,8 +352,22 @@ export const CareCoordinationWorklist: React.FC<
                   </div>
 
                   <div className={`${styles.actionButtons} action-buttons`}>
-                    <Tooltip content="Schedule Call" relationship="label">
+                    <Tooltip content="Remove from Queue" relationship="label">
                       <span className="inline-flex">
+                        <button
+                          className={styles.actionButtonDanger}
+                          aria-label="Remove from Queue"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeFromQueue([patient.id]);
+                          }}
+                        >
+                          <Delete20Regular />
+                        </button>
+                      </span>
+                    </Tooltip>
+                    <Tooltip content="Schedule Call" relationship="label">
+                      <span className="inline-flex" style={{ marginLeft: "auto" }}>
                         <button
                           className={styles.actionButton}
                           aria-label="Schedule Call"
@@ -382,7 +398,7 @@ export const CareCoordinationWorklist: React.FC<
             <div className={styles.footerLabel}>
               {selectedPatients.size > 0 ? (
                 <>
-                  Ready to contact: {filteredPatients
+                  Selected: {filteredPatients
                     .filter((p) => selectedPatients.has(p.id))
                     .map((p) => p.name)
                     .slice(0, 3)
@@ -390,15 +406,27 @@ export const CareCoordinationWorklist: React.FC<
                   {selectedPatients.size > 3 && ` +${selectedPatients.size - 3} more`}
                 </>
               ) : (
-                <>Select patients to contact</>
+                <>Select patients</>
               )}
             </div>
             <div className={styles.footerActions}>
               <Button
+                appearance="secondary"
+                icon={<DeleteRegular />}
+                disabled={selectedPatients.size === 0}
+                style={{ flex: 1, height: "44px", fontSize: "14px", fontWeight: 600, color: selectedPatients.size > 0 ? "#D13438" : undefined, borderColor: selectedPatients.size > 0 ? "#D13438" : undefined }}
+                onClick={() => {
+                  removeFromQueue(Array.from(selectedPatients));
+                  setSelectedPatients(new Set());
+                }}
+              >
+                Remove
+              </Button>
+              <Button
                 appearance="primary"
                 icon={<CallRegular />}
                 disabled={selectedPatients.size === 0}
-                style={{ width: "100%", height: "44px", fontSize: "16px", fontWeight: 600 }}
+                style={{ flex: 1, height: "44px", fontSize: "14px", fontWeight: 600 }}
                 onClick={() => {
                   callPatients(Array.from(selectedPatients));
                   setSelectedPatients(new Set());

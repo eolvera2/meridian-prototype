@@ -142,6 +142,8 @@ interface CareCoordinationWorklistContextValue {
   dismissDialer: () => void;
   /** Add a new patient to the worklist */
   addPatient: (patient: CareCoordinationWorklistItem) => void;
+  /** Remove patients from the queue (status: removed-from-queue) */
+  removeFromQueue: (patientIds: string[]) => void;
   /** Shared call type filter across all panels */
   callTypeFilter: "all" | CallType;
   /** Set the shared call type filter */
@@ -467,6 +469,25 @@ export const CareCoordinationWorklistProvider: React.FC<{
     setPatients((prev) => [patient, ...prev]);
   }, []);
 
+  const removeFromQueue = useCallback((patientIds: string[]) => {
+    const removedSet = new Set(patientIds);
+    // Update patients: change group to "removed" so they leave the queue
+    setPatients((prev) =>
+      prev.map((p) =>
+        removedSet.has(p.id)
+          ? { ...p, group: "removed", status: "Removed from Queue" }
+          : p
+      )
+    );
+    // Update registry
+    patientIds.forEach((id) => {
+      const patient = patientRegistryRef.current.get(id);
+      if (patient) {
+        patientRegistryRef.current.set(id, { ...patient, group: "removed", status: "Removed from Queue" });
+      }
+    });
+  }, []);
+
   const value = useMemo(
     () => ({
       patients,
@@ -484,6 +505,7 @@ export const CareCoordinationWorklistProvider: React.FC<{
       activeDialerCall,
       dismissDialer,
       addPatient,
+      removeFromQueue,
       callTypeFilter,
       setCallTypeFilter,
     }),
@@ -502,6 +524,7 @@ export const CareCoordinationWorklistProvider: React.FC<{
       activeDialerCall,
       dismissDialer,
       addPatient,
+      removeFromQueue,
       callTypeFilter,
     ]
   );

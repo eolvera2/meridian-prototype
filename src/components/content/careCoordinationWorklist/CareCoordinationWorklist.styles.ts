@@ -447,6 +447,24 @@ export const useStyles = makeStyles({
     },
   },
 
+  actionButtonDanger: {
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    padding: "var(--spacing-small-4)",
+    color: "#D13438",
+    fontSize: tokens.fontSizeBase500,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "&:hover": {
+      color: "#A4262C",
+    },
+    "&:active": {
+      color: "#A4262C",
+    },
+  },
+
   summaryText: {
     color: tokens.colorNeutralForeground2,
     fontSize: tokens.fontSizeBase200,
