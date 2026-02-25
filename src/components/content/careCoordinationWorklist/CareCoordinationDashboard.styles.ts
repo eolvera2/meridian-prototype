@@ -373,7 +373,7 @@ export const useDashboardStyles = makeStyles({
   },
   summaryCountsGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(3, auto)",
+    gridTemplateColumns: "auto auto auto",
     gap: "4px 16px",
     fontSize: tokens.fontSizeBase200,
     color: tokens.colorNeutralForeground2,
@@ -385,10 +385,9 @@ export const useDashboardStyles = makeStyles({
     minWidth: "20px",
     height: "20px",
     borderRadius: "4px",
-    padding: "0 6px",
+    padding: "0 4px",
     fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
-    marginLeft: "4px",
   },
   countBadgeReview: {
     backgroundColor: "#DFF6DD",

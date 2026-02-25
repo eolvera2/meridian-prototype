@@ -699,32 +699,32 @@ export const CareCoordinationDashboard: React.FC = () => {
                 Total: <strong>{filteredByTime.length}</strong>
               </span>
               <div className={styles.summaryCountsGrid}>
-                <span>
-                  Need Review:
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                  <span style={{ width: "82px", textAlign: "right", whiteSpace: "nowrap" }}>Need Review:</span>
                   <span className={mergeClasses(styles.countBadge, styles.countBadgeReview)}>
                     {needsReviewCount}
                   </span>
                 </span>
-                <span>
-                  In Progress:
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                  <span style={{ width: "74px", textAlign: "right", whiteSpace: "nowrap" }}>In Progress:</span>
                   <span className={mergeClasses(styles.countBadge, styles.countBadgeCompleted)}>
                     {inProgressCount}
                   </span>
                 </span>
-                <span>
-                  Reviewed:
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                  <span style={{ width: "62px", textAlign: "right", whiteSpace: "nowrap" }}>Reviewed:</span>
                   <span className={mergeClasses(styles.countBadge, styles.countBadgeReviewed)}>
                     {reviewedCount}
                   </span>
                 </span>
-                <span>
-                  Scheduled:
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                  <span style={{ width: "82px", textAlign: "right", whiteSpace: "nowrap" }}>Scheduled:</span>
                   <span className={mergeClasses(styles.countBadge, styles.countBadgeRetry)}>
                     {scheduledCount}
                   </span>
                 </span>
-                <span>
-                  Will Retry:
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                  <span style={{ width: "74px", textAlign: "right", whiteSpace: "nowrap" }}>Will Retry:</span>
                   <span className={mergeClasses(styles.countBadge, styles.countBadgeRetry)}>
                     {retryCount}
                   </span>
