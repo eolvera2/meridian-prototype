@@ -1,0 +1,27 @@
+# Pre-commit configuration for Meridian projects
+# Copy to your project root as .pre-commit-config.yaml
+# Install: pip install pre-commit && pre-commit install
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: phi-scan
+        name: PHI/Secret Scanner
+        entry: python scripts/phi_scan.py
+        language: python
+        types: [python]
+        description: Scan for PHI patterns that might leak patient data in logs
+
+      - id: no-audio-persist
+        name: No Audio Persistence Check
+        entry: python scripts/no_audio_persist.py
+        language: python
+        files: \.(py|ts|tsx|js|jsx)$
+        description: Ensure audio data is never persisted to disk or blob storage

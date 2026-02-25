@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Button, Tooltip, mergeClasses } from "@fluentui/react-components";
 import {
   bundleIcon,
@@ -26,6 +26,7 @@ import { usePatientDetailStyles } from "./CareCoordinationPatientDetail.styles";
 import { useCareCoordinationWorklistContext } from "./CareCoordinationWorklistContext";
 import type { CareCoordinationWorklistItem, CallType } from "./CareCoordinationWorklist.types";
 import { CALL_TYPE_LABELS } from "./CareCoordinationWorklist.types";
+import { useOptionalTooltipContext } from "../tooltip/useTooltipHooks";
 import { AICallTranscriptModal } from "./AICallTranscriptModal";
 
 const ChevronLeft = bundleIcon(ChevronLeft24Filled, ChevronLeft24Regular);
@@ -46,6 +47,13 @@ export const CareCoordinationPatientDetail: React.FC = () => {
   const needsReview = selectedPatientId ? isPatientNeedsReview(selectedPatientId) : false;
   const [transcriptOpen, setTranscriptOpen] = useState(false);
   const patientCallType: CallType = patient.callType || "medication-adherence";
+  const tooltipContext = useOptionalTooltipContext();
+  const tooltipHandlers = tooltipContext?.cursorTooltipHandlers;
+  const [editedNotes, setEditedNotes] = useState<Record<number, string>>({});
+
+  const handleNoteChange = useCallback((idx: number, value: string) => {
+    setEditedNotes(prev => ({ ...prev, [idx]: value }));
+  }, []);
 
   return (
     <div className={styles.root}>
@@ -124,33 +132,37 @@ export const CareCoordinationPatientDetail: React.FC = () => {
           <div className={styles.sectionTitleRow}>
             <Clock20Regular className={styles.sectionIcon} />
             <span className={styles.sectionTitle}>Contact History</span>
-            <Button
-              appearance="primary"
-              size="small"
-              icon={<ClipboardCheckmark20Regular />}
-              style={{ marginLeft: "auto" }}
-              disabled={!needsReview}
-              onClick={() => {
-                if (selectedPatientId) {
-                  markPatientAsReviewed(selectedPatientId);
-                  setSelectedPatientId(null);
-                }
-              }}
-            >
-              Mark as Reviewed
-            </Button>
           </div>
 
           {contactHistory.map((entry, idx) => (
-            <div className={styles.contactEntry} key={idx}>
-              {/* Date + transcript link */}
-              <div className={styles.contactHeaderRow}>
-                <span className={styles.contactDate}>{entry.date}</span>
+            <div className={styles.contactEntry} key={idx} style={idx === 0 && needsReview ? { backgroundColor: "#FFF8E1", borderLeft: "3px solid #CA5010", paddingLeft: "12px", borderRadius: "4px" } : undefined}>
+              {/* Date + call info + transcript link + Mark as Reviewed — single row */}
+              <div className={styles.contactHeaderRow} style={{ flexWrap: "wrap", alignItems: "center" }}>
+                <span className={styles.contactDate} style={{ marginRight: "12px" }}>{entry.date}</span>
+                <span style={{ fontSize: "11px", color: "#707070", marginRight: "12px" }}>
+                  Call date/time: {entry.date} · Duration: {[7, 5, 4, 6, 3][idx % 5]} min
+                </span>
                 {entry.transcriptLink && (
-                  <span className={styles.transcriptLink} onClick={() => setTranscriptOpen(true)}>
+                  <span className={styles.transcriptLink} onClick={() => setTranscriptOpen(true)} style={{ marginRight: "12px" }}>
                     <Script24Regular style={{ width: 14, height: 14 }} />
                     View AI Call Transcript
                   </span>
+                )}
+                {idx === 0 && needsReview && (
+                  <Button
+                    appearance="primary"
+                    size="small"
+                    icon={<ClipboardCheckmark20Regular />}
+                    style={{ marginLeft: "auto" }}
+                    onClick={() => {
+                      if (selectedPatientId) {
+                        markPatientAsReviewed(selectedPatientId);
+                        setSelectedPatientId(null);
+                      }
+                    }}
+                  >
+                    Mark as Reviewed
+                  </Button>
                 )}
               </div>
 
@@ -158,6 +170,9 @@ export const CareCoordinationPatientDetail: React.FC = () => {
               {entry.transcriptSummary && (
                 <div className={styles.contactSummary}>
                   {entry.transcriptSummary}
+                  <div style={{ fontSize: "10px", color: "#707070", fontStyle: "italic", marginTop: "4px", textAlign: "center" }}>
+                    AI-generated content may be incorrect
+                  </div>
                 </div>
               )}
 
@@ -331,9 +346,21 @@ export const CareCoordinationPatientDetail: React.FC = () => {
                 </div>
                 <div className={styles.outcomeItem}>
                   <span className={styles.outcomeLabel}>Side effects</span>
-                  <span className={mergeClasses(styles.outcomeValue, styles.outcomeNeutral)}>
-                    {entry.sideEffects ?? "—"}
-                  </span>
+                  {entry.sideEffects && entry.sideEffects !== "Not reported" ? (
+                    <>
+                      <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
+                      <span className={mergeClasses(styles.outcomeValue, styles.outcomeNegative)}>
+                        {entry.sideEffects}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
+                      <span className={mergeClasses(styles.outcomeValue, styles.outcomePositive)}>
+                        {entry.sideEffects ?? "Not reported"}
+                      </span>
+                    </>
+                  )}
                 </div>
                 <div className={styles.outcomeItem}>
                   <span className={styles.outcomeLabel}>Pain level</span>
@@ -394,13 +421,35 @@ export const CareCoordinationPatientDetail: React.FC = () => {
               </div>
               )}
 
-              {/* Notes */}
-              {entry.notes && (
-                <div className={styles.notesBox}>
-                  <div className={styles.notesLabel}>Notes</div>
-                  {entry.notes}
-                </div>
-              )}
+              {/* Notes — editable */}
+              <div>
+                <div className={styles.notesLabel}>NOTES</div>
+                <textarea
+                  value={editedNotes[idx] ?? entry.notes ?? ""}
+                  onChange={(e) => handleNoteChange(idx, e.target.value)}
+                  style={{
+                    width: "100%",
+                    minHeight: "60px",
+                    fontSize: "12px",
+                    lineHeight: "18px",
+                    padding: "8px 12px",
+                    border: `1px solid #d1d1d1`,
+                    borderRadius: "4px",
+                    resize: "vertical",
+                    fontFamily: "inherit",
+                    color: "#424242",
+                    boxSizing: "border-box",
+                  }}
+                  onFocus={(e) => tooltipHandlers?.onFocus(e as unknown as React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>)}
+                  onBlur={(e) => tooltipHandlers?.onBlur(e as unknown as React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>)}
+                  onMouseEnter={(e) => tooltipHandlers?.onMouseEnter(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
+                  onMouseMove={(e) => tooltipHandlers?.onMouseMove(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
+                  onMouseLeave={(e) => tooltipHandlers?.onMouseLeave(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
+                  onClick={(e) => tooltipHandlers?.onClick(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
+                  onKeyDown={(e) => tooltipHandlers?.onKeyDown(e as unknown as React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>)}
+                  onKeyUp={(e) => tooltipHandlers?.onKeyUp(e as unknown as React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>)}
+                />
+              </div>
             </div>
           ))}
 
@@ -411,8 +460,58 @@ export const CareCoordinationPatientDetail: React.FC = () => {
           )}
         </div>
 
+        {/* ── Medications ── */}
+        <div className={styles.sectionCard}>
+          <div className={styles.sectionTitleRow}>
+            <Link20Regular className={styles.sectionIcon} />
+            <span className={styles.sectionTitle}>Medications</span>
+          </div>
+
+          <div className={styles.medicationGrid}>
+            {medications.map((med, idx) => (
+              <div className={styles.medicationCard} key={idx}>
+                <div className={styles.medicationInfo}>
+                  <span className={styles.medicationName}>{med.name}</span>
+                  <span className={styles.medicationDose}>{med.dose}</span>
+                  <span className={styles.frequencyPill}>{med.frequency}</span>
+                  <span className={styles.prescribedDate}>Prescribed: {med.prescribedDate}</span>
+                </div>
+                <div className={styles.medicationRefill}>
+                  {(med.refillsAvailable ?? 0) > 0 ? (
+                    <Button
+                      appearance="secondary"
+                      size="small"
+                      icon={<Pill20Regular />}
+                    >
+                      Order Refill
+                    </Button>
+                  ) : (
+                    <Button
+                      appearance="secondary"
+                      size="small"
+                      disabled
+                    >
+                      No Refills Available
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {medications.length === 0 && (
+            <span className={styles.infoValue} style={{ fontStyle: "italic" }}>
+              No medication data available.
+            </span>
+          )}
+        </div>
+
         {/* ── Patient Information Card ── */}
         <div className={styles.sectionCard}>
+          <div className={styles.sectionTitleRow}>
+            <People20Regular className={styles.sectionIcon} />
+            <span className={styles.sectionTitle}>Patient Information</span>
+          </div>
           <div className={styles.infoColumns}>
             {/* Left column */}
             <div className={styles.infoColumn}>
@@ -551,52 +650,6 @@ export const CareCoordinationPatientDetail: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* ── Medications ── */}
-        <div className={styles.sectionCard}>
-          <div className={styles.sectionTitleRow}>
-            <Link20Regular className={styles.sectionIcon} />
-            <span className={styles.sectionTitle}>Medications</span>
-          </div>
-
-          <div className={styles.medicationGrid}>
-            {medications.map((med, idx) => (
-              <div className={styles.medicationCard} key={idx}>
-                <div className={styles.medicationInfo}>
-                  <span className={styles.medicationName}>{med.name}</span>
-                  <span className={styles.medicationDose}>{med.dose}</span>
-                  <span className={styles.frequencyPill}>{med.frequency}</span>
-                  <span className={styles.prescribedDate}>Prescribed: {med.prescribedDate}</span>
-                </div>
-                <div className={styles.medicationRefill}>
-                  {(med.refillsAvailable ?? 0) > 0 ? (
-                    <Button
-                      appearance="secondary"
-                      size="small"
-                      icon={<Pill20Regular />}
-                    >
-                      Order Refill
-                    </Button>
-                  ) : (
-                    <Button
-                      appearance="secondary"
-                      size="small"
-                      disabled
-                    >
-                      No Refills Available
-                    </Button>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {medications.length === 0 && (
-            <span className={styles.infoValue} style={{ fontStyle: "italic" }}>
-              No medication data available.
-            </span>
-          )}
         </div>
       </div>
       {transcriptOpen && <AICallTranscriptModal onClose={() => setTranscriptOpen(false)} callType={patientCallType} />}

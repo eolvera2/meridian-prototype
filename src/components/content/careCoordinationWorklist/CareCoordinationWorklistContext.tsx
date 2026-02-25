@@ -338,7 +338,7 @@ export const CareCoordinationWorklistProvider: React.FC<{
         };
 
         if (patientCallType === "patient-intake") {
-          transcriptSummary = `AI intake call completed. Intake: ${resolvedOutcome.intakeCompleted?.value}. Allergies: ${resolvedOutcome.allergiesConfirmed}. Red flags: ${resolvedOutcome.redFlag?.value}. Symptoms: ${resolvedOutcome.symptomsReported}.`;
+          transcriptSummary = `AI-assisted pre-visit intake call completed successfully. Patient confirmed intake status as ${resolvedOutcome.intakeCompleted?.value}. Known allergies were reviewed and ${resolvedOutcome.allergiesConfirmed === "Confirmed" ? "confirmed by the patient with no new allergies reported" : "could not be fully confirmed and require follow-up verification at the visit"}. Red flag screening result: ${resolvedOutcome.redFlag?.value}. Patient-reported symptoms: ${resolvedOutcome.symptomsReported}. Medical history was collected and documented for provider review prior to the scheduled appointment. The patient was reminded of pre-visit preparation instructions and encouraged to bring a current medication list to the appointment.`;
           newEntry.intakeCompleted = resolvedOutcome.intakeCompleted ? { value: resolvedOutcome.intakeCompleted.value, positive: !resolvedOutcome.intakeCompleted.warning } : undefined;
           newEntry.allergiesConfirmed = resolvedOutcome.allergiesConfirmed;
           newEntry.redFlagIdentified = resolvedOutcome.redFlag ? { value: resolvedOutcome.redFlag.value, positive: !resolvedOutcome.redFlag.warning } : undefined;
@@ -346,7 +346,10 @@ export const CareCoordinationWorklistProvider: React.FC<{
           newEntry.medicalHistoryCollected = { value: "Yes", positive: true };
         } else if (patientCallType === "hypertension-management") {
           const bp = resolvedOutcome.bpReading;
-          transcriptSummary = `AI BP management call completed. BP: ${bp?.systolic}/${bp?.diastolic}. At goal: ${resolvedOutcome.bpAtGoal?.value}. Med adherence: ${resolvedOutcome.medAdherence?.value}. Escalated: ${resolvedOutcome.escalated?.value}.`;
+          const bpGoalNote = resolvedOutcome.bpAtGoal?.value === "Yes"
+            ? "Blood pressure is within the target range, indicating effective management with current therapy."
+            : "Blood pressure is above the target range, suggesting the need for medication adjustment or lifestyle modification counseling.";
+          transcriptSummary = `AI-assisted blood pressure management call completed. Patient reported a home BP reading of ${bp?.systolic}/${bp?.diastolic} mmHg. ${bpGoalNote} Medication adherence was assessed as ${resolvedOutcome.medAdherence?.value}. The patient was counseled on the importance of consistent dosing, dietary sodium reduction, and regular physical activity. Clinical escalation status: ${resolvedOutcome.escalated?.value}. The patient was advised to continue monitoring blood pressure daily and to report any new symptoms such as headaches, dizziness, or visual changes to the care team immediately.`;
           newEntry.bpReading = resolvedOutcome.bpReading;
           newEntry.bpAtGoal = resolvedOutcome.bpAtGoal ? { value: resolvedOutcome.bpAtGoal.value, positive: !resolvedOutcome.bpAtGoal.warning } : undefined;
           newEntry.medicationAdherence = resolvedOutcome.medAdherence ? { value: resolvedOutcome.medAdherence.value, positive: !resolvedOutcome.medAdherence.warning } : undefined;
@@ -355,7 +358,10 @@ export const CareCoordinationWorklistProvider: React.FC<{
           newEntry.sideEffects = "Not reported";
         } else {
           const sideEffectText = resolvedOutcome.sideEffects?.value === "None" ? "Not reported" : (resolvedOutcome.sideEffects?.value ?? "Not reported");
-          transcriptSummary = `AI call completed. Medication pickup: ${resolvedOutcome.pickedUpMeds}. Taking as prescribed: ${resolvedOutcome.takingAsRx?.value}. Side effects: ${sideEffectText}. Pain level: ${resolvedOutcome.painLevel}/10.`;
+          const sideEffectNote = sideEffectText === "Not reported"
+            ? "No adverse side effects were reported by the patient during the call."
+            : `The patient reported experiencing ${sideEffectText.toLowerCase()} as a side effect. This has been documented for provider review.`;
+          transcriptSummary = `AI-assisted medication adherence call completed. Medication pickup status: ${resolvedOutcome.pickedUpMeds}. The patient ${resolvedOutcome.takingAsRx?.value === "Yes" ? "confirmed taking medications as prescribed with no missed doses in the current reporting period" : "reported difficulty maintaining the prescribed medication schedule and may benefit from adherence support interventions"}. ${sideEffectNote} Current self-reported pain level: ${resolvedOutcome.painLevel}/10. ${resolvedOutcome.followUp.warning ? "A follow-up call has been flagged as needed to reassess the patient's adherence and symptom management." : "No immediate follow-up is required. The patient will continue on the current regimen with routine monitoring."} A medication reminder has been ${resolvedOutcome.followUp.warning ? "recommended" : "confirmed"} to support ongoing adherence.`;
           newEntry.pickedUpMedication = resolvedOutcome.pickedUpMeds;
           newEntry.takingAsPrescribed = resolvedOutcome.takingAsRx ? { value: resolvedOutcome.takingAsRx.value, positive: !resolvedOutcome.takingAsRx.warning } : undefined;
           newEntry.sideEffects = sideEffectText;

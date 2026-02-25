@@ -1,0 +1,128 @@
+# Documentation References — Emerging Technologies
+#
+# Static registry of technologies with rapidly evolving APIs.
+# Agents and developers should consult these docs before writing code
+# that uses these packages — LLM training data may be outdated.
+#
+# This file is NOT a freshness tracker. It is a lookup table.
+# Per-session doc fetching is handled by the docs-freshness skill.
+
+technologies:
+
+  # ── High-churn (pre-release / fast-moving) ──────────────────────────
+
+  - name: Microsoft Agent Framework (MAF)
+    docs_url: https://learn.microsoft.com/en-us/azure/ai-services/agents/
+    pypi_package: agent-framework-core
+    churn: high
+    context: >
+      Pre-release beta SDK. AsyncAgentsClient, create_thread_and_process_run,
+      AsyncFunctionTool. API surface changes between beta releases.
+
+  - name: Azure Voice Live API
+    docs_url: https://learn.microsoft.com/en-us/azure/ai-services/openai/realtime-audio
+    pypi_package: azure-ai-voicelive
+    churn: high
+    context: >
+      Real-time WebSocket audio streaming. FunctionTool, RequestSession,
+      ServerEvent types. New event types added frequently.
+
+  - name: Azure Cosmos DB Python SDK (async)
+    docs_url: https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/sdk-python
+    pypi_package: azure-cosmos
+    churn: medium
+    context: >
+      Async CosmosClient, DatabaseProxy, ContainerProxy. Hierarchical
+      partition keys and integrated cache are newer features.
+
+  # ── Medium-churn ────────────────────────────────────────────────────
+
+  - name: FastAPI
+    docs_url: https://fastapi.tiangolo.com/
+    pypi_package: fastapi
+    churn: medium
+    context: >
+      Async-first with Pydantic v2. Lifespan handlers, dependency injection,
+      OpenAPI 3.1 support.
+
+  - name: Pydantic v2 / pydantic-settings
+    docs_url: https://docs.pydantic.dev/latest/
+    pypi_package: pydantic
+    churn: medium
+    context: >
+      BaseSettings, model_validator, field_validator, ConfigDict.
+      v2 is a major rewrite from v1 — many LLM examples show v1 syntax.
+
+  - name: Azure Communication Services (ACS)
+    docs_url: https://learn.microsoft.com/en-us/azure/communication-services/
+    pypi_package: azure-communication-callautomation
+    churn: medium
+    context: >
+      PSTN call automation, direct routing (SIP trunk). Call automation
+      events and media streaming APIs.
+
+  - name: Azure Communication Services SMS
+    docs_url: https://learn.microsoft.com/en-us/azure/communication-services/concepts/sms/concepts
+    pypi_package: azure-communication-sms
+    churn: medium
+    context: >
+      Outbound SMS notifications, delivery tracking, opt-out handling.
+      Toll-free and short code numbers.
+
+  - name: Azure AI Evaluation
+    docs_url: https://learn.microsoft.com/en-us/azure/ai-studio/how-to/evaluate-generative-ai-app
+    pypi_package: azure-ai-evaluation
+    churn: medium
+    context: >
+      LLM-as-judge evaluation framework. Quality metrics, safety metrics,
+      custom evaluators. Used for agent output evaluation.
+
+  # ── Low-churn (stable but worth tracking) ───────────────────────────
+
+  - name: React 19
+    docs_url: https://react.dev/reference/react
+    npm_package: react
+    churn: medium
+    context: >
+      React 19.2 with hooks, functional components, ref-as-prop,
+      Context without Provider. No class components.
+
+  - name: Vite
+    docs_url: https://vite.dev/guide/
+    npm_package: vite
+    churn: medium
+    context: >
+      Vite 7 build tool. @tailwindcss/vite plugin, @vitejs/plugin-react,
+      path alias @/ via resolve.alias, dev proxy for /api and /acs.
+
+  - name: Tailwind CSS v4
+    docs_url: https://tailwindcss.com/docs
+    npm_package: tailwindcss
+    churn: medium
+    context: >
+      Tailwind CSS 4.1 via Vite plugin. Used with clsx + tailwind-merge
+      for class composition via cn() utility.
+
+  - name: Azure Identity
+    docs_url: https://learn.microsoft.com/en-us/python/api/azure-identity/
+    pypi_package: azure-identity
+    churn: low
+    context: >
+      ManagedIdentityCredential (Azure) with AzureCliCredential fallback
+      (local dev). Detection via IDENTITY_ENDPOINT env var.
+
+  - name: Ruff
+    docs_url: https://docs.astral.sh/ruff/
+    pypi_package: ruff
+    churn: low
+    context: >
+      Linter and formatter. Rules: E, F, I, N, W, UP, B, C4, SIM.
+      Line length 100.
+
+  - name: Playwright
+    docs_url: https://playwright.dev/python/docs/intro
+    pypi_package: playwright
+    churn: low
+    context: >
+      Browser automation for E2E testing. Page snapshots, locators,
+      network interception. Used for React frontend testing.

@@ -1,0 +1,50 @@
+#!/usr/bin/env sh
+# Meridian pre-commit hook — PHI and HIPAA compliance guard
+# Installed by meridian-tools install.ps1
+# Runs phi_scan.py and no_audio_persist.py on staged files before commit.
+
+set -e
+
+# Resolve project root (where this hook lives under .git/hooks/)
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+PHI_SCANNER="$REPO_ROOT/scripts/phi_scan.py"
+AUDIO_GUARD="$REPO_ROOT/scripts/no_audio_persist.py"
+
+EXIT_CODE=0
+
+# --- PHI scan on staged Python files ---
+if [ -f "$PHI_SCANNER" ]; then
+    PY_FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.py' | tr '\n' ' ')
+    if [ -n "$PY_FILES" ]; then
+        echo "Running PHI scanner on staged Python files..."
+        # shellcheck disable=SC2086
+        if ! python "$PHI_SCANNER" $PY_FILES; then
+            EXIT_CODE=1
+        fi
+    fi
+else
+    echo "PHI scanner not found at $PHI_SCANNER -- skipping." >&2
+fi
+
+# --- HIPAA compliance check on staged code files ---
+if [ -f "$AUDIO_GUARD" ]; then
+    CODE_FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.py' '*.ts' '*.tsx' '*.js' '*.jsx' | tr '\n' ' ')
+    if [ -n "$CODE_FILES" ]; then
+        echo "Running HIPAA compliance guard on staged files..."
+        # shellcheck disable=SC2086
+        if ! python "$AUDIO_GUARD" $CODE_FILES; then
+            EXIT_CODE=1
+        fi
+    fi
+else
+    echo "HIPAA compliance scanner not found at $AUDIO_GUARD -- skipping." >&2
+fi
+
+if [ $EXIT_CODE -ne 0 ]; then
+    echo ""
+    echo "Pre-commit checks failed. Fix violations above before committing."
+    echo "   To bypass (not recommended): git commit --no-verify"
+fi
+
+exit $EXIT_CODE

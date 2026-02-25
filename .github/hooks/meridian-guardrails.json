@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "echo '⚕️ HIPAA REMINDER: Audio never persisted. FHIR read-only. PHI scrubbed from logs.' >> .meridian-session.log",
+        "powershell": "Add-Content -Path .meridian-session.log -Value '⚕️ HIPAA REMINDER: Audio never persisted. FHIR read-only. PHI scrubbed from logs.'",
+        "timeoutSec": 5
+      }
+    ],
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "./scripts/hooks/pre-tool-phi-guard.sh",
+        "powershell": "powershell -File ./scripts/hooks/pre-tool-phi-guard.ps1",
+        "timeoutSec": 10
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": "./scripts/hooks/post-tool-protocol-sync.sh",
+        "powershell": "powershell -File ./scripts/hooks/post-tool-protocol-sync.ps1",
+        "timeoutSec": 15
+      }
+    ]
+  }
+}

@@ -23,7 +23,7 @@
         "date": "Feb 12, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Reached spouse who confirmed patient has been dizzy and missed evening warfarin doses for 3 days. Advised to resume tonight and schedule INR lab draw.",
+        "transcriptSummary": "Reached spouse at 9:15 AM who reported that the patient has been experiencing intermittent dizziness and lightheadedness over the past four days, coinciding with three missed evening warfarin doses. Spouse mentioned the patient had difficulty keeping track of doses after switching pharmacies last week and the new pill bottle looks different from the previous one. Patient was not available to speak directly. Spouse was advised to have the patient resume the standard 5mg warfarin dose tonight and continue the usual evening schedule. Additionally, an INR lab draw was recommended within the next 48 hours to assess anticoagulation levels given the missed doses. Spouse confirmed understanding of the instructions and will call back if the patient experiences any worsening dizziness, unusual bruising, or signs of bleeding.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "No",
@@ -88,7 +88,7 @@
         "date": "Feb 12, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient confirmed only 2 units of insulin glargine remaining. Pharmacy transfer caused 5-day gap. Glucose readings at 280 and 310 mg/dL. Expedited refill submitted.",
+        "transcriptSummary": "Patient answered the call and reported that he currently has only 2 units of insulin glargine remaining in his pen. He explained that a pharmacy transfer from CVS to Walgreens last week caused a five-day gap in his supply, and the new pharmacy did not have the prescription on file initially. During the gap, his fasting glucose readings climbed to 280 mg/dL and 310 mg/dL on consecutive mornings, which is significantly above his target range of 80–130 mg/dL. He has been taking metformin consistently but cannot compensate for the missed basal insulin. An expedited refill request was submitted directly to the new pharmacy with a same-day fill priority. Patient was counseled on signs of hyperglycemic emergency including excessive thirst, frequent urination, and blurred vision, and was advised to go to the ED immediately if symptoms worsen before the refill is ready.",
         "pickedUpMedication": "No",
         "takingAsPrescribed": {
           "value": "No",
@@ -146,14 +146,14 @@
     "email": "ychowdhury@email.com",
     "address": "55-12 Junction Blvd, Apt 4C, Queens, NY 11373",
     "dischargeInstructions": "Continue amlodipine 5 mg and HCTZ 25 mg daily. Monitor BP twice daily. If cough persists on ACE inhibitor, contact clinic for ARB substitution.",
-    "primaryDiagnosis": "Essential hypertension, Stage 2. ACE inhibitor\u2013induced cough (lisinopril). Mild hyperlipidemia managed with lifestyle modifications.",
+    "primaryDiagnosis": "Essential hypertension, Stage 2. ACE inhibitor–induced cough (lisinopril). Mild hyperlipidemia managed with lifestyle modifications.",
     "careTeam": "Dr. Anwar Hussain (Internal Medicine), NP Lisa Chen (Cardiology), PharmD Amir Patel (Community Pharmacy)",
     "contactHistory": [
       {
         "date": "Feb 12, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports dry cough worsening over 2 weeks. Self-discontinued lisinopril 4 days ago. BP at home 158/94. Clinician review requested for ARB switch.",
+        "transcriptSummary": "Patient reports that her dry cough has progressively worsened over the past two weeks since starting lisinopril 20mg, to the point where it disrupts her sleep and daily activities. She self-discontinued the lisinopril four days ago without consulting her care team because the cough was intolerable. Her home blood pressure readings since stopping the medication have averaged 158/94 mmHg, which is significantly above her target of 130/80 mmHg. She continues to take amlodipine 5mg and HCTZ 25mg as prescribed. A clinician review has been requested to evaluate switching from the ACE inhibitor to an ARB such as losartan, which is less likely to cause cough. Bengali interpreter assistance was provided during the call. Patient was advised not to restart lisinopril and to monitor her BP twice daily until the provider responds.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "No",
@@ -218,7 +218,7 @@
         "date": "Feb 12, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Daughter answered. Patient confused by twice-daily vs once-daily schedule. Missed Saturday and Sunday doses of carvedilol and furosemide. Weight up 3 lbs. Bilingual med calendar requested.",
+        "transcriptSummary": "Daughter answered the call and served as interpreter for the patient, who speaks primarily Spanish. She reported that her father has been confused by the medication schedule since discharge, particularly the difference between twice-daily carvedilol and once-daily furosemide. He missed both Saturday and Sunday morning doses of carvedilol and took furosemide only once over the weekend instead of daily. His weight has increased by 3 pounds since discharge, raising concern for fluid retention related to his heart failure. Daughter requested a bilingual (English/Spanish) medication calendar with color coding to help distinguish morning from evening doses. The care team was notified of the weight gain and missed doses, and the case was escalated to the heart failure clinic for a possible telehealth visit within 48 hours. Daughter confirmed she will help supervise medication administration until the calendar arrives.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "No",
@@ -290,7 +290,7 @@
         "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports missing statin 2 of 7 days during business travel. Requested evening phone reminders and asked about synchronizing refill dates for both medications.",
+        "transcriptSummary": "Patient reports that she missed her atorvastatin dose on two of the past seven evenings while traveling for business, as she forgot to pack her medications and did not have access to a pharmacy near her hotel. She has been otherwise adherent to both atorvastatin 40mg and lisinopril 10mg when at home. She requested setting up an evening phone reminder at 9 PM to help maintain consistency, especially during travel weeks. She also asked about the possibility of synchronizing refill dates for both medications so she can pick them up on the same pharmacy visit each month. No side effects were reported and her home blood pressure readings have been stable around 128/80 mmHg. Reminder preferences were recorded in the system and pharmacy sync request was submitted.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -348,7 +348,7 @@
         "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports using controller inhaler 3 of 7 days. Unsure about spacer technique. No acute wheezing. Coaching call scheduled for Feb 12 at 10 AM.",
+        "transcriptSummary": "Patient reports that he has only used his tiotropium controller inhaler on three of the past seven days because he is unsure whether he is using the spacer device correctly and does not feel confident in his technique. He has not experienced acute wheezing or shortness of breath this week, but reports occasional nighttime cough that may be related to GERD. He continues to use his albuterol rescue inhaler approximately twice per week. A coaching call with respiratory therapy was scheduled for February 12 at 10 AM to review proper inhaler and spacer technique via video demonstration. Spanish interpreter was used during the call. Patient was reminded to rinse his mouth after each use of the tiotropium inhaler to prevent oral thrush, and was advised to elevate his head while sleeping to help with nighttime symptoms.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "No",
@@ -398,7 +398,7 @@
     "phone": "+12025559043",
     "email": "losei73@email.com",
     "address": "1420 K Street NW, Apt 802, Washington, DC 20005",
-    "dischargeInstructions": "Take levothyroxine 75 mcg on empty stomach, 30\u201360 min before breakfast. Other morning meds after eating. TSH recheck in 6 weeks.",
+    "dischargeInstructions": "Take levothyroxine 75 mcg on empty stomach, 30–60 min before breakfast. Other morning meds after eating. TSH recheck in 6 weeks.",
     "primaryDiagnosis": "Hypothyroidism. Type 2 diabetes mellitus, controlled. Mild osteoarthritis of both knees.",
     "careTeam": "Dr. Priya Nair (Endocrinology), NP Janet Collins (Primary Care), PharmD Amir Patel (Community Pharmacy)",
     "contactHistory": [
@@ -406,7 +406,7 @@
         "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient takes levothyroxine with breakfast instead of on empty stomach. Requested a printed morning routine card separating thyroid medication from other pills.",
+        "transcriptSummary": "Patient reported during the call that she has been taking her levothyroxine 75mcg with breakfast rather than on an empty stomach as directed, which may significantly reduce absorption of the medication. She was unaware that food—especially calcium-rich items like yogurt and milk—can interfere with thyroid hormone absorption. She also mentioned that managing three morning medications (levothyroxine, metformin, and occasional acetaminophen) is confusing and she often forgets the timing sequence. She requested a printed morning routine card that clearly separates the thyroid medication (to be taken 30–60 minutes before eating) from her other pills (to be taken with food). The care team will mail a laminated medication timing guide. Patient was advised to set a phone alarm for 6:30 AM for levothyroxine and a second alarm for 7:15 AM for remaining medications with breakfast.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "No",
@@ -471,7 +471,7 @@
         "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient had been taking both amlodipine and losartan together in the morning. Educated on split-dose schedule. Patient verbalized understanding. 48-hour check-in planned.",
+        "transcriptSummary": "Patient reported that he had been taking both amlodipine 5mg and losartan 50mg together in the morning since discharge, rather than splitting them into a morning and evening dose as prescribed. He was unaware that the split-dose schedule was intended to provide more consistent 24-hour blood pressure coverage. After education on the rationale for splitting doses, the patient verbalized understanding and agreed to take amlodipine in the morning and losartan in the evening going forward. He confirmed that he has not experienced headaches, ankle swelling, or dizziness since starting the medications. His home blood pressure readings have averaged 136/85 mmHg, which is slightly above goal. A 48-hour check-in was scheduled to confirm he has successfully transitioned to the new schedule and to reassess BP readings at that time.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -536,7 +536,7 @@
         "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient works rotating shifts and has been injecting semaglutide on different days each week. Requested weekend in-person session with spouse to standardize schedule.",
+        "transcriptSummary": "Patient reported that due to her rotating shift schedule at work, she has been administering her weekly semaglutide 0.5mg injection on different days each week rather than maintaining a consistent schedule, which may affect glycemic control and increase the likelihood of nausea. She mentioned experiencing mild nausea for 1–2 days after each injection, which she attributes to the inconsistent timing. She has been storing the medication properly in the refrigerator. Her spouse is interested in learning the injection technique to provide support. A weekend in-person teaching session was scheduled for February 15 at the diabetes education center, where both patient and spouse can receive hands-on training and establish a fixed weekly injection day that accommodates her rotating schedule. Patient was advised to choose a consistent day such as Saturday morning for all future doses.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "No",
@@ -594,7 +594,7 @@
         "date": "Feb 11, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient wants all three medications refilled on the same date to reduce pharmacy visits. Pharmacy confirmed sync request. Patient to pick up all meds on Friday.",
+        "transcriptSummary": "Patient explained during the call that managing three separate prescription refill dates has been a significant barrier, requiring multiple pharmacy trips each month and causing occasional gaps when one medication runs out before others. He requested that all three medications—lisinopril 20mg, metformin 850mg, and tamsulosin 0.4mg—be synchronized to a single monthly refill date. The pharmacy was contacted and confirmed the synchronization request, with all three prescriptions aligned to a Friday pickup schedule starting this week. Patient reported that he has been fully adherent when medications are available and has not experienced any side effects. His most recent home blood pressure reading was 132/84 mmHg, within his target range. Swahili interpreter was used during the call. Patient confirmed he will pick up all medications this Friday.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -659,7 +659,7 @@
         "date": "Feb 10, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient successfully demonstrated teach-back on beta-blocker purpose, timing, and side effects to watch for. Refill set up for auto-delivery. No further action needed.",
+        "transcriptSummary": "Patient successfully completed a teach-back assessment during the call, correctly explaining the purpose of metoprolol (to control heart rate and prevent SVT episodes), the importance of taking it twice daily at consistent times, and the side effects to watch for including dizziness, fatigue, and a resting heart rate below 55 bpm. She also demonstrated understanding of why abrupt discontinuation should be avoided. Her resting heart rate has been stable at 62–68 bpm over the past two weeks, and she has had no episodes of palpitations or racing heart since starting the medication. Sertraline for anxiety management is also being taken as prescribed with no side effects. Refill for metoprolol has been set up for auto-delivery through her pharmacy. No further intervention or follow-up calls are needed at this time; patient has been transitioned to routine monitoring.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -717,7 +717,7 @@
         "date": "Feb 9, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient confirmed 90-day supply pickup. Set up daily phone reminder at 9 PM. No adherence issues reported. Transitioned to routine follow-up.",
+        "transcriptSummary": "Patient confirmed that he picked up a 90-day supply of both rosuvastatin 20mg and lisinopril 10mg from his pharmacy last week and has been taking them consistently every day. He set up a daily phone reminder at 9 PM to take his rosuvastatin at bedtime as recommended. His most recent home blood pressure readings have been stable at 126/80 mmHg, and he has not experienced any muscle pain, weakness, or other statin-related side effects. He maintains a regular exercise routine including 30 minutes of walking five days per week and follows a low-fat diet. No adherence issues were identified during the call. The patient was congratulated on his consistency and transitioned from weekly to routine quarterly check-ins. Next lipid panel is scheduled for April 2026.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -775,7 +775,7 @@
         "date": "Feb 8, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Caregiver (daughter) confirmed weekly pill organizer setup. No missed doses in past 10 days. Transitioned from weekly to monthly check-in schedule.",
+        "transcriptSummary": "Caregiver, the patient's daughter, confirmed during the call that she has established a consistent weekly routine of filling the seven-day pill organizer every Sunday evening for her mother. She reported that there have been no missed doses over the past 10 days since implementing this system. The caregiver also confirmed that metformin 500mg is being taken twice daily with meals, amlodipine 5mg once daily in the morning, and donepezil 5mg at bedtime. No side effects have been observed, and the patient's blood glucose readings have been within the target range of 90–140 mg/dL. Bengali interpreter assistance was provided during the call. Given the stability of the medication routine and the caregiver's demonstrated competency, the check-in frequency has been transitioned from weekly to monthly. The caregiver was instructed to contact the clinic if any doses are missed for more than two consecutive days.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -840,7 +840,7 @@
         "date": "Feb 7, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports zero missed doses over past 14 days using new medication calendar. INR within range. Transitioned to routine PCP monitoring.",
+        "transcriptSummary": "Patient reported that he has not missed a single dose of warfarin 3mg, metoprolol 25mg, or acetaminophen over the past 14 days, attributing his improved adherence to the new color-coded medication calendar provided during the previous intervention. His most recent INR result was 2.4, which is within the therapeutic range of 2.0–3.0 for atrial fibrillation. He has not experienced any unusual bleeding, bruising, or other anticoagulation-related side effects. His home blood pressure has been stable at approximately 130/78 mmHg. He uses acetaminophen as needed for hip and osteoarthritis pain, typically 1–2 times per week, and has been counseled to avoid exceeding 2000mg per day given his age and warfarin use. The adherence intervention is considered successful, and the patient has been transitioned to routine PCP monitoring with the next INR check scheduled in two weeks.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -905,7 +905,7 @@
         "date": "Feb 5, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports pain level 6/10 and has not been taking oxycodone at prescribed intervals due to fear of dependence. Using only ibuprofen intermittently. Dizziness noted as side effect.",
+        "transcriptSummary": "Patient answered the call and reported that his pain level is currently 6 out of 10, primarily localized to the right knee surgical site with occasional radiation down the shin. He admitted that he has not been taking oxycodone at the prescribed intervals due to fear of developing dependence, instead relying on intermittent ibuprofen 400mg which provides only partial relief lasting 2–3 hours. He has been taking roughly half the prescribed opioid doses over the past two days. He also reported mild dizziness occurring approximately 30 minutes after each oxycodone dose, which further discourages use. The patient was counseled extensively on the low risk of dependence during a short-term post-surgical taper, the importance of staying ahead of pain during the acute recovery phase, and the plan to transition fully to NSAIDs by day seven. A pain management follow-up was scheduled for early next week to reassess the taper timeline.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "No",
@@ -970,7 +970,7 @@
         "date": "Feb 6, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports completing Day 4 of levofloxacin with no issues. Temperature normal. Cough improving. No side effects reported.",
+        "transcriptSummary": "Patient reports that she has successfully completed Day 4 of her 7-day levofloxacin 750mg course with no missed doses. Her temperature has been normal at 98.4°F for the past three days, and her productive cough has significantly improved, with reduced sputum volume and no hemoptysis. She is drinking approximately 2 liters of water daily and resting as instructed. No gastrointestinal side effects, tendon pain, or photosensitivity reactions have been reported, which are common concerns with fluoroquinolone therapy. She continues to use her albuterol inhaler as needed for mild wheezing, approximately once daily, down from three times daily at discharge. The patient was encouraged to complete the full 7-day course even though she is feeling much better, as early discontinuation could lead to antibiotic resistance. No further follow-up calls are anticipated unless symptoms recur.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -1035,7 +1035,7 @@
         "date": "Jan 28, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient has not picked up topiramate prescription. Reports fear of side effects after online research. Migraine frequency unchanged at 4/week. Pain level 7/10 during episodes.",
+        "transcriptSummary": "Patient reported that she has not yet picked up her topiramate 50mg prescription from the pharmacy, now five days past the 48-hour pickup window. She explained that she spent time researching the medication online and became concerned about potential side effects including cognitive slowing, tingling in hands and feet, weight loss, and kidney stones. Her migraine frequency remains unchanged at approximately four episodes per week with severity averaging 7 out of 10 during episodes, accompanied by nausea and light sensitivity. She continues to use sumatriptan 100mg as rescue therapy but reports diminishing effectiveness. She takes escitalopram 10mg daily for depression without issues. The patient was counseled on the benefit-to-risk ratio of prophylactic migraine therapy, and a neurology callback was scheduled to address her specific concerns and discuss alternative prophylactic options if she remains uncomfortable with topiramate.",
         "pickedUpMedication": "No",
         "takingAsPrescribed": {
           "value": "No",
@@ -1100,7 +1100,7 @@
         "date": "Jan 20, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports taking omeprazole as prescribed but experiencing mild nausea. Heartburn reduced from daily to 2\u20133 times per week. Abdominal discomfort noted.",
+        "transcriptSummary": "Patient reports that he has been taking omeprazole 40mg as prescribed, 30 minutes before breakfast each morning, and his heartburn frequency has decreased from daily episodes to approximately 2–3 times per week. However, he has developed mild but persistent nausea that began about five days after starting the medication, typically lasting 1–2 hours after the morning dose. He also notes occasional upper abdominal discomfort that is different from his usual GERD symptoms. He has been following dietary modifications including avoiding spicy foods and caffeine, and has elevated the head of his bed by 6 inches. He continues to use melatonin 3mg at bedtime for insomnia with good effect. The nausea side effect was documented and a gastroenterology follow-up was scheduled for reassessment in two weeks, where a possible dose reduction to 20mg or switch to a different PPI may be considered.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -1165,7 +1165,7 @@
         "date": "Jan 15, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient taking all medications correctly. Energy levels improving. No side effects reported. TSH lab draw scheduled for February 15.",
+        "transcriptSummary": "Patient reported that she has been taking all medications correctly, including levothyroxine 50mcg on an empty stomach 30 minutes before breakfast, ferrous sulfate 325mg with lunch, and her prenatal vitamin with dinner. She spaces the iron supplement and thyroid medication as instructed to avoid absorption interference. Her energy levels have noticeably improved over the past two weeks, and she no longer experiences the fatigue and brain fog that prompted her initial evaluation. No side effects have been reported from any of her medications, including no GI upset from the iron supplement. She has a TSH lab draw scheduled for February 15 to reassess thyroid function on the current dose. She confirmed that she is breastfeeding and understands the importance of continuing levothyroxine during this period. No further follow-up calls are needed; the patient will follow up with endocrinology after lab results.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -1230,7 +1230,7 @@
         "date": "Dec 20, 2025",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports severe pain 8/10 despite gabapentin. Taking doses inconsistently due to drowsiness. Reports burning sensation in feet. Missed 3 of 6 scheduled PT sessions due to pain.",
+        "transcriptSummary": "Patient reports that his pain level remains severe at 8 out of 10 despite being prescribed gabapentin 300mg three times daily. He admitted that he has been taking doses inconsistently—typically skipping the midday dose and sometimes the morning dose—because the medication causes significant drowsiness that interferes with his ability to drive and perform daily activities. He also reports a new burning sensation in both feet that started approximately one week ago, which may indicate worsening peripheral neuropathy or a gabapentin side effect. He has missed three of his six scheduled physical therapy sessions over the past two weeks due to pain and drowsiness. Cyclobenzaprine 10mg at bedtime provides some nighttime relief but does not carry over to daytime symptoms. The case was escalated to the pain clinic for medication re-evaluation, potentially including a slower gabapentin titration, alternative neuropathic agents, or a multimodal approach. PT schedule was adjusted to afternoon sessions.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "No",
@@ -1302,7 +1302,7 @@
         "date": "Dec 10, 2025",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient has not picked up either diabetes medication due to insurance formulary change. Cost barrier identified. Glucose readings 250\u2013320 mg/dL. Social worker referral initiated for patient assistance program.",
+        "transcriptSummary": "Patient reported that she has not picked up either of her diabetes medications—metformin 1000mg and glipizide 5mg—since they were prescribed two weeks ago. The primary barrier is a recent insurance formulary change that increased her copay from $10 to $85 per medication per month, which she cannot afford on her current income. Her fasting glucose readings over the past week have ranged from 250 to 320 mg/dL, which is dangerously elevated and puts her at risk for diabetic ketoacidosis and other complications. She has been trying to manage her blood sugar through diet alone but reports difficulty adhering to a low-carbohydrate plan. A social worker referral was initiated to assist with a patient assistance program application, and a prior authorization request was submitted for both medications. The pharmacy was also asked to check for generic substitution options that might lower the cost.",
         "pickedUpMedication": "No",
         "takingAsPrescribed": {
           "value": "No",
@@ -1367,7 +1367,7 @@
         "date": "Nov 25, 2025",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports BP readings averaging 128/82 on adjusted dose. No dizziness or swelling. Taking both medications consistently at same time each morning.",
+        "transcriptSummary": "Patient reports that his blood pressure readings have been consistently within goal range since the recent dose adjustment, averaging 128/82 mmHg over the past two weeks based on twice-daily home monitoring. He has not experienced any dizziness, ankle swelling, frequent urination, or other side effects from the increased amlodipine 10mg or chlorthalidone 25mg doses. He takes both medications together every morning at 7 AM with breakfast and has not missed a single dose. He continues to follow a low-sodium diet and takes vitamin D3 2000 IU daily for his documented deficiency. He expressed satisfaction with the improved blood pressure control and plans to continue his current routine. No further medication adjustments are needed at this time, and the patient was transitioned to routine PCP follow-up in 30 days for ongoing monitoring.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -1412,7 +1412,7 @@
     "id": "pi-1",
     "callType": "patient-intake",
     "name": "Alex Turner",
-    "reason": "Annual physical with Dr. Chen \u2014 HTN, Hyperlipidemia",
+    "reason": "Annual physical with Dr. Chen — HTN, Hyperlipidemia",
     "demographics": "Male, 42 YO, 07/14/1983, MRN400101",
     "dischargeDate": "2/20/26",
     "languagePreference": "English",
@@ -1446,7 +1446,7 @@
         "method": "phone",
         "callType": "patient-intake",
         "transcriptLink": true,
-        "transcriptSummary": "Pre-visit intake completed. Patient confirmed medications lisinopril and atorvastatin unchanged. Penicillin allergy confirmed. No new symptoms or concerns. Annual physical appointment confirmed for Feb 20.",
+        "transcriptSummary": "Pre-visit intake questionnaire was completed over the phone with the patient, who was cooperative and provided clear responses. Patient confirmed that his current medications—lisinopril 10mg once daily and atorvastatin 20mg at bedtime—have not changed since his last visit and he is taking both as prescribed with no issues. Penicillin allergy (rash) and shellfish allergy were reconfirmed and documented. No new medical conditions, hospitalizations, or emergency department visits since last annual physical. Patient denies any new symptoms including chest pain, shortness of breath, headaches, vision changes, or weight fluctuations. Blood pressure at home has been stable at approximately 124/78 mmHg. Annual physical appointment with Dr. Alan Chen was confirmed for February 20 at 10:00 AM at Contoso Health Clinic - Main. No special preparation needed beyond routine fasting labs.",
         "intakeCompleted": {
           "value": "Yes",
           "positive": true
@@ -1496,7 +1496,7 @@
     "id": "pi-2",
     "callType": "patient-intake",
     "name": "Jamie Patel",
-    "reason": "Headache evaluation with Dr. Patel \u2014 Chronic migraines",
+    "reason": "Headache evaluation with Dr. Patel — Chronic migraines",
     "demographics": "Female, 29 YO, 11/22/1996, MRN400215",
     "dischargeDate": "2/19/26",
     "languagePreference": "English",
@@ -1528,7 +1528,7 @@
         "method": "phone",
         "callType": "patient-intake",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports headaches daily for 2 weeks, severity 6-7/10 with light sensitivity. Cannot remember migraine medication name. Takes ibuprofen sometimes. No known allergies. No surgeries. Advised to bring medication bottles to appointment.",
+        "transcriptSummary": "Patient called in for headache evaluation intake. She reports experiencing daily headaches for the past two weeks with severity fluctuating between 6 and 7 out of 10, accompanied by significant light sensitivity and occasional nausea. The headaches are bilateral, throbbing in nature, and worsen with physical activity. She has been taking ibuprofen 200mg as needed but reports minimal relief. She mentioned that she was previously prescribed a migraine-specific medication by another provider approximately one year ago but cannot recall the name, dosage, or whether it was a preventive or acute treatment. She was advised to bring all medication bottles to her appointment for accurate reconciliation. No known drug allergies were confirmed. No prior surgeries or hospitalizations. Medical history is significant only for chronic migraines recurring over the past three-plus years. Appointment with Dr. Rajesh Patel was confirmed for February 19 at 2:00 PM.",
         "intakeCompleted": {
           "value": "Partial",
           "positive": false
@@ -1571,7 +1571,7 @@
     "id": "pi-3",
     "callType": "patient-intake",
     "name": "Taylor Robinson",
-    "reason": "SOB evaluation with Dr. Park \u2014 Heart failure, Asthma",
+    "reason": "SOB evaluation with Dr. Park — Heart failure, Asthma",
     "demographics": "Non-binary, 55 YO, 04/08/1970, MRN400329",
     "dischargeDate": "2/21/26",
     "languagePreference": "English",
@@ -1605,7 +1605,7 @@
         "method": "phone",
         "callType": "patient-intake",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports worsening shortness of breath over 2 days, even at rest. Ankles are swollen. Ran out of furosemide (water pill) a few days ago. Chest tightness reported. Sulfa allergy confirmed. Clinical team alerted immediately\u2014patient advised to seek care before Friday appointment if symptoms worsen.",
+        "transcriptSummary": "Patient reported worsening shortness of breath over the past two days that now occurs even at rest, a significant decline from her baseline where dyspnea was limited to moderate exertion. She also noted bilateral ankle swelling that has progressed over the past three days and new-onset chest tightness described as a pressure sensation across the upper chest. Upon further questioning, she disclosed that she ran out of furosemide (water pill) approximately four days ago and has not been able to get a refill due to transportation barriers. Sulfa drug allergy was confirmed and documented. Given the combination of worsening dyspnea, peripheral edema, and missed diuretic doses in a patient with known heart failure, the clinical team was alerted immediately via urgent in-basket message. The patient was firmly instructed to call 911 if breathing worsens, if she develops new chest pain, or if she is unable to lie flat. She was also advised to weigh herself daily and report any additional weight gain before her Friday appointment.",
         "intakeCompleted": {
           "value": "Yes",
           "positive": true
@@ -1648,7 +1648,7 @@
     "id": "pi-4",
     "callType": "patient-intake",
     "name": "Sandra Kowalski",
-    "reason": "Post-op follow-up with Dr. Lee \u2014 Knee replacement",
+    "reason": "Post-op follow-up with Dr. Lee — Knee replacement",
     "demographics": "Female, 68 YO, 06/12/1957, MRN400437",
     "dischargeDate": "",
     "languagePreference": "English",
@@ -1681,7 +1681,7 @@
         "method": "phone",
         "callType": "patient-intake",
         "transcriptLink": true,
-        "transcriptSummary": "Intake completed successfully. Patient confirmed metformin and alendronate. Aspirin allergy confirmed. No new symptoms. Routine follow-up visit on Feb 12.",
+        "transcriptSummary": "Intake was completed successfully over the phone with the patient, who was alert and oriented and provided all requested information without difficulty. Current medications were confirmed: metformin 500mg twice daily for diabetes management and alendronate 70mg once weekly for osteoporosis, both being taken as prescribed. Calcium plus Vitamin D 600mg/400IU daily supplement was also confirmed. Aspirin allergy causing GI upset was reconfirmed and flagged in the chart. Medical history includes Type 2 diabetes diagnosed in 2015, osteoporosis diagnosed in 2020, and right hip replacement in 2019 without complications. No new medical conditions, symptoms, or concerns were reported. Patient confirmed her routine follow-up appointment with Dr. Karen Mitchell for February 12 at 11:00 AM at Contoso Health Clinic - East. All information on file was verified as accurate and up to date.",
         "intakeCompleted": {
           "value": "Yes",
           "positive": true
@@ -1780,7 +1780,7 @@
         "method": "phone",
         "callType": "hypertension-management",
         "transcriptLink": true,
-        "transcriptSummary": "BP 122/78, within goal. Patient taking amlodipine every morning consistently. No side effects. Walking regularly and reducing sodium. Next check-in in a few weeks.",
+        "transcriptSummary": "Patient reported that her blood pressure reading today was 122/78 mmHg, which is well within her target range of less than 130/80 mmHg. She has been taking amlodipine 5mg every morning consistently without missing any doses over the past month. No side effects have been reported, including no ankle swelling, flushing, or dizziness. She has been walking for 30 minutes most days of the week and has made significant progress in reducing her sodium intake by cooking at home more frequently and reading food labels. Her home blood pressure readings over the past four weeks have ranged from 120/76 to 130/82 mmHg, showing excellent and stable control. She expressed satisfaction with her progress and plans to continue her current lifestyle modifications. The next routine check-in was scheduled for approximately four weeks from now. No medication adjustments or clinical escalation needed.",
         "bpReading": {
           "systolic": 122,
           "diastolic": 78
@@ -1872,7 +1872,7 @@
         "method": "phone",
         "callType": "hypertension-management",
         "transcriptLink": true,
-        "transcriptSummary": "BP 150/92 at pharmacy. Patient forgets medication 1-2x per week due to busy mornings. No side effects. Stressed at work and eating out frequently. Phone reminder set up. Provider will be notified of elevated readings. Check-in in 1 week.",
+        "transcriptSummary": "Patient's blood pressure was 150/92 mmHg when checked at the pharmacy earlier today, which remains above his goal of less than 140/90 mmHg. He reported that he forgets to take his losartan 50mg and hydrochlorothiazide 12.5mg approximately one to two mornings per week, typically on days when he is rushing to get to work early. He has not experienced any medication side effects. He acknowledged that work-related stress has been high over the past month, and he has been eating out frequently—often fast food with high sodium content—and getting minimal physical exercise. He does not currently have a home blood pressure monitor. A daily phone reminder was set up for 7:00 AM to help with adherence. The patient was counseled on stress management techniques and the DASH diet, with educational materials sent via email. His provider will be notified of the consistently elevated readings to determine whether a medication adjustment or additional agent may be warranted.",
         "bpReading": {
           "systolic": 150,
           "diastolic": 92
@@ -1971,13 +1971,13 @@
         "method": "phone",
         "callType": "hypertension-management",
         "transcriptLink": true,
-        "transcriptSummary": "URGENT: BP reading 204/101. Patient stopped amlodipine 5 days ago after running out. No symptoms currently (no chest pain, headache, or dizziness). Swollen ankles noted. Escalated to clinical team immediately. Patient instructed to call 911 if symptoms develop.",
+        "transcriptSummary": "URGENT: Patient's blood pressure reading today was 204/101 mmHg, which represents a critical elevation from her previous reading of 138/86 mmHg two weeks ago. She reported that she stopped taking amlodipine 10mg five days ago after her prescription ran out, and her daughter, who normally picks up medications from the pharmacy, was out of town and unable to assist. She relies on her daughter for transportation to pharmacy visits due to limited mobility. She denied experiencing acute symptoms including headache, chest pain, visual changes, or dizziness, but reported bilateral ankle swelling that has worsened over the past three days. The clinical team was notified immediately via urgent escalation. The patient was firmly instructed not to restart or adjust any medication until she receives guidance from her clinician, and to call 911 immediately if she develops headache, chest pain, shortness of breath, or visual changes. An emergency prescription refill is being coordinated with the pharmacy for same-day delivery.",
         "bpReading": {
           "systolic": 204,
           "diastolic": 101
         },
         "bpAtGoal": {
-          "value": "No \u2014 Critical",
+          "value": "No — Critical",
           "positive": false
         },
         "medicationAdherence": {
@@ -1990,7 +1990,7 @@
           "positive": false
         },
         "escalated": {
-          "value": "Yes \u2014 Urgent",
+          "value": "Yes — Urgent",
           "positive": false
         },
         "followUpNeeded": {
@@ -2077,7 +2077,7 @@
         "method": "phone",
         "callType": "hypertension-management",
         "transcriptLink": true,
-        "transcriptSummary": "BP 132/84, within goal. Patient fully adherent to losartan and HCTZ. No side effects. Exercises regularly, maintains low-sodium diet. Next quarterly check-in in May.",
+        "transcriptSummary": "Patient reported that his blood pressure reading today was 132/84 mmHg, which is within his goal range of less than 140/90 mmHg. He has been fully adherent to both losartan 50mg and hydrochlorothiazide 25mg, taking them together every morning at 8 AM without any missed doses. He also takes atorvastatin 10mg at bedtime for mild hyperlipidemia. No side effects have been reported from any of his medications. He maintains a consistent exercise routine of four sessions per week including walking and light resistance training, follows a low-sodium diet, and has good sleep habits averaging seven to eight hours per night. His home blood pressure monitor readings have been stable, ranging from 128/80 to 136/86 mmHg over the past three months. This was a routine quarterly check-in and no changes are needed to his current regimen. Next check-in scheduled for May 2026.",
         "bpReading": {
           "systolic": 132,
           "diastolic": 84
@@ -2168,7 +2168,7 @@
         "method": "phone",
         "callType": "patient-intake",
         "transcriptLink": true,
-        "transcriptSummary": "Intake completed. Patient reported new metformin intolerance (GI upset). Currently on glipizide only. Latex allergy noted. Previous appendectomy. No acute symptoms.",
+        "transcriptSummary": "Intake questionnaire was completed in Spanish with interpreter assistance. Patient reported a newly developed intolerance to metformin characterized by persistent GI upset including nausea, bloating, and diarrhea that began approximately three weeks ago after his pharmacy switched to a different generic manufacturer. He discontinued metformin on his own and is currently taking only glipizide 5mg once daily for diabetes management. His fasting glucose readings have been running slightly higher at 145–170 mg/dL since stopping metformin, compared to his previous range of 110–130 mg/dL. Latex allergy was confirmed and documented. Medical history includes Type 2 diabetes since 2018 and appendectomy in 1995. No cardiac history or other chronic conditions. The metformin intolerance was flagged for provider review prior to the February 10 appointment with Dr. Maria Gonzalez, as an alternative agent such as an SGLT2 inhibitor or extended-release metformin may need to be considered.",
         "intakeCompleted": {
           "value": "Yes",
           "positive": true
@@ -2241,13 +2241,13 @@
         "method": "phone",
         "callType": "hypertension-management",
         "transcriptLink": true,
-        "transcriptSummary": "BP 142/90 today, slightly above goal. Patient taking lisinopril daily. High sodium diet identified as primary barrier. Counseled on DASH diet. Check-in scheduled for 2 weeks.",
+        "transcriptSummary": "Patient's blood pressure today was 142/90 mmHg, which is slightly above her goal of less than 140/90 mmHg and represents a mild increase from her previous reading of 138/87 mmHg one week ago. She confirmed that she has been taking lisinopril 20mg daily without any missed doses and has not experienced any side effects including cough, dizziness, or hyperkalemia symptoms. Upon further discussion, a high-sodium diet was identified as the primary contributing factor to her borderline blood pressure control. She reported frequently consuming canned soups, frozen meals, and restaurant food, often exceeding 3,000mg of sodium daily. She also has a largely sedentary lifestyle but expressed willingness to make dietary changes. Detailed counseling was provided on the DASH diet approach, with emphasis on reducing processed foods and increasing potassium-rich fruits and vegetables. Educational materials were sent via email and a two-week follow-up check-in was scheduled to reassess BP and dietary progress.",
         "bpReading": {
           "systolic": 142,
           "diastolic": 90
         },
         "bpAtGoal": {
-          "value": "No \u2014 Borderline",
+          "value": "No — Borderline",
           "positive": false
         },
         "medicationAdherence": {

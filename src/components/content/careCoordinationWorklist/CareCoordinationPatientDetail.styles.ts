@@ -183,7 +183,7 @@ export const usePatientDetailStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     gap: "10px",
-    padding: "12px 0",
+    padding: "12px 16px 12px 0",
     borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
     "&:last-child": {
       borderBottom: "none",
