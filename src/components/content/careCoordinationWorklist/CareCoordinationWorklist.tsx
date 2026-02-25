@@ -346,8 +346,10 @@ export const CareCoordinationWorklist: React.FC<
 
                   <div className={styles.metaInfoRow}>
                     <div className={styles.inlineMeta}>
-                      <span className={styles.inlineMetaLabel}>Last contact:</span>
-                      <span className={styles.inlineMetaValue}>{patient.lastContactDate}</span>
+                      <span className={styles.inlineMetaLabel}>
+                        {patient.callType === "patient-intake" ? "Appointment date:" : "Discharge date:"}
+                      </span>
+                      <span className={styles.inlineMetaValue}>{patient.dischargeDate || patient.lastContactDate}</span>
                     </div>
                   </div>
 

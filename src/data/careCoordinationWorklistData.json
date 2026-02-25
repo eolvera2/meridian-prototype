@@ -2,7 +2,7 @@
   {
     "id": "ma-1",
     "name": "Robert Williams",
-    "reason": "Warfarin doses missed 3 of last 6 days after pharmacy transfer.",
+    "reason": "Atrial fibrillation with anticoag mgmt. Rx: Warfarin, Metoprolol, Aspirin",
     "demographics": "Male, 41 YO, 03/15/1984, MRN100234",
     "dischargeDate": "2/11/26",
     "languagePreference": "English",
@@ -67,7 +67,7 @@
   {
     "id": "ma-2",
     "name": "Devon Castillo",
-    "reason": "Basal insulin refill delayed; glucose logs elevated for 4 days.",
+    "reason": "T2DM (uncontrolled), Peripheral neuropathy. Rx: Insulin Glargine, Metformin",
     "demographics": "Male, 54 YO, 09/29/1971, MRN201278",
     "dischargeDate": "2/13/26",
     "languagePreference": "English",
@@ -132,7 +132,7 @@
   {
     "id": "ma-3",
     "name": "Yasmin Chowdhury",
-    "reason": "Stopped lisinopril due to cough without notifying care team.",
+    "reason": "HTN Stage 2, ACE inhibitor cough. Rx: Lisinopril, Amlodipine, HCTZ",
     "demographics": "Female, 61 YO, 01/05/1965, MRN201392",
     "dischargeDate": "2/14/26",
     "languagePreference": "Bengali",
@@ -146,7 +146,7 @@
     "email": "ychowdhury@email.com",
     "address": "55-12 Junction Blvd, Apt 4C, Queens, NY 11373",
     "dischargeInstructions": "Continue amlodipine 5 mg and HCTZ 25 mg daily. Monitor BP twice daily. If cough persists on ACE inhibitor, contact clinic for ARB substitution.",
-    "primaryDiagnosis": "Essential hypertension, Stage 2. ACE inhibitor–induced cough (lisinopril). Mild hyperlipidemia managed with lifestyle modifications.",
+    "primaryDiagnosis": "Essential hypertension, Stage 2. ACE inhibitor\u2013induced cough (lisinopril). Mild hyperlipidemia managed with lifestyle modifications.",
     "careTeam": "Dr. Anwar Hussain (Internal Medicine), NP Lisa Chen (Cardiology), PharmD Amir Patel (Community Pharmacy)",
     "contactHistory": [
       {
@@ -197,7 +197,7 @@
   {
     "id": "ma-4",
     "name": "Marcus Dela Cruz",
-    "reason": "Missed heart-failure meds over weekend due to confusion on schedule.",
+    "reason": "CHF (EF 35%), A-fib, T2DM. Rx: Carvedilol, Furosemide, Lisinopril",
     "demographics": "Male, 73 YO, 11/17/1952, MRN201511",
     "dischargeDate": "2/13/26",
     "languagePreference": "Spanish",
@@ -269,7 +269,7 @@
   {
     "id": "ma-5",
     "name": "Naomi Fitzgerald",
-    "reason": "Statin adherence dropped to 5/7 days after travel.",
+    "reason": "Hyperlipidemia, Mild HTN, Pre-diabetic. Rx: Atorvastatin, Lisinopril",
     "demographics": "Female, 59 YO, 06/23/1966, MRN201644",
     "dischargeDate": "2/17/26",
     "languagePreference": "English",
@@ -327,7 +327,7 @@
   {
     "id": "ma-6",
     "name": "Rafael Montes",
-    "reason": "Controller inhaler taken inconsistently due to technique uncertainty.",
+    "reason": "Persistent asthma, Allergic rhinitis. Rx: Tiotropium, Albuterol PRN",
     "demographics": "Male, 47 YO, 02/13/1979, MRN201755",
     "dischargeDate": "2/18/26",
     "languagePreference": "Spanish",
@@ -385,7 +385,7 @@
   {
     "id": "ma-7",
     "name": "Lillian Osei",
-    "reason": "Levothyroxine timing inconsistent with breakfast medication bundle.",
+    "reason": "Hypothyroidism, T2DM, OA. Rx: Levothyroxine, Metformin, Acetaminophen",
     "demographics": "Female, 52 YO, 10/30/1973, MRN201863",
     "dischargeDate": "2/17/26",
     "languagePreference": "English",
@@ -398,7 +398,7 @@
     "phone": "+12025559043",
     "email": "losei73@email.com",
     "address": "1420 K Street NW, Apt 802, Washington, DC 20005",
-    "dischargeInstructions": "Take levothyroxine 75 mcg on empty stomach, 30–60 min before breakfast. Other morning meds after eating. TSH recheck in 6 weeks.",
+    "dischargeInstructions": "Take levothyroxine 75 mcg on empty stomach, 30\u201360 min before breakfast. Other morning meds after eating. TSH recheck in 6 weeks.",
     "primaryDiagnosis": "Hypothyroidism. Type 2 diabetes mellitus, controlled. Mild osteoarthritis of both knees.",
     "careTeam": "Dr. Priya Nair (Endocrinology), NP Janet Collins (Primary Care), PharmD Amir Patel (Community Pharmacy)",
     "contactHistory": [
@@ -450,7 +450,7 @@
   {
     "id": "ma-8",
     "name": "Ethan Sharpe",
-    "reason": "Unclear instructions on split-dose antihypertensive regimen.",
+    "reason": "Resistant HTN, BPH. Rx: Amlodipine, Losartan, Tamsulosin",
     "demographics": "Male, 66 YO, 07/01/1960, MRN201944",
     "dischargeDate": "2/19/26",
     "languagePreference": "English",
@@ -515,7 +515,7 @@
   {
     "id": "ma-9",
     "name": "Priyanka Menon",
-    "reason": "GLP-1 injection timing varies by work shift.",
+    "reason": "T2DM with obesity, PCOS, NAFLD. Rx: Semaglutide, Metformin",
     "demographics": "Female, 45 YO, 03/14/1981, MRN202051",
     "dischargeDate": "2/20/26",
     "languagePreference": "Hindi",
@@ -573,7 +573,7 @@
   {
     "id": "ma-10",
     "name": "Howard Kimani",
-    "reason": "Requested alignment of three chronic meds to one refill date.",
+    "reason": "HTN, T2DM, BPH. Rx: Lisinopril, Metformin, Tamsulosin",
     "demographics": "Male, 63 YO, 12/09/1962, MRN202166",
     "dischargeDate": "2/20/26",
     "languagePreference": "Swahili",
@@ -638,7 +638,7 @@
   {
     "id": "ma-11",
     "name": "Camila Rojas",
-    "reason": "Completed beta-blocker adherence education and refill setup.",
+    "reason": "SVT, Mitral regurgitation, Anxiety. Rx: Metoprolol, Sertraline",
     "demographics": "Female, 58 YO, 05/19/1968, MRN202278",
     "dischargeDate": "2/10/26",
     "languagePreference": "Spanish",
@@ -696,7 +696,7 @@
   {
     "id": "ma-12",
     "name": "Noah Watanabe",
-    "reason": "Refill coordination completed with 90-day supply in place.",
+    "reason": "Hyperlipidemia, HTN Stage 1, Obesity. Rx: Rosuvastatin, Lisinopril",
     "demographics": "Male, 50 YO, 08/27/1975, MRN202341",
     "dischargeDate": "2/9/26",
     "languagePreference": "English",
@@ -754,7 +754,7 @@
   {
     "id": "ma-13",
     "name": "Aisha Banerjee",
-    "reason": "Addressed adherence barriers and caregiver plan documented.",
+    "reason": "T2DM, HTN, Early Alzheimer's. Rx: Metformin, Amlodipine, Donepezil",
     "demographics": "Female, 57 YO, 09/03/1969, MRN202455",
     "dischargeDate": "2/8/26",
     "languagePreference": "Bengali",
@@ -819,7 +819,7 @@
   {
     "id": "ma-14",
     "name": "Gareth O'Neill",
-    "reason": "Medication calendar completed and adherence maintained for 2 weeks.",
+    "reason": "A-fib on anticoag, HTN, OA. Rx: Warfarin, Metoprolol, Acetaminophen",
     "demographics": "Male, 71 YO, 01/24/1955, MRN202507",
     "dischargeDate": "2/7/26",
     "languagePreference": "English",
@@ -1100,7 +1100,7 @@
         "date": "Jan 20, 2026",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports taking omeprazole as prescribed but experiencing mild nausea. Heartburn reduced from daily to 2–3 times per week. Abdominal discomfort noted.",
+        "transcriptSummary": "Patient reports taking omeprazole as prescribed but experiencing mild nausea. Heartburn reduced from daily to 2\u20133 times per week. Abdominal discomfort noted.",
         "pickedUpMedication": "Yes",
         "takingAsPrescribed": {
           "value": "Yes",
@@ -1302,7 +1302,7 @@
         "date": "Dec 10, 2025",
         "method": "phone",
         "transcriptLink": true,
-        "transcriptSummary": "Patient has not picked up either diabetes medication due to insurance formulary change. Cost barrier identified. Glucose readings 250–320 mg/dL. Social worker referral initiated for patient assistance program.",
+        "transcriptSummary": "Patient has not picked up either diabetes medication due to insurance formulary change. Cost barrier identified. Glucose readings 250\u2013320 mg/dL. Social worker referral initiated for patient assistance program.",
         "pickedUpMedication": "No",
         "takingAsPrescribed": {
           "value": "No",
@@ -1412,9 +1412,9 @@
     "id": "pi-1",
     "callType": "patient-intake",
     "name": "Alex Turner",
-    "reason": "Pre-visit intake for annual physical with Dr. Chen.",
+    "reason": "Annual physical with Dr. Chen \u2014 HTN, Hyperlipidemia",
     "demographics": "Male, 42 YO, 07/14/1983, MRN400101",
-    "dischargeDate": "",
+    "dischargeDate": "2/20/26",
     "languagePreference": "English",
     "lastContactDate": "2/16/26",
     "lastContactSummary": "Intake questionnaire completed. No red flags identified.",
@@ -1496,9 +1496,9 @@
     "id": "pi-2",
     "callType": "patient-intake",
     "name": "Jamie Patel",
-    "reason": "Pre-visit intake for headache evaluation with Dr. Patel.",
+    "reason": "Headache evaluation with Dr. Patel \u2014 Chronic migraines",
     "demographics": "Female, 29 YO, 11/22/1996, MRN400215",
-    "dischargeDate": "",
+    "dischargeDate": "2/19/26",
     "languagePreference": "English",
     "lastContactDate": "2/17/26",
     "lastContactSummary": "Intake partially completed. Patient unsure of migraine medication name.",
@@ -1571,9 +1571,9 @@
     "id": "pi-3",
     "callType": "patient-intake",
     "name": "Taylor Robinson",
-    "reason": "Pre-visit intake for shortness of breath evaluation.",
+    "reason": "SOB evaluation with Dr. Park \u2014 Heart failure, Asthma",
     "demographics": "Non-binary, 55 YO, 04/08/1970, MRN400329",
-    "dischargeDate": "",
+    "dischargeDate": "2/21/26",
     "languagePreference": "English",
     "lastContactDate": "2/14/26",
     "lastContactSummary": "Red flag identified: worsening dyspnea with swollen ankles. Escalated to clinical team.",
@@ -1605,7 +1605,7 @@
         "method": "phone",
         "callType": "patient-intake",
         "transcriptLink": true,
-        "transcriptSummary": "Patient reports worsening shortness of breath over 2 days, even at rest. Ankles are swollen. Ran out of furosemide (water pill) a few days ago. Chest tightness reported. Sulfa allergy confirmed. Clinical team alerted immediately—patient advised to seek care before Friday appointment if symptoms worsen.",
+        "transcriptSummary": "Patient reports worsening shortness of breath over 2 days, even at rest. Ankles are swollen. Ran out of furosemide (water pill) a few days ago. Chest tightness reported. Sulfa allergy confirmed. Clinical team alerted immediately\u2014patient advised to seek care before Friday appointment if symptoms worsen.",
         "intakeCompleted": {
           "value": "Yes",
           "positive": true
@@ -1648,7 +1648,7 @@
     "id": "pi-4",
     "callType": "patient-intake",
     "name": "Sandra Kowalski",
-    "reason": "Pre-visit intake completed for routine follow-up.",
+    "reason": "Post-op follow-up with Dr. Lee \u2014 Knee replacement",
     "demographics": "Female, 68 YO, 06/12/1957, MRN400437",
     "dischargeDate": "",
     "languagePreference": "English",
@@ -1731,7 +1731,7 @@
     "id": "ht-1",
     "callType": "hypertension-management",
     "name": "Laura Bennett",
-    "reason": "Hypertension follow-up: BP well controlled on current regimen.",
+    "reason": "HTN (well-controlled). Rx: Amlodipine",
     "demographics": "Female, 51 YO, 09/03/1974, MRN500101",
     "dischargeDate": "",
     "languagePreference": "English",
@@ -1823,9 +1823,9 @@
     "id": "ht-2",
     "callType": "hypertension-management",
     "name": "Marcus Johnson",
-    "reason": "Hypertension follow-up: BP elevated at 150/92, adherence issues.",
+    "reason": "HTN (uncontrolled), Work stress. Rx: Losartan, HCTZ",
     "demographics": "Male, 47 YO, 03/18/1978, MRN500215",
-    "dischargeDate": "",
+    "dischargeDate": "2/18/26",
     "languagePreference": "English",
     "lastContactDate": "2/16/26",
     "lastContactSummary": "BP 150/92 at pharmacy. Misses medication 1-2x/week. Stress and diet concerns.",
@@ -1922,9 +1922,9 @@
     "id": "ht-3",
     "callType": "hypertension-management",
     "name": "Priya Sharma",
-    "reason": "Hypertension crisis: BP 204/101, stopped medication due to supply issue.",
+    "reason": "HTN Stage 2, T2DM, CKD Stage 2. Rx: Amlodipine, Metformin, Lisinopril",
     "demographics": "Female, 72 YO, 08/25/1953, MRN500329",
-    "dischargeDate": "",
+    "dischargeDate": "2/19/26",
     "languagePreference": "Hindi",
     "lastContactDate": "2/17/26",
     "lastContactSummary": "URGENT: BP 204/101. Patient stopped medication 5 days ago (ran out). Escalated to clinical team.",
@@ -1977,7 +1977,7 @@
           "diastolic": 101
         },
         "bpAtGoal": {
-          "value": "No — Critical",
+          "value": "No \u2014 Critical",
           "positive": false
         },
         "medicationAdherence": {
@@ -1990,7 +1990,7 @@
           "positive": false
         },
         "escalated": {
-          "value": "Yes — Urgent",
+          "value": "Yes \u2014 Urgent",
           "positive": false
         },
         "followUpNeeded": {
@@ -2028,7 +2028,7 @@
     "id": "ht-4",
     "callType": "hypertension-management",
     "name": "William Chang",
-    "reason": "Hypertension management: routine quarterly check-in.",
+    "reason": "HTN (well-controlled), Hyperlipidemia. Rx: Losartan, HCTZ, Atorvastatin",
     "demographics": "Male, 60 YO, 01/15/1966, MRN500437",
     "dischargeDate": "",
     "languagePreference": "English",
@@ -2204,7 +2204,7 @@
     "id": "ht-5",
     "callType": "hypertension-management",
     "name": "Donna Fischer",
-    "reason": "Hypertension follow-up: mild elevation, lifestyle adjustment needed.",
+    "reason": "HTN Stage 2. Rx: Amlodipine, Losartan",
     "demographics": "Female, 58 YO, 05/10/1967, MRN500545",
     "dischargeDate": "",
     "languagePreference": "English",
@@ -2247,7 +2247,7 @@
           "diastolic": 90
         },
         "bpAtGoal": {
-          "value": "No — Borderline",
+          "value": "No \u2014 Borderline",
           "positive": false
         },
         "medicationAdherence": {

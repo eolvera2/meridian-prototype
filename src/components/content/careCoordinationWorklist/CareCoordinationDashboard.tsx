@@ -18,6 +18,7 @@ import {
   Timer16Regular,
   HourglassRegular,
   Warning16Regular,
+  Warning16Filled,
   Filter16Regular,
   ChevronDown16Regular,
   ChevronUp16Regular,
@@ -896,7 +897,7 @@ export const CareCoordinationDashboard: React.FC = () => {
               } else {
                 const record = item.record;
                 return (
-                  <tr key={record.id} className={styles.tableRow}>
+                  <tr key={record.id} className={styles.tableRow} style={record.statusUrgencyNote ? { backgroundColor: "#FFF8E1" } : undefined}>
                     <td className={styles.tableCell}>
                       <span
                         className={styles.patientLink}
@@ -964,23 +965,33 @@ export const CareCoordinationDashboard: React.FC = () => {
                       )}
                     </td>
                     <td className={styles.tableCell}>
-                      {record.scheduled ? (
-                        <span className={styles.statusPillScheduled}>
-                          <HourglassRegular /> Scheduled
-                        </span>
-                      ) : record.scheduledForRetry ? (
-                        <span className={styles.statusPillRetry}>
-                          <HourglassRegular /> Scheduled for Retry
-                        </span>
-                      ) : record.reviewed ? (
-                        <span className={styles.statusPillReviewed}>
-                          <Checkmark16Regular /> Reviewed
-                        </span>
-                      ) : (
-                        <span className={styles.statusPillNeedsReview}>
-                          <Checkmark16Regular /> Ready for Review
-                        </span>
-                      )}
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                          {record.scheduled ? (
+                            <span className={styles.statusPillScheduled}>
+                              <HourglassRegular /> Scheduled
+                            </span>
+                          ) : record.scheduledForRetry ? (
+                            <span className={styles.statusPillRetry}>
+                              <HourglassRegular /> Scheduled for Retry
+                            </span>
+                          ) : record.reviewed ? (
+                            <span className={styles.statusPillReviewed}>
+                              <Checkmark16Regular /> Reviewed
+                            </span>
+                          ) : (
+                            <span className={styles.statusPillNeedsReview}>
+                              <Checkmark16Regular /> Ready for Review
+                            </span>
+                          )}
+                        </div>
+                        {record.statusUrgencyNote && (
+                          <div style={{ display: "flex", alignItems: "center", gap: "3px", color: "#D13438", fontSize: "10px", fontStyle: "italic", lineHeight: "1.2", marginTop: "2px" }}>
+                            <Warning16Filled style={{ color: "#D13438", fontSize: "12px", flexShrink: 0 }} aria-hidden="true" />
+                            {record.statusUrgencyNote}
+                          </div>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );

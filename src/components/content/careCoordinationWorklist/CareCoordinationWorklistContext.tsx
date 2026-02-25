@@ -49,6 +49,7 @@ export interface ContactRecord {
   reviewed: boolean;
   scheduledForRetry?: boolean;
   scheduled?: boolean;
+  statusUrgencyNote?: string;
 }
 
 const INITIAL_CONTACT_RECORDS: ContactRecord[] = [
@@ -64,7 +65,7 @@ const INITIAL_CONTACT_RECORDS: ContactRecord[] = [
   // Patient Intake
   { id: "cr-9", patientId: "pi-5", name: "George Martinez", callType: "patient-intake", contactDate: "Feb 8, 2026", contactTime: "4:00 PM", daysAgo: 5, phone: "(713) 555-0934", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, intakeCompleted: { value: "Yes", warning: false }, allergiesConfirmed: "Metformin, Latex", redFlag: { value: "None", warning: false }, symptomsReported: "None acute", reviewed: false },
   // Hypertension Management
-  { id: "cr-10", patientId: "ht-5", name: "Donna Fischer", callType: "hypertension-management", contactDate: "Feb 1, 2026", contactTime: "2:15 PM", daysAgo: 12, phone: "(206) 555-0789", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Yes", warning: true }, bpReading: { systolic: 142, diastolic: 90 }, bpAtGoal: { value: "No", warning: true }, medAdherence: { value: "Yes", warning: false }, symptomsPresent: { value: "None", warning: false }, escalated: { value: "No", warning: false }, reviewed: false },
+  { id: "cr-10", patientId: "ht-5", name: "Donna Fischer", callType: "hypertension-management", contactDate: "Feb 1, 2026", contactTime: "2:15 PM", daysAgo: 12, phone: "(206) 555-0789", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Yes", warning: true }, bpReading: { systolic: 142, diastolic: 90 }, bpAtGoal: { value: "No", warning: true }, medAdherence: { value: "Yes", warning: false }, symptomsPresent: { value: "None", warning: false }, escalated: { value: "No", warning: false }, reviewed: false, statusUrgencyNote: "Next call scheduled in 6 hours" },
   // Reviewed — Medication Adherence
   { id: "cr-11", patientId: "ma-11", name: "Camila Rojas", callType: "medication-adherence", contactDate: "Feb 10, 2026", contactTime: "9:15 AM", daysAgo: 3, phone: "(213) 555-6047", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, reviewed: true },
   { id: "cr-12", patientId: "ma-12", name: "Noah Watanabe", callType: "medication-adherence", contactDate: "Feb 9, 2026", contactTime: "11:00 AM", daysAgo: 4, phone: "(503) 555-8291", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 1, followUp: { value: "Not needed", warning: false }, reviewed: true },
