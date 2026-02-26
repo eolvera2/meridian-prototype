@@ -19,23 +19,31 @@ This document outlines a comprehensive plan to refactor the NorthStar-React code
 
 ### File Size Audit (Lines of Code)
 
-| Priority    | File                      | Lines | Status          | Target               |
-| ----------- | ------------------------- | ----- | --------------- | -------------------- |
-| 🔴 CRITICAL | `DocumentComponent.tsx`   | 3,857 | 19x over limit  | Split into 15+ files |
-| 🔴 HIGH     | `Worklist.tsx`            | 1,059 | 5x over limit   | Split into 4-5 files |
-| 🔴 HIGH     | `MicrophoneInterface.tsx` | 977   | 5x over limit   | Split into 4-5 files |
-| 🟠 MEDIUM   | `MainContent.tsx`         | 722   | 3x over limit   | Split into 3-4 files |
-| 🟠 MEDIUM   | `TranscriptPanel.tsx`     | 625   | 2x over limit   | Split into 2-3 files |
-| 🟠 MEDIUM   | `NotificationsPanel.tsx`  | 590   | 2x over limit   | Split into 2-3 files |
-| 🟠 MEDIUM   | `OrdersComponent.tsx`     | 573   | 2x over limit   | Split into 2-3 files |
-| 🟡 LOW      | `Header.tsx`              | 450   | 1.5x over limit | Extract styles/types |
-| 🟡 LOW      | `Settings.tsx`            | 446   | 1.5x over limit | Extract styles/types |
-| 🟡 LOW      | `MainContent.styles.ts`   | 433   | 1.5x over limit | Organize by section  |
-| 🟡 LOW      | `MicCursorTooltip.tsx`    | 403   | 1.3x over limit | Extract styles       |
-| 🟡 LOW      | `MemosPanel.tsx`          | 389   | 1.3x over limit | Extract styles       |
-| 🟡 LOW      | `RightDrawer.tsx`         | 381   | 1.3x over limit | Extract styles       |
-| 🟡 LOW      | `RightDrawer.styles.ts`   | 310   | At limit        | OK after refactor    |
-| 🟡 LOW      | `MobileWorkspace.tsx`     | 305   | At limit        | Minor cleanup        |
+| Priority    | File                                      | Lines | Status          | Target               |
+| ----------- | ----------------------------------------- | ----- | --------------- | -------------------- |
+| 🔴 CRITICAL | `DocumentComponent.tsx`                   | 3,857 | 19x over limit  | Split into 15+ files |
+| 🔴 CRITICAL | `CareCoordinationDashboard.tsx`           | 1,112 | 3.7x over limit | Split into 5-6 files |
+| 🔴 HIGH     | `Worklist.tsx`                            | 1,059 | 5x over limit   | Split into 4-5 files |
+| 🔴 HIGH     | `MicrophoneInterface.tsx`                 | 977   | 5x over limit   | Split into 4-5 files |
+| 🔴 HIGH     | `AddPatientForm.tsx`                      | 810   | 2.7x over limit | Split into 4-5 files |
+| 🟠 MEDIUM   | `MainContent.tsx`                         | 722   | 3x over limit   | Split into 3-4 files |
+| 🟠 MEDIUM   | `CareCoordinationWorklist.styles.ts`      | 676   | 2.3x over limit | Organize by section  |
+| 🟠 MEDIUM   | `CareCoordinationDashboard.styles.ts`     | 662   | 2.2x over limit | Organize by section  |
+| 🟠 MEDIUM   | `CareCoordinationPatientDetail.tsx`       | 658   | 2.2x over limit | Split into 3-4 files |
+| 🟠 MEDIUM   | `TranscriptPanel.tsx`                     | 625   | 2x over limit   | Split into 2-3 files |
+| 🟠 MEDIUM   | `NotificationsPanel.tsx`                  | 590   | 2x over limit   | Split into 2-3 files |
+| 🟠 MEDIUM   | `CareCoordinationWorklistContext.tsx`      | 586   | 2x over limit   | Extract data files   |
+| 🟠 MEDIUM   | `OrdersComponent.tsx`                     | 573   | 2x over limit   | Split into 2-3 files |
+| 🟡 LOW      | `CareCoordinationWorklist.tsx`            | 457   | 1.5x over limit | Extract styles/types |
+| 🟡 LOW      | `Header.tsx`                              | 450   | 1.5x over limit | Extract styles/types |
+| 🟡 LOW      | `Settings.tsx`                            | 446   | 1.5x over limit | Extract styles/types |
+| 🟡 LOW      | `MainContent.styles.ts`                   | 433   | 1.5x over limit | Organize by section  |
+| 🟡 LOW      | `MicCursorTooltip.tsx`                    | 403   | 1.3x over limit | Extract styles       |
+| 🟡 LOW      | `MemosPanel.tsx`                          | 389   | 1.3x over limit | Extract styles       |
+| 🟡 LOW      | `RightDrawer.tsx`                         | 381   | 1.3x over limit | Extract styles       |
+| 🟡 LOW      | `CareCoordinationPatientDetail.styles.ts` | 347   | 1.2x over limit | OK after refactor    |
+| 🟡 LOW      | `RightDrawer.styles.ts`                   | 310   | At limit        | OK after refactor    |
+| 🟡 LOW      | `MobileWorkspace.tsx`                     | 305   | At limit        | Minor cleanup        |
 
 ### Hardcoded Values Audit
 
@@ -414,9 +422,169 @@ src/types/
 
 ---
 
+## Phase 7: CareCoordinationDashboard.tsx (CRITICAL - 1,112 lines)
+
+### Current State Analysis
+
+| Issue | Count |
+| --- | --- |
+| Hardcoded colors | 21 (`#D13438`, `#CA5010`, `#0078D4`, `#FFF8E1`, etc.) |
+| Inline px values | 22 |
+| Inline style objects | ~15 |
+
+### Proposed Structure
+
+```
+src/components/content/careCoordinationWorklist/
+├── CareCoordinationDashboard.tsx          # Main orchestrator (~250 lines)
+├── CareCoordinationDashboard.styles.ts    # Existing + moved inline styles
+├── components/
+│   ├── AdminDashboard.tsx                 # Stats cards + charts (~200 lines)
+│   ├── ContactListTable.tsx               # Table rendering (~200 lines)
+│   ├── ContactListFilters.tsx             # Filter dropdowns + search (~150 lines)
+│   ├── SummaryCounters.tsx                # Counter badge grid (~80 lines)
+│   ├── AdherenceTrendChart.tsx            # SVG line chart (~100 lines)
+│   ├── BarCharts.tsx                      # Non-adherence + effectiveness charts (~100 lines)
+│   └── SortIcon.tsx                       # Reusable sort indicator (~20 lines)
+```
+
+### Migration Steps
+
+1. Extract `AdherenceTrendChart` component (lines 151-240) — standalone SVG chart
+2. Extract `SummaryCounters` component (lines 740-805) — counter badge grid
+3. Extract `ContactListFilters` component (lines 850-930) — filter row with dropdowns
+4. Extract `ContactListTable` component (lines 935-1100) — table body with outcomes
+5. Extract `AdminDashboard` component (lines 500-740) — stats cards and charts
+6. Move all inline styles to `CareCoordinationDashboard.styles.ts`
+7. Replace hardcoded colors with Fluent UI tokens or named constants
+
+### Token Replacement Map
+
+| Current Value | Replacement |
+| --- | --- |
+| `#0078D4` | `tokens.colorBrandBackground` |
+| `#D13438` | `tokens.colorPaletteRedForeground1` |
+| `#CA5010` | `tokens.colorPaletteDarkOrangeForeground1` |
+| `#FFF8E1` | Named constant `URGENCY_BG` (no Fluent token) |
+| `#e0e0e0` | `tokens.colorNeutralBackground4` |
+| `#666` | `tokens.colorNeutralForeground3` |
+
+---
+
+## Phase 8: AddPatientForm.tsx (HIGH - 810 lines)
+
+### Current State Analysis
+
+| Issue | Count |
+| --- | --- |
+| Hardcoded colors | 4 (`#616161`, `#F5F5F5`, `#424242`, `#E0E0E0`) |
+| Inline px values | 23 |
+| Inline style objects | ~20 |
+
+### Proposed Structure
+
+```
+src/components/content/careCoordinationWorklist/
+├── AddPatientForm.tsx                     # Main form orchestrator (~250 lines)
+├── AddPatientForm.styles.ts               # Existing + moved inline styles
+├── components/
+│   ├── PatientInfoSection.tsx             # Patient identity fields (~100 lines)
+│   ├── CampaignSection.tsx                # Description + outcomes grid (~120 lines)
+│   ├── CampaignSettings.tsx               # Recurrence, timing, retries (~200 lines)
+│   └── ClinicalFieldsSection.tsx          # Demographics, meds, intake, BP (~150 lines)
+├── constants/
+│   └── campaignConfig.ts                  # Descriptions, outcomes, auto-fill data (~100 lines)
+```
+
+### Migration Steps
+
+1. Extract `campaignDescriptions`, `campaignOutcomes`, and auto-fill data to `campaignConfig.ts`
+2. Extract `PatientInfoSection` (lines 379-414) — identity fields
+3. Extract `CampaignSection` (lines 418-470) — description + outcomes grid
+4. Extract `CampaignSettings` (lines 470-592) — all campaign configuration controls
+5. Extract `ClinicalFieldsSection` (lines 597-789) — demographics, meds, intake, BP
+6. Move all inline styles to `AddPatientForm.styles.ts`
+
+### Token Replacement Map
+
+| Current Value | Replacement |
+| --- | --- |
+| `#616161` | `tokens.colorNeutralForeground3` |
+| `#F5F5F5` | `tokens.colorNeutralBackground2` |
+| `#424242` | `tokens.colorNeutralForeground2` |
+| `#E0E0E0` | `tokens.colorNeutralStroke2` |
+
+---
+
+## Phase 9: CareCoordinationPatientDetail.tsx (MEDIUM - 658 lines)
+
+### Current State Analysis
+
+| Issue | Count |
+| --- | --- |
+| Hardcoded colors | 7 (`#E1F5F0`, `#0E7C6B`, `#F3E8FD`, `#FFF8E1`, `#CA5010`, `#707070`, `#d1d1d1`) |
+| Inline px values | 9 |
+| Inline style objects | ~8 |
+
+### Proposed Structure
+
+```
+src/components/content/careCoordinationWorklist/
+├── CareCoordinationPatientDetail.tsx      # Main orchestrator (~250 lines)
+├── CareCoordinationPatientDetail.styles.ts # Existing + moved inline styles
+├── components/
+│   ├── ContactHistoryEntry.tsx            # Single contact entry (~200 lines)
+│   ├── OutcomeGrid.tsx                    # Call-type-specific outcomes (~150 lines)
+│   ├── MedicationsGrid.tsx                # Medication cards (~100 lines)
+│   └── PatientInfoGrid.tsx                # Patient info 2-column grid (~150 lines)
+```
+
+### Migration Steps
+
+1. Move inline style objects to `.styles.ts` (call type badge, urgency highlight, disclaimer, notes textarea)
+2. Extract `ContactHistoryEntry` — one contact history block with header, summary, outcomes, notes
+3. Extract `OutcomeGrid` — the 3-branch outcome rendering (med adherence, intake, hypertension)
+4. Extract `MedicationsGrid` — medication card grid with refill buttons
+5. Extract `PatientInfoGrid` — conditional patient info sections
+
+### Token Replacement Map
+
+| Current Value | Replacement |
+| --- | --- |
+| `#707070` | `tokens.colorNeutralForeground3` |
+| `#d1d1d1` | `tokens.colorNeutralStroke1` |
+| `#424242` | `tokens.colorNeutralForeground2` |
+| `#FFF8E1` | Named constant `URGENCY_BG` |
+| `#CA5010` | Named constant `URGENCY_BORDER` |
+| `#E1F5F0`, `#0E7C6B` | Named constants for intake badge |
+| `#F3E8FD`, `#7B2D8E` | Named constants for hypertension badge |
+| `#E8F0FE`, `#1B6EC2` | Named constants for med-adherence badge |
+
+---
+
+## Phase 10: CareCoordinationWorklistContext.tsx (MEDIUM - 586 lines)
+
+### Proposed Structure
+
+```
+src/components/content/careCoordinationWorklist/
+├── CareCoordinationWorklistContext.tsx     # Context provider + hook (~250 lines)
+├── data/
+│   ├── initialContactRecords.ts           # 22 initial ContactRecord entries (~100 lines)
+│   └── outcomePools.ts                    # MA/PI/HT outcome pools + transcript generation (~200 lines)
+```
+
+### Migration Steps
+
+1. Extract `INITIAL_CONTACT_RECORDS` array to `data/initialContactRecords.ts`
+2. Extract outcome pools (`MA_OUTCOME_POOLS`, `PI_OUTCOME_POOLS`, `HT_OUTCOME_POOLS`) and transcript summary generation to `data/outcomePools.ts`
+3. Keep context provider, hook, and action functions in main file
+
+---
+
 ## Implementation Order
 
-### Week 1: Critical Priority
+### Week 1: Critical Priority (Home View)
 
 1. ✅ Create this optimization plan
 2. 🔄 **DocumentComponent.tsx** - Phase 1 (largest impact)
@@ -425,23 +593,41 @@ src/types/
    - Day 5: Extract components
    - Day 6-7: Integration and testing
 
-### Week 2: High Priority
+### Week 2: High Priority (Home View)
 
 1. **Worklist.tsx** - Phase 2
 2. **MicrophoneInterface.tsx** - Phase 3
 
-### Week 3: Medium Priority
+### Week 3: Medium Priority (Home View)
 
 1. **MainContent.tsx** - Phase 4
 2. **TranscriptPanel.tsx** - Phase 5
 3. **NotificationsPanel.tsx** - Phase 5
 
-### Week 4: Low Priority + Cleanup
+### Week 4: Low Priority (Home View) + Cleanup
 
 1. **OrdersComponent.tsx** - Phase 5
-2. Style extractions for remaining files
-3. Token replacement pass across all files
-4. Final cleanup and documentation
+2. Style extractions for remaining files (Phase 6)
+3. Token replacement pass across Home View files
+
+### Week 5: Critical Priority (Care Coordination)
+
+1. ✅ **CareCoordinationDashboard.tsx** - Phase 7
+   - Extract sub-components (charts, filters, table, counters)
+   - Move inline styles to styles file
+   - Replace hardcoded colors with tokens
+
+### Week 6: High + Medium Priority (Care Coordination)
+
+1. ✅ **AddPatientForm.tsx** - Phase 8
+   - Extract campaign config constants
+   - Extract form sections as sub-components
+   - Move inline styles and replace tokens
+2. ✅ **CareCoordinationPatientDetail.tsx** - Phase 9
+   - Extract contact entry, outcome grid, patient info
+   - Move inline styles and replace tokens
+3. ✅ **CareCoordinationWorklistContext.tsx** - Phase 10
+   - Extract initial data and outcome pools
 
 ---
 
@@ -460,11 +646,15 @@ After each refactoring phase:
    - State management intact
    - Dictation/Ambient mode behavior preserved
    - Dialog confirmations work
+   - Care Coordination: sorting, filtering, pagination preserved
+   - Care Coordination: status transitions work correctly
+   - Care Coordination: campaign settings per call type preserved
 
 3. **Integration Testing**
    - Component communication works
    - Props flow correctly
    - No console errors/warnings
+   - Context consumers still receive all actions and state
 
 ---
 
@@ -479,13 +669,13 @@ After each refactoring phase:
 
 ## Success Metrics
 
-| Metric                   | Before      | Target      |
-| ------------------------ | ----------- | ----------- |
-| Largest file size        | 3,857 lines | < 300 lines |
-| Files over 300 lines     | 15 files    | 0 files     |
-| Hardcoded color values   | ~50+        | 0           |
-| Hardcoded spacing values | ~100+       | 0           |
-| Code duplication         | High        | Minimal     |
+| Metric                   | Before (Home) | Before (CC) | Target      |
+| ------------------------ | ------------- | ----------- | ----------- |
+| Largest file size        | 3,857 lines   | 1,112 lines | < 300 lines |
+| Files over 300 lines     | 15 files      | 7 files     | 0 files     |
+| Hardcoded color values   | ~50+          | ~32         | 0           |
+| Hardcoded spacing values | ~100+         | ~54         | 0           |
+| Code duplication         | High          | Medium      | Minimal     |
 
 ---
 
@@ -495,3 +685,4 @@ After each refactoring phase:
 - No changes to component APIs where possible
 - Maintain backwards compatibility with existing imports
 - Update index.ts files to maintain clean exports
+- Care Coordination semantic colors (status pills, urgency, pain levels) that have no Fluent token equivalent should be defined as named constants in a shared `careCoordination.constants.ts` file
