@@ -246,8 +246,8 @@ export const CareCoordinationDashboard: React.FC = () => {
   const [patientSearch, setPatientSearch] = useState("");
   type SortColumn = "name" | "callType" | "contactDate" | "followUp" | "status";
   type SortDirection = "asc" | "desc";
-  const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
-  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+  const [sortColumn, setSortColumn] = useState<SortColumn | null>("contactDate");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const handleSort = (col: SortColumn) => {
     if (sortColumn === col) {
       setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
@@ -354,7 +354,12 @@ export const CareCoordinationDashboard: React.FC = () => {
         } else if (sortColumn === "callType") {
           cmp = (ra.callType || "").localeCompare(rb.callType || "");
         } else if (sortColumn === "contactDate") {
-          cmp = (ra.daysAgo ?? 0) - (rb.daysAgo ?? 0);
+          const aEmpty = ra.contactDate === "--" || !ra.contactDate;
+          const bEmpty = rb.contactDate === "--" || !rb.contactDate;
+          if (aEmpty && !bEmpty) return 1;
+          if (!aEmpty && bEmpty) return -1;
+          if (aEmpty && bEmpty) return 0;
+          cmp = (rb.daysAgo ?? 0) - (ra.daysAgo ?? 0);
         } else if (sortColumn === "followUp") {
           const fa = "followUp" in ra ? (ra.followUp as { value: string }).value : "";
           const fb = "followUp" in rb ? (rb.followUp as { value: string }).value : "";
@@ -895,10 +900,14 @@ export const CareCoordinationDashboard: React.FC = () => {
                     </td>
                     <td className={styles.tableCell}>
                       {record.contactDate}
-                      <br />
-                      <span style={{ color: "var(--colorNeutralForeground3)", fontSize: "12px" }}>
-                        {record.contactTime}
-                      </span>
+                      {record.contactTime && (
+                        <>
+                          <br />
+                          <span style={{ color: "var(--colorNeutralForeground3)", fontSize: "12px" }}>
+                            {record.contactTime}
+                          </span>
+                        </>
+                      )}
                     </td>
                     <td className={styles.tableCell}>
                       <div className={styles.outcomesCell}>
@@ -978,10 +987,14 @@ export const CareCoordinationDashboard: React.FC = () => {
                     </td>
                     <td className={styles.tableCell}>
                       {record.contactDate}
-                      <br />
-                      <span style={{ color: "var(--colorNeutralForeground3)", fontSize: "12px" }}>
-                        {record.contactTime}
-                      </span>
+                      {record.contactTime && (
+                        <>
+                          <br />
+                          <span style={{ color: "var(--colorNeutralForeground3)", fontSize: "12px" }}>
+                            {record.contactTime}
+                          </span>
+                        </>
+                      )}
                     </td>
                     <td className={styles.tableCell}>
                       <div className={styles.outcomesCell}>
