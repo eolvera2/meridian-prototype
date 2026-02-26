@@ -16,6 +16,7 @@ import {
   Delete16Regular,
   Stethoscope20Regular,
   Pill20Regular,
+  Call20Regular,
 } from "@fluentui/react-icons";
 import { useAddPatientFormStyles } from "./AddPatientForm.styles";
 import type { CareCoordinationWorklistItem, CallType } from "./CareCoordinationWorklist.types";
@@ -79,6 +80,55 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
   const [lastDiastolic, setLastDiastolic] = useState("");
   const [homeMonitor, setHomeMonitor] = useState(false);
   const [lifestyleNotes, setLifestyleNotes] = useState("");
+
+  // Campaign settings
+  const [recurrenceInterval, setRecurrenceInterval] = useState(7);
+  const [recurrenceUnit, setRecurrenceUnit] = useState("days");
+  const [timingWindow, setTimingWindow] = useState("Weekdays (8 AM – 5 PM)");
+  const [campaignStartDate, setCampaignStartDate] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
+  const [campaignEndDate, setCampaignEndDate] = useState("");
+  const [retryCount, setRetryCount] = useState(3);
+  const [retryIntervalHours, setRetryIntervalHours] = useState(2);
+  const [leaveVoicemail, setLeaveVoicemail] = useState(true);
+  const [liveTransfer, setLiveTransfer] = useState(false);
+  const [daysBeforeAppt, setDaysBeforeAppt] = useState(2);
+
+  // Campaign descriptions and outcomes per call type
+  const campaignDescriptions: Record<CallType, string> = {
+    "medication-adherence":
+      "Post-discharge medication follow-up to ensure patients are taking prescribed medications correctly, identify barriers to adherence, and coordinate refills or care team interventions.",
+    "patient-intake":
+      "Pre-appointment intake calls to collect patient medical history, current medications, allergies, and reason for visit before their scheduled appointment.",
+    "hypertension-management":
+      "Ongoing blood pressure management outreach to monitor home readings, assess medication adherence, coach on lifestyle modifications, and escalate uncontrolled hypertension.",
+  };
+
+  const campaignOutcomes: Record<CallType, string[]> = {
+    "medication-adherence": [
+      "Confirm Rx pickup",
+      "Verify medication adherence",
+      "Capture side effects",
+      "Assess pain level",
+      "Determine follow-up needs",
+      "Set medication reminders",
+    ],
+    "patient-intake": [
+      "Confirm intake completion",
+      "Verify allergies",
+      "Collect medical history",
+      "Record current symptoms",
+      "Screen for red flags",
+    ],
+    "hypertension-management": [
+      "Record BP reading",
+      "Assess BP goal status",
+      "Verify medication adherence",
+      "Screen for symptoms",
+      "Determine escalation needs",
+    ],
+  };
 
   // ── Auto-fill on MRN blur ──
   const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
@@ -324,35 +374,17 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
 
         {/* Body */}
         <div className={styles.body}>
-          {/* Call Type Selector */}
-          <div>
-            <div className={styles.sectionTitle}>
-              Call Type
-            </div>
-            <div className={styles.fieldGrid}>
-              <div className={styles.fieldFullWidth}>
-                <Label htmlFor="callType" required>Call Type</Label>
-                <Dropdown
-                  id="callType"
-                  value={CALL_TYPE_LABELS[callType]}
-                  onOptionSelect={(_, d) => setCallType((d.optionValue ?? "medication-adherence") as CallType)}
-                  style={{ width: "100%" }}
-                >
-                  <Option value="medication-adherence">{CALL_TYPE_LABELS["medication-adherence"]}</Option>
-                  <Option value="patient-intake">{CALL_TYPE_LABELS["patient-intake"]}</Option>
-                  <Option value="hypertension-management">{CALL_TYPE_LABELS["hypertension-management"]}</Option>
-                </Dropdown>
-              </div>
-            </div>
-          </div>
-
-          {/* Patient Information */}
+          {/* Patient Information — moved to top */}
           <div>
             <div className={styles.sectionTitle}>
               <Person20Regular className={styles.sectionIcon} />
               Patient Information
             </div>
             <div className={styles.fieldGrid}>
+              <div className={styles.fieldFullWidth}>
+                <Label htmlFor="mrn" required>MRN</Label>
+                <Input id="mrn" value={mrn} onChange={(_, d) => setMrn(d.value)} onBlur={handleMrnBlur} placeholder="e.g. 100234" style={{ width: "100%" }} />
+              </div>
               <div>
                 <Label htmlFor="firstName" required>First Name</Label>
                 <Input id="firstName" value={firstName} onChange={(_, d) => setFirstName(d.value)} placeholder="First name" style={{ width: "100%" }} />
@@ -370,10 +402,6 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
                 </Dropdown>
               </div>
               <div>
-                <Label htmlFor="mrn" required>MRN</Label>
-                <Input id="mrn" value={mrn} onChange={(_, d) => setMrn(d.value)} onBlur={handleMrnBlur} placeholder="e.g. 100234" style={{ width: "100%" }} />
-              </div>
-              <div>
                 <Label htmlFor="language">Language Preference</Label>
                 <Dropdown id="language" placeholder="Select language" value={languagePreference} onOptionSelect={(_, d) => setLanguagePreference(d.optionText ?? "English")} style={{ width: "100%" }}>
                   <Option>English</Option>
@@ -382,9 +410,184 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
                   <Option>Mandarin</Option>
                 </Dropdown>
               </div>
+            </div>
+          </div>
+
+          {/* Outreach Campaign */}
+          <div>
+            <div className={styles.sectionTitle}>
+              <Call20Regular className={styles.sectionIcon} />
+              Outreach Campaign
+            </div>
+            <div className={styles.fieldGrid}>
+              {/* Call Type dropdown — stays as first element */}
               <div className={styles.fieldFullWidth}>
-                <Label htmlFor="reason" required>Reason for Visit</Label>
-                <Textarea id="reason" value={reason} onChange={(_, d) => setReason(d.value)} placeholder="Brief reason for visit" resize="vertical" style={{ width: "100%" }} />
+                <Label htmlFor="callType" required>Call Type</Label>
+                <Dropdown
+                  id="callType"
+                  value={CALL_TYPE_LABELS[callType]}
+                  onOptionSelect={(_, d) => {
+                    const newType = (d.optionValue ?? "medication-adherence") as CallType;
+                    setCallType(newType);
+                    setLiveTransfer(newType === "hypertension-management");
+                  }}
+                  style={{ width: "100%" }}
+                >
+                  <Option value="medication-adherence">{CALL_TYPE_LABELS["medication-adherence"]}</Option>
+                  <Option value="patient-intake">{CALL_TYPE_LABELS["patient-intake"]}</Option>
+                  <Option value="hypertension-management">{CALL_TYPE_LABELS["hypertension-management"]}</Option>
+                </Dropdown>
+              </div>
+
+              {/* Campaign Description */}
+              <div className={styles.fieldFullWidth}>
+                <div style={{
+                  fontSize: "12px",
+                  color: "#616161",
+                  backgroundColor: "#F5F5F5",
+                  padding: "10px 14px",
+                  borderRadius: "6px",
+                  lineHeight: "18px",
+                }}>
+                  {campaignDescriptions[callType]}
+                </div>
+              </div>
+
+              {/* What the system will collect */}
+              <div className={styles.fieldFullWidth}>
+                <Label style={{ marginBottom: "4px" }}>What the system will collect</Label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 24px" }}>
+                  {campaignOutcomes[callType].map((item, idx) => (
+                    <span key={idx} style={{ fontSize: "12px", color: "#424242" }}>
+                      • {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Campaign Settings */}
+              <div className={styles.fieldFullWidth}>
+                <div style={{
+                  border: "1px solid #E0E0E0",
+                  borderRadius: "8px",
+                  padding: "16px",
+                }}>
+                  <div className={styles.sectionTitle}>Campaign Settings</div>
+                  <div className={styles.fieldGrid}>
+                    {/* Recurrence / Days Before Appointment */}
+                    {callType !== "patient-intake" ? (
+                      <div className={styles.fieldFullWidth}>
+                        <Label>Recurrence</Label>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <span style={{ fontSize: "13px" }}>Every</span>
+                          <Input
+                            type="number"
+                            value={String(recurrenceInterval)}
+                            onChange={(_, d) => setRecurrenceInterval(Number(d.value) || 1)}
+                            style={{ width: "60px" }}
+                          />
+                          <Dropdown
+                            value={recurrenceUnit}
+                            onOptionSelect={(_, d) => setRecurrenceUnit(d.optionText ?? "days")}
+                            style={{ minWidth: "100px" }}
+                          >
+                            <Option>days</Option>
+                            <Option>weeks</Option>
+                            <Option>months</Option>
+                          </Dropdown>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className={styles.fieldFullWidth}>
+                        <Label>Days Before Appointment</Label>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <span style={{ fontSize: "13px" }}>Call</span>
+                          <Input
+                            type="number"
+                            value={String(daysBeforeAppt)}
+                            onChange={(_, d) => setDaysBeforeAppt(Number(d.value) || 1)}
+                            style={{ width: "50px" }}
+                          />
+                          <span style={{ fontSize: "13px" }}>days before appointment</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Timing Window */}
+                    <div className={styles.fieldFullWidth}>
+                      <Label>Timing Window</Label>
+                      <Dropdown
+                        value={timingWindow}
+                        onOptionSelect={(_, d) => setTimingWindow(d.optionText ?? "Weekdays (8 AM – 5 PM)")}
+                        style={{ width: "100%" }}
+                      >
+                        <Option>Weekday mornings (8 AM – 12 PM)</Option>
+                        <Option>Weekday afternoons (12 PM – 5 PM)</Option>
+                        <Option>Weekdays (8 AM – 5 PM)</Option>
+                        <Option>Any day (8 AM – 8 PM)</Option>
+                      </Dropdown>
+                    </div>
+
+                    {/* Start Date */}
+                    <div>
+                      <Label>Start Date</Label>
+                      <Input
+                        type="date"
+                        value={campaignStartDate}
+                        onChange={(_, d) => setCampaignStartDate(d.value)}
+                        style={{ width: "100%" }}
+                      />
+                    </div>
+
+                    {/* End Date */}
+                    <div>
+                      <Label>End Date</Label>
+                      <Input
+                        type="date"
+                        value={campaignEndDate}
+                        onChange={(_, d) => setCampaignEndDate(d.value)}
+                        style={{ width: "100%" }}
+                      />
+                    </div>
+
+                    {/* Retry Policy */}
+                    <div className={styles.fieldFullWidth}>
+                      <Label>Retry Policy</Label>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                        <span style={{ fontSize: "13px" }}>Retry up to</span>
+                        <Input
+                          type="number"
+                          value={String(retryCount)}
+                          onChange={(_, d) => setRetryCount(Number(d.value) || 1)}
+                          style={{ width: "50px" }}
+                        />
+                        <span style={{ fontSize: "13px" }}>times, every</span>
+                        <Input
+                          type="number"
+                          value={String(retryIntervalHours)}
+                          onChange={(_, d) => setRetryIntervalHours(Number(d.value) || 1)}
+                          style={{ width: "50px" }}
+                        />
+                        <span style={{ fontSize: "13px" }}>hours</span>
+                      </div>
+                      <Checkbox
+                        checked={leaveVoicemail}
+                        onChange={(_, d) => setLeaveVoicemail(!!d.checked)}
+                        label="Leave voicemail on last attempt"
+                        style={{ marginTop: "8px" }}
+                      />
+                    </div>
+
+                    {/* Live Transfer */}
+                    <div className={styles.fieldFullWidth}>
+                      <Checkbox
+                        checked={liveTransfer}
+                        onChange={(_, d) => setLiveTransfer(!!d.checked)}
+                        label="Enable live transfer for escalations"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -518,6 +721,10 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
             </div>
             <div className={styles.fieldGrid}>
               <div className={styles.fieldFullWidth}>
+                <Label htmlFor="reason" required>Reason for Visit</Label>
+                <Textarea id="reason" value={reason} onChange={(_, d) => setReason(d.value)} placeholder="Brief reason for visit" resize="vertical" style={{ width: "100%" }} />
+              </div>
+              <div className={styles.fieldFullWidth}>
                 <Label htmlFor="allergies">Allergies (comma-separated)</Label>
                 <Input id="allergies" value={allergies} onChange={(_, d) => setAllergies(d.value)} placeholder="e.g. Penicillin, Sulfa" style={{ width: "100%" }} />
               </div>
@@ -588,11 +795,12 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
           </Button>
           <Button
             appearance="primary"
-            icon={<PersonAdd20Regular />}
+            icon={<Call20Regular />}
             onClick={handleSave}
-            disabled={!firstName.trim() || !lastName.trim()}
+            disabled={!mrn.trim() || !firstName.trim() || !lastName.trim()}
+            style={{ height: "44px", fontSize: "14px", fontWeight: 600 }}
           >
-            Save Patient
+            Schedule Call
           </Button>
         </div>
       </div>
