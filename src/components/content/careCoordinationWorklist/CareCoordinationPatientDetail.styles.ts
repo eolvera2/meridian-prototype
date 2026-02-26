@@ -178,6 +178,29 @@ export const usePatientDetailStyles = makeStyles({
     lineHeight: "18px",
   },
 
+  // ── Call-type badge (inline → named) ──
+  callTypeBadge: {
+    display: "inline-flex",
+    alignItems: "center",
+    marginLeft: "8px",
+    borderRadius: "16px",
+    padding: "2px 8px",
+    fontSize: "10px",
+    fontWeight: 600,
+  },
+  callTypeBadgeMedAdherence: {
+    backgroundColor: "#E8F0FE",
+    color: "#1B6EC2",
+  },
+  callTypeBadgePatientIntake: {
+    backgroundColor: "#E1F5F0",
+    color: "#0E7C6B",
+  },
+  callTypeBadgeHypertension: {
+    backgroundColor: "#F3E8FD",
+    color: "#7B2D8E",
+  },
+
   // ── Contact history ──
   contactEntry: {
     display: "flex",
@@ -189,6 +212,13 @@ export const usePatientDetailStyles = makeStyles({
       borderBottom: "none",
     },
   },
+  /** Yellow highlight for entries that need review. */
+  needsReviewHighlight: {
+    backgroundColor: "#FFF8E1",
+    borderLeft: "3px solid #CA5010",
+    paddingLeft: "12px",
+    borderRadius: "4px",
+  },
   contactHeaderRow: {
     display: "flex",
     alignItems: "center",
@@ -199,6 +229,15 @@ export const usePatientDetailStyles = makeStyles({
     fontSize: "13px",
     fontWeight: 600,
     color: tokens.colorNeutralForeground1,
+  },
+  contactDateSpacing: {
+    marginRight: "12px",
+  },
+  /** "Call date/time: … · Duration: X min" meta text. */
+  contactMetaText: {
+    fontSize: "11px",
+    color: tokens.colorNeutralForeground3,
+    marginRight: "12px",
   },
   transcriptLink: {
     fontSize: "12px",
@@ -212,6 +251,16 @@ export const usePatientDetailStyles = makeStyles({
     "&:hover": {
       textDecoration: "underline",
     },
+  },
+  transcriptLinkSpacing: {
+    marginRight: "12px",
+  },
+  transcriptSmallIcon: {
+    width: "14px",
+    height: "14px",
+  },
+  reviewButtonAuto: {
+    marginLeft: "auto",
   },
   contactActions: {
     display: "flex",
@@ -235,6 +284,14 @@ export const usePatientDetailStyles = makeStyles({
     backgroundColor: tokens.colorNeutralBackground3,
     padding: "8px 12px",
     borderRadius: "6px",
+  },
+  /** "AI-generated content may be incorrect" disclaimer. */
+  aiDisclaimer: {
+    fontSize: "10px",
+    color: tokens.colorNeutralForeground3,
+    fontStyle: "italic",
+    marginTop: "4px",
+    textAlign: "center" as const,
   },
 
   // ── Outcome grid (2x2) ──
@@ -293,6 +350,24 @@ export const usePatientDetailStyles = makeStyles({
     textTransform: "uppercase",
     letterSpacing: "0.5px",
     marginBottom: "4px",
+  },
+  notesTextarea: {
+    width: "100%",
+    minHeight: "60px",
+    fontSize: "12px",
+    lineHeight: "18px",
+    padding: "8px 12px",
+    border: `1px solid ${tokens.colorNeutralStroke1}`,
+    borderRadius: "4px",
+    resize: "vertical" as const,
+    fontFamily: "inherit",
+    color: tokens.colorNeutralForeground2,
+    boxSizing: "border-box" as const,
+  },
+
+  /** Italic text for empty-state messages. */
+  emptyStateItalic: {
+    fontStyle: "italic",
   },
 
   // ── Medication grid ──

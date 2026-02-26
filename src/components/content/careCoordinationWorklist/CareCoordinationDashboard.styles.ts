@@ -289,6 +289,7 @@ export const useDashboardStyles = makeStyles({
     height: "100%",
     borderRadius: "4px",
     transition: "width 0.4s ease",
+    backgroundColor: tokens.colorBrandBackground,
   },
   barValue: {
     fontSize: tokens.fontSizeBase200,
@@ -658,5 +659,60 @@ export const useDashboardStyles = makeStyles({
     whiteSpace: "nowrap",
     backgroundColor: "#F3E8FD",
     color: "#5B2D8E",
+  },
+
+  // ── Extracted-component styles (formerly inline) ──────────────
+  adminToggleRow: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  sortableHeader: {
+    cursor: "pointer",
+    userSelect: "none" as const,
+  },
+  sortIcon: {
+    verticalAlign: "middle",
+    marginLeft: "4px",
+  },
+  sortIconInactive: {
+    verticalAlign: "middle",
+    marginLeft: "4px",
+    opacity: 0.4,
+  },
+  contactTimeSubtext: {
+    color: tokens.colorNeutralForeground3,
+    fontSize: "12px",
+  },
+  statusCellInner: {
+    display: "flex",
+    alignItems: "center",
+    gap: "4px",
+  },
+  urgencyNoteText: {
+    display: "flex",
+    alignItems: "center",
+    gap: "3px",
+    color: "#D13438",
+    fontSize: "10px",
+    fontStyle: "italic",
+    lineHeight: "1.2",
+    marginTop: "2px",
+  },
+  urgencyNoteIcon: {
+    color: "#D13438",
+    fontSize: "12px",
+    flexShrink: 0,
+  },
+  summaryCountItem: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "4px",
+  },
+  summaryCountLabel: {
+    textAlign: "right" as const,
+    whiteSpace: "nowrap" as const,
+  },
+  urgencyRowBg: {
+    backgroundColor: "#FFF8E1",
   },
 });

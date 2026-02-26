@@ -110,4 +110,58 @@ export const useAddPatientFormStyles = makeStyles({
     minWidth: "auto",
     color: tokens.colorNeutralForeground3,
   },
+  campaignDescription: {
+    fontSize: "12px",
+    color: tokens.colorNeutralForeground3,
+    backgroundColor: tokens.colorNeutralBackground2,
+    paddingTop: "10px",
+    paddingBottom: "10px",
+    paddingLeft: "14px",
+    paddingRight: "14px",
+    borderRadius: "6px",
+    lineHeight: "18px",
+  },
+  outcomesGrid: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    rowGap: "4px",
+    columnGap: "24px",
+  },
+  outcomeItem: {
+    fontSize: "12px",
+    color: tokens.colorNeutralForeground2,
+  },
+  campaignSettingsCard: {
+    border: `1px solid ${tokens.colorNeutralStroke2}`,
+    borderRadius: "8px",
+    paddingTop: "16px",
+    paddingBottom: "16px",
+    paddingLeft: "16px",
+    paddingRight: "16px",
+  },
+  inlineRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+  inlineRowWrap: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    flexWrap: "wrap",
+  },
+  inlineLabel: {
+    fontSize: "13px",
+  },
+  outcomesLabel: {
+    marginBottom: "4px",
+  },
+  voicemailCheckbox: {
+    marginTop: "8px",
+  },
+  scheduleButton: {
+    height: "44px",
+    fontSize: "14px",
+    fontWeight: tokens.fontWeightSemibold,
+  },
 });
