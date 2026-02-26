@@ -44,6 +44,9 @@ import {
   BookDismiss20Filled,
   FlagCheckered20Regular,
   FlagOff20Filled,
+  ArrowSort16Regular,
+  ArrowSortUp16Filled,
+  ArrowSortDown16Filled,
   History20Regular,
   HistoryDismiss20Filled,
   Emoji20Regular,
@@ -241,6 +244,28 @@ export const CareCoordinationDashboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
   const [patientSearch, setPatientSearch] = useState("");
+  type SortColumn = "name" | "callType" | "contactDate" | "followUp" | "status";
+  type SortDirection = "asc" | "desc";
+  const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+  const handleSort = (col: SortColumn) => {
+    if (sortColumn === col) {
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSortColumn(col);
+      setSortDirection("asc");
+    }
+    setCurrentPage(1);
+  };
+  const SortIcon: React.FC<{ column: SortColumn }> = ({ column }) => {
+    const style = { verticalAlign: "middle" as const, marginLeft: "4px" };
+    if (sortColumn === column) {
+      return sortDirection === "asc"
+        ? <ArrowSortUp16Filled style={style} />
+        : <ArrowSortDown16Filled style={style} />;
+    }
+    return <ArrowSort16Regular style={{ ...style, opacity: 0.4 }} />;
+  };
   const { activeCallRecords, setSelectedPatientId, contactRecords, callTypeFilter, setCallTypeFilter } = useCareCoordinationWorklistContext();
 
   const handleTimeRangeChange = (_: unknown, data: OptionOnSelectData) => {
@@ -311,12 +336,39 @@ export const CareCoordinationDashboard: React.FC = () => {
     const historyRows = statusFilter === "in-progress"
       ? []
       : displayedRecords.map((r) => ({ type: "history" as const, record: r }));
-    // Apply patient search filter
     const combined = [...activeRows, ...historyRows];
-    if (!patientSearch.trim()) return combined;
-    const searchLower = patientSearch.trim().toLowerCase();
-    return combined.filter((item) => item.record.name.toLowerCase().includes(searchLower));
-  }, [activeCallRecords, displayedRecords, statusFilter, callTypeFilter, patientSearch]);
+    let filtered = combined;
+    if (patientSearch.trim()) {
+      const searchLower = patientSearch.trim().toLowerCase();
+      filtered = combined.filter((item) => item.record.name.toLowerCase().includes(searchLower));
+    }
+    // Apply sorting
+    if (sortColumn) {
+      const dir = sortDirection === "asc" ? 1 : -1;
+      filtered.sort((a, b) => {
+        const ra = a.record;
+        const rb = b.record;
+        let cmp = 0;
+        if (sortColumn === "name") {
+          cmp = ra.name.localeCompare(rb.name);
+        } else if (sortColumn === "callType") {
+          cmp = (ra.callType || "").localeCompare(rb.callType || "");
+        } else if (sortColumn === "contactDate") {
+          cmp = (ra.daysAgo ?? 0) - (rb.daysAgo ?? 0);
+        } else if (sortColumn === "followUp") {
+          const fa = "followUp" in ra ? (ra.followUp as { value: string }).value : "";
+          const fb = "followUp" in rb ? (rb.followUp as { value: string }).value : "";
+          cmp = fa.localeCompare(fb);
+        } else if (sortColumn === "status") {
+          const sa = "status" in ra ? String(ra.status) : "";
+          const sb = "status" in rb ? String(rb.status) : "";
+          cmp = sa.localeCompare(sb);
+        }
+        return cmp * dir;
+      });
+    }
+    return filtered;
+  }, [activeCallRecords, displayedRecords, statusFilter, callTypeFilter, patientSearch, sortColumn, sortDirection]);
 
   const totalPages = Math.max(1, Math.ceil(allTableRecords.length / PAGE_SIZE));
   const paginatedRecords = allTableRecords.slice(
@@ -738,11 +790,11 @@ export const CareCoordinationDashboard: React.FC = () => {
           <div className={styles.historyFilterGroup}>
             <span className={styles.filterLabel}>Contact Status</span>
             <Dropdown
-              defaultValue="All Active Statuses"
-              defaultSelectedOptions={["all-active"]}
+              value={statusFilter === "all-active" ? "All Active Statuses" : statusFilter === "all" ? "All Statuses" : statusFilter === "in-progress" ? "In Progress" : statusFilter === "needs-review" ? "Ready for Review" : statusFilter === "scheduled" ? "Scheduled" : statusFilter === "scheduled-for-retry" ? "Scheduled for Retry" : statusFilter === "reviewed" ? "Reviewed" : "All Active Statuses"}
+              selectedOptions={[statusFilter]}
               onOptionSelect={(_, data) => setStatusFilter(data.optionValue ?? "all-active")}
             >
-              <Option value="all-active"><strong>All Active Statuses</strong></Option>
+              <Option value="all-active" text="All Active Statuses"><strong>All Active Statuses</strong></Option>
               <Option value="all">All Statuses</Option>
               <Option value="in-progress">In Progress</Option>
               <Option value="needs-review">Ready for Review</Option>
@@ -794,12 +846,22 @@ export const CareCoordinationDashboard: React.FC = () => {
         <table className={styles.table} aria-label="Patient contact history">
           <thead>
             <tr>
-              <th className={styles.tableHeader}>Patient Name</th>
-              <th className={styles.tableHeader}>Call Type</th>
-              <th className={styles.tableHeader}>Contact Date</th>
+              <th className={styles.tableHeader} style={{ cursor: "pointer", userSelect: "none" }} onClick={() => handleSort("name")}>
+                Patient Name <SortIcon column="name" />
+              </th>
+              <th className={styles.tableHeader} style={{ cursor: "pointer", userSelect: "none" }} onClick={() => handleSort("callType")}>
+                Call Type <SortIcon column="callType" />
+              </th>
+              <th className={styles.tableHeader} style={{ cursor: "pointer", userSelect: "none" }} onClick={() => handleSort("contactDate")}>
+                Contact Date <SortIcon column="contactDate" />
+              </th>
               <th className={styles.tableHeader}>Outcomes</th>
-              <th className={styles.tableHeader}>Follow-up</th>
-              <th className={styles.tableHeader}>Status</th>
+              <th className={styles.tableHeader} style={{ cursor: "pointer", userSelect: "none" }} onClick={() => handleSort("followUp")}>
+                Follow-up <SortIcon column="followUp" />
+              </th>
+              <th className={styles.tableHeader} style={{ cursor: "pointer", userSelect: "none" }} onClick={() => handleSort("status")}>
+                Status <SortIcon column="status" />
+              </th>
             </tr>
           </thead>
           <tbody>

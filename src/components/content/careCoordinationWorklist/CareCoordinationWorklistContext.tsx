@@ -474,6 +474,31 @@ export const CareCoordinationWorklistProvider: React.FC<{
   const addPatient = useCallback((patient: CareCoordinationWorklistItem) => {
     patientRegistryRef.current.set(patient.id, patient);
     setPatients((prev) => [patient, ...prev]);
+
+    // If patient is added directly to contact list (scheduled), create a ContactRecord
+    if (patient.group === "contact-list" && patient.status === "Scheduled") {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+      const timeStr = now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+      const newRecord: ContactRecord = {
+        id: `cr-new-${Date.now()}`,
+        patientId: patient.id,
+        name: patient.name,
+        callType: patient.callType || "medication-adherence",
+        contactDate: dateStr,
+        contactTime: timeStr,
+        daysAgo: 0,
+        phone: patient.phone || "",
+        pickedUpMeds: "—",
+        takingAsRx: { value: "—", warning: false },
+        sideEffects: { value: "—", warning: false },
+        painLevel: 0,
+        followUp: { value: "—", warning: false },
+        reviewed: false,
+        scheduled: true,
+      };
+      setContactRecords((prev) => [newRecord, ...prev]);
+    }
   }, []);
 
   const removeFromQueue = useCallback((patientIds: string[]) => {
