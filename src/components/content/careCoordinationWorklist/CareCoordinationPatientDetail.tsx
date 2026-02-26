@@ -7,19 +7,9 @@ import {
   Script24Regular,
   Library24Regular,
   MoreVertical24Regular,
-  CalendarLtr20Regular,
-  CalendarArrowRight20Regular,
-  Phone20Regular,
-  Mail20Regular,
-  Location20Regular,
-  People20Regular,
   Clock20Regular,
   Link20Regular,
-  Checkmark16Regular,
-  Warning16Regular,
-  ClipboardTask20Regular,
-  Stethoscope20Regular,
-  ClipboardCheckmark20Regular,
+  People20Regular,
   Pill20Regular,
 } from "@fluentui/react-icons";
 import { usePatientDetailStyles } from "./CareCoordinationPatientDetail.styles";
@@ -28,8 +18,17 @@ import type { CareCoordinationWorklistItem, CallType } from "./CareCoordinationW
 import { CALL_TYPE_LABELS } from "./CareCoordinationWorklist.types";
 import { useOptionalTooltipContext } from "../tooltip/useTooltipHooks";
 import { AICallTranscriptModal } from "./AICallTranscriptModal";
+import { ContactHistoryEntryRow } from "./components/ContactHistoryEntry";
+import { PatientInfoGrid } from "./components/PatientInfoGrid";
 
 const ChevronLeft = bundleIcon(ChevronLeft24Filled, ChevronLeft24Regular);
+
+/** Map a call type to its badge style class. */
+const BADGE_CLASS_MAP: Record<CallType, "callTypeBadgeMedAdherence" | "callTypeBadgePatientIntake" | "callTypeBadgeHypertension"> = {
+  "medication-adherence": "callTypeBadgeMedAdherence",
+  "patient-intake": "callTypeBadgePatientIntake",
+  "hypertension-management": "callTypeBadgeHypertension",
+};
 
 export const CareCoordinationPatientDetail: React.FC = () => {
   const styles = usePatientDetailStyles();
@@ -55,6 +54,13 @@ export const CareCoordinationPatientDetail: React.FC = () => {
     setEditedNotes(prev => ({ ...prev, [idx]: value }));
   }, []);
 
+  const handleMarkReviewed = useCallback(() => {
+    if (selectedPatientId) {
+      markPatientAsReviewed(selectedPatientId);
+      setSelectedPatientId(null);
+    }
+  }, [selectedPatientId, markPatientAsReviewed, setSelectedPatientId]);
+
   return (
     <div className={styles.root}>
       {/* ── Header ── */}
@@ -73,12 +79,7 @@ export const CareCoordinationPatientDetail: React.FC = () => {
         <div className={styles.patientInfo}>
           <div className={styles.patientName}>
             {patient.name}
-            <span style={{
-              display: "inline-flex", alignItems: "center", marginLeft: 8,
-              borderRadius: 16, padding: "2px 8px", fontSize: 10, fontWeight: 600,
-              backgroundColor: patientCallType === "patient-intake" ? "#E1F5F0" : patientCallType === "hypertension-management" ? "#F3E8FD" : "#E8F0FE",
-              color: patientCallType === "patient-intake" ? "#0E7C6B" : patientCallType === "hypertension-management" ? "#7B2D8E" : "#1B6EC2",
-            }}>
+            <span className={mergeClasses(styles.callTypeBadge, styles[BADGE_CLASS_MAP[patientCallType]])}>
               {CALL_TYPE_LABELS[patientCallType]}
             </span>
           </div>
@@ -135,326 +136,22 @@ export const CareCoordinationPatientDetail: React.FC = () => {
           </div>
 
           {contactHistory.map((entry, idx) => (
-            <div className={styles.contactEntry} key={idx} style={idx === 0 && needsReview ? { backgroundColor: "#FFF8E1", borderLeft: "3px solid #CA5010", paddingLeft: "12px", borderRadius: "4px" } : undefined}>
-              {/* Date + call info + transcript link + Mark as Reviewed — single row */}
-              <div className={styles.contactHeaderRow} style={{ flexWrap: "wrap", alignItems: "center" }}>
-                <span className={styles.contactDate} style={{ marginRight: "12px" }}>{entry.date}</span>
-                <span style={{ fontSize: "11px", color: "#707070", marginRight: "12px" }}>
-                  Call date/time: {entry.date} · Duration: {[7, 5, 4, 6, 3][idx % 5]} min
-                </span>
-                {entry.transcriptLink && (
-                  <span className={styles.transcriptLink} onClick={() => setTranscriptOpen(true)} style={{ marginRight: "12px" }}>
-                    <Script24Regular style={{ width: 14, height: 14 }} />
-                    View AI Call Transcript
-                  </span>
-                )}
-                {idx === 0 && needsReview && (
-                  <Button
-                    appearance="primary"
-                    size="small"
-                    icon={<ClipboardCheckmark20Regular />}
-                    style={{ marginLeft: "auto" }}
-                    onClick={() => {
-                      if (selectedPatientId) {
-                        markPatientAsReviewed(selectedPatientId);
-                        setSelectedPatientId(null);
-                      }
-                    }}
-                  >
-                    Mark as Reviewed
-                  </Button>
-                )}
-              </div>
-
-              {/* Transcript summary */}
-              {entry.transcriptSummary && (
-                <div className={styles.contactSummary}>
-                  {entry.transcriptSummary}
-                  <div style={{ fontSize: "10px", color: "#707070", fontStyle: "italic", marginTop: "4px", textAlign: "center" }}>
-                    AI-generated content may be incorrect
-                  </div>
-                </div>
-              )}
-
-              {/* Outcome grid — branched by call type */}
-              {patientCallType === "patient-intake" ? (
-              <div className={styles.outcomeGrid}>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Intake completed</span>
-                  {entry.intakeCompleted != null ? (
-                    <>
-                      {entry.intakeCompleted ? (
-                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      ) : (
-                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      )}
-                      <span className={mergeClasses(styles.outcomeValue, entry.intakeCompleted ? styles.outcomePositive : styles.outcomeNegative)}>
-                        {entry.intakeCompleted ? "Yes" : "No"}
-                      </span>
-                    </>
-                  ) : <span className={styles.outcomeValue}>—</span>}
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Allergies confirmed</span>
-                  {entry.allergiesConfirmed != null ? (
-                    <>
-                      {entry.allergiesConfirmed ? (
-                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      ) : (
-                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      )}
-                      <span className={mergeClasses(styles.outcomeValue, entry.allergiesConfirmed ? styles.outcomePositive : styles.outcomeNegative)}>
-                        {entry.allergiesConfirmed ? "Yes" : "No"}
-                      </span>
-                    </>
-                  ) : <span className={styles.outcomeValue}>—</span>}
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Medical history collected</span>
-                  {entry.medicalHistoryCollected != null ? (
-                    <>
-                      {entry.medicalHistoryCollected ? (
-                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      ) : (
-                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      )}
-                      <span className={mergeClasses(styles.outcomeValue, entry.medicalHistoryCollected ? styles.outcomePositive : styles.outcomeNegative)}>
-                        {entry.medicalHistoryCollected ? "Yes" : "No"}
-                      </span>
-                    </>
-                  ) : <span className={styles.outcomeValue}>—</span>}
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Symptoms reported</span>
-                  <span className={mergeClasses(styles.outcomeValue, styles.outcomeNeutral)}>
-                    {entry.symptomsReported ?? "—"}
-                  </span>
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Red flag identified</span>
-                  {entry.redFlagIdentified != null ? (
-                    <>
-                      {entry.redFlagIdentified ? (
-                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      ) : (
-                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      )}
-                      <span className={mergeClasses(styles.outcomeValue, entry.redFlagIdentified ? styles.outcomeNegative : styles.outcomePositive)}>
-                        {entry.redFlagIdentified ? "Yes" : "No"}
-                      </span>
-                    </>
-                  ) : <span className={styles.outcomeValue}>—</span>}
-                </div>
-              </div>
-              ) : patientCallType === "hypertension-management" ? (
-              <div className={styles.outcomeGrid}>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>BP reading</span>
-                  <span className={mergeClasses(styles.outcomeValue, styles.outcomeNeutral)}>
-                    {entry.bpReading ? (typeof entry.bpReading === "string" ? entry.bpReading : `${entry.bpReading.systolic}/${entry.bpReading.diastolic}`) : "—"}
-                  </span>
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>BP at goal</span>
-                  {entry.bpAtGoal != null ? (
-                    <>
-                      {entry.bpAtGoal ? (
-                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      ) : (
-                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      )}
-                      <span className={mergeClasses(styles.outcomeValue, entry.bpAtGoal ? styles.outcomePositive : styles.outcomeNegative)}>
-                        {entry.bpAtGoal ? "Yes" : "No"}
-                      </span>
-                    </>
-                  ) : <span className={styles.outcomeValue}>—</span>}
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Medication adherence</span>
-                  {entry.medicationAdherence != null ? (
-                    <>
-                      {entry.medicationAdherence ? (
-                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      ) : (
-                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      )}
-                      <span className={mergeClasses(styles.outcomeValue, entry.medicationAdherence ? styles.outcomePositive : styles.outcomeNegative)}>
-                        {entry.medicationAdherence ? "Yes" : "No"}
-                      </span>
-                    </>
-                  ) : <span className={styles.outcomeValue}>—</span>}
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Symptoms present</span>
-                  {entry.symptomsPresent != null ? (
-                    <>
-                      {entry.symptomsPresent ? (
-                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      ) : (
-                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      )}
-                      <span className={mergeClasses(styles.outcomeValue, entry.symptomsPresent ? styles.outcomeNegative : styles.outcomePositive)}>
-                        {entry.symptomsPresent ? "Yes" : "No"}
-                      </span>
-                    </>
-                  ) : <span className={styles.outcomeValue}>—</span>}
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Escalated</span>
-                  {entry.escalated != null ? (
-                    <>
-                      {entry.escalated ? (
-                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      ) : (
-                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      )}
-                      <span className={mergeClasses(styles.outcomeValue, entry.escalated ? styles.outcomeNegative : styles.outcomePositive)}>
-                        {entry.escalated ? "Yes" : "No"}
-                      </span>
-                    </>
-                  ) : <span className={styles.outcomeValue}>—</span>}
-                </div>
-              </div>
-              ) : (
-              /* Medication Adherence — default */
-              <div className={styles.outcomeGrid}>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Picked up medication</span>
-                  <span className={mergeClasses(styles.outcomeValue, styles.outcomeNeutral)}>
-                    {entry.pickedUpMedication ?? "—"}
-                  </span>
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Taking as prescribed</span>
-                  {entry.takingAsPrescribed ? (
-                    <>
-                      {entry.takingAsPrescribed.positive ? (
-                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      ) : (
-                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      )}
-                      <span className={mergeClasses(
-                        styles.outcomeValue,
-                        entry.takingAsPrescribed.positive ? styles.outcomePositive : styles.outcomeNegative
-                      )}>
-                        {entry.takingAsPrescribed.value}
-                      </span>
-                    </>
-                  ) : (
-                    <span className={styles.outcomeValue}>—</span>
-                  )}
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Side effects</span>
-                  {entry.sideEffects && entry.sideEffects !== "Not reported" ? (
-                    <>
-                      <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      <span className={mergeClasses(styles.outcomeValue, styles.outcomeNegative)}>
-                        {entry.sideEffects}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      <span className={mergeClasses(styles.outcomeValue, styles.outcomePositive)}>
-                        {entry.sideEffects ?? "Not reported"}
-                      </span>
-                    </>
-                  )}
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Pain level</span>
-                  {entry.painLevel != null ? (
-                    <span className={mergeClasses(
-                      styles.outcomeValue,
-                      entry.painLevel === 0 ? styles.outcomePositive
-                        : entry.painLevel <= 3 ? styles.outcomeNeutral
-                        : entry.painLevel <= 6 ? styles.outcomeNeutral
-                        : styles.outcomeNegative
-                    )}>
-                      {entry.painLevel}/10
-                    </span>
-                  ) : (
-                    <span className={styles.outcomeValue}>—</span>
-                  )}
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Follow-up needed</span>
-                  {entry.followUpNeeded ? (
-                    <>
-                      {entry.followUpNeeded.positive ? (
-                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      ) : (
-                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      )}
-                      <span className={mergeClasses(
-                        styles.outcomeValue,
-                        entry.followUpNeeded.positive ? styles.outcomePositive : styles.outcomeNegative
-                      )}>
-                        {entry.followUpNeeded.value}
-                      </span>
-                    </>
-                  ) : (
-                    <span className={styles.outcomeValue}>—</span>
-                  )}
-                </div>
-                <div className={styles.outcomeItem}>
-                  <span className={styles.outcomeLabel}>Reminder set</span>
-                  {entry.reminderSet ? (
-                    <>
-                      {entry.reminderSet === "Yes" ? (
-                        <Checkmark16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomePositive)} />
-                      ) : (
-                        <Warning16Regular className={mergeClasses(styles.outcomeIcon, styles.outcomeNegative)} />
-                      )}
-                      <span className={mergeClasses(
-                        styles.outcomeValue,
-                        entry.reminderSet === "Yes" ? styles.outcomePositive : styles.outcomeNegative
-                      )}>
-                        {entry.reminderSet}
-                      </span>
-                    </>
-                  ) : (
-                    <span className={styles.outcomeValue}>—</span>
-                  )}
-                </div>
-              </div>
-              )}
-
-              {/* Notes — editable */}
-              <div>
-                <div className={styles.notesLabel}>NOTES</div>
-                <textarea
-                  value={editedNotes[idx] ?? entry.notes ?? ""}
-                  onChange={(e) => handleNoteChange(idx, e.target.value)}
-                  style={{
-                    width: "100%",
-                    minHeight: "60px",
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    padding: "8px 12px",
-                    border: `1px solid #d1d1d1`,
-                    borderRadius: "4px",
-                    resize: "vertical",
-                    fontFamily: "inherit",
-                    color: "#424242",
-                    boxSizing: "border-box",
-                  }}
-                  onFocus={(e) => tooltipHandlers?.onFocus(e as unknown as React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>)}
-                  onBlur={(e) => tooltipHandlers?.onBlur(e as unknown as React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>)}
-                  onMouseEnter={(e) => tooltipHandlers?.onMouseEnter(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
-                  onMouseMove={(e) => tooltipHandlers?.onMouseMove(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
-                  onMouseLeave={(e) => tooltipHandlers?.onMouseLeave(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
-                  onClick={(e) => tooltipHandlers?.onClick(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
-                  onKeyDown={(e) => tooltipHandlers?.onKeyDown(e as unknown as React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>)}
-                  onKeyUp={(e) => tooltipHandlers?.onKeyUp(e as unknown as React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>)}
-                />
-              </div>
-            </div>
+            <ContactHistoryEntryRow
+              key={idx}
+              entry={entry}
+              index={idx}
+              callType={patientCallType}
+              needsReview={needsReview}
+              editedNote={editedNotes[idx]}
+              onNoteChange={handleNoteChange}
+              onTranscriptOpen={() => setTranscriptOpen(true)}
+              onMarkReviewed={handleMarkReviewed}
+              tooltipHandlers={tooltipHandlers}
+            />
           ))}
 
           {contactHistory.length === 0 && (
-            <span className={styles.infoValue} style={{ fontStyle: "italic" }}>
+            <span className={mergeClasses(styles.infoValue, styles.emptyStateItalic)}>
               No contact history available.
             </span>
           )}
@@ -500,7 +197,7 @@ export const CareCoordinationPatientDetail: React.FC = () => {
           </div>
 
           {medications.length === 0 && (
-            <span className={styles.infoValue} style={{ fontStyle: "italic" }}>
+            <span className={mergeClasses(styles.infoValue, styles.emptyStateItalic)}>
               No medication data available.
             </span>
           )}
@@ -512,144 +209,7 @@ export const CareCoordinationPatientDetail: React.FC = () => {
             <People20Regular className={styles.sectionIcon} />
             <span className={styles.sectionTitle}>Patient Information</span>
           </div>
-          <div className={styles.infoColumns}>
-            {/* Left column */}
-            <div className={styles.infoColumn}>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <CalendarLtr20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>DATE OF BIRTH</span>
-                </div>
-                <span className={styles.infoValue}>{patient.dateOfBirth ?? "—"}</span>
-              </div>
-              {(patientCallType === "medication-adherence") && (
-              <>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <CalendarArrowRight20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>DISCHARGE DATE</span>
-                </div>
-                <span className={styles.infoValue}>{patient.dischargeDate}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <ClipboardTask20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>DISCHARGE INSTRUCTIONS</span>
-                </div>
-                <span className={styles.infoValue}>{patient.dischargeInstructions ?? "—"}</span>
-              </div>
-              </>
-              )}
-              {patientCallType === "patient-intake" && patient.upcomingAppointment && (
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <CalendarArrowRight20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>UPCOMING APPOINTMENT</span>
-                </div>
-                <span className={styles.infoValue}>
-                  {patient.upcomingAppointment.date} {patient.upcomingAppointment.time && `at ${patient.upcomingAppointment.time}`}
-                  {patient.upcomingAppointment.provider && ` — ${patient.upcomingAppointment.provider}`}
-                  {patient.upcomingAppointment.location && ` (${patient.upcomingAppointment.location})`}
-                </span>
-              </div>
-              )}
-              {patientCallType === "patient-intake" && patient.allergies && patient.allergies.length > 0 && (
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <Warning16Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>ALLERGIES</span>
-                </div>
-                <span className={styles.infoValue}>{patient.allergies.join(", ")}</span>
-              </div>
-              )}
-              {patientCallType === "patient-intake" && patient.medicalHistory && (
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <Stethoscope20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>MEDICAL HISTORY</span>
-                </div>
-                <span className={styles.infoValue}>{patient.medicalHistory}</span>
-              </div>
-              )}
-              {patientCallType === "patient-intake" && patient.surgicalHistory && (
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <ClipboardTask20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>SURGICAL HISTORY</span>
-                </div>
-                <span className={styles.infoValue}>{patient.surgicalHistory}</span>
-              </div>
-              )}
-              {patientCallType === "hypertension-management" && patient.bpReadings && patient.bpReadings.length > 0 && (
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <Stethoscope20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>RECENT BP READINGS</span>
-                </div>
-                <span className={styles.infoValue}>
-                  {patient.bpReadings.map((r) => `${r.date}: ${r.systolic}/${r.diastolic}`).join(" | ")}
-                </span>
-              </div>
-              )}
-              {patientCallType === "hypertension-management" && (
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <ClipboardTask20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>HOME BP MONITOR</span>
-                </div>
-                <span className={styles.infoValue}>{patient.homeMonitor ? "Yes" : "No"}</span>
-              </div>
-              )}
-              {patientCallType === "hypertension-management" && patient.lifestyleNotes && (
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <ClipboardTask20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>LIFESTYLE NOTES</span>
-                </div>
-                <span className={styles.infoValue}>{patient.lifestyleNotes}</span>
-              </div>
-              )}
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <Stethoscope20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>PRIMARY DIAGNOSIS</span>
-                </div>
-                <span className={styles.infoValue}>{patient.primaryDiagnosis ?? "—"}</span>
-              </div>
-            </div>
-
-            {/* Right column */}
-            <div className={styles.infoColumn}>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <Phone20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>PHONE</span>
-                </div>
-                <span className={styles.infoValue}>{patient.phone ?? "—"}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <Mail20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>EMAIL</span>
-                </div>
-                <span className={styles.infoValue}>{patient.email ?? "—"}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <Location20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>ADDRESS</span>
-                </div>
-                <span className={styles.infoValue}>{patient.address ?? "—"}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <div className={styles.infoItemRow}>
-                  <People20Regular className={styles.infoItemIcon} />
-                  <span className={styles.infoLabel}>CARE TEAM</span>
-                </div>
-                <span className={styles.infoValue}>{patient.careTeam ?? "—"}</span>
-              </div>
-            </div>
-          </div>
+          <PatientInfoGrid patient={patient} callType={patientCallType} />
         </div>
       </div>
       {transcriptOpen && <AICallTranscriptModal onClose={() => setTranscriptOpen(false)} callType={patientCallType} />}

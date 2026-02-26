@@ -17,6 +17,9 @@ import careCoordinationWorklistData from "../../../data/careCoordinationWorklist
 import type { CareCoordinationWorklistItem, CallType, ContactHistoryEntry } from "./CareCoordinationWorklist.types";
 import { useI18n } from "../../../i18n/I18nContext";
 import { TeamsDialerPopup } from "./TeamsDialerPopup";
+import { INITIAL_CONTACT_RECORDS } from "./data/initialContactRecords";
+import { pickOutcome, buildContactEntry } from "./data/outcomePools";
+import type { ResolvedOutcome } from "./data/outcomePools";
 
 export type CallRecordStatus = "in-progress" | "needs-review" | "completed" | "scheduled-for-retry" | "reviewed" | "scheduled";
 
@@ -51,38 +54,6 @@ export interface ContactRecord {
   scheduled?: boolean;
   statusUrgencyNote?: string;
 }
-
-const INITIAL_CONTACT_RECORDS: ContactRecord[] = [
-  // Medication Adherence
-  { id: "cr-1", patientId: "ch-1", name: "Michael Chen", callType: "medication-adherence", contactDate: "Feb 22, 2026", contactTime: "6:09 AM", daysAgo: 4, phone: "(555) 234-5678", pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 6, followUp: { value: "Yes", warning: true }, reviewed: false },
-  { id: "cr-2", patientId: "ch-2", name: "Patricia Martinez", callType: "medication-adherence", contactDate: "Feb 23, 2026", contactTime: "7:30 PM", daysAgo: 3, phone: "(256) 431-7337", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 2, followUp: { value: "Not needed", warning: false }, reviewed: false },
-  { id: "cr-3", patientId: "ch-3", name: "Sarah Johnson", callType: "medication-adherence", contactDate: "Feb 14, 2026", contactTime: "10:15 AM", daysAgo: 12, phone: "(312) 555-0198", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, reviewed: false, scheduledForRetry: true },
-  { id: "cr-4", patientId: "ch-4", name: "Robert Kim", callType: "medication-adherence", contactDate: "Feb 6, 2026", contactTime: "2:45 PM", daysAgo: 20, phone: "(415) 555-0342", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "Reported", warning: true }, painLevel: 4, followUp: { value: "Yes", warning: true }, reviewed: false },
-  { id: "cr-5", patientId: "ch-5", name: "Linda Nguyen", callType: "medication-adherence", contactDate: "Feb 1, 2026", contactTime: "9:00 AM", daysAgo: 25, phone: "(650) 555-0477", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 1, followUp: { value: "Not needed", warning: false }, reviewed: false },
-  { id: "cr-6", patientId: "ch-6", name: "James Wilson", callType: "medication-adherence", contactDate: "Jan 6, 2026", contactTime: "11:30 AM", daysAgo: 51, phone: "(206) 555-0613", pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 8, followUp: { value: "Yes", warning: true }, reviewed: false, scheduledForRetry: true },
-  { id: "cr-7", patientId: "ch-7", name: "Maria Garcia", callType: "medication-adherence", contactDate: "Dec 27, 2025", contactTime: "4:20 PM", daysAgo: 61, phone: "(713) 555-0829", pickedUpMeds: "No", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "None", warning: false }, painLevel: 5, followUp: { value: "Yes", warning: true }, reviewed: false },
-  { id: "cr-8", patientId: "ch-8", name: "David Thompson", callType: "medication-adherence", contactDate: "Dec 12, 2025", contactTime: "8:00 AM", daysAgo: 76, phone: "(503) 555-0156", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 3, followUp: { value: "Not needed", warning: false }, reviewed: false },
-  // Patient Intake
-  { id: "cr-9", patientId: "pi-5", name: "George Martinez", callType: "patient-intake", contactDate: "Feb 25, 2026", contactTime: "4:00 PM", daysAgo: 1, phone: "(713) 555-0934", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, intakeCompleted: { value: "Yes", warning: false }, allergiesConfirmed: "Metformin, Latex", redFlag: { value: "None", warning: false }, symptomsReported: "None acute", reviewed: false },
-  // Hypertension Management
-  { id: "cr-10", patientId: "ht-5", name: "Donna Fischer", callType: "hypertension-management", contactDate: "Feb 18, 2026", contactTime: "2:15 PM", daysAgo: 8, phone: "(206) 555-0789", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Yes", warning: true }, bpReading: { systolic: 142, diastolic: 90 }, bpAtGoal: { value: "No", warning: true }, medAdherence: { value: "Yes", warning: false }, symptomsPresent: { value: "None", warning: false }, escalated: { value: "No", warning: false }, reviewed: false, statusUrgencyNote: "Next call scheduled in 6 hours" },
-  // Reviewed — Medication Adherence
-  { id: "cr-11", patientId: "ma-11", name: "Camila Rojas", callType: "medication-adherence", contactDate: "Feb 26, 2026", contactTime: "9:15 AM", daysAgo: 0, phone: "(213) 555-6047", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, reviewed: true },
-  { id: "cr-12", patientId: "ma-12", name: "Noah Watanabe", callType: "medication-adherence", contactDate: "Feb 26, 2026", contactTime: "11:00 AM", daysAgo: 0, phone: "(503) 555-8291", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 1, followUp: { value: "Not needed", warning: false }, reviewed: true },
-  { id: "cr-13", patientId: "ma-13", name: "Aisha Banerjee", callType: "medication-adherence", contactDate: "Feb 25, 2026", contactTime: "2:30 PM", daysAgo: 1, phone: "(646) 555-3814", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, reviewed: true },
-  { id: "cr-14", patientId: "ma-14", name: "Gareth O'Neill", callType: "medication-adherence", contactDate: "Feb 24, 2026", contactTime: "10:45 AM", daysAgo: 2, phone: "(415) 555-9267", pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 2, followUp: { value: "Not needed", warning: false }, reviewed: true },
-  // Reviewed — Patient Intake
-  { id: "cr-15", patientId: "pi-4", name: "Sandra Kowalski", callType: "patient-intake", contactDate: "Feb 26, 2026", contactTime: "3:00 PM", daysAgo: 0, phone: "(617) 555-2345", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, intakeCompleted: { value: "Yes", warning: false }, allergiesConfirmed: "Aspirin (GI upset)", redFlag: { value: "None", warning: false }, symptomsReported: "None", reviewed: true },
-  // Reviewed — Hypertension Management
-  { id: "cr-16", patientId: "ht-1", name: "Laura Bennett", callType: "hypertension-management", contactDate: "Feb 26, 2026", contactTime: "1:30 PM", daysAgo: 0, phone: "(404) 555-1122", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, bpReading: { systolic: 122, diastolic: 78 }, bpAtGoal: { value: "Yes", warning: false }, medAdherence: { value: "Yes", warning: false }, symptomsPresent: { value: "None", warning: false }, escalated: { value: "No", warning: false }, reviewed: true },
-  { id: "cr-17", patientId: "ht-4", name: "William Chang", callType: "hypertension-management", contactDate: "Feb 26, 2026", contactTime: "4:15 PM", daysAgo: 0, phone: "(503) 555-6789", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, bpReading: { systolic: 132, diastolic: 84 }, bpAtGoal: { value: "Yes", warning: false }, medAdherence: { value: "Yes", warning: false }, symptomsPresent: { value: "None", warning: false }, escalated: { value: "No", warning: false }, reviewed: true },
-  // Scheduled
-  { id: "cr-18", patientId: "ma-6", name: "Rafael Montes", callType: "medication-adherence", contactDate: "--", contactTime: "", daysAgo: 0, phone: "(305) 555-4891", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, reviewed: false, scheduled: true },
-  { id: "cr-19", patientId: "pi-2", name: "Jamie Patel", callType: "patient-intake", contactDate: "--", contactTime: "", daysAgo: 0, phone: "(312) 555-9876", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, intakeCompleted: { value: "--", warning: false }, allergiesConfirmed: "--", redFlag: { value: "--", warning: false }, symptomsReported: "--", reviewed: false, scheduled: true },
-  { id: "cr-20", patientId: "ht-3", name: "Priya Sharma", callType: "hypertension-management", contactDate: "--", contactTime: "", daysAgo: 0, phone: "(408) 555-8901", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, bpReading: undefined, bpAtGoal: { value: "--", warning: false }, medAdherence: { value: "--", warning: false }, symptomsPresent: { value: "--", warning: false }, escalated: { value: "--", warning: false }, reviewed: false, scheduled: true },
-  { id: "cr-21", patientId: "ma-9", name: "Priyanka Menon", callType: "medication-adherence", contactDate: "--", contactTime: "", daysAgo: 0, phone: "(408) 555-1726", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, reviewed: false, scheduled: true },
-  { id: "cr-22", patientId: "ma-10", name: "Howard Kimani", callType: "medication-adherence", contactDate: "--", contactTime: "", daysAgo: 0, phone: "(206) 555-7483", pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0, followUp: { value: "--", warning: false }, reviewed: false, scheduled: true },
-];
 
 export interface ActiveCallRecord {
   id: string;
@@ -153,33 +124,6 @@ interface CareCoordinationWorklistContextValue {
 
 const CareCoordinationWorklistContext =
   createContext<CareCoordinationWorklistContextValue | null>(null);
-
-// Realistic outcome data pools for resolved calls — Medication Adherence
-const MA_OUTCOME_POOLS = [
-  { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 0, followUp: { value: "Not needed", warning: false }, status: "needs-review" as CallRecordStatus },
-  { pickedUpMeds: "Yes", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "Reported", warning: true }, painLevel: 8, followUp: { value: "Yes", warning: true }, status: "needs-review" as CallRecordStatus },
-  { pickedUpMeds: "No", takingAsRx: { value: "No", warning: true }, sideEffects: { value: "None", warning: false }, painLevel: 10, followUp: { value: "Yes", warning: true }, status: "needs-review" as CallRecordStatus },
-  { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "Reported", warning: true }, painLevel: 3, followUp: { value: "Yes", warning: true }, status: "needs-review" as CallRecordStatus },
-  { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "None", warning: false }, painLevel: 5, followUp: { value: "Not needed", warning: false }, status: "needs-review" as CallRecordStatus },
-];
-
-// Patient Intake outcome pools
-const PI_OUTCOME_POOLS = [
-  { intakeCompleted: { value: "Yes", warning: false }, allergiesConfirmed: "Confirmed", redFlag: { value: "None", warning: false }, symptomsReported: "None", followUp: { value: "Not needed", warning: false }, status: "needs-review" as CallRecordStatus },
-  { intakeCompleted: { value: "Partial", warning: true }, allergiesConfirmed: "Pending verification", redFlag: { value: "None", warning: false }, symptomsReported: "Headache, fatigue", followUp: { value: "Yes", warning: true }, status: "needs-review" as CallRecordStatus },
-  { intakeCompleted: { value: "Yes", warning: false }, allergiesConfirmed: "Penicillin", redFlag: { value: "Chest pain reported", warning: true }, symptomsReported: "Chest tightness", followUp: { value: "Urgent", warning: true }, status: "needs-review" as CallRecordStatus },
-];
-
-// Hypertension outcome pools
-const HT_OUTCOME_POOLS = [
-  { bpReading: { systolic: 128, diastolic: 80 }, bpAtGoal: { value: "Yes", warning: false }, medAdherence: { value: "Yes", warning: false }, symptomsPresent: { value: "None", warning: false }, escalated: { value: "No", warning: false }, followUp: { value: "Not needed", warning: false }, status: "needs-review" as CallRecordStatus },
-  { bpReading: { systolic: 152, diastolic: 94 }, bpAtGoal: { value: "No", warning: true }, medAdherence: { value: "Partial", warning: true }, symptomsPresent: { value: "Headache", warning: true }, escalated: { value: "No", warning: false }, followUp: { value: "Yes", warning: true }, status: "needs-review" as CallRecordStatus },
-  { bpReading: { systolic: 198, diastolic: 105 }, bpAtGoal: { value: "No — Critical", warning: true }, medAdherence: { value: "Stopped", warning: true }, symptomsPresent: { value: "None", warning: false }, escalated: { value: "Yes — Urgent", warning: true }, followUp: { value: "Urgent", warning: true }, status: "needs-review" as CallRecordStatus },
-];
-
-let outcomeIndex = 0;
-let piOutcomeIndex = 0;
-let htOutcomeIndex = 0;
 
 export const CareCoordinationWorklistProvider: React.FC<{
   children: React.ReactNode;
@@ -291,84 +235,23 @@ export const CareCoordinationWorklistProvider: React.FC<{
     const record = activeCallRecordsRef.current.find(r => r.id === recordId);
     const patientCallType = record?.callType || "medication-adherence";
 
-    // Pick outcome based on call type
-    let resolvedOutcome: {
-      status: CallRecordStatus;
-      pickedUpMeds?: string;
-      takingAsRx?: { value: string; warning: boolean };
-      sideEffects?: { value: string; warning: boolean };
-      painLevel?: number;
-      followUp: { value: string; warning: boolean };
-      intakeCompleted?: { value: string; warning: boolean };
-      allergiesConfirmed?: string;
-      redFlag?: { value: string; warning: boolean };
-      symptomsReported?: string;
-      bpReading?: { systolic: number; diastolic: number };
-      bpAtGoal?: { value: string; warning: boolean };
-      medAdherence?: { value: string; warning: boolean };
-      symptomsPresent?: { value: string; warning: boolean };
-      escalated?: { value: string; warning: boolean };
-    };
-
+    // Pick outcome based on call type (special case for ma-1)
+    let resolvedOutcome: ResolvedOutcome;
     if (record?.patientId === "ma-1") {
       resolvedOutcome = { pickedUpMeds: "Yes", takingAsRx: { value: "Yes", warning: false }, sideEffects: { value: "Nausea reported", warning: true }, painLevel: 0, followUp: { value: "Not needed", warning: false }, status: "needs-review" };
-    } else if (patientCallType === "patient-intake") {
-      const pool = PI_OUTCOME_POOLS[piOutcomeIndex++ % PI_OUTCOME_POOLS.length];
-      resolvedOutcome = { ...pool, pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0 };
-    } else if (patientCallType === "hypertension-management") {
-      const pool = HT_OUTCOME_POOLS[htOutcomeIndex++ % HT_OUTCOME_POOLS.length];
-      resolvedOutcome = { ...pool, pickedUpMeds: "--", takingAsRx: { value: "--", warning: false }, sideEffects: { value: "--", warning: false }, painLevel: 0 };
     } else {
-      const pool = MA_OUTCOME_POOLS[outcomeIndex++ % MA_OUTCOME_POOLS.length];
-      resolvedOutcome = { ...pool };
+      resolvedOutcome = pickOutcome(patientCallType);
     }
 
     if (record) {
       const patient = patientRegistryRef.current.get(record.patientId);
       if (patient) {
-        let transcriptSummary: string;
-        const newEntry: ContactHistoryEntry = {
-          date: record.contactDate,
-          method: "phone",
-          callType: patientCallType,
-          transcriptLink: true,
-          transcriptSummary: "",
-          followUpNeeded: { value: resolvedOutcome.followUp.value, positive: !resolvedOutcome.followUp.warning },
-          notes: `Automated call at ${record.contactTime}. Outcomes recorded and pending review.`,
-        };
-
-        if (patientCallType === "patient-intake") {
-          transcriptSummary = `AI-assisted pre-visit intake call completed successfully. Patient confirmed intake status as ${resolvedOutcome.intakeCompleted?.value}. Known allergies were reviewed and ${resolvedOutcome.allergiesConfirmed === "Confirmed" ? "confirmed by the patient with no new allergies reported" : "could not be fully confirmed and require follow-up verification at the visit"}. Red flag screening result: ${resolvedOutcome.redFlag?.value}. Patient-reported symptoms: ${resolvedOutcome.symptomsReported}. Medical history was collected and documented for provider review prior to the scheduled appointment. The patient was reminded of pre-visit preparation instructions and encouraged to bring a current medication list to the appointment.`;
-          newEntry.intakeCompleted = resolvedOutcome.intakeCompleted ? { value: resolvedOutcome.intakeCompleted.value, positive: !resolvedOutcome.intakeCompleted.warning } : undefined;
-          newEntry.allergiesConfirmed = resolvedOutcome.allergiesConfirmed;
-          newEntry.redFlagIdentified = resolvedOutcome.redFlag ? { value: resolvedOutcome.redFlag.value, positive: !resolvedOutcome.redFlag.warning } : undefined;
-          newEntry.symptomsReported = resolvedOutcome.symptomsReported;
-          newEntry.medicalHistoryCollected = { value: "Yes", positive: true };
-        } else if (patientCallType === "hypertension-management") {
-          const bp = resolvedOutcome.bpReading;
-          const bpGoalNote = resolvedOutcome.bpAtGoal?.value === "Yes"
-            ? "Blood pressure is within the target range, indicating effective management with current therapy."
-            : "Blood pressure is above the target range, suggesting the need for medication adjustment or lifestyle modification counseling.";
-          transcriptSummary = `AI-assisted blood pressure management call completed. Patient reported a home BP reading of ${bp?.systolic}/${bp?.diastolic} mmHg. ${bpGoalNote} Medication adherence was assessed as ${resolvedOutcome.medAdherence?.value}. The patient was counseled on the importance of consistent dosing, dietary sodium reduction, and regular physical activity. Clinical escalation status: ${resolvedOutcome.escalated?.value}. The patient was advised to continue monitoring blood pressure daily and to report any new symptoms such as headaches, dizziness, or visual changes to the care team immediately.`;
-          newEntry.bpReading = resolvedOutcome.bpReading;
-          newEntry.bpAtGoal = resolvedOutcome.bpAtGoal ? { value: resolvedOutcome.bpAtGoal.value, positive: !resolvedOutcome.bpAtGoal.warning } : undefined;
-          newEntry.medicationAdherence = resolvedOutcome.medAdherence ? { value: resolvedOutcome.medAdherence.value, positive: !resolvedOutcome.medAdherence.warning } : undefined;
-          newEntry.symptomsPresent = resolvedOutcome.symptomsPresent ? { value: resolvedOutcome.symptomsPresent.value, positive: !resolvedOutcome.symptomsPresent.warning } : undefined;
-          newEntry.escalated = resolvedOutcome.escalated ? { value: resolvedOutcome.escalated.value, positive: !resolvedOutcome.escalated.warning } : undefined;
-          newEntry.sideEffects = "Not reported";
-        } else {
-          const sideEffectText = resolvedOutcome.sideEffects?.value === "None" ? "Not reported" : (resolvedOutcome.sideEffects?.value ?? "Not reported");
-          const sideEffectNote = sideEffectText === "Not reported"
-            ? "No adverse side effects were reported by the patient during the call."
-            : `The patient reported experiencing ${sideEffectText.toLowerCase()} as a side effect. This has been documented for provider review.`;
-          transcriptSummary = `AI-assisted medication adherence call completed. Medication pickup status: ${resolvedOutcome.pickedUpMeds}. The patient ${resolvedOutcome.takingAsRx?.value === "Yes" ? "confirmed taking medications as prescribed with no missed doses in the current reporting period" : "reported difficulty maintaining the prescribed medication schedule and may benefit from adherence support interventions"}. ${sideEffectNote} Current self-reported pain level: ${resolvedOutcome.painLevel}/10. ${resolvedOutcome.followUp.warning ? "A follow-up call has been flagged as needed to reassess the patient's adherence and symptom management." : "No immediate follow-up is required. The patient will continue on the current regimen with routine monitoring."} A medication reminder has been ${resolvedOutcome.followUp.warning ? "recommended" : "confirmed"} to support ongoing adherence.`;
-          newEntry.pickedUpMedication = resolvedOutcome.pickedUpMeds;
-          newEntry.takingAsPrescribed = resolvedOutcome.takingAsRx ? { value: resolvedOutcome.takingAsRx.value, positive: !resolvedOutcome.takingAsRx.warning } : undefined;
-          newEntry.sideEffects = sideEffectText;
-          newEntry.painLevel = resolvedOutcome.painLevel;
-          newEntry.reminderSet = resolvedOutcome.followUp.warning ? "No" : "Yes";
-        }
-        newEntry.transcriptSummary = transcriptSummary;
+        const newEntry: ContactHistoryEntry = buildContactEntry(
+          patientCallType,
+          resolvedOutcome,
+          record.contactDate,
+          record.contactTime,
+        );
 
         patientRegistryRef.current.set(record.patientId, {
           ...patient,

@@ -1,32 +1,21 @@
 import React, { useState, useCallback } from "react";
-import {
-  Button,
-  Input,
-  Label,
-  Textarea,
-  Dropdown,
-  Option,
-  Checkbox,
-} from "@fluentui/react-components";
-import {
-  Dismiss24Regular,
-  PersonAdd20Regular,
-  Person20Regular,
-  Add16Regular,
-  Delete16Regular,
-  Stethoscope20Regular,
-  Pill20Regular,
-  Call20Regular,
-} from "@fluentui/react-icons";
+import { Button } from "@fluentui/react-components";
+import { Dismiss24Regular, Call20Regular } from "@fluentui/react-icons";
 import { useAddPatientFormStyles } from "./AddPatientForm.styles";
 import type { CareCoordinationWorklistItem, CallType } from "./CareCoordinationWorklist.types";
-import { CALL_TYPE_LABELS } from "./CareCoordinationWorklist.types";
-
-interface MedicationEntry {
-  name: string;
-  dose: string;
-  frequency: string;
-}
+import type { FormMedicationEntry } from "./constants/campaignConfig";
+import {
+  pick, randInt, pad2,
+  FIRST_NAMES, LAST_NAMES, CITIES, STATES, STREETS, PROVIDERS, NURSES, LOCATIONS,
+  MED_ADHERENCE_REASONS, MED_ADHERENCE_DIAGNOSES, MED_ADHERENCE_INSTRUCTIONS, MED_ADHERENCE_SETS,
+  INTAKE_REASONS, INTAKE_DIAGNOSES, INTAKE_ALLERGIES, INTAKE_MEDICAL_HISTORIES,
+  INTAKE_SURGICAL_HISTORIES, INTAKE_APPT_TIMES,
+  HTN_REASONS, HTN_DIAGNOSES, HTN_INSTRUCTIONS, HTN_LIFESTYLE_NOTES, HTN_MED_SETS,
+} from "./constants/campaignConfig";
+import { PatientInfoSection } from "./components/PatientInfoSection";
+import { CampaignSection } from "./components/CampaignSection";
+import { CampaignSettings } from "./components/CampaignSettings";
+import { ClinicalFieldsSection } from "./components/ClinicalFieldsSection";
 
 interface AddPatientFormProps {
   onSave: (patient: CareCoordinationWorklistItem) => void;
@@ -62,7 +51,7 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
   const [careTeam, setCareTeam] = useState("");
 
   // Medications
-  const [medications, setMedications] = useState<MedicationEntry[]>([
+  const [medications, setMedications] = useState<FormMedicationEntry[]>([
     { name: "", dose: "", frequency: "" },
   ]);
 
@@ -95,74 +84,21 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
   const [liveTransfer, setLiveTransfer] = useState(false);
   const [daysBeforeAppt, setDaysBeforeAppt] = useState(2);
 
-  // Campaign descriptions and outcomes per call type
-  const campaignDescriptions: Record<CallType, string> = {
-    "medication-adherence":
-      "Post-discharge medication follow-up to ensure patients are taking prescribed medications correctly, identify barriers to adherence, and coordinate refills or care team interventions.",
-    "patient-intake":
-      "Pre-appointment intake calls to collect patient medical history, current medications, allergies, and reason for visit before their scheduled appointment.",
-    "hypertension-management":
-      "Ongoing blood pressure management outreach to monitor home readings, assess medication adherence, coach on lifestyle modifications, and escalate uncontrolled hypertension.",
-  };
-
-  const campaignOutcomes: Record<CallType, string[]> = {
-    "medication-adherence": [
-      "Confirm Rx pickup",
-      "Verify medication adherence",
-      "Capture side effects",
-      "Assess pain level",
-      "Determine follow-up needs",
-      "Set medication reminders",
-    ],
-    "patient-intake": [
-      "Confirm intake completion",
-      "Verify allergies",
-      "Collect medical history",
-      "Record current symptoms",
-      "Screen for red flags",
-    ],
-    "hypertension-management": [
-      "Record BP reading",
-      "Assess BP goal status",
-      "Verify medication adherence",
-      "Screen for symptoms",
-      "Determine escalation needs",
-    ],
-  };
-
   // ── Auto-fill on MRN blur ──
-  const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-  const randInt = (lo: number, hi: number) => Math.floor(Math.random() * (hi - lo + 1)) + lo;
-  const pad2 = (n: number) => String(n).padStart(2, "0");
-
   const handleMrnBlur = useCallback(() => {
     if (!mrn.trim()) return;
-    // Only auto-fill if the core fields are still empty
     if (firstName || lastName) return;
 
-    const firstNames = {
-      Male: ["James","Robert","Michael","William","David","Richard","Thomas","Daniel","Matthew","Andrew"],
-      Female: ["Mary","Patricia","Jennifer","Linda","Elizabeth","Barbara","Susan","Jessica","Sarah","Karen"],
-      Other: ["Alex","Jordan","Taylor","Morgan","Casey","Riley","Quinn","Avery","Jamie","Dakota"],
-    } as Record<string, string[]>;
-    const lastNames = ["Johnson","Williams","Brown","Garcia","Martinez","Davis","Rodriguez","Anderson","Wilson","Taylor","Thomas","Moore","Jackson","Martin","Lee","Thompson","White","Harris","Clark","Lewis"];
-    const cities = ["Seattle","Portland","Austin","Denver","Phoenix","Chicago","Boston","Atlanta","Dallas","Miami"];
-    const states = ["WA","OR","TX","CO","AZ","IL","MA","GA","TX","FL"];
-    const streets = ["Oak St","Maple Ave","Pine Dr","Cedar Ln","Elm Blvd","Birch Way","Walnut Ct","Cherry Rd"];
-    const providers = ["Dr. Sarah Chen","Dr. Michael Patel","Dr. Emily Torres","Dr. James Wilson","Dr. Lisa Nguyen","Dr. Robert Kim"];
-    const nurses = ["RN Adams","RN Baker","RN Clark","RN Davis"];
-    const locations = ["Main Campus, Bldg A","West Clinic","East Medical Center","Downtown Office","Northside Health Center"];
-
-    const g = gender || pick(["Male","Female"]);
-    const fName = pick(firstNames[g] ?? firstNames["Male"]);
-    const lName = pick(lastNames);
+    const g = gender || pick(["Male", "Female"]);
+    const fName = pick(FIRST_NAMES[g] ?? FIRST_NAMES["Male"]);
+    const lName = pick(LAST_NAMES);
     const birthYear = randInt(1945, 2000);
     const birthMonth = randInt(1, 12);
     const birthDay = randInt(1, 28);
     const dob = `${birthYear}-${pad2(birthMonth)}-${pad2(birthDay)}`;
-    const cityIdx = randInt(0, cities.length - 1);
-    const provider = pick(providers);
-    const nurse = pick(nurses);
+    const cityIdx = randInt(0, CITIES.length - 1);
+    const provider = pick(PROVIDERS);
+    const nurse = pick(NURSES);
 
     if (!gender) setGender(g);
     setFirstName(fName);
@@ -170,10 +106,10 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
     setDateOfBirth(dob);
     setPhone(`(${randInt(200,999)}) ${randInt(200,999)}-${pad2(randInt(0,99))}${pad2(randInt(0,99))}`);
     setEmail(`${fName.toLowerCase()}.${lName.toLowerCase()}@email.com`);
-    setAddressLine1(`${randInt(100,9999)} ${pick(streets)}`);
+    setAddressLine1(`${randInt(100,9999)} ${pick(STREETS)}`);
     setAddressLine2(Math.random() > 0.6 ? `Apt ${randInt(1,300)}` : "");
-    setCity(cities[cityIdx]);
-    setState(states[cityIdx]);
+    setCity(CITIES[cityIdx]);
+    setState(STATES[cityIdx]);
     setZip(String(randInt(10000, 99999)));
     setCareTeam(`${provider}, ${nurse}`);
     setLanguagePreference(pick(["English","English","English","Spanish"]));
@@ -183,81 +119,32 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
     setDischargeDate(`${dischDate.getFullYear()}-${pad2(dischDate.getMonth()+1)}-${pad2(dischDate.getDate())}`);
 
     if (callType === "medication-adherence") {
-      setReason(pick([
-        "Post-discharge medication reconciliation",
-        "14-day follow-up: medication compliance check",
-        "New prescription adherence monitoring",
-        "Medication side-effect follow-up",
-        "Refill coordination and adherence review",
-      ]));
-      setPrimaryDiagnosis(pick(["Atrial Fibrillation","Type 2 Diabetes","Heart Failure","COPD","Hyperlipidemia","Chronic Kidney Disease"]));
-      setDischargeInstructions(pick([
-        "Continue all medications as prescribed. Follow up in 2 weeks.",
-        "Avoid NSAIDs. Take blood thinner with food. Monitor for bruising.",
-        "Low-sodium diet. Weigh daily. Call if weight gain >3 lbs in a day.",
-        "Check blood glucose twice daily. Adjust insulin per sliding scale.",
-      ]));
-      const medSets: MedicationEntry[][] = [
-        [{ name: "Warfarin", dose: "5 mg", frequency: "Once daily" },{ name: "Metoprolol", dose: "25 mg", frequency: "Twice daily" }],
-        [{ name: "Lisinopril", dose: "10 mg", frequency: "Once daily" },{ name: "Atorvastatin", dose: "40 mg", frequency: "Once daily at bedtime" }],
-        [{ name: "Metformin", dose: "500 mg", frequency: "Twice daily" },{ name: "Glipizide", dose: "5 mg", frequency: "Once daily before breakfast" }],
-        [{ name: "Amlodipine", dose: "5 mg", frequency: "Once daily" },{ name: "Furosemide", dose: "20 mg", frequency: "Once daily" },{ name: "Potassium Chloride", dose: "20 mEq", frequency: "Once daily" }],
-      ];
-      setMedications(pick(medSets));
+      setReason(pick(MED_ADHERENCE_REASONS));
+      setPrimaryDiagnosis(pick(MED_ADHERENCE_DIAGNOSES));
+      setDischargeInstructions(pick(MED_ADHERENCE_INSTRUCTIONS));
+      setMedications(pick(MED_ADHERENCE_SETS));
     } else if (callType === "patient-intake") {
-      setReason(pick([
-        "New patient intake and onboarding",
-        "Pre-visit registration and history collection",
-        "Transfer patient intake assessment",
-        "Annual wellness visit intake",
-      ]));
-      setPrimaryDiagnosis(pick(["General Check-up","Asthma","Migraine","Anxiety Disorder","Low Back Pain","Hypothyroidism"]));
+      setReason(pick(INTAKE_REASONS));
+      setPrimaryDiagnosis(pick(INTAKE_DIAGNOSES));
       setDischargeInstructions("");
-      setAllergies(pick(["Penicillin, Sulfa","None known","Latex, Codeine","Aspirin","Shellfish, Iodine","Amoxicillin"]));
-      setMedicalHistory(pick([
-        "Hypertension (5 years), Seasonal allergies",
-        "Type 2 Diabetes (3 years), Obesity",
-        "Asthma since childhood, GERD",
-        "No significant past medical history",
-        "Hypothyroidism (10 years), Vitamin D deficiency",
-      ]));
-      setSurgicalHistory(pick(["Appendectomy (2015)","None","Cholecystectomy (2018)","C-section (2020)","Right knee arthroscopy (2017)"]));
+      setAllergies(pick(INTAKE_ALLERGIES));
+      setMedicalHistory(pick(INTAKE_MEDICAL_HISTORIES));
+      setSurgicalHistory(pick(INTAKE_SURGICAL_HISTORIES));
       const appt = new Date();
       appt.setDate(appt.getDate() + randInt(3, 21));
       setApptDate(`${appt.getFullYear()}-${pad2(appt.getMonth()+1)}-${pad2(appt.getDate())}`);
-      setApptTime(pick(["9:00 AM","10:30 AM","1:00 PM","2:30 PM","3:45 PM"]));
+      setApptTime(pick(INTAKE_APPT_TIMES));
       setApptProvider(provider);
-      setApptLocation(pick(locations));
+      setApptLocation(pick(LOCATIONS));
     } else if (callType === "hypertension-management") {
-      setReason(pick([
-        "Quarterly BP management follow-up",
-        "Uncontrolled hypertension monitoring",
-        "New hypertension diagnosis — lifestyle coaching",
-        "Post-medication adjustment BP check",
-        "Home BP log review and medication titration",
-      ]));
-      setPrimaryDiagnosis(pick(["Essential Hypertension","Resistant Hypertension","Hypertension with CKD","Hypertensive Heart Disease"]));
-      setDischargeInstructions(pick([
-        "Low-sodium DASH diet. Exercise 30 min/day. Monitor BP daily.",
-        "Reduce caffeine. Take medication at same time each day.",
-        "Limit alcohol. Record BP readings twice daily in log.",
-      ]));
+      setReason(pick(HTN_REASONS));
+      setPrimaryDiagnosis(pick(HTN_DIAGNOSES));
+      setDischargeInstructions(pick(HTN_INSTRUCTIONS));
       setLastSystolic(String(randInt(128, 168)));
       setLastDiastolic(String(randInt(78, 102)));
       setHomeMonitor(Math.random() > 0.3);
-      setLifestyleNotes(pick([
-        "Sedentary lifestyle. High sodium diet. Non-smoker.",
-        "Walks 20min daily. Moderate alcohol use. Former smoker.",
-        "Active lifestyle. Low-salt diet. No tobacco or alcohol.",
-        "Limited exercise due to knee pain. Smokes 1/2 pack/day.",
-        "DASH diet adherent. Exercises 4x/week. No substances.",
-      ]));
-      const medSets: MedicationEntry[][] = [
-        [{ name: "Amlodipine", dose: "10 mg", frequency: "Once daily" },{ name: "Lisinopril", dose: "20 mg", frequency: "Once daily" }],
-        [{ name: "Losartan", dose: "50 mg", frequency: "Once daily" },{ name: "Hydrochlorothiazide", dose: "25 mg", frequency: "Once daily" }],
-        [{ name: "Metoprolol", dose: "50 mg", frequency: "Twice daily" }],
-      ];
-      setMedications(pick(medSets));
+      setLifestyleNotes(pick(HTN_LIFESTYLE_NOTES));
+      setMedications(pick(HTN_MED_SETS));
     }
   }, [mrn, firstName, lastName, gender, callType]);
 
@@ -270,7 +157,7 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
   }, []);
 
   const updateMedication = useCallback(
-    (index: number, field: keyof MedicationEntry, value: string) => {
+    (index: number, field: keyof FormMedicationEntry, value: string) => {
       setMedications((prev) =>
         prev.map((m, i) => (i === index ? { ...m, [field]: value } : m))
       );
@@ -375,44 +262,19 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
 
         {/* Body */}
         <div className={styles.body}>
-          {/* Patient Information — moved to top */}
-          <div>
-            <div className={styles.sectionTitle}>
-              <Person20Regular className={styles.sectionIcon} />
-              Patient Information
-            </div>
-            <div className={styles.fieldGrid}>
-              <div className={styles.fieldFullWidth}>
-                <Label htmlFor="mrn" required>MRN</Label>
-                <Input id="mrn" value={mrn} onChange={(_, d) => setMrn(d.value)} onBlur={handleMrnBlur} placeholder="e.g. 100234" style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="firstName" required>First Name</Label>
-                <Input id="firstName" value={firstName} onChange={(_, d) => setFirstName(d.value)} placeholder="First name" style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="lastName" required>Last Name</Label>
-                <Input id="lastName" value={lastName} onChange={(_, d) => setLastName(d.value)} placeholder="Last name" style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="gender">Gender</Label>
-                <Dropdown id="gender" placeholder="Select gender" value={gender} onOptionSelect={(_, d) => setGender(d.optionText ?? "")} style={{ width: "100%" }}>
-                  <Option>Male</Option>
-                  <Option>Female</Option>
-                  <Option>Other</Option>
-                </Dropdown>
-              </div>
-              <div>
-                <Label htmlFor="language">Language Preference</Label>
-                <Dropdown id="language" placeholder="Select language" value={languagePreference} onOptionSelect={(_, d) => setLanguagePreference(d.optionText ?? "English")} style={{ width: "100%" }}>
-                  <Option>English</Option>
-                  <Option>Spanish</Option>
-                  <Option>French</Option>
-                  <Option>Mandarin</Option>
-                </Dropdown>
-              </div>
-            </div>
-          </div>
+          <PatientInfoSection
+            mrn={mrn}
+            onMrnChange={setMrn}
+            onMrnBlur={handleMrnBlur}
+            firstName={firstName}
+            onFirstNameChange={setFirstName}
+            lastName={lastName}
+            onLastNameChange={setLastName}
+            gender={gender}
+            onGenderChange={setGender}
+            languagePreference={languagePreference}
+            onLanguagePreferenceChange={setLanguagePreference}
+          />
 
           {/* Outreach Campaign */}
           <div>
@@ -421,372 +283,92 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
               Outreach Campaign
             </div>
             <div className={styles.fieldGrid}>
-              {/* Call Type dropdown — stays as first element */}
-              <div className={styles.fieldFullWidth}>
-                <Label htmlFor="callType" required>Call Type</Label>
-                <Dropdown
-                  id="callType"
-                  value={CALL_TYPE_LABELS[callType]}
-                  onOptionSelect={(_, d) => {
-                    const newType = (d.optionValue ?? "medication-adherence") as CallType;
-                    setCallType(newType);
-                    setLiveTransfer(newType === "hypertension-management");
-                  }}
-                  style={{ width: "100%" }}
-                >
-                  <Option value="medication-adherence">{CALL_TYPE_LABELS["medication-adherence"]}</Option>
-                  <Option value="patient-intake">{CALL_TYPE_LABELS["patient-intake"]}</Option>
-                  <Option value="hypertension-management">{CALL_TYPE_LABELS["hypertension-management"]}</Option>
-                </Dropdown>
-              </div>
-
-              {/* Campaign Description */}
-              <div className={styles.fieldFullWidth}>
-                <div style={{
-                  fontSize: "12px",
-                  color: "#616161",
-                  backgroundColor: "#F5F5F5",
-                  padding: "10px 14px",
-                  borderRadius: "6px",
-                  lineHeight: "18px",
-                }}>
-                  {campaignDescriptions[callType]}
-                </div>
-              </div>
-
-              {/* What the system will collect */}
-              <div className={styles.fieldFullWidth}>
-                <Label style={{ marginBottom: "4px" }}>What the system will collect</Label>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 24px" }}>
-                  {campaignOutcomes[callType].map((item, idx) => (
-                    <span key={idx} style={{ fontSize: "12px", color: "#424242" }}>
-                      • {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Campaign Settings */}
-              <div className={styles.fieldFullWidth}>
-                <div style={{
-                  border: "1px solid #E0E0E0",
-                  borderRadius: "8px",
-                  padding: "16px",
-                }}>
-                  <div className={styles.sectionTitle}>Campaign Settings</div>
-                  <div className={styles.fieldGrid}>
-                    {/* Recurrence / Days Before Appointment */}
-                    {callType !== "patient-intake" ? (
-                      <div className={styles.fieldFullWidth}>
-                        <Label>Recurrence</Label>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <span style={{ fontSize: "13px" }}>Every</span>
-                          <Input
-                            type="number"
-                            value={String(recurrenceInterval)}
-                            onChange={(_, d) => setRecurrenceInterval(Number(d.value) || 1)}
-                            style={{ width: "60px" }}
-                          />
-                          <Dropdown
-                            value={recurrenceUnit}
-                            onOptionSelect={(_, d) => setRecurrenceUnit(d.optionText ?? "days")}
-                            style={{ minWidth: "100px" }}
-                          >
-                            <Option>days</Option>
-                            <Option>weeks</Option>
-                            <Option>months</Option>
-                          </Dropdown>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className={styles.fieldFullWidth}>
-                        <Label>Days Before Appointment</Label>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <span style={{ fontSize: "13px" }}>Call</span>
-                          <Input
-                            type="number"
-                            value={String(daysBeforeAppt)}
-                            onChange={(_, d) => setDaysBeforeAppt(Number(d.value) || 1)}
-                            style={{ width: "50px" }}
-                          />
-                          <span style={{ fontSize: "13px" }}>days before appointment</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Timing Window */}
-                    <div className={styles.fieldFullWidth}>
-                      <Label>Timing Window</Label>
-                      <Dropdown
-                        value={timingWindow}
-                        onOptionSelect={(_, d) => setTimingWindow(d.optionText ?? "Weekdays (8 AM – 5 PM)")}
-                        style={{ width: "100%" }}
-                      >
-                        <Option>Weekday mornings (8 AM – 12 PM)</Option>
-                        <Option>Weekday afternoons (12 PM – 5 PM)</Option>
-                        <Option>Weekdays (8 AM – 5 PM)</Option>
-                        <Option>Any day (8 AM – 8 PM)</Option>
-                      </Dropdown>
-                    </div>
-
-                    {/* Start Date */}
-                    <div>
-                      <Label>Start Date</Label>
-                      <Input
-                        type="date"
-                        value={campaignStartDate}
-                        onChange={(_, d) => setCampaignStartDate(d.value)}
-                        style={{ width: "100%" }}
-                      />
-                    </div>
-
-                    {/* End Date */}
-                    <div>
-                      <Label>End Date</Label>
-                      <Input
-                        type="date"
-                        value={campaignEndDate}
-                        onChange={(_, d) => setCampaignEndDate(d.value)}
-                        style={{ width: "100%" }}
-                      />
-                    </div>
-
-                    {/* Retry Policy */}
-                    <div className={styles.fieldFullWidth}>
-                      <Label>Retry Policy</Label>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-                        <span style={{ fontSize: "13px" }}>Retry up to</span>
-                        <Input
-                          type="number"
-                          value={String(retryCount)}
-                          onChange={(_, d) => setRetryCount(Number(d.value) || 1)}
-                          style={{ width: "50px" }}
-                        />
-                        <span style={{ fontSize: "13px" }}>times, every</span>
-                        <Input
-                          type="number"
-                          value={String(retryIntervalHours)}
-                          onChange={(_, d) => setRetryIntervalHours(Number(d.value) || 1)}
-                          style={{ width: "50px" }}
-                        />
-                        <span style={{ fontSize: "13px" }}>hours</span>
-                      </div>
-                      <Checkbox
-                        checked={leaveVoicemail}
-                        onChange={(_, d) => setLeaveVoicemail(!!d.checked)}
-                        label="Leave voicemail on last attempt"
-                        style={{ marginTop: "8px" }}
-                      />
-                    </div>
-
-                    {/* Live Transfer */}
-                    <div className={styles.fieldFullWidth}>
-                      <Checkbox
-                        checked={liveTransfer}
-                        onChange={(_, d) => setLiveTransfer(!!d.checked)}
-                        label="Enable live transfer for escalations"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <CampaignSection
+                callType={callType}
+                onCallTypeChange={setCallType}
+                onLiveTransferChange={setLiveTransfer}
+              />
+              <CampaignSettings
+                callType={callType}
+                recurrenceInterval={recurrenceInterval}
+                onRecurrenceIntervalChange={setRecurrenceInterval}
+                recurrenceUnit={recurrenceUnit}
+                onRecurrenceUnitChange={setRecurrenceUnit}
+                timingWindow={timingWindow}
+                onTimingWindowChange={setTimingWindow}
+                campaignStartDate={campaignStartDate}
+                onCampaignStartDateChange={setCampaignStartDate}
+                campaignEndDate={campaignEndDate}
+                onCampaignEndDateChange={setCampaignEndDate}
+                retryCount={retryCount}
+                onRetryCountChange={setRetryCount}
+                retryIntervalHours={retryIntervalHours}
+                onRetryIntervalHoursChange={setRetryIntervalHours}
+                leaveVoicemail={leaveVoicemail}
+                onLeaveVoicemailChange={setLeaveVoicemail}
+                liveTransfer={liveTransfer}
+                onLiveTransferChange={setLiveTransfer}
+                daysBeforeAppt={daysBeforeAppt}
+                onDaysBeforeApptChange={setDaysBeforeAppt}
+              />
             </div>
           </div>
 
-          {/* Demographics */}
-          <div>
-            <div className={styles.sectionTitle}>
-              <Stethoscope20Regular className={styles.sectionIcon} />
-              Demographics &amp; Clinical
-            </div>
-            <div className={styles.fieldGrid}>
-              <div>
-                <Label htmlFor="dob" required>Date of Birth</Label>
-                <Input id="dob" type="date" value={dateOfBirth} onChange={(_, d) => setDateOfBirth(d.value)} style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="phone" required>Phone</Label>
-                <Input id="phone" value={phone} onChange={(_, d) => setPhone(d.value)} placeholder="(555) 000-0000" style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" value={email} onChange={(_, d) => setEmail(d.value)} placeholder="patient@email.com" style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="dischargeDate">Discharge Date</Label>
-                <Input id="dischargeDate" type="date" value={dischargeDate} onChange={(_, d) => setDischargeDate(d.value)} style={{ width: "100%" }} />
-              </div>
-              <div className={styles.fieldFullWidth}>
-                <Label htmlFor="addressLine1">Address Line 1</Label>
-                <Input id="addressLine1" value={addressLine1} onChange={(_, d) => setAddressLine1(d.value)} placeholder="Street number and name" style={{ width: "100%" }} />
-              </div>
-              <div className={styles.fieldFullWidth}>
-                <Label htmlFor="addressLine2">Address Line 2</Label>
-                <Input id="addressLine2" value={addressLine2} onChange={(_, d) => setAddressLine2(d.value)} placeholder="Apartment, suite, unit, floor, building (optional)" style={{ width: "100%" }} />
-              </div>
-              <div className={styles.addressRow}>
-                <div>
-                  <Label htmlFor="city">City</Label>
-                  <Input id="city" value={city} onChange={(_, d) => setCity(d.value)} placeholder="City" style={{ width: "100%" }} />
-                </div>
-                <div>
-                  <Label htmlFor="state">State</Label>
-                  <Input id="state" value={state} onChange={(_, d) => setState(d.value)} placeholder="State" style={{ width: "100%" }} />
-                </div>
-                <div>
-                  <Label htmlFor="zip">Zip</Label>
-                  <Input id="zip" value={zip} onChange={(_, d) => setZip(d.value)} placeholder="Zip code" style={{ width: "100%" }} />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="primaryDiagnosis">Primary Diagnosis</Label>
-                <Input id="primaryDiagnosis" value={primaryDiagnosis} onChange={(_, d) => setPrimaryDiagnosis(d.value)} placeholder="e.g. Atrial Fibrillation" style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="careTeam">Care Team</Label>
-                <Input id="careTeam" value={careTeam} onChange={(_, d) => setCareTeam(d.value)} placeholder="e.g. Dr. Smith, RN Jones" style={{ width: "100%" }} />
-              </div>
-              <div className={styles.fieldFullWidth}>
-                <Label htmlFor="dischargeInstructions">Discharge Instructions</Label>
-                <Textarea id="dischargeInstructions" value={dischargeInstructions} onChange={(_, d) => setDischargeInstructions(d.value)} placeholder="Discharge instructions" resize="vertical" style={{ width: "100%" }} />
-              </div>
-            </div>
-          </div>
-
-          {/* Medications — show only for Med Adherence */}
-          {callType === "medication-adherence" && (
-          <div>
-            <div className={styles.sectionTitle}>
-              <Pill20Regular className={styles.sectionIcon} />
-              Medications
-            </div>
-            <div className={styles.medicationList}>
-              {medications.map((med, idx) => (
-                <div key={idx} className={medications.length > 1 ? styles.medicationRowWithAction : styles.medicationRow}>
-                  <div>
-                    <Label>Medication Name</Label>
-                    <Input
-                      value={med.name}
-                      onChange={(_, d) => updateMedication(idx, "name", d.value)}
-                      placeholder="e.g. Warfarin"
-                      style={{ width: "100%" }}
-                    />
-                  </div>
-                  <div>
-                    <Label>Dosage</Label>
-                    <Input
-                      value={med.dose}
-                      onChange={(_, d) => updateMedication(idx, "dose", d.value)}
-                      placeholder="e.g. 5mg"
-                      style={{ width: "100%" }}
-                    />
-                  </div>
-                  <div>
-                    <Label>Frequency</Label>
-                    <Input
-                      value={med.frequency}
-                      onChange={(_, d) => updateMedication(idx, "frequency", d.value)}
-                      placeholder="e.g. Once daily"
-                      style={{ width: "100%" }}
-                    />
-                  </div>
-                  {medications.length > 1 && (
-                    <Button
-                      appearance="subtle"
-                      icon={<Delete16Regular />}
-                      className={styles.removeBtn}
-                      onClick={() => removeMedication(idx)}
-                      aria-label="Remove medication"
-                    />
-                  )}
-                </div>
-              ))}
-              <Button
-                appearance="subtle"
-                icon={<Add16Regular />}
-                className={styles.addMedButton}
-                onClick={addMedication}
-              >
-                Add Medication
-              </Button>
-            </div>
-          </div>
-          )}
-
-          {/* Patient Intake sections */}
-          {callType === "patient-intake" && (
-          <div>
-            <div className={styles.sectionTitle}>
-              <Stethoscope20Regular className={styles.sectionIcon} />
-              Intake Details
-            </div>
-            <div className={styles.fieldGrid}>
-              <div className={styles.fieldFullWidth}>
-                <Label htmlFor="reason" required>Reason for Visit</Label>
-                <Textarea id="reason" value={reason} onChange={(_, d) => setReason(d.value)} placeholder="Brief reason for visit" resize="vertical" style={{ width: "100%" }} />
-              </div>
-              <div className={styles.fieldFullWidth}>
-                <Label htmlFor="allergies">Allergies (comma-separated)</Label>
-                <Input id="allergies" value={allergies} onChange={(_, d) => setAllergies(d.value)} placeholder="e.g. Penicillin, Sulfa" style={{ width: "100%" }} />
-              </div>
-              <div className={styles.fieldFullWidth}>
-                <Label htmlFor="medicalHistory">Medical History</Label>
-                <Textarea id="medicalHistory" value={medicalHistory} onChange={(_, d) => setMedicalHistory(d.value)} placeholder="Relevant medical history" resize="vertical" style={{ width: "100%" }} />
-              </div>
-              <div className={styles.fieldFullWidth}>
-                <Label htmlFor="surgicalHistory">Surgical History</Label>
-                <Textarea id="surgicalHistory" value={surgicalHistory} onChange={(_, d) => setSurgicalHistory(d.value)} placeholder="Previous surgeries" resize="vertical" style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="apptDate">Upcoming Appointment Date</Label>
-                <Input id="apptDate" type="date" value={apptDate} onChange={(_, d) => setApptDate(d.value)} style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="apptTime">Appointment Time</Label>
-                <Input id="apptTime" value={apptTime} onChange={(_, d) => setApptTime(d.value)} placeholder="e.g. 10:00 AM" style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="apptProvider">Provider</Label>
-                <Input id="apptProvider" value={apptProvider} onChange={(_, d) => setApptProvider(d.value)} placeholder="e.g. Dr. Smith" style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="apptLocation">Location</Label>
-                <Input id="apptLocation" value={apptLocation} onChange={(_, d) => setApptLocation(d.value)} placeholder="e.g. Main Campus, Bldg A" style={{ width: "100%" }} />
-              </div>
-            </div>
-          </div>
-          )}
-
-          {/* Hypertension fields */}
-          {callType === "hypertension-management" && (
-          <div>
-            <div className={styles.sectionTitle}>
-              <Stethoscope20Regular className={styles.sectionIcon} />
-              Blood Pressure &amp; Lifestyle
-            </div>
-            <div className={styles.fieldGrid}>
-              <div>
-                <Label htmlFor="lastSystolic">Last Systolic (mmHg)</Label>
-                <Input id="lastSystolic" type="number" value={lastSystolic} onChange={(_, d) => setLastSystolic(d.value)} placeholder="e.g. 145" style={{ width: "100%" }} />
-              </div>
-              <div>
-                <Label htmlFor="lastDiastolic">Last Diastolic (mmHg)</Label>
-                <Input id="lastDiastolic" type="number" value={lastDiastolic} onChange={(_, d) => setLastDiastolic(d.value)} placeholder="e.g. 92" style={{ width: "100%" }} />
-              </div>
-              <div className={styles.fieldFullWidth}>
-                <Checkbox
-                  checked={homeMonitor}
-                  onChange={(_, d) => setHomeMonitor(!!d.checked)}
-                  label="Patient has a home BP monitor"
-                />
-              </div>
-              <div className={styles.fieldFullWidth}>
-                <Label htmlFor="lifestyleNotes">Lifestyle Notes</Label>
-                <Textarea id="lifestyleNotes" value={lifestyleNotes} onChange={(_, d) => setLifestyleNotes(d.value)} placeholder="Diet, exercise, smoking status…" resize="vertical" style={{ width: "100%" }} />
-              </div>
-            </div>
-          </div>
-          )}
+          <ClinicalFieldsSection
+            callType={callType}
+            dateOfBirth={dateOfBirth}
+            onDateOfBirthChange={setDateOfBirth}
+            phone={phone}
+            onPhoneChange={setPhone}
+            email={email}
+            onEmailChange={setEmail}
+            dischargeDate={dischargeDate}
+            onDischargeDateChange={setDischargeDate}
+            addressLine1={addressLine1}
+            onAddressLine1Change={setAddressLine1}
+            addressLine2={addressLine2}
+            onAddressLine2Change={setAddressLine2}
+            city={city}
+            onCityChange={setCity}
+            state={state}
+            onStateChange={setState}
+            zip={zip}
+            onZipChange={setZip}
+            primaryDiagnosis={primaryDiagnosis}
+            onPrimaryDiagnosisChange={setPrimaryDiagnosis}
+            careTeam={careTeam}
+            onCareTeamChange={setCareTeam}
+            dischargeInstructions={dischargeInstructions}
+            onDischargeInstructionsChange={setDischargeInstructions}
+            medications={medications}
+            onAddMedication={addMedication}
+            onRemoveMedication={removeMedication}
+            onUpdateMedication={updateMedication}
+            reason={reason}
+            onReasonChange={setReason}
+            allergies={allergies}
+            onAllergiesChange={setAllergies}
+            medicalHistory={medicalHistory}
+            onMedicalHistoryChange={setMedicalHistory}
+            surgicalHistory={surgicalHistory}
+            onSurgicalHistoryChange={setSurgicalHistory}
+            apptDate={apptDate}
+            onApptDateChange={setApptDate}
+            apptTime={apptTime}
+            onApptTimeChange={setApptTime}
+            apptProvider={apptProvider}
+            onApptProviderChange={setApptProvider}
+            apptLocation={apptLocation}
+            onApptLocationChange={setApptLocation}
+            lastSystolic={lastSystolic}
+            onLastSystolicChange={setLastSystolic}
+            lastDiastolic={lastDiastolic}
+            onLastDiastolicChange={setLastDiastolic}
+            homeMonitor={homeMonitor}
+            onHomeMonitorChange={setHomeMonitor}
+            lifestyleNotes={lifestyleNotes}
+            onLifestyleNotesChange={setLifestyleNotes}
+          />
         </div>
 
         {/* Footer */}
@@ -799,7 +381,7 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
             icon={<Call20Regular />}
             onClick={handleSave}
             disabled={!mrn.trim() || !firstName.trim() || !lastName.trim()}
-            style={{ height: "44px", fontSize: "14px", fontWeight: 600 }}
+            className={styles.scheduleButton}
           >
             Schedule Call
           </Button>
