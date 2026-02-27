@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { useDashboardStyles } from "../CareCoordinationDashboard.styles";
+import { CC_COLORS } from "../careCoordination.constants";
 
 interface RiskHeatmapProps {
   data: {
@@ -13,10 +14,10 @@ interface RiskHeatmapProps {
 }
 
 const CELL_COLORS = {
-  low: { bg: "#E6F4EA", text: "#0E6B2E" },
-  medium: { bg: "#FFF3E0", text: "#8B5E00" },
-  high: { bg: "#FDEAD7", text: "#B84C00" },
-  urgent: { bg: "#FDE7E9", text: "#7C1D1D" },
+  low: { bg: CC_COLORS.bgPositive, text: CC_COLORS.textPositive },
+  medium: { bg: CC_COLORS.bgCaution, text: CC_COLORS.textCaution },
+  high: { bg: "#FDEAD7", text: CC_COLORS.textNegativeLight },
+  urgent: { bg: CC_COLORS.bgNegative, text: CC_COLORS.textNegativeDark },
 } as const;
 
 const COLUMNS: { key: keyof typeof CELL_COLORS; label: string }[] = [

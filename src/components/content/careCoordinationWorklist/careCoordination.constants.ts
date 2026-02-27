@@ -6,6 +6,7 @@ export const CC_COLORS = {
   positive: "#0E8A3E",      // Forest green — success, at goal, good outcomes
   caution: "#E97A1F",       // Warm amber — needs attention, borderline
   negative: "#C42B1C",      // Clinical red — critical, urgent, failures
+  negativeDark: "#7C1D1D",  // Deep red — urgent severity
   neutral: "#616161",       // Slate gray — informational, no action needed
 
   // Chart palette (high-contrast, distinguishable)
@@ -20,6 +21,12 @@ export const CC_COLORS = {
   bgCaution: "#FFF3E0",     // Light amber
   bgNegative: "#FDE7E9",    // Light red
   bgInfo: "#E8F0FE",        // Light blue
+
+  // Text on backgrounds
+  textPositive: "#0E6B2E",
+  textCaution: "#8B5E00",
+  textNegativeLight: "#B84C00",  // Orange-red on light bg
+  textNegativeDark: "#7C1D1D",   // Deep red on light bg
 
   // Legacy (still referenced by status pills and urgency rows)
   urgencyBg: "#FFF3E0",

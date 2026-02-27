@@ -1,15 +1,16 @@
 import type { FC } from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { useDashboardStyles } from "../CareCoordinationDashboard.styles";
+import { CC_COLORS } from "../careCoordination.constants";
 
 interface CallEfficiencyChartProps {
   data: { firstAttempt: number; afterRetry: number; unresolved: number };
 }
 
 const SEGMENT_COLORS = {
-  firstAttempt: "#0E8A3E",
-  afterRetry: "#2563EB",
-  unresolved: "#C42B1C",
+  firstAttempt: CC_COLORS.positive,
+  afterRetry: CC_COLORS.chartBlue,
+  unresolved: CC_COLORS.negative,
 } as const;
 
 const SEGMENT_LABELS: Record<keyof typeof SEGMENT_COLORS, string> = {

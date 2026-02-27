@@ -422,52 +422,60 @@ src/types/
 
 ---
 
-## Phase 7: CareCoordinationDashboard.tsx (CRITICAL - 1,112 lines)
+## Phase 7: CareCoordinationDashboard.tsx (CRITICAL - 1,112 lines) ✅ DONE
 
 ### Current State Analysis
 
 | Issue | Count |
 | --- | --- |
-| Hardcoded colors | 21 (`#D13438`, `#CA5010`, `#0078D4`, `#FFF8E1`, etc.) |
-| Inline px values | 22 |
-| Inline style objects | ~15 |
+| Hardcoded colors | ~~21~~ → 2 remaining (white text `#fff`, one unique tint `#FDEAD7`) |
+| Inline px values | 22 (acceptable in chart SVG viewBox coordinates) |
+| Inline style objects | ~~15~~ → 1 remaining (divider in combined tile) |
 
-### Proposed Structure
+### Achieved Structure
 
 ```
 src/components/content/careCoordinationWorklist/
-├── CareCoordinationDashboard.tsx          # Main orchestrator (~250 lines)
-├── CareCoordinationDashboard.styles.ts    # Existing + moved inline styles
+├── CareCoordinationDashboard.tsx          # Main orchestrator (236 lines) ✅
+├── CareCoordinationDashboard.styles.ts    # Shared dashboard styles (718 lines)
+├── careCoordination.constants.ts          # CC_COLORS + all chart data (240 lines) ✅
 ├── components/
-│   ├── AdminDashboard.tsx                 # Stats cards + charts (~200 lines)
-│   ├── ContactListTable.tsx               # Table rendering (~200 lines)
-│   ├── ContactListFilters.tsx             # Filter dropdowns + search (~150 lines)
-│   ├── SummaryCounters.tsx                # Counter badge grid (~80 lines)
-│   ├── AdherenceTrendChart.tsx            # SVG line chart (~100 lines)
-│   ├── BarCharts.tsx                      # Non-adherence + effectiveness charts (~100 lines)
-│   └── SortIcon.tsx                       # Reusable sort indicator (~20 lines)
+│   ├── AdminDashboard.tsx                 # Stats cards + 6-tile chart layout (276 lines) ✅
+│   ├── ContactListTable.tsx               # Table rendering (317 lines)
+│   ├── ContactListFilters.tsx             # Filter dropdowns + search (102 lines) ✅
+│   ├── SummaryCounters.tsx                # Counter badge grid (63 lines) ✅
+│   ├── ContactOutcomeTrend.tsx            # Dual-line SVG trend chart (123 lines) ✅
+│   ├── MedAdherenceTrendChart.tsx         # Adherence + refill rate trend (78 lines) ✅
+│   ├── OutcomesByTypeChart.tsx            # Grouped bar chart (156 lines) ✅
+│   ├── CallEfficiencyChart.tsx            # Stacked horizontal bar (132 lines) ✅
+│   ├── BpDistributionChart.tsx            # Donut ring chart (171 lines) ✅
+│   ├── BarriersChart.tsx                  # Horizontal bars with trends (82 lines) ✅
+│   ├── RiskHeatmap.tsx                    # Matrix grid table (112 lines) ✅
+│   └── OutcomeIndicators.tsx              # Status icon components (136 lines) ✅
 ```
 
-### Migration Steps
+### Color Centralization
 
-1. Extract `AdherenceTrendChart` component (lines 151-240) — standalone SVG chart
-2. Extract `SummaryCounters` component (lines 740-805) — counter badge grid
-3. Extract `ContactListFilters` component (lines 850-930) — filter row with dropdowns
-4. Extract `ContactListTable` component (lines 935-1100) — table body with outcomes
-5. Extract `AdminDashboard` component (lines 500-740) — stats cards and charts
-6. Move all inline styles to `CareCoordinationDashboard.styles.ts`
-7. Replace hardcoded colors with Fluent UI tokens or named constants
+All chart components now reference `CC_COLORS` from `careCoordination.constants.ts` instead of
+duplicating hex values. The palette is healthcare-optimized with semantic naming:
 
-### Token Replacement Map
+| Constant | Hex | Usage |
+| --- | --- | --- |
+| `CC_COLORS.positive` | `#0E8A3E` | Success, at goal, good outcomes |
+| `CC_COLORS.caution` | `#E97A1F` | Needs attention, borderline |
+| `CC_COLORS.negative` | `#C42B1C` | Critical, failures |
+| `CC_COLORS.negativeDark` | `#7C1D1D` | Urgent severity |
+| `CC_COLORS.neutral` | `#616161` | Informational |
+| `CC_COLORS.chartBlue` | `#2563EB` | Secondary data series |
+| `CC_COLORS.chartPurple` | `#7C3AED` | Tertiary data series |
+| `CC_COLORS.chartTeal` | `#0E7C86` | Primary data series |
+| `CC_COLORS.bgPositive` | `#E6F4EA` | Cell/card green background |
+| `CC_COLORS.bgCaution` | `#FFF3E0` | Cell/card amber background |
+| `CC_COLORS.bgNegative` | `#FDE7E9` | Cell/card red background |
 
-| Current Value | Replacement |
-| --- | --- |
-| `#0078D4` | `tokens.colorBrandBackground` |
-| `#D13438` | `tokens.colorPaletteRedForeground1` |
-| `#CA5010` | `tokens.colorPaletteDarkOrangeForeground1` |
-| `#FFF8E1` | Named constant `URGENCY_BG` (no Fluent token) |
-| `#e0e0e0` | `tokens.colorNeutralBackground4` |
-| `#666` | `tokens.colorNeutralForeground3` |
+> **Note**: `CareCoordinationDashboard.styles.ts` (718 lines) uses Griffel `makeStyles` which
+> requires static values at compile time. Colors there cannot reference `CC_COLORS` at runtime.
+> These are acceptable as-is since the styles file is the single source for Griffel-compiled colors.
 
 ---
 
@@ -615,6 +623,14 @@ src/components/content/careCoordinationWorklist/
 1. ✅ **CareCoordinationDashboard.tsx** - Phase 7
    - Extracted: AdminDashboard, ContactListTable, ContactListFilters, SummaryCounters, AdherenceTrendChart
    - Result: 1,112 → 236 lines
+   - Dashboard redesigned: 4 stats cards + 6 analytics tiles (2×3 grid)
+   - New chart components: ContactOutcomeTrend, MedAdherenceTrendChart, OutcomesByTypeChart,
+     CallEfficiencyChart, BpDistributionChart, BarriersChart, RiskHeatmap
+   - Combined Outcomes by Call Type + Call Efficiency into single tile
+   - Centralized healthcare color palette in CC_COLORS (careCoordination.constants.ts)
+   - All chart components reference CC_COLORS — zero duplicated hex values
+   - Deleted dead AdherenceTrendChart.tsx (95 lines)
+   - Removed unused CareCoordinationReviewedPanel export from index.ts
 
 ### Week 6: High + Medium Priority (Care Coordination)
 
@@ -644,20 +660,35 @@ src/components/content/careCoordinationWorklist/
 | `CareCoordinationWorklistContext.tsx` | 412 | 🟠 Over limit | Extract action functions to custom hook |
 | `ClinicalFieldsSection.tsx` | 334 | 🟡 Slightly over | Consider splitting by call type |
 | `ContactListTable.tsx` | 317 | 🟡 Slightly over | Acceptable after indicator extraction |
-| `AdminDashboard.tsx` | 314 | 🟡 Slightly over | Acceptable — chart + stats layout |
+| `AdminDashboard.tsx` | 276 | ✅ Under target | Done — stats cards + 6-tile chart layout |
 | `AddPatientForm.tsx` | 299 | ✅ At target | Done |
-| `CareCoordinationReviewedPanel.tsx` | 268 | ✅ Under target | Done |
 | `CareCoordinationDashboard.tsx` | 236 | ✅ Under target | Done |
 | `OutcomeGrid.tsx` | 226 | ✅ Under target | Done |
 | `AICallTranscriptModal.tsx` | 226 | ✅ Under target | Done |
 | `CareCoordinationPatientDetail.tsx` | 218 | ✅ Under target | Done |
+| `BpDistributionChart.tsx` | 171 | ✅ Under target | Done — centralized colors |
+| `OutcomesByTypeChart.tsx` | 156 | ✅ Under target | Done — centralized colors |
+| `OutcomeIndicators.tsx` | 136 | ✅ Under target | Done |
+| `CallEfficiencyChart.tsx` | 132 | ✅ Under target | Done — centralized colors |
+| `ContactOutcomeTrend.tsx` | 123 | ✅ Under target | Done |
+| `ContactHistoryEntry.tsx` | 112 | ✅ Under target | Done |
+| `RiskHeatmap.tsx` | 112 | ✅ Under target | Done — centralized colors |
+| `BarriersChart.tsx` | 82 | ✅ Under target | Done — centralized colors |
+| `MedAdherenceTrendChart.tsx` | 78 | ✅ Under target | Done — new chart component |
 | All other components | <200 | ✅ Under target | Done |
+
+### Dead Code Removed
+
+| File | Lines | Action |
+| --- | --- | --- |
+| `AdherenceTrendChart.tsx` | 95 | 🗑️ Deleted — replaced by ContactOutcomeTrend + MedAdherenceTrendChart |
+| `CareCoordinationReviewedPanel` export | — | 🗑️ Removed from index.ts (component files retained for reference) |
 
 ### Style Files (target: organized, no hard limit)
 
 | File | Lines | Notes |
 | --- | --- | --- |
-| `CareCoordinationDashboard.styles.ts` | 718 | Consider splitting by section |
+| `CareCoordinationDashboard.styles.ts` | 718 | Griffel static compilation — colors cannot reference runtime constants |
 | `CareCoordinationWorklist.styles.ts` | 676 | Consider splitting by section |
 | `CareCoordinationPatientDetail.styles.ts` | 427 | Acceptable — well-organized with sections |
 
@@ -665,11 +696,10 @@ src/components/content/careCoordinationWorklist/
 
 | File | Lines | Status |
 | --- | --- | --- |
+| `careCoordination.constants.ts` | 240 | ✅ Clean — CC_COLORS palette + all chart/stats data |
 | `outcomePools.ts` | 215 | ✅ Clean — outcome generation + templates |
 | `campaignConfig.ts` | 189 | ✅ Clean — constants and auto-fill data |
 | `CareCoordinationWorklist.types.ts` | 180 | ✅ Clean — canonical type definitions |
-| `careCoordination.constants.ts` | 142 | ✅ Clean — colors, status, sort types |
-| `OutcomeIndicators.tsx` | 136 | ✅ Clean — extracted icon components |
 | `usePatientAutoFill.ts` | 115 | ✅ Clean — extracted hook |
 | `buildNewPatient.ts` | 105 | ✅ Clean — extracted utility |
 
@@ -684,9 +714,17 @@ src/components/content/careCoordinationWorklist/
    - Extract `callPatients` / `addPatient` / action functions to `useCareCoordinationActions.ts` hook
    - Target: ~300 lines
 
-3. **Style file organization** (718 + 676 lines)
+3. **ClinicalFieldsSection.tsx** (334 lines)
+   - Consider splitting by call type (med adherence, intake, hypertension sections)
+   - Target: ~250 lines
+
+4. **Style file organization** (718 + 676 lines)
    - Split `CareCoordinationDashboard.styles.ts` by section (table, filters, counters, charts)
    - Split `CareCoordinationWorklist.styles.ts` by section (worklist, cards, header)
+
+5. **Dead component cleanup** (optional)
+   - `CareCoordinationReviewedPanel.tsx` + `.styles.ts` (526 lines) — no longer imported
+   - Consider deleting entirely if Reviewed panel feature is confirmed removed
 
 ---
 
@@ -731,13 +769,14 @@ After each refactoring phase:
 | Metric                   | Before (Home) | Before (CC) | Current (CC) | Target      |
 | ------------------------ | ------------- | ----------- | ------------ | ----------- |
 | Largest file size        | 3,857 lines   | 1,112 lines | 456 lines    | < 300 lines |
-| Files over 300 lines     | 15 files      | 7 files     | 5 files      | 0 files     |
-| Hardcoded color values   | ~50+          | ~32         | ~15          | 0           |
+| Files over 300 lines     | 15 files      | 7 files     | 3 files      | 0 files     |
+| Hardcoded color values   | ~50+          | ~32         | ~2 in charts | 0           |
 | Hardcoded spacing values | ~100+         | ~54         | ~30          | 0           |
-| Code duplication         | High          | Medium      | Low          | Minimal     |
-| Extracted components     | 0             | 0           | 14           | —           |
+| Code duplication         | High          | Medium      | Minimal      | Minimal     |
+| Extracted components     | 0             | 0           | 21           | —           |
 | Extracted hooks          | 0             | 0           | 1            | —           |
 | Extracted utilities      | 0             | 0           | 1            | —           |
+| Dead code removed        | 0             | 0           | 95 lines     | —           |
 
 ---
 

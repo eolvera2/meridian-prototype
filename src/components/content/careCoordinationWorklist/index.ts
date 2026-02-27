@@ -5,7 +5,6 @@
  */
 
 export { CareCoordinationWorklist } from "./CareCoordinationWorklist";
-export { CareCoordinationReviewedPanel } from "./CareCoordinationReviewedPanel";
 export { CareCoordinationDashboard } from "./CareCoordinationDashboard";
 export { CareCoordinationPatientDetail } from "./CareCoordinationPatientDetail";
 export { useStyles } from "./CareCoordinationWorklist.styles";

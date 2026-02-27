@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { useDashboardStyles } from "../CareCoordinationDashboard.styles";
+import { CC_COLORS } from "../careCoordination.constants";
 
 interface OutcomesByTypeChartProps {
   data: { type: string; positive: number; warning: number; critical: number }[];
@@ -83,9 +84,9 @@ const useChartStyles = makeStyles({
 });
 
 const BAR_COLORS = {
-  positive: "#0E8A3E",
-  warning: "#E97A1F",
-  critical: "#C42B1C",
+  positive: CC_COLORS.positive,
+  warning: CC_COLORS.caution,
+  critical: CC_COLORS.negative,
 } as const;
 
 export const OutcomesByTypeChart: FC<OutcomesByTypeChartProps> = ({ data }) => {

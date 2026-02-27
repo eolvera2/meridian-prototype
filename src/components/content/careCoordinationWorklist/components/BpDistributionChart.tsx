@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { useDashboardStyles } from "../CareCoordinationDashboard.styles";
+import { CC_COLORS } from "../careCoordination.constants";
 
 interface BpDistributionChartProps {
   data: {
@@ -12,10 +13,10 @@ interface BpDistributionChartProps {
 }
 
 const SEGMENTS = [
-  { key: "atGoal" as const, label: "At Goal", color: "#0E8A3E" },
-  { key: "borderline" as const, label: "Borderline", color: "#E97A1F" },
-  { key: "uncontrolled" as const, label: "Uncontrolled", color: "#C42B1C" },
-  { key: "urgent" as const, label: "Urgent", color: "#7C1D1D" },
+  { key: "atGoal" as const, label: "At Goal", color: CC_COLORS.positive },
+  { key: "borderline" as const, label: "Borderline", color: CC_COLORS.caution },
+  { key: "uncontrolled" as const, label: "Uncontrolled", color: CC_COLORS.negative },
+  { key: "urgent" as const, label: "Urgent", color: CC_COLORS.negativeDark },
 ];
 
 const useChartStyles = makeStyles({
