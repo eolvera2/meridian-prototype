@@ -72,11 +72,11 @@ export const CareCoordinationDashboard: FC = () => {
     : filteredByTime;
 
   // Unique patient names for search dropdown
-  const allPatientNames = useMemo(() => {
-    const nameSet = new Set<string>();
-    contactRecords.forEach((r) => nameSet.add(r.name));
-    activeCallRecords.forEach((r) => nameSet.add(r.name));
-    return Array.from(nameSet).sort();
+  const allPatientEntries = useMemo(() => {
+    const entryMap = new Map<string, { name: string; mrn: string }>();
+    contactRecords.forEach((r) => entryMap.set(r.name, { name: r.name, mrn: r.mrn || "" }));
+    activeCallRecords.forEach((r) => entryMap.set(r.name, { name: r.name, mrn: r.mrn || "" }));
+    return Array.from(entryMap.values()).sort((a, b) => a.name.localeCompare(b.name));
   }, [contactRecords, activeCallRecords]);
 
   // Combine active call records with displayed records for pagination
@@ -109,7 +109,11 @@ export const CareCoordinationDashboard: FC = () => {
     let filtered = combined;
     if (patientSearch.trim()) {
       const searchLower = patientSearch.trim().toLowerCase();
-      filtered = combined.filter((item) => item.record.name.toLowerCase().includes(searchLower));
+      filtered = combined.filter((item) => {
+          const n = item.record.name.toLowerCase();
+          const m = (item.record.mrn || "").toLowerCase();
+          return n.includes(searchLower) || m.includes(searchLower);
+        });
     }
 
     // Apply sorting
@@ -121,6 +125,8 @@ export const CareCoordinationDashboard: FC = () => {
         let cmp = 0;
         if (sortColumn === "name") {
           cmp = ra.name.localeCompare(rb.name);
+        } else if (sortColumn === "mrn") {
+          cmp = (ra.mrn || "").localeCompare(rb.mrn || "");
         } else if (sortColumn === "callType") {
           cmp = (ra.callType || "").localeCompare(rb.callType || "");
         } else if (sortColumn === "contactDate") {
@@ -207,7 +213,7 @@ export const CareCoordinationDashboard: FC = () => {
             setCallTypeFilter={setCallTypeFilter}
             patientSearch={patientSearch}
             setPatientSearch={setPatientSearch}
-            allPatientNames={allPatientNames}
+            allPatientEntries={allPatientEntries}
             setCurrentPage={setCurrentPage}
           />
 

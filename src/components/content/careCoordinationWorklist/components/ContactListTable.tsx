@@ -292,6 +292,9 @@ export const ContactListTable: FC<ContactListTableProps> = ({
             <th className={mergeClasses(styles.tableHeader, styles.sortableHeader)} onClick={() => handleSort("name")}>
               Patient Name <SortIcon column="name" />
             </th>
+            <th className={mergeClasses(styles.tableHeader, styles.sortableHeader)} onClick={() => handleSort("mrn")}>
+              MRN <SortIcon column="mrn" />
+            </th>
             <th className={mergeClasses(styles.tableHeader, styles.sortableHeader)} onClick={() => handleSort("callType")}>
               Call Type <SortIcon column="callType" />
             </th>
@@ -310,7 +313,7 @@ export const ContactListTable: FC<ContactListTableProps> = ({
         <tbody>
           {paginatedRecords.length === 0 && (
             <tr>
-              <td colSpan={6} className={styles.emptyState}>
+              <td colSpan={7} className={styles.emptyState}>
                 No contact records found for the selected time range.
               </td>
             </tr>
@@ -333,6 +336,9 @@ export const ContactListTable: FC<ContactListTableProps> = ({
                   >
                     {record.name}
                   </span>
+                </td>
+                <td className={styles.tableCell}>
+                  {(record.mrn || "—").replace(/^MRN/i, "")}
                 </td>
                 <td className={styles.tableCell}>
                   <span className={`${styles.callTypePillSmall} ${styles[`callType_${(record.callType || "medication-adherence").replace(/-/g, "_")}` as keyof typeof styles] || ""}`}>

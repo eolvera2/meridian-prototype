@@ -17,7 +17,7 @@ interface ContactListFiltersProps {
   setCallTypeFilter: (value: "all" | CallType) => void;
   patientSearch: string;
   setPatientSearch: (value: string) => void;
-  allPatientNames: string[];
+  allPatientEntries: { name: string; mrn: string }[];
   setCurrentPage: (value: number) => void;
 }
 
@@ -28,7 +28,7 @@ export const ContactListFilters: FC<ContactListFiltersProps> = ({
   setCallTypeFilter,
   patientSearch,
   setPatientSearch,
-  allPatientNames,
+  allPatientEntries,
   setCurrentPage,
 }) => {
   const styles = useDashboardStyles();
@@ -70,17 +70,23 @@ export const ContactListFilters: FC<ContactListFiltersProps> = ({
       <div className={styles.historyFilterGroup}>
         <span className={styles.filterLabel}>Patient Search</span>
         <Combobox
-          placeholder="Search by name..."
+          placeholder="Search by name or MRN..."
           freeform
           value={patientSearch}
           onInput={(e) => { setPatientSearch((e.target as HTMLInputElement).value); }}
           onOptionSelect={(_, data) => { setPatientSearch(data.optionText ?? ""); }}
-          style={{ minWidth: "180px" }}
+          style={{ minWidth: "220px" }}
         >
-          {allPatientNames
-            .filter((name) => !patientSearch || name.toLowerCase().includes(patientSearch.toLowerCase()))
-            .map((name) => (
-              <Option key={name} value={name}>{name}</Option>
+          {allPatientEntries
+            .filter((entry) => {
+              if (!patientSearch) return true;
+              const q = patientSearch.toLowerCase();
+              return entry.name.toLowerCase().includes(q) || entry.mrn.toLowerCase().includes(q);
+            })
+            .map((entry) => (
+              <Option key={entry.mrn} value={entry.name} text={entry.name}>
+                {entry.name} - {entry.mrn}
+              </Option>
             ))}
         </Combobox>
       </div>

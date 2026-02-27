@@ -13,7 +13,7 @@ export const CC_COLORS = {
 
 // ── Shared types ────────────────────────────────────────────────────
 export type TimeRange = "7" | "30" | "90";
-export type SortColumn = "name" | "callType" | "contactDate" | "followUp" | "status";
+export type SortColumn = "name" | "mrn" | "callType" | "contactDate" | "followUp" | "status";
 export type SortDirection = "asc" | "desc";
 
 export type TableRow =

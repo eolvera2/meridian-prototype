@@ -27,6 +27,7 @@ export interface ContactRecord {
   id: string;
   patientId: string;
   name: string;
+  mrn: string;
   callType: CallType;
   contactDate: string;
   contactTime: string;
@@ -59,6 +60,7 @@ export interface ActiveCallRecord {
   id: string;
   patientId: string;
   name: string;
+  mrn: string;
   callType: CallType;
   contactDate: string;
   contactTime: string;
@@ -192,6 +194,7 @@ export const CareCoordinationWorklistProvider: React.FC<{
       id: `call-${p.id}-${Date.now()}`,
       patientId: p.id,
       name: p.name,
+      mrn: p.mrn || "",
       callType: p.callType || "medication-adherence" as CallType,
       contactDate: dateStr,
       contactTime: timeStr,
@@ -364,6 +367,7 @@ export const CareCoordinationWorklistProvider: React.FC<{
         id: `cr-new-${Date.now()}`,
         patientId: patient.id,
         name: patient.name,
+        mrn: patient.mrn || "",
         callType: patient.callType || "medication-adherence",
         contactDate: "--",
         contactTime: "",

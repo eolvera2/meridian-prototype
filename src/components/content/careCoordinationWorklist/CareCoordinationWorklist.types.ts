@@ -74,6 +74,7 @@ export interface BpReading {
 export interface CareCoordinationWorklistItem {
   id: string;
   name: string;
+  mrn?: string;
   reason: string;
   demographics: string;
   dischargeDate: string;
