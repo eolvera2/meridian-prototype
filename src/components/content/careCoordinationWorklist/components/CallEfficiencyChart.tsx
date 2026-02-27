@@ -53,6 +53,7 @@ const useChartStyles = makeStyles({
     flexDirection: "column",
     gap: "6px",
     flexShrink: 0,
+    width: "76px",
     fontSize: tokens.fontSizeBase200,
     color: tokens.colorNeutralForeground3,
   },

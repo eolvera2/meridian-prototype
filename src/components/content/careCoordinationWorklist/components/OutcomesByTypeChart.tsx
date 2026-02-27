@@ -64,6 +64,7 @@ const useChartStyles = makeStyles({
     fontSize: tokens.fontSizeBase200,
     color: tokens.colorNeutralForeground3,
     flexShrink: 0,
+    width: "76px",
   },
   legendItem: {
     display: "flex",
