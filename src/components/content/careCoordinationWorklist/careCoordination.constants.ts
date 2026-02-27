@@ -28,114 +28,155 @@ export const TIME_RANGE_LABELS: Record<TimeRange, string> = {
   "90": "Last 90 days",
 };
 
-export const TREND_DATA: Record<
-  TimeRange,
-  { label: string; adherence: number; missedDoses: number }[]
-> = {
-  "7": [
-    { label: "Mon", adherence: 85, missedDoses: 3 },
-    { label: "Tue", adherence: 82, missedDoses: 4 },
-    { label: "Wed", adherence: 88, missedDoses: 2 },
-    { label: "Thu", adherence: 84, missedDoses: 3 },
-    { label: "Fri", adherence: 90, missedDoses: 1 },
-    { label: "Sat", adherence: 86, missedDoses: 3 },
-    { label: "Sun", adherence: 87, missedDoses: 2 },
-  ],
-  "30": [
-    { label: "Wk 1", adherence: 80, missedDoses: 6 },
-    { label: "Wk 2", adherence: 83, missedDoses: 5 },
-    { label: "Wk 3", adherence: 85, missedDoses: 4 },
-    { label: "Wk 4", adherence: 87, missedDoses: 3 },
-  ],
-  "90": [
-    { label: "Jan", adherence: 78, missedDoses: 8 },
-    { label: "Feb", adherence: 80, missedDoses: 7 },
-    { label: "Mar", adherence: 82, missedDoses: 6 },
-    { label: "Apr", adherence: 79, missedDoses: 7 },
-    { label: "May", adherence: 83, missedDoses: 5 },
-    { label: "Jun", adherence: 85, missedDoses: 4 },
-    { label: "Jul", adherence: 84, missedDoses: 4 },
-    { label: "Aug", adherence: 86, missedDoses: 3 },
-    { label: "Sep", adherence: 87, missedDoses: 3 },
-    { label: "Oct", adherence: 85, missedDoses: 4 },
-    { label: "Nov", adherence: 86, missedDoses: 3 },
-    { label: "Dec", adherence: 87, missedDoses: 2 },
-  ],
-};
-
 export interface StatsData {
-  adherenceRate: number;
-  adherenceTrend: number;
-  patientsAtRisk: number;
-  riskHigh: number;
-  riskMed: number;
-  riskLow: number;
-  successfulContacts: number;
-  followUpNeeded: number;
-  followUpUrgent: number;
-  followUpRoutine: number;
+  contactSuccessRate: number;
+  contactSuccessTrend: number;
+  patientsRequiringAction: number;
+  actionHigh: number;
+  actionMed: number;
+  actionLow: number;
+  avgCallsToResolution: number;
+  escalationRate: number;
+  escalationTrend: number;
 }
 
 export const STATS_DATA: Record<TimeRange, StatsData> = {
   "7": {
-    adherenceRate: 89, adherenceTrend: 3, patientsAtRisk: 8,
-    riskHigh: 2, riskMed: 4, riskLow: 2,
-    successfulContacts: 78, followUpNeeded: 3, followUpUrgent: 1, followUpRoutine: 2,
+    contactSuccessRate: 82, contactSuccessTrend: 4,
+    patientsRequiringAction: 6, actionHigh: 2, actionMed: 3, actionLow: 1,
+    avgCallsToResolution: 1.8, escalationRate: 14, escalationTrend: -2,
   },
   "30": {
-    adherenceRate: 87, adherenceTrend: 4, patientsAtRisk: 12,
-    riskHigh: 4, riskMed: 6, riskLow: 2,
-    successfulContacts: 74, followUpNeeded: 5, followUpUrgent: 2, followUpRoutine: 3,
+    contactSuccessRate: 78, contactSuccessTrend: 3,
+    patientsRequiringAction: 11, actionHigh: 4, actionMed: 5, actionLow: 2,
+    avgCallsToResolution: 2.1, escalationRate: 18, escalationTrend: 1,
   },
   "90": {
-    adherenceRate: 83, adherenceTrend: -2, patientsAtRisk: 18,
-    riskHigh: 6, riskMed: 8, riskLow: 4,
-    successfulContacts: 68, followUpNeeded: 9, followUpUrgent: 4, followUpRoutine: 5,
+    contactSuccessRate: 74, contactSuccessTrend: -1,
+    patientsRequiringAction: 16, actionHigh: 6, actionMed: 7, actionLow: 3,
+    avgCallsToResolution: 2.4, escalationRate: 22, escalationTrend: 3,
   },
 };
 
-export const OUTREACH_DATA: Record<
+export const CONTACT_TREND_DATA: Record<
   TimeRange,
-  { channel: string; rate: number; total: number }[]
+  { label: string; successRate: number; escalationRate: number }[]
 > = {
   "7": [
-    { channel: "Phone", rate: 65, total: 20 },
-    { channel: "SMS", rate: 52, total: 15 },
-    { channel: "Portal", rate: 73, total: 11 },
+    { label: "Mon", successRate: 80, escalationRate: 16 },
+    { label: "Tue", successRate: 78, escalationRate: 18 },
+    { label: "Wed", successRate: 85, escalationRate: 12 },
+    { label: "Thu", successRate: 82, escalationRate: 14 },
+    { label: "Fri", successRate: 88, escalationRate: 10 },
+    { label: "Sat", successRate: 84, escalationRate: 13 },
+    { label: "Sun", successRate: 83, escalationRate: 15 },
   ],
   "30": [
-    { channel: "Phone", rate: 62, total: 85 },
-    { channel: "SMS", rate: 48, total: 64 },
-    { channel: "Portal", rate: 71, total: 42 },
+    { label: "Wk 1", successRate: 75, escalationRate: 20 },
+    { label: "Wk 2", successRate: 78, escalationRate: 18 },
+    { label: "Wk 3", successRate: 80, escalationRate: 16 },
+    { label: "Wk 4", successRate: 82, escalationRate: 14 },
   ],
   "90": [
-    { channel: "Phone", rate: 58, total: 230 },
-    { channel: "SMS", rate: 44, total: 180 },
-    { channel: "Portal", rate: 68, total: 120 },
+    { label: "Jan", successRate: 70, escalationRate: 24 },
+    { label: "Feb", successRate: 72, escalationRate: 22 },
+    { label: "Mar", successRate: 74, escalationRate: 20 },
+    { label: "Apr", successRate: 73, escalationRate: 21 },
+    { label: "May", successRate: 76, escalationRate: 18 },
+    { label: "Jun", successRate: 78, escalationRate: 16 },
+    { label: "Jul", successRate: 77, escalationRate: 17 },
+    { label: "Aug", successRate: 80, escalationRate: 15 },
+    { label: "Sep", successRate: 81, escalationRate: 14 },
+    { label: "Oct", successRate: 79, escalationRate: 16 },
+    { label: "Nov", successRate: 82, escalationRate: 13 },
+    { label: "Dec", successRate: 83, escalationRate: 12 },
   ],
 };
 
-export const DRIVERS_DATA: Record<
+export const OUTCOME_BY_TYPE_DATA: Record<
   TimeRange,
-  { label: string; count: number; color: string }[]
+  { type: string; positive: number; warning: number; critical: number }[]
 > = {
   "7": [
-    { label: "Missed doses", count: 8, color: CC_COLORS.negative },
-    { label: "Side effects", count: 5, color: CC_COLORS.warning },
-    { label: "Cost barriers", count: 3, color: CC_COLORS.chartPurple },
-    { label: "Confusion", count: 2, color: CC_COLORS.chartBlue },
+    { type: "Med Adherence", positive: 14, warning: 5, critical: 2 },
+    { type: "Patient Intake", positive: 6, warning: 2, critical: 1 },
+    { type: "Chronic Care", positive: 4, warning: 2, critical: 1 },
   ],
   "30": [
-    { label: "Missed doses", count: 24, color: CC_COLORS.negative },
-    { label: "Side effects", count: 16, color: CC_COLORS.warning },
-    { label: "Cost barriers", count: 10, color: CC_COLORS.chartPurple },
-    { label: "Confusion", count: 7, color: CC_COLORS.chartBlue },
+    { type: "Med Adherence", positive: 48, warning: 18, critical: 8 },
+    { type: "Patient Intake", positive: 22, warning: 7, critical: 3 },
+    { type: "Chronic Care", positive: 16, warning: 8, critical: 4 },
   ],
   "90": [
-    { label: "Missed doses", count: 64, color: CC_COLORS.negative },
-    { label: "Side effects", count: 42, color: CC_COLORS.warning },
-    { label: "Cost barriers", count: 28, color: CC_COLORS.chartPurple },
-    { label: "Confusion", count: 18, color: CC_COLORS.chartBlue },
+    { type: "Med Adherence", positive: 132, warning: 52, critical: 22 },
+    { type: "Patient Intake", positive: 64, warning: 20, critical: 9 },
+    { type: "Chronic Care", positive: 44, warning: 24, critical: 12 },
+  ],
+};
+
+export const CALL_EFFICIENCY_DATA: Record<
+  TimeRange,
+  { firstAttempt: number; afterRetry: number; unresolved: number }
+> = {
+  "7":  { firstAttempt: 62, afterRetry: 24, unresolved: 14 },
+  "30": { firstAttempt: 58, afterRetry: 26, unresolved: 16 },
+  "90": { firstAttempt: 54, afterRetry: 28, unresolved: 18 },
+};
+
+export const BP_DISTRIBUTION_DATA: Record<
+  TimeRange,
+  { atGoal: number; borderline: number; uncontrolled: number; urgent: number }
+> = {
+  "7":  { atGoal: 3, borderline: 2, uncontrolled: 1, urgent: 1 },
+  "30": { atGoal: 10, borderline: 7, uncontrolled: 5, urgent: 2 },
+  "90": { atGoal: 26, borderline: 18, uncontrolled: 14, urgent: 6 },
+};
+
+export const BARRIERS_DATA: Record<
+  TimeRange,
+  { label: string; count: number; trend: number; color: string }[]
+> = {
+  "7": [
+    { label: "Cost / Insurance", count: 4, trend: 1, color: CC_COLORS.negative },
+    { label: "Side Effects", count: 5, trend: -1, color: CC_COLORS.warning },
+    { label: "Dosing Confusion", count: 3, trend: 0, color: CC_COLORS.chartPurple },
+    { label: "Pharmacy Access", count: 2, trend: 1, color: CC_COLORS.chartBlue },
+    { label: "Pain Management", count: 3, trend: 0, color: "#498205" },
+  ],
+  "30": [
+    { label: "Cost / Insurance", count: 14, trend: 3, color: CC_COLORS.negative },
+    { label: "Side Effects", count: 16, trend: -2, color: CC_COLORS.warning },
+    { label: "Dosing Confusion", count: 9, trend: 1, color: CC_COLORS.chartPurple },
+    { label: "Pharmacy Access", count: 7, trend: 2, color: CC_COLORS.chartBlue },
+    { label: "Pain Management", count: 8, trend: 1, color: "#498205" },
+  ],
+  "90": [
+    { label: "Cost / Insurance", count: 38, trend: 5, color: CC_COLORS.negative },
+    { label: "Side Effects", count: 42, trend: -4, color: CC_COLORS.warning },
+    { label: "Dosing Confusion", count: 24, trend: 2, color: CC_COLORS.chartPurple },
+    { label: "Pharmacy Access", count: 18, trend: 6, color: CC_COLORS.chartBlue },
+    { label: "Pain Management", count: 22, trend: 3, color: "#498205" },
+  ],
+};
+
+export const RISK_HEATMAP_DATA: Record<
+  TimeRange,
+  { type: string; low: number; medium: number; high: number; urgent: number }[]
+> = {
+  "7": [
+    { type: "Med Adherence", low: 8, medium: 5, high: 3, urgent: 1 },
+    { type: "Patient Intake", low: 4, medium: 2, high: 1, urgent: 1 },
+    { type: "Chronic Care", low: 2, medium: 2, high: 1, urgent: 1 },
+  ],
+  "30": [
+    { type: "Med Adherence", low: 28, medium: 16, high: 8, urgent: 3 },
+    { type: "Patient Intake", low: 14, medium: 7, high: 4, urgent: 2 },
+    { type: "Chronic Care", low: 8, medium: 6, high: 4, urgent: 2 },
+  ],
+  "90": [
+    { type: "Med Adherence", low: 72, medium: 42, high: 22, urgent: 8 },
+    { type: "Patient Intake", low: 38, medium: 18, high: 10, urgent: 4 },
+    { type: "Chronic Care", low: 22, medium: 16, high: 12, urgent: 6 },
   ],
 };
 
