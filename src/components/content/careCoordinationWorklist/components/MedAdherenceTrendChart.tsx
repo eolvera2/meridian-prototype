@@ -55,10 +55,10 @@ export const MedAdherenceTrendChart: FC<MedAdherenceTrendChartProps> = ({ data }
 
         {/* Refill rate line (behind, dashed) */}
         <polyline points={refillLine} fill="none"
-          stroke={CC_COLORS.chartTeal} strokeWidth="2" strokeDasharray="5 3" />
+          stroke={CC_COLORS.chartPurple} strokeWidth="2" strokeDasharray="5 3" />
         {data.map((d, i) => (
           <g key={`r-${i}`}>
-            <circle cx={toX(i)} cy={toY(d.refillRate)} r="3" fill={CC_COLORS.chartTeal} />
+            <circle cx={toX(i)} cy={toY(d.refillRate)} r="3" fill={CC_COLORS.chartPurple} />
             <title>{`${d.label}: ${d.refillRate}% refill rate`}</title>
           </g>
         ))}

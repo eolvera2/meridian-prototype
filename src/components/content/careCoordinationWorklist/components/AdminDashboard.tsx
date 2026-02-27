@@ -232,7 +232,7 @@ export const AdminDashboard: FC<AdminDashboardProps> = ({
                     Adherence Rate
                   </span>
                   <span className={styles.legendItem}>
-                    <span className={styles.legendDot} style={{ backgroundColor: CC_COLORS.chartTeal }} />
+                    <span className={styles.legendDot} style={{ backgroundColor: CC_COLORS.chartPurple }} />
                     Refill Rate
                   </span>
                 </div>
