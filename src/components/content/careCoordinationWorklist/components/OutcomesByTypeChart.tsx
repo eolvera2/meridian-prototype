@@ -74,9 +74,9 @@ const useChartStyles = makeStyles({
 });
 
 const BAR_COLORS = {
-  positive: "#498205",
-  warning: "#CA5010",
-  critical: "#D13438",
+  positive: "#0E8A3E",
+  warning: "#E97A1F",
+  critical: "#C42B1C",
 } as const;
 
 export const OutcomesByTypeChart: FC<OutcomesByTypeChartProps> = ({ data }) => {

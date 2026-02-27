@@ -1,14 +1,29 @@
 import type { ActiveCallRecord, ContactRecord } from "./CareCoordinationWorklistContext";
 
-// ── Semantic color constants (no Fluent UI token equivalents) ───────
+// ── Semantic color constants (healthcare-optimized palette) ─────────
 export const CC_COLORS = {
-  urgencyBg: "#FFF8E1",
-  urgencyBorder: "#CA5010",
-  negative: "#D13438",
-  warning: "#CA5010",
-  chartPurple: "#8764B8",
-  chartBlue: "#0078D4",
-  missedDoses: "#9A6700",
+  // Status / severity
+  positive: "#0E8A3E",      // Forest green — success, at goal, good outcomes
+  caution: "#E97A1F",       // Warm amber — needs attention, borderline
+  negative: "#C42B1C",      // Clinical red — critical, urgent, failures
+  neutral: "#616161",       // Slate gray — informational, no action needed
+
+  // Chart palette (high-contrast, distinguishable)
+  chartTeal: "#0E7C86",     // Teal — primary data series
+  chartBlue: "#2563EB",     // Vivid blue — secondary data series
+  chartPurple: "#7C3AED",   // Violet — tertiary data series
+  chartSlate: "#475569",    // Cool gray — quaternary data series
+  chartMoss: "#3D7A44",     // Moss green — fifth data series
+
+  // Backgrounds (light tints for cards/cells)
+  bgPositive: "#E6F4EA",    // Light green
+  bgCaution: "#FFF3E0",     // Light amber
+  bgNegative: "#FDE7E9",    // Light red
+  bgInfo: "#E8F0FE",        // Light blue
+
+  // Legacy (still referenced by status pills and urgency rows)
+  urgencyBg: "#FFF3E0",
+  urgencyBorder: "#E97A1F",
 };
 
 // ── Shared types ────────────────────────────────────────────────────
@@ -138,24 +153,24 @@ export const BARRIERS_DATA: Record<
 > = {
   "7": [
     { label: "Cost / Insurance", count: 4, trend: 1, color: CC_COLORS.negative },
-    { label: "Side Effects", count: 5, trend: -1, color: CC_COLORS.warning },
+    { label: "Side Effects", count: 5, trend: -1, color: CC_COLORS.caution },
     { label: "Dosing Confusion", count: 3, trend: 0, color: CC_COLORS.chartPurple },
     { label: "Pharmacy Access", count: 2, trend: 1, color: CC_COLORS.chartBlue },
-    { label: "Pain Management", count: 3, trend: 0, color: "#498205" },
+    { label: "Pain Management", count: 3, trend: 0, color: CC_COLORS.chartTeal },
   ],
   "30": [
     { label: "Cost / Insurance", count: 14, trend: 3, color: CC_COLORS.negative },
-    { label: "Side Effects", count: 16, trend: -2, color: CC_COLORS.warning },
+    { label: "Side Effects", count: 16, trend: -2, color: CC_COLORS.caution },
     { label: "Dosing Confusion", count: 9, trend: 1, color: CC_COLORS.chartPurple },
     { label: "Pharmacy Access", count: 7, trend: 2, color: CC_COLORS.chartBlue },
-    { label: "Pain Management", count: 8, trend: 1, color: "#498205" },
+    { label: "Pain Management", count: 8, trend: 1, color: CC_COLORS.chartTeal },
   ],
   "90": [
     { label: "Cost / Insurance", count: 38, trend: 5, color: CC_COLORS.negative },
-    { label: "Side Effects", count: 42, trend: -4, color: CC_COLORS.warning },
+    { label: "Side Effects", count: 42, trend: -4, color: CC_COLORS.caution },
     { label: "Dosing Confusion", count: 24, trend: 2, color: CC_COLORS.chartPurple },
     { label: "Pharmacy Access", count: 18, trend: 6, color: CC_COLORS.chartBlue },
-    { label: "Pain Management", count: 22, trend: 3, color: "#498205" },
+    { label: "Pain Management", count: 22, trend: 3, color: CC_COLORS.chartTeal },
   ],
 };
 

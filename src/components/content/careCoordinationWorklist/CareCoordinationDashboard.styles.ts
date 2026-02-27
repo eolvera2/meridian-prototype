@@ -118,16 +118,16 @@ export const useDashboardStyles = makeStyles({
     },
   },
   statCardGood: {
-    ...shorthands.borderLeft("4px", "solid", "#107C10"),
+    ...shorthands.borderLeft("4px", "solid", "#0E8A3E"),
   },
   statCardWarning: {
-    ...shorthands.borderLeft("4px", "solid", "#CA5010"),
+    ...shorthands.borderLeft("4px", "solid", "#E97A1F"),
   },
   statCardCritical: {
-    ...shorthands.borderLeft("4px", "solid", "#D13438"),
+    ...shorthands.borderLeft("4px", "solid", "#C42B1C"),
   },
   statCardNeutral: {
-    ...shorthands.borderLeft("4px", "solid", tokens.colorBrandBackground),
+    ...shorthands.borderLeft("4px", "solid", "#616161"),
   },
   statLabel: {
     fontSize: tokens.fontSizeBase200,
@@ -152,12 +152,12 @@ export const useDashboardStyles = makeStyles({
   statTrendUp: {
     fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
-    color: "#107C10",
+    color: "#0E8A3E",
   },
   statTrendDown: {
     fontSize: tokens.fontSizeBase200,
     fontWeight: 600,
-    color: "#D13438",
+    color: "#C42B1C",
   },
   statBreakdown: {
     display: "flex",

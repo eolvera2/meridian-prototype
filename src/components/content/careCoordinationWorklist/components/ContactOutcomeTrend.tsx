@@ -104,7 +104,7 @@ export const ContactOutcomeTrend: FC<ContactOutcomeTrendProps> = ({ data }) => {
       <polyline
         points={successLine}
         fill="none"
-        stroke={CC_COLORS.chartBlue}
+        stroke={CC_COLORS.positive}
         strokeWidth="2.5"
       />
       {data.map((d, i) => (
@@ -113,7 +113,7 @@ export const ContactOutcomeTrend: FC<ContactOutcomeTrendProps> = ({ data }) => {
             cx={toX(i)}
             cy={toY(d.successRate)}
             r="3.5"
-            fill={CC_COLORS.chartBlue}
+            fill={CC_COLORS.positive}
           />
           <title>{`${d.label}: ${d.successRate}% success`}</title>
         </g>

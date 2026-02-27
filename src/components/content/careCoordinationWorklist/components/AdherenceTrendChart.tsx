@@ -68,11 +68,11 @@ export const AdherenceTrendChart: FC<AdherenceTrendChartProps> = ({ data }) => {
       {/* Missed doses line */}
       <polyline
         points={missedLine} fill="none"
-        stroke={CC_COLORS.missedDoses} strokeWidth="2" strokeDasharray="5 3"
+        stroke={CC_COLORS.caution} strokeWidth="2" strokeDasharray="5 3"
       />
       {data.map((d, i) => (
         <g key={`m-${i}`}>
-          <circle cx={toX(i)} cy={toYMissed(d.missedDoses)} r="3" fill={CC_COLORS.missedDoses} />
+          <circle cx={toX(i)} cy={toYMissed(d.missedDoses)} r="3" fill={CC_COLORS.caution} />
           <title>{`${d.label}: ${d.missedDoses} missed doses`}</title>
         </g>
       ))}

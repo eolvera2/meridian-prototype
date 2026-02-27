@@ -203,7 +203,7 @@ export const AdminDashboard: FC<AdminDashboardProps> = ({
                 </div>
                 <div className={styles.trendLegendSide}>
                   <span className={styles.legendItem}>
-                    <span className={styles.legendDot} style={{ backgroundColor: CC_COLORS.chartBlue }} />
+                    <span className={styles.legendDot} style={{ backgroundColor: CC_COLORS.positive }} />
                     Success Rate
                   </span>
                   <span className={styles.legendItem}>

@@ -12,10 +12,10 @@ interface BpDistributionChartProps {
 }
 
 const SEGMENTS = [
-  { key: "atGoal" as const, label: "At Goal", color: "#498205" },
-  { key: "borderline" as const, label: "Borderline", color: "#CA5010" },
-  { key: "uncontrolled" as const, label: "Uncontrolled", color: "#D13438" },
-  { key: "urgent" as const, label: "Urgent", color: "#A4262C" },
+  { key: "atGoal" as const, label: "At Goal", color: "#0E8A3E" },
+  { key: "borderline" as const, label: "Borderline", color: "#E97A1F" },
+  { key: "uncontrolled" as const, label: "Uncontrolled", color: "#C42B1C" },
+  { key: "urgent" as const, label: "Urgent", color: "#7C1D1D" },
 ];
 
 const useChartStyles = makeStyles({
@@ -87,18 +87,17 @@ export const BpDistributionChart: FC<BpDistributionChartProps> = ({ data }) => {
   const r = 75; // ring radius within the 200×200 viewBox
   const circumference = 2 * Math.PI * r;
 
-  // Build cumulative offsets for each segment
-  let cumOffset = 0;
+  // Build cumulative arcs — each ring covers from start to its end.
+  // Rendered in reverse so first segment paints on top, eliminating sub-pixel gaps.
+  let cumLen = 0;
   const rings = SEGMENTS.map((seg) => {
     const value = data[seg.key];
     const segLen = total > 0 ? (value / total) * circumference : 0;
-    const offset = cumOffset;
-    cumOffset += segLen;
+    cumLen += segLen;
     return {
       ...seg,
       value,
-      dasharray: `${segLen} ${circumference - segLen}`,
-      dashoffset: -offset,
+      cumulativeLen: cumLen,
     };
   });
 
@@ -128,8 +127,9 @@ export const BpDistributionChart: FC<BpDistributionChartProps> = ({ data }) => {
               stroke={tokens.colorNeutralBackground3}
               strokeWidth="24"
             />
-            {/* Data segments */}
-            {rings.map((ring) => (
+            {/* Data segments — painted in reverse (last segment first) so each
+                cumulative arc overlaps cleanly, eliminating jagged sub-pixel gaps */}
+            {[...rings].reverse().map((ring) => (
               <circle
                 key={ring.key}
                 cx="100"
@@ -138,10 +138,10 @@ export const BpDistributionChart: FC<BpDistributionChartProps> = ({ data }) => {
                 fill="none"
                 stroke={ring.color}
                 strokeWidth="24"
-                strokeDasharray={ring.dasharray}
-                strokeDashoffset={ring.dashoffset}
+                strokeDasharray={`${ring.cumulativeLen} ${circumference - ring.cumulativeLen}`}
+                strokeDashoffset={0}
                 transform="rotate(-90 100 100)"
-                strokeLinecap="butt"
+                style={{ shapeRendering: "geometricPrecision" }}
               />
             ))}
           </svg>

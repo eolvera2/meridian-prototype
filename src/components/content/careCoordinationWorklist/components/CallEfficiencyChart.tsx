@@ -7,9 +7,9 @@ interface CallEfficiencyChartProps {
 }
 
 const SEGMENT_COLORS = {
-  firstAttempt: "#498205",
-  afterRetry: "#0078D4",
-  unresolved: "#D13438",
+  firstAttempt: "#0E8A3E",
+  afterRetry: "#2563EB",
+  unresolved: "#C42B1C",
 } as const;
 
 const SEGMENT_LABELS: Record<keyof typeof SEGMENT_COLORS, string> = {

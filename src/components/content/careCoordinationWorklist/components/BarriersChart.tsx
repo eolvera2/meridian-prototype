@@ -70,7 +70,7 @@ export const BarriersChart: FC<BarriersChartProps> = ({ data }) => {
           <span className={styles.value}>{d.count}</span>
           <span
             className={styles.trend}
-            style={{ color: d.trend > 0 ? "#D13438" : d.trend < 0 ? "#498205" : tokens.colorNeutralForeground3 }}
+            style={{ color: d.trend > 0 ? "#C42B1C" : d.trend < 0 ? "#0E8A3E" : tokens.colorNeutralForeground3 }}
           >
             {d.trend > 0 ? `↑${d.trend}` : d.trend < 0 ? `↓${Math.abs(d.trend)}` : "—"}
           </span>

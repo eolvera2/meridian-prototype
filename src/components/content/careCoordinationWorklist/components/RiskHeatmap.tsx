@@ -13,10 +13,10 @@ interface RiskHeatmapProps {
 }
 
 const CELL_COLORS = {
-  low: { bg: "#DFF6DD", text: "#0E700E" },
-  medium: { bg: "#FFF4CE", text: "#6E4B00" },
-  high: { bg: "#FFF0E0", text: "#C45100" },
-  urgent: { bg: "#FDE7E9", text: "#A4262C" },
+  low: { bg: "#E6F4EA", text: "#0E6B2E" },
+  medium: { bg: "#FFF3E0", text: "#8B5E00" },
+  high: { bg: "#FDEAD7", text: "#B84C00" },
+  urgent: { bg: "#FDE7E9", text: "#7C1D1D" },
 } as const;
 
 const COLUMNS: { key: keyof typeof CELL_COLORS; label: string }[] = [
