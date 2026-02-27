@@ -41,11 +41,11 @@ import {
   EmojiAngry20Filled,
 } from "@fluentui/react-icons";
 import { useDashboardStyles } from "../CareCoordinationDashboard.styles";
-import type { CallRecordStatus } from "../CareCoordinationWorklistContext";
+import type { CallRecordStatus, ContactRecord } from "../CareCoordinationWorklistContext";
 import type { CallType } from "../CareCoordinationWorklist.types";
 import { CALL_TYPE_LABELS } from "../CareCoordinationWorklist.types";
 import type { SortColumn, SortDirection, TableRow } from "../careCoordination.constants";
-import { CC_COLORS, PAGE_SIZE } from "../careCoordination.constants";
+import { PAGE_SIZE } from "../careCoordination.constants";
 
 // ── Props ───────────────────────────────────────────────────────────
 
@@ -192,12 +192,24 @@ export const ContactListTable: FC<ContactListTableProps> = ({
   // ── Render outcomes for a record ──
 
   const renderOutcomes = (item: TableRow) => {
-    const record = item.record;
-    const isPending = item.type === "active"
-      ? (record.status === "in-progress" || record.status === "scheduled-for-retry" || record.status === "scheduled")
-      : (record.contactDate === "--");
+    if (item.type === "active") {
+      const record = item.record;
+      if (record.status === "in-progress" || record.status === "scheduled-for-retry" || record.status === "scheduled") {
+        return (
+          <>
+            <NeutralOutcomeIndicator label="Picked up meds" />
+            <NeutralOutcomeIndicator label="Taking as Rx" />
+            <NeutralOutcomeIndicator label="Side effects" />
+            <NeutralPainIndicator />
+          </>
+        );
+      }
+    }
 
-    if (isPending) {
+    const record = item.record;
+
+    // History rows with no prior call show pending
+    if (item.type === "history" && record.contactDate === "--") {
       return (
         <>
           <NeutralOutcomeIndicator label="Picked up meds" />
@@ -242,7 +254,7 @@ export const ContactListTable: FC<ContactListTableProps> = ({
 
   // ── Render status cell for history rows ──
 
-  const renderHistoryStatus = (record: TableRow extends { type: "history"; record: infer R } ? R : never) => (
+  const renderHistoryStatus = (record: ContactRecord) => (
     <div>
       <div className={styles.statusCellInner}>
         {record.scheduled ? (
@@ -356,17 +368,17 @@ export const ContactListTable: FC<ContactListTableProps> = ({
                 </td>
                 <td className={styles.tableCell}>
                   {item.type === "active" ? (
-                    <span className={getStatusPillClass(record.status)}>
-                      {record.status === "in-progress" && <Timer16Regular />}
-                      {record.status === "needs-review" && <Checkmark16Regular />}
-                      {record.status === "completed" && <Checkmark16Regular />}
-                      {record.status === "scheduled-for-retry" && <HourglassRegular />}
-                      {record.status === "reviewed" && <Checkmark16Regular />}
-                      {record.status === "scheduled" && <HourglassRegular />}
-                      {getStatusLabel(record.status)}
+                    <span className={getStatusPillClass(item.record.status)}>
+                      {item.record.status === "in-progress" && <Timer16Regular />}
+                      {item.record.status === "needs-review" && <Checkmark16Regular />}
+                      {item.record.status === "completed" && <Checkmark16Regular />}
+                      {item.record.status === "scheduled-for-retry" && <HourglassRegular />}
+                      {item.record.status === "reviewed" && <Checkmark16Regular />}
+                      {item.record.status === "scheduled" && <HourglassRegular />}
+                      {getStatusLabel(item.record.status)}
                     </span>
                   ) : (
-                    renderHistoryStatus(record as Parameters<typeof renderHistoryStatus>[0])
+                    renderHistoryStatus(item.record)
                   )}
                 </td>
               </tr>

@@ -93,7 +93,7 @@ export const ContactHistoryEntryRow: React.FC<ContactHistoryEntryProps> = ({
           onBlur={(e) => tooltipHandlers?.onBlur(e as unknown as React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>)}
           onMouseEnter={(e) => tooltipHandlers?.onMouseEnter(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
           onMouseMove={(e) => tooltipHandlers?.onMouseMove(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
-          onMouseLeave={(e) => tooltipHandlers?.onMouseLeave(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
+          onMouseLeave={() => tooltipHandlers?.onMouseLeave()}
           onClick={(e) => tooltipHandlers?.onClick(e as unknown as React.MouseEvent<HTMLTextAreaElement | HTMLInputElement>)}
           onKeyDown={(e) => tooltipHandlers?.onKeyDown(e as unknown as React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>)}
           onKeyUp={(e) => tooltipHandlers?.onKeyUp(e as unknown as React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>)}

@@ -15,7 +15,6 @@ import {
   MenuTrigger,
   MenuPopover,
   MenuList,
-  MenuItem,
   MenuItemRadio,
   MenuGroup,
   MenuGroupHeader,

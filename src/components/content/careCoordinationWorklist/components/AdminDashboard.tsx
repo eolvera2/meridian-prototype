@@ -14,7 +14,6 @@ import {
   ChevronDown16Regular,
   ChevronUp16Regular,
 } from "@fluentui/react-icons";
-import { tokens } from "@fluentui/react-components";
 import { useDashboardStyles } from "../CareCoordinationDashboard.styles";
 import type { CallType } from "../CareCoordinationWorklist.types";
 import { CALL_TYPE_LABELS } from "../CareCoordinationWorklist.types";

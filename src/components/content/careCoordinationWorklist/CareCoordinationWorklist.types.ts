@@ -107,6 +107,7 @@ export interface CareCoordinationWorklistItem {
   // Shared
   contactHistory?: ContactHistoryEntry[];
   medications?: MedicationEntry[];
+  scheduled?: boolean;
 }
 
 export type CareCoordinationSortOrder = "none" | "asc" | "desc";

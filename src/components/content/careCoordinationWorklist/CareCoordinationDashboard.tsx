@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect, type FC } from "react";
 import { Switch } from "@fluentui/react-components";
 import { useDashboardStyles } from "./CareCoordinationDashboard.styles";
 import { useCareCoordinationWorklistContext } from "./CareCoordinationWorklistContext";
-import type { CallType } from "./CareCoordinationWorklist.types";
 import type { TimeRange, SortColumn, SortDirection, TableRow } from "./careCoordination.constants";
 import { PAGE_SIZE } from "./careCoordination.constants";
 import { AdminDashboard } from "./components/AdminDashboard";
