@@ -13,17 +13,23 @@ const SEGMENT_COLORS = {
 } as const;
 
 const SEGMENT_LABELS: Record<keyof typeof SEGMENT_COLORS, string> = {
-  firstAttempt: "Resolved 1st Attempt",
-  afterRetry: "Resolved After Retry",
+  firstAttempt: "FCR",
+  afterRetry: "Retry",
   unresolved: "Unresolved",
 };
 
 const useChartStyles = makeStyles({
   wrapper: {
     display: "flex",
-    flexDirection: "column",
+    alignItems: "center",
     gap: "12px",
     paddingTop: "4px",
+  },
+  barArea: {
+    display: "flex",
+    flexDirection: "column",
+    flex: 1,
+    minWidth: 0,
   },
   stackedBar: {
     display: "flex",
@@ -44,9 +50,9 @@ const useChartStyles = makeStyles({
   },
   legend: {
     display: "flex",
-    justifyContent: "center",
-    gap: "16px",
-    flexWrap: "wrap",
+    flexDirection: "column",
+    gap: "6px",
+    flexShrink: 0,
     fontSize: tokens.fontSizeBase200,
     color: tokens.colorNeutralForeground3,
   },
@@ -87,31 +93,33 @@ export const CallEfficiencyChart: FC<CallEfficiencyChartProps> = ({ data }) => {
         role="img"
         aria-label={`Call efficiency chart. ${ariaLabel}`}
       >
-        <div className={styles.stackedBar}>
-          {segments.map(({ key, value }) => {
-            const percentage = pct(value);
-            return (
-              <div
-                key={key}
-                className={styles.segment}
-                style={{
-                  flex: percentage,
-                  backgroundColor: SEGMENT_COLORS[key],
-                }}
-              >
-                {percentage >= 8 ? `${percentage}%` : ""}
-              </div>
-            );
-          })}
+        <div className={styles.barArea}>
+          <div className={styles.stackedBar}>
+            {segments.map(({ key, value }) => {
+              const percentage = pct(value);
+              return (
+                <div
+                  key={key}
+                  className={styles.segment}
+                  style={{
+                    flex: percentage,
+                    backgroundColor: SEGMENT_COLORS[key],
+                  }}
+                >
+                  {percentage >= 8 ? `${percentage}%` : ""}
+                </div>
+              );
+            })}
+          </div>
         </div>
         <div className={styles.legend}>
-          {segments.map(({ key, value }) => (
+          {segments.map(({ key }) => (
             <span key={key} className={styles.legendItem}>
               <span
                 className={styles.legendDot}
                 style={{ backgroundColor: SEGMENT_COLORS[key] }}
               />
-              {SEGMENT_LABELS[key]} ({pct(value)}%)
+              {SEGMENT_LABELS[key]}
             </span>
           ))}
         </div>
