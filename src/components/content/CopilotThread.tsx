@@ -99,9 +99,11 @@ const useStyles = makeStyles({
   },
 });
 
-export type CopilotThreadProps = Record<string, never>;
+export type CopilotThreadProps = {
+  variant?: "default" | "careCoordination";
+};
 
-export const CopilotThread: React.FC<CopilotThreadProps> = () => {
+export const CopilotThread: React.FC<CopilotThreadProps> = ({ variant = "default" }) => {
   const styles = useStyles();
   const { t } = useI18n();
   const [inputValue, setInputValue] = useState("");
@@ -132,13 +134,13 @@ export const CopilotThread: React.FC<CopilotThreadProps> = () => {
     <div className={styles.chatContainer}>
       <div className={`${styles.messagesArea} right-drawer-scroll-container`}>
         <div className={styles.messageAgent}>
-          {t("copilotThread.sample.agentIntro")}
+          {t(variant === "careCoordination" ? "copilotThread.careCoordination.agentIntro" : "copilotThread.sample.agentIntro")}
         </div>
         <div className={styles.messageUser}>
-          {t("copilotThread.sample.userQuestion")}
+          {t(variant === "careCoordination" ? "copilotThread.careCoordination.userQuestion" : "copilotThread.sample.userQuestion")}
         </div>
         <div className={styles.messageAgent}>
-          {t("copilotThread.sample.agentFollowUp")}
+          {t(variant === "careCoordination" ? "copilotThread.careCoordination.agentFollowUp" : "copilotThread.sample.agentFollowUp")}
         </div>
       </div>
 

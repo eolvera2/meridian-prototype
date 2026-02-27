@@ -91,6 +91,7 @@ export interface RightDrawerProps {
   hasHeader?: boolean; // Whether Header is shown (affects positioning)
   headerHeight?: number; // Dynamic header height in pixels
   style?: React.CSSProperties;
+  copilotVariant?: "default" | "careCoordination";
 }
 
 export const RightDrawer: React.FC<RightDrawerProps> = ({
@@ -103,6 +104,7 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
   hasHeader = false,
   headerHeight,
   style,
+  copilotVariant = "default",
 }) => {
   const styles = useRightDrawerStyles();
   const headerStyles = useCustomHeaderStyles();
@@ -143,7 +145,7 @@ export const RightDrawer: React.FC<RightDrawerProps> = ({
   const renderContent = () => {
     switch (content) {
       case "copilot":
-        return <CopilotThread />;
+        return <CopilotThread variant={copilotVariant} />;
       case "notifications":
         return <NotificationsPanel />;
       case "memos":

@@ -208,6 +208,20 @@ export const DesktopWorkspace: React.FC<DesktopWorkspaceProps> = ({
                     >
                       <CareCoordinationContent onPatientSelectedChange={handleMaPatientChange} />
                     </div>
+                    <div className={styles.drawerArea}>
+                      {rightDrawerVisible && rightDrawerContent !== "settings" && (
+                        <RightDrawer
+                          isOpen={rightDrawerVisible}
+                          content={rightDrawerContent}
+                          onClose={onCloseRightDrawer}
+                          onLibraryPromptClick={onLibraryPromptClick}
+                          type="inline"
+                          isFullWidth={!maPatientSelected}
+                          style={desktopDrawerStyle}
+                          copilotVariant="careCoordination"
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
               </CareCoordinationWorklistProvider>

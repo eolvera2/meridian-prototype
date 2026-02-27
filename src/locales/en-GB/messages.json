@@ -83,6 +83,11 @@
       "agentIntro": "Hello! I'm here to help you with patient information and clinical insights.",
       "userQuestion": "Can you provide a summary of the current patient's condition?",
       "agentFollowUp": "Based on the available data, I can see this patient has been admitted for routine monitoring. Would you like me to analyse their latest vitals?"
+    },
+    "careCoordination": {
+      "agentIntro": "Hello! I'm here to help you with patient contact information and contact history insights.",
+      "userQuestion": "Which patients have missed follow-ups or have urgent flags this week?",
+      "agentFollowUp": "I found 3 patients requiring attention: Priya Sharma has a BP reading of 204/101 flagged as hypertensive urgency, Devon Castillo is down to 2 units of insulin with a pharmacy delay, and James Wilson reports pain at 8/10 with his current regimen failing. Would you like me to prioritise them by urgency?"
     }
   },
   "notifications": {
