@@ -14,11 +14,14 @@ const useChartStyles = makeStyles({
     gap: "24px",
     paddingTop: "8px",
     paddingBottom: "4px",
+    flex: 1,
+    minWidth: 0,
   },
   chartAndLegend: {
     display: "flex",
     alignItems: "center",
     gap: "12px",
+    width: "100%",
   },
   group: {
     display: "flex",

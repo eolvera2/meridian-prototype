@@ -24,6 +24,7 @@ const useChartStyles = makeStyles({
     alignItems: "center",
     gap: "12px",
     paddingTop: "4px",
+    width: "100%",
   },
   barArea: {
     display: "flex",
