@@ -7,7 +7,7 @@ import {
 import { useAddPatientFormStyles } from "../AddPatientForm.styles";
 import type { CallType } from "../CareCoordinationWorklist.types";
 import { CALL_TYPE_LABELS } from "../CareCoordinationWorklist.types";
-import { campaignDescriptions, campaignOutcomes } from "../constants/campaignConfig";
+import { campaignDescriptions } from "../constants/campaignConfig";
 
 interface CampaignSectionProps {
   callType: CallType;
@@ -47,18 +47,6 @@ export const CampaignSection: React.FC<CampaignSectionProps> = ({
       <div className={styles.fieldFullWidth}>
         <div className={styles.campaignDescription}>
           {campaignDescriptions[callType]}
-        </div>
-      </div>
-
-      {/* What the system will collect */}
-      <div className={styles.fieldFullWidth}>
-        <Label className={styles.outcomesLabel}>What the system will collect</Label>
-        <div className={styles.outcomesGrid}>
-          {campaignOutcomes[callType].map((item, idx) => (
-            <span key={idx} className={styles.outcomeItem}>
-              • {item}
-            </span>
-          ))}
         </div>
       </div>
     </>

@@ -59,10 +59,7 @@ export const CampaignSettings: React.FC<CampaignSettingsProps> = ({
   const styles = useAddPatientFormStyles();
 
   return (
-    <div className={styles.fieldFullWidth}>
-      <div className={styles.campaignSettingsCard}>
-        <div className={styles.sectionTitle}>Campaign Settings</div>
-        <div className={styles.fieldGrid}>
+    <div className={styles.fieldGrid}>
           {/* Recurrence / Days Before Appointment */}
           {callType !== "patient-intake" ? (
             <div className={styles.fieldFullWidth}>
@@ -167,7 +164,6 @@ export const CampaignSettings: React.FC<CampaignSettingsProps> = ({
             />
           </div>
 
-          {/* Live Transfer */}
           <div className={styles.fieldFullWidth}>
             <Checkbox
               checked={liveTransfer}
@@ -175,8 +171,6 @@ export const CampaignSettings: React.FC<CampaignSettingsProps> = ({
               label="Enable live transfer for escalations"
             />
           </div>
-        </div>
-      </div>
     </div>
   );
 };

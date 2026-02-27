@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { Button } from "@fluentui/react-components";
-import { Dismiss24Regular, Call20Regular } from "@fluentui/react-icons";
+import { Button, Label } from "@fluentui/react-components";
+import { Dismiss24Regular, Call20Regular, ChevronDown16Regular, ChevronRight16Regular } from "@fluentui/react-icons";
 import { useAddPatientFormStyles } from "./AddPatientForm.styles";
 import type { CareCoordinationWorklistItem, CallType } from "./CareCoordinationWorklist.types";
 import type { FormMedicationEntry } from "./constants/campaignConfig";
@@ -11,6 +11,7 @@ import {
   INTAKE_REASONS, INTAKE_DIAGNOSES, INTAKE_ALLERGIES, INTAKE_MEDICAL_HISTORIES,
   INTAKE_SURGICAL_HISTORIES, INTAKE_APPT_TIMES,
   HTN_REASONS, HTN_DIAGNOSES, HTN_INSTRUCTIONS, HTN_LIFESTYLE_NOTES, HTN_MED_SETS,
+  campaignOutcomes,
 } from "./constants/campaignConfig";
 import { PatientInfoSection } from "./components/PatientInfoSection";
 import { CampaignSection } from "./components/CampaignSection";
@@ -27,6 +28,7 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
 
   // Call type
   const [callType, setCallType] = useState<CallType>("medication-adherence");
+  const [campaignSettingsOpen, setCampaignSettingsOpen] = useState(false);
 
   // Patient info
   const [firstName, setFirstName] = useState("");
@@ -193,6 +195,7 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
     const newPatient: CareCoordinationWorklistItem = {
       id: `ma-new-${Date.now()}`,
       name: `${firstName} ${lastName}`.trim(),
+      mrn: mrn.replace(/^MRN/i, ""),
       callType,
       reason,
       demographics,
@@ -288,29 +291,61 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
                 onCallTypeChange={setCallType}
                 onLiveTransferChange={setLiveTransfer}
               />
-              <CampaignSettings
-                callType={callType}
-                recurrenceInterval={recurrenceInterval}
-                onRecurrenceIntervalChange={setRecurrenceInterval}
-                recurrenceUnit={recurrenceUnit}
-                onRecurrenceUnitChange={setRecurrenceUnit}
-                timingWindow={timingWindow}
-                onTimingWindowChange={setTimingWindow}
-                campaignStartDate={campaignStartDate}
-                onCampaignStartDateChange={setCampaignStartDate}
-                campaignEndDate={campaignEndDate}
-                onCampaignEndDateChange={setCampaignEndDate}
-                retryCount={retryCount}
-                onRetryCountChange={setRetryCount}
-                retryIntervalHours={retryIntervalHours}
-                onRetryIntervalHoursChange={setRetryIntervalHours}
-                leaveVoicemail={leaveVoicemail}
-                onLeaveVoicemailChange={setLeaveVoicemail}
-                liveTransfer={liveTransfer}
-                onLiveTransferChange={setLiveTransfer}
-                daysBeforeAppt={daysBeforeAppt}
-                onDaysBeforeApptChange={setDaysBeforeAppt}
-              />
+
+              {/* Collapsible Campaign Settings */}
+              <div className={styles.fieldFullWidth}>
+                <div className={styles.collapsibleCard}>
+                  <button
+                    type="button"
+                    onClick={() => setCampaignSettingsOpen(!campaignSettingsOpen)}
+                    className={styles.collapsibleHeader}
+                    aria-expanded={campaignSettingsOpen}
+                  >
+                    {campaignSettingsOpen ? <ChevronDown16Regular /> : <ChevronRight16Regular />}
+                    Campaign Settings
+                  </button>
+
+                  {campaignSettingsOpen && (
+                    <div className={styles.collapsibleContent}>
+                      {/* What the system will collect */}
+                      <div style={{ marginBottom: "16px" }}>
+                        <Label className={styles.outcomesLabel}>What the system will collect</Label>
+                        <div className={styles.outcomesGrid}>
+                          {campaignOutcomes[callType].map((item, idx) => (
+                            <span key={idx} className={styles.outcomeItem}>
+                              • {item}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <CampaignSettings
+                        callType={callType}
+                        recurrenceInterval={recurrenceInterval}
+                        onRecurrenceIntervalChange={setRecurrenceInterval}
+                        recurrenceUnit={recurrenceUnit}
+                        onRecurrenceUnitChange={setRecurrenceUnit}
+                        timingWindow={timingWindow}
+                        onTimingWindowChange={setTimingWindow}
+                        campaignStartDate={campaignStartDate}
+                        onCampaignStartDateChange={setCampaignStartDate}
+                        campaignEndDate={campaignEndDate}
+                        onCampaignEndDateChange={setCampaignEndDate}
+                        retryCount={retryCount}
+                        onRetryCountChange={setRetryCount}
+                        retryIntervalHours={retryIntervalHours}
+                        onRetryIntervalHoursChange={setRetryIntervalHours}
+                        leaveVoicemail={leaveVoicemail}
+                        onLeaveVoicemailChange={setLeaveVoicemail}
+                        liveTransfer={liveTransfer}
+                        onLiveTransferChange={setLiveTransfer}
+                        daysBeforeAppt={daysBeforeAppt}
+                        onDaysBeforeApptChange={setDaysBeforeAppt}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
