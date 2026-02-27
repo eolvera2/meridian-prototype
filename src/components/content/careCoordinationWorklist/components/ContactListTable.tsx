@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import {
   mergeClasses,
-  Tooltip,
   Button,
 } from "@fluentui/react-components";
 import {
@@ -12,33 +11,6 @@ import {
   Warning16Filled,
   ArrowLeft16Regular,
   ArrowRight16Regular,
-  ShoppingBagCheckmark20Regular,
-  ShoppingBagDismiss20Filled,
-  ClipboardCheckmark20Regular,
-  ClipboardError20Filled,
-  ChatMultipleCheckmark20Regular,
-  ChatMultipleMinus20Filled,
-  ShoppingBag20Regular,
-  Clipboard20Regular,
-  ChatMultiple20Regular,
-  NumberCircle020Regular,
-  DocumentCheckmark20Regular,
-  DocumentDismiss20Filled,
-  LeafOne20Regular,
-  LeafThree20Filled,
-  HeartPulseCheckmark20Regular,
-  HeartPulseWarning20Filled,
-  BookPulse20Regular,
-  BookDismiss20Filled,
-  FlagCheckered20Regular,
-  FlagOff20Filled,
-  ArrowSort16Regular,
-  ArrowSortUp16Filled,
-  ArrowSortDown16Filled,
-  History20Regular,
-  HistoryDismiss20Filled,
-  Emoji20Regular,
-  EmojiAngry20Filled,
 } from "@fluentui/react-icons";
 import { useDashboardStyles } from "../CareCoordinationDashboard.styles";
 import type { CallRecordStatus, ContactRecord } from "../CareCoordinationWorklistContext";
@@ -46,6 +18,13 @@ import type { CallType } from "../CareCoordinationWorklist.types";
 import { CALL_TYPE_LABELS } from "../CareCoordinationWorklist.types";
 import type { SortColumn, SortDirection, TableRow } from "../careCoordination.constants";
 import { PAGE_SIZE } from "../careCoordination.constants";
+import {
+  OutcomeIndicator,
+  NeutralOutcomeIndicator,
+  PainLevelIndicator,
+  NeutralPainIndicator,
+  SortIcon,
+} from "./OutcomeIndicators";
 
 // ── Props ───────────────────────────────────────────────────────────
 
@@ -60,55 +39,6 @@ interface ContactListTableProps {
   handleSort: (col: SortColumn) => void;
   setSelectedPatientId: (id: string) => void;
 }
-
-// ── Outcome icon helpers ────────────────────────────────────────────
-
-const getOutcomeIcon = (label: string, isWarning: boolean) => {
-  switch (label) {
-    case "Picked up meds":
-      return isWarning ? <ShoppingBagDismiss20Filled aria-hidden="true" /> : <ShoppingBagCheckmark20Regular aria-hidden="true" />;
-    case "Taking as Rx":
-      return isWarning ? <ClipboardError20Filled aria-hidden="true" /> : <ClipboardCheckmark20Regular aria-hidden="true" />;
-    case "Side effects":
-      return isWarning ? <ChatMultipleMinus20Filled aria-hidden="true" /> : <ChatMultipleCheckmark20Regular aria-hidden="true" />;
-    case "Intake Complete":
-      return isWarning ? <DocumentDismiss20Filled aria-hidden="true" /> : <DocumentCheckmark20Regular aria-hidden="true" />;
-    case "Allergies Confirmed":
-      return isWarning ? <LeafThree20Filled aria-hidden="true" /> : <LeafOne20Regular aria-hidden="true" />;
-    case "Red Flag":
-      return isWarning ? <BookDismiss20Filled aria-hidden="true" /> : <BookPulse20Regular aria-hidden="true" />;
-    case "BP Reading":
-      return isWarning ? <HeartPulseWarning20Filled aria-hidden="true" /> : <HeartPulseCheckmark20Regular aria-hidden="true" />;
-    case "BP at Goal":
-      return isWarning ? <FlagOff20Filled aria-hidden="true" /> : <FlagCheckered20Regular aria-hidden="true" />;
-    case "Med Adherence":
-      return isWarning ? <HistoryDismiss20Filled aria-hidden="true" /> : <History20Regular aria-hidden="true" />;
-    case "Escalated":
-      return isWarning ? <EmojiAngry20Filled aria-hidden="true" /> : <Emoji20Regular aria-hidden="true" />;
-    default:
-      return isWarning ? <ShoppingBagDismiss20Filled aria-hidden="true" /> : <ShoppingBagCheckmark20Regular aria-hidden="true" />;
-  }
-};
-
-const getNeutralIcon = (label: string) => {
-  switch (label) {
-    case "Picked up meds": return <ShoppingBag20Regular aria-hidden="true" />;
-    case "Taking as Rx": return <Clipboard20Regular aria-hidden="true" />;
-    case "Side effects": return <ChatMultiple20Regular aria-hidden="true" />;
-    default: return <ShoppingBag20Regular aria-hidden="true" />;
-  }
-};
-
-const getStatusLabel = (status: CallRecordStatus) => {
-  switch (status) {
-    case "in-progress": return "In Progress";
-    case "needs-review": return "Ready for Review";
-    case "completed": return "Completed";
-    case "scheduled-for-retry": return "Scheduled for Retry";
-    case "reviewed": return "Reviewed";
-    case "scheduled": return "Scheduled";
-  }
-};
 
 // ── Component ───────────────────────────────────────────────────────
 
@@ -138,56 +68,16 @@ export const ContactListTable: FC<ContactListTableProps> = ({
     }
   };
 
-  const getPainClass = (level: number) => {
-    if (level === 0) return styles.outcomeGood;
-    if (level <= 3) return styles.outcomeYellow;
-    if (level <= 6) return styles.outcomeOrange;
-    return level >= 7 ? styles.outcomeBadFilled : styles.outcomeBad;
-  };
-
-  const SortIcon: FC<{ column: SortColumn }> = ({ column }) => {
-    if (sortColumn === column) {
-      return sortDirection === "asc"
-        ? <ArrowSortUp16Filled className={styles.sortIcon} />
-        : <ArrowSortDown16Filled className={styles.sortIcon} />;
+  const getStatusLabel = (status: CallRecordStatus) => {
+    switch (status) {
+      case "in-progress": return "In Progress";
+      case "needs-review": return "Ready for Review";
+      case "completed": return "Completed";
+      case "scheduled-for-retry": return "Scheduled for Retry";
+      case "reviewed": return "Reviewed";
+      case "scheduled": return "Scheduled";
     }
-    return <ArrowSort16Regular className={styles.sortIconInactive} />;
   };
-
-  const OutcomeIndicator: FC<{ label: string; value: string; isWarning: boolean }> = ({ label, value, isWarning }) => (
-    <Tooltip content={`${label}: ${value}`} relationship="label">
-      <span className={mergeClasses(styles.outcomeIcon, isWarning ? styles.outcomeBad : styles.outcomeGood)}>
-        {getOutcomeIcon(label, isWarning)}
-      </span>
-    </Tooltip>
-  );
-
-  const NeutralOutcomeIndicator: FC<{ label: string }> = ({ label }) => (
-    <Tooltip content={`${label}: Pending`} relationship="label">
-      <span className={mergeClasses(styles.outcomeIcon, styles.outcomeNeutralIcon)}>
-        {getNeutralIcon(label)}
-      </span>
-    </Tooltip>
-  );
-
-  const PainLevelIndicator: FC<{ level: number }> = ({ level }) => {
-    const clamped = Math.max(0, Math.min(10, level));
-    return (
-      <Tooltip content={`Pain level: ${clamped}/10`} relationship="label">
-        <span className={mergeClasses(styles.outcomeIcon, getPainClass(clamped))}>
-          {clamped}
-        </span>
-      </Tooltip>
-    );
-  };
-
-  const NeutralPainIndicator: FC = () => (
-    <Tooltip content="Pain level: Pending" relationship="label">
-      <span className={mergeClasses(styles.outcomeIcon, styles.outcomeNeutralIcon)}>
-        <NumberCircle020Regular aria-hidden="true" />
-      </span>
-    </Tooltip>
-  );
 
   // ── Render outcomes for a record ──
 
@@ -290,23 +180,23 @@ export const ContactListTable: FC<ContactListTableProps> = ({
         <thead>
           <tr>
             <th className={mergeClasses(styles.tableHeader, styles.sortableHeader)} onClick={() => handleSort("name")}>
-              Patient Name <SortIcon column="name" />
+              Patient Name <SortIcon column="name" sortColumn={sortColumn} sortDirection={sortDirection} />
             </th>
             <th className={mergeClasses(styles.tableHeader, styles.sortableHeader)} onClick={() => handleSort("mrn")}>
-              MRN <SortIcon column="mrn" />
+              MRN <SortIcon column="mrn" sortColumn={sortColumn} sortDirection={sortDirection} />
             </th>
             <th className={mergeClasses(styles.tableHeader, styles.sortableHeader)} onClick={() => handleSort("callType")}>
-              Call Type <SortIcon column="callType" />
+              Call Type <SortIcon column="callType" sortColumn={sortColumn} sortDirection={sortDirection} />
             </th>
             <th className={mergeClasses(styles.tableHeader, styles.sortableHeader)} onClick={() => handleSort("contactDate")}>
-              Contact Date <SortIcon column="contactDate" />
+              Contact Date <SortIcon column="contactDate" sortColumn={sortColumn} sortDirection={sortDirection} />
             </th>
             <th className={styles.tableHeader}>Outcomes</th>
             <th className={mergeClasses(styles.tableHeader, styles.sortableHeader)} onClick={() => handleSort("followUp")}>
-              Follow-up <SortIcon column="followUp" />
+              Follow-up <SortIcon column="followUp" sortColumn={sortColumn} sortDirection={sortDirection} />
             </th>
             <th className={mergeClasses(styles.tableHeader, styles.sortableHeader)} onClick={() => handleSort("status")}>
-              Status <SortIcon column="status" />
+              Status <SortIcon column="status" sortColumn={sortColumn} sortDirection={sortDirection} />
             </th>
           </tr>
         </thead>

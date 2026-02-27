@@ -112,3 +112,69 @@ export interface CareCoordinationWorklistItem {
 }
 
 export type CareCoordinationSortOrder = "none" | "asc" | "desc";
+
+// ── Contact record types (used by Context + table/filter components) ──
+
+export type CallRecordStatus = "in-progress" | "needs-review" | "completed" | "scheduled-for-retry" | "reviewed" | "scheduled";
+
+export interface ContactRecord {
+  id: string;
+  patientId: string;
+  name: string;
+  mrn: string;
+  callType: CallType;
+  contactDate: string;
+  contactTime: string;
+  daysAgo: number;
+  phone: string;
+  // Med Adherence outcomes
+  pickedUpMeds: string;
+  takingAsRx: { value: string; warning: boolean };
+  sideEffects: { value: string; warning: boolean };
+  painLevel: number;
+  followUp: { value: string; warning: boolean };
+  // Patient Intake outcomes
+  intakeCompleted?: { value: string; warning: boolean };
+  allergiesConfirmed?: string;
+  redFlag?: { value: string; warning: boolean };
+  symptomsReported?: string;
+  // Hypertension outcomes
+  bpReading?: { systolic: number; diastolic: number };
+  bpAtGoal?: { value: string; warning: boolean };
+  medAdherence?: { value: string; warning: boolean };
+  symptomsPresent?: { value: string; warning: boolean };
+  escalated?: { value: string; warning: boolean };
+  reviewed: boolean;
+  scheduledForRetry?: boolean;
+  scheduled?: boolean;
+  statusUrgencyNote?: string;
+}
+
+export interface ActiveCallRecord {
+  id: string;
+  patientId: string;
+  name: string;
+  mrn: string;
+  callType: CallType;
+  contactDate: string;
+  contactTime: string;
+  phone: string;
+  status: CallRecordStatus;
+  // Med Adherence outcomes
+  pickedUpMeds: string;
+  takingAsRx: { value: string; warning: boolean };
+  sideEffects: { value: string; warning: boolean };
+  painLevel: number;
+  followUp: { value: string; warning: boolean };
+  // Patient Intake outcomes
+  intakeCompleted?: { value: string; warning: boolean };
+  allergiesConfirmed?: string;
+  redFlag?: { value: string; warning: boolean };
+  symptomsReported?: string;
+  // Hypertension outcomes
+  bpReading?: { systolic: number; diastolic: number };
+  bpAtGoal?: { value: string; warning: boolean };
+  medAdherence?: { value: string; warning: boolean };
+  symptomsPresent?: { value: string; warning: boolean };
+  escalated?: { value: string; warning: boolean };
+}

@@ -14,76 +14,15 @@ import React, {
   useRef,
 } from "react";
 import careCoordinationWorklistData from "../../../data/careCoordinationWorklistData.json";
-import type { CareCoordinationWorklistItem, CallType, ContactHistoryEntry } from "./CareCoordinationWorklist.types";
+import type { CareCoordinationWorklistItem, CallType, ContactHistoryEntry, CallRecordStatus, ContactRecord, ActiveCallRecord } from "./CareCoordinationWorklist.types";
 import { useI18n } from "../../../i18n/I18nContext";
 import { TeamsDialerPopup } from "./TeamsDialerPopup";
 import { INITIAL_CONTACT_RECORDS } from "./data/initialContactRecords";
 import { pickOutcome, buildContactEntry } from "./data/outcomePools";
 import type { ResolvedOutcome } from "./data/outcomePools";
 
-export type CallRecordStatus = "in-progress" | "needs-review" | "completed" | "scheduled-for-retry" | "reviewed" | "scheduled";
-
-export interface ContactRecord {
-  id: string;
-  patientId: string;
-  name: string;
-  mrn: string;
-  callType: CallType;
-  contactDate: string;
-  contactTime: string;
-  daysAgo: number;
-  phone: string;
-  // Med Adherence outcomes
-  pickedUpMeds: string;
-  takingAsRx: { value: string; warning: boolean };
-  sideEffects: { value: string; warning: boolean };
-  painLevel: number;
-  followUp: { value: string; warning: boolean };
-  // Patient Intake outcomes
-  intakeCompleted?: { value: string; warning: boolean };
-  allergiesConfirmed?: string;
-  redFlag?: { value: string; warning: boolean };
-  symptomsReported?: string;
-  // Hypertension outcomes
-  bpReading?: { systolic: number; diastolic: number };
-  bpAtGoal?: { value: string; warning: boolean };
-  medAdherence?: { value: string; warning: boolean };
-  symptomsPresent?: { value: string; warning: boolean };
-  escalated?: { value: string; warning: boolean };
-  reviewed: boolean;
-  scheduledForRetry?: boolean;
-  scheduled?: boolean;
-  statusUrgencyNote?: string;
-}
-
-export interface ActiveCallRecord {
-  id: string;
-  patientId: string;
-  name: string;
-  mrn: string;
-  callType: CallType;
-  contactDate: string;
-  contactTime: string;
-  phone: string;
-  status: CallRecordStatus;
-  // Med Adherence outcomes
-  pickedUpMeds: string;
-  takingAsRx: { value: string; warning: boolean };
-  sideEffects: { value: string; warning: boolean };
-  painLevel: number;
-  followUp: { value: string; warning: boolean };
-  // Patient Intake outcomes
-  intakeCompleted?: { value: string; warning: boolean };
-  allergiesConfirmed?: string;
-  redFlag?: { value: string; warning: boolean };
-  symptomsReported?: string;
-  // Hypertension outcomes
-  bpReading?: { systolic: number; diastolic: number };
-  bpAtGoal?: { value: string; warning: boolean };
-  medAdherence?: { value: string; warning: boolean };
-  symptomsPresent?: { value: string; warning: boolean };
-  escalated?: { value: string; warning: boolean };
-}
+// Re-export record types from the canonical types file
+export type { CallRecordStatus, ContactRecord, ActiveCallRecord } from "./CareCoordinationWorklist.types";
 
 interface CareCoordinationWorklistContextValue {
   /** Current worklist data */

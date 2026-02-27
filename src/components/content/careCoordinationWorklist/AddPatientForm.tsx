@@ -1,22 +1,16 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { Button, Label } from "@fluentui/react-components";
 import { Dismiss24Regular, Call20Regular, ChevronDown16Regular, ChevronRight16Regular } from "@fluentui/react-icons";
 import { useAddPatientFormStyles } from "./AddPatientForm.styles";
-import type { CareCoordinationWorklistItem, CallType } from "./CareCoordinationWorklist.types";
+import type { CallType, CareCoordinationWorklistItem } from "./CareCoordinationWorklist.types";
 import type { FormMedicationEntry } from "./constants/campaignConfig";
-import {
-  pick, randInt, pad2,
-  FIRST_NAMES, LAST_NAMES, CITIES, STATES, STREETS, PROVIDERS, NURSES, LOCATIONS,
-  MED_ADHERENCE_REASONS, MED_ADHERENCE_DIAGNOSES, MED_ADHERENCE_INSTRUCTIONS, MED_ADHERENCE_SETS,
-  INTAKE_REASONS, INTAKE_DIAGNOSES, INTAKE_ALLERGIES, INTAKE_MEDICAL_HISTORIES,
-  INTAKE_SURGICAL_HISTORIES, INTAKE_APPT_TIMES,
-  HTN_REASONS, HTN_DIAGNOSES, HTN_INSTRUCTIONS, HTN_LIFESTYLE_NOTES, HTN_MED_SETS,
-  campaignOutcomes,
-} from "./constants/campaignConfig";
+import { campaignOutcomes } from "./constants/campaignConfig";
 import { PatientInfoSection } from "./components/PatientInfoSection";
 import { CampaignSection } from "./components/CampaignSection";
 import { CampaignSettings } from "./components/CampaignSettings";
 import { ClinicalFieldsSection } from "./components/ClinicalFieldsSection";
+import { usePatientAutoFill } from "./hooks/usePatientAutoFill";
+import { buildNewPatient } from "./utils/buildNewPatient";
 
 interface AddPatientFormProps {
   onSave: (patient: CareCoordinationWorklistItem) => void;
@@ -87,68 +81,16 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
   const [daysBeforeAppt, setDaysBeforeAppt] = useState(2);
 
   // ── Auto-fill on MRN blur ──
-  const handleMrnBlur = useCallback(() => {
-    if (!mrn.trim()) return;
-    if (firstName || lastName) return;
-
-    const g = gender || pick(["Male", "Female"]);
-    const fName = pick(FIRST_NAMES[g] ?? FIRST_NAMES["Male"]);
-    const lName = pick(LAST_NAMES);
-    const birthYear = randInt(1945, 2000);
-    const birthMonth = randInt(1, 12);
-    const birthDay = randInt(1, 28);
-    const dob = `${birthYear}-${pad2(birthMonth)}-${pad2(birthDay)}`;
-    const cityIdx = randInt(0, CITIES.length - 1);
-    const provider = pick(PROVIDERS);
-    const nurse = pick(NURSES);
-
-    if (!gender) setGender(g);
-    setFirstName(fName);
-    setLastName(lName);
-    setDateOfBirth(dob);
-    setPhone(`(${randInt(200,999)}) ${randInt(200,999)}-${pad2(randInt(0,99))}${pad2(randInt(0,99))}`);
-    setEmail(`${fName.toLowerCase()}.${lName.toLowerCase()}@email.com`);
-    setAddressLine1(`${randInt(100,9999)} ${pick(STREETS)}`);
-    setAddressLine2(Math.random() > 0.6 ? `Apt ${randInt(1,300)}` : "");
-    setCity(CITIES[cityIdx]);
-    setState(STATES[cityIdx]);
-    setZip(String(randInt(10000, 99999)));
-    setCareTeam(`${provider}, ${nurse}`);
-    setLanguagePreference(pick(["English","English","English","Spanish"]));
-
-    const dischDate = new Date();
-    dischDate.setDate(dischDate.getDate() - randInt(1, 14));
-    setDischargeDate(`${dischDate.getFullYear()}-${pad2(dischDate.getMonth()+1)}-${pad2(dischDate.getDate())}`);
-
-    if (callType === "medication-adherence") {
-      setReason(pick(MED_ADHERENCE_REASONS));
-      setPrimaryDiagnosis(pick(MED_ADHERENCE_DIAGNOSES));
-      setDischargeInstructions(pick(MED_ADHERENCE_INSTRUCTIONS));
-      setMedications(pick(MED_ADHERENCE_SETS));
-    } else if (callType === "patient-intake") {
-      setReason(pick(INTAKE_REASONS));
-      setPrimaryDiagnosis(pick(INTAKE_DIAGNOSES));
-      setDischargeInstructions("");
-      setAllergies(pick(INTAKE_ALLERGIES));
-      setMedicalHistory(pick(INTAKE_MEDICAL_HISTORIES));
-      setSurgicalHistory(pick(INTAKE_SURGICAL_HISTORIES));
-      const appt = new Date();
-      appt.setDate(appt.getDate() + randInt(3, 21));
-      setApptDate(`${appt.getFullYear()}-${pad2(appt.getMonth()+1)}-${pad2(appt.getDate())}`);
-      setApptTime(pick(INTAKE_APPT_TIMES));
-      setApptProvider(provider);
-      setApptLocation(pick(LOCATIONS));
-    } else if (callType === "hypertension-management") {
-      setReason(pick(HTN_REASONS));
-      setPrimaryDiagnosis(pick(HTN_DIAGNOSES));
-      setDischargeInstructions(pick(HTN_INSTRUCTIONS));
-      setLastSystolic(String(randInt(128, 168)));
-      setLastDiastolic(String(randInt(78, 102)));
-      setHomeMonitor(Math.random() > 0.3);
-      setLifestyleNotes(pick(HTN_LIFESTYLE_NOTES));
-      setMedications(pick(HTN_MED_SETS));
-    }
-  }, [mrn, firstName, lastName, gender, callType]);
+  const autoFillSetters = useMemo(() => ({
+    setFirstName, setLastName, setGender, setDateOfBirth,
+    setPhone, setEmail, setAddressLine1, setAddressLine2,
+    setCity, setState, setZip, setCareTeam, setLanguagePreference,
+    setDischargeDate, setReason, setPrimaryDiagnosis, setDischargeInstructions,
+    setMedications, setAllergies, setMedicalHistory, setSurgicalHistory,
+    setApptDate, setApptTime, setApptProvider, setApptLocation,
+    setLastSystolic, setLastDiastolic, setHomeMonitor, setLifestyleNotes,
+  }), []);
+  const handleMrnBlur = usePatientAutoFill(mrn, firstName, lastName, gender, callType, autoFillSetters);
 
   const addMedication = useCallback(() => {
     setMedications((prev) => [...prev, { name: "", dose: "", frequency: "" }]);
@@ -168,85 +110,15 @@ export const AddPatientForm: React.FC<AddPatientFormProps> = ({ onSave, onCancel
   );
 
   const handleSave = () => {
-    const now = new Date();
-    const age = dateOfBirth
-      ? Math.floor(
-          (now.getTime() - new Date(dateOfBirth).getTime()) /
-            (365.25 * 24 * 60 * 60 * 1000)
-        )
-      : 0;
-    const dobFormatted = dateOfBirth
-      ? new Date(dateOfBirth).toLocaleDateString("en-US", {
-          month: "2-digit",
-          day: "2-digit",
-          year: "numeric",
-        })
-      : "";
-    const demographics = `${gender || "Unknown"}, ${age} YO, ${dobFormatted}, MRN${mrn}`;
-    const dischargeFmt = dischargeDate
-      ? new Date(dischargeDate).toLocaleDateString("en-US", {
-          month: "2-digit",
-          day: "2-digit",
-          year: "numeric",
-        })
-      : "";
-    const todayShort = `${now.getMonth() + 1}/${now.getDate()}/${String(now.getFullYear()).slice(-2)}`;
-
-    const newPatient: CareCoordinationWorklistItem = {
-      id: `ma-new-${Date.now()}`,
-      name: `${firstName} ${lastName}`.trim(),
-      mrn: mrn.replace(/^MRN/i, ""),
-      callType,
-      reason,
-      demographics,
-      dischargeDate: dischargeFmt,
-      languagePreference,
-      lastContactDate: todayShort,
-      lastContactSummary: "New patient added to worklist.",
-      status: "Scheduled",
-      group: "contact-list",
-      scheduled: true,
-      dateOfBirth: dobFormatted,
-      phone,
-      email,
-      address: [addressLine1, addressLine2, `${city}, ${state} ${zip}`].filter(Boolean).join(", "),
-      dischargeInstructions,
-      primaryDiagnosis,
-      careTeam,
-      contactHistory: [],
-      medications: medications
-        .filter((m) => m.name.trim())
-        .map((m) => ({
-          name: m.name,
-          dose: m.dose,
-          frequency: m.frequency,
-          prescribedDate: todayShort,
-        })),
-      ...(callType === "patient-intake" && {
-        allergies: allergies ? allergies.split(",").map((a) => a.trim()).filter(Boolean) : [],
-        medicalHistory,
-        surgicalHistory,
-        upcomingAppointment: apptDate ? {
-          date: apptDate,
-          time: apptTime,
-          provider: apptProvider,
-          type: "Follow-up",
-          location: apptLocation,
-        } : undefined,
-      }),
-      ...(callType === "hypertension-management" && {
-        bpReadings: lastSystolic && lastDiastolic ? [{
-          date: todayShort,
-          systolic: Number(lastSystolic),
-          diastolic: Number(lastDiastolic),
-          atGoal: Number(lastSystolic) < 130 && Number(lastDiastolic) < 80,
-        }] : [],
-        homeMonitor,
-        lifestyleNotes,
-      }),
-    };
-
-    onSave(newPatient);
+    onSave(buildNewPatient({
+      firstName, lastName, mrn, callType, reason, gender, dateOfBirth,
+      phone, email, addressLine1, addressLine2, city, state, zip,
+      languagePreference, dischargeDate, dischargeInstructions,
+      primaryDiagnosis, careTeam, medications,
+      allergies, medicalHistory, surgicalHistory,
+      apptDate, apptTime, apptProvider, apptLocation,
+      lastSystolic, lastDiastolic, homeMonitor, lifestyleNotes,
+    }));
   };
 
   return (
