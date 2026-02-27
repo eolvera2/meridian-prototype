@@ -4,6 +4,7 @@ import {
   Option,
   Button,
   mergeClasses,
+  tokens,
 } from "@fluentui/react-components";
 import type { OptionOnSelectData } from "@fluentui/react-components";
 import {
@@ -20,6 +21,7 @@ import {
   CONTACT_TREND_DATA,
   OUTCOME_BY_TYPE_DATA,
   CALL_EFFICIENCY_DATA,
+  MED_ADHERENCE_TREND_DATA,
   BP_DISTRIBUTION_DATA,
   BARRIERS_DATA,
   RISK_HEATMAP_DATA,
@@ -28,15 +30,17 @@ import type { TimeRange } from "../careCoordination.constants";
 import { ContactOutcomeTrend } from "./ContactOutcomeTrend";
 import { OutcomesByTypeChart } from "./OutcomesByTypeChart";
 import { CallEfficiencyChart } from "./CallEfficiencyChart";
+import { MedAdherenceTrendChart } from "./MedAdherenceTrendChart";
 import { BpDistributionChart } from "./BpDistributionChart";
 import { BarriersChart } from "./BarriersChart";
 import { RiskHeatmap } from "./RiskHeatmap";
 
 // ── Helpers ─────────────────────────────────────────────────────────
 
-const getSuccessCardClass = (rate: number, styles: ReturnType<typeof useDashboardStyles>) => {
-  if (rate >= 80) return styles.statCardGood;
-  if (rate >= 65) return styles.statCardWarning;
+const getSuccessCardClass = (_rate: number, styles: ReturnType<typeof useDashboardStyles>) => {
+  // 78%+ with positive trend is good for outreach programs
+  if (_rate >= 70) return styles.statCardGood;
+  if (_rate >= 55) return styles.statCardWarning;
   return styles.statCardCritical;
 };
 
@@ -72,6 +76,7 @@ export const AdminDashboard: FC<AdminDashboardProps> = ({
   const trendData = CONTACT_TREND_DATA[timeRange];
   const outcomeData = OUTCOME_BY_TYPE_DATA[timeRange];
   const efficiencyData = CALL_EFFICIENCY_DATA[timeRange];
+  const medAdherenceData = MED_ADHERENCE_TREND_DATA[timeRange];
   const bpData = BP_DISTRIBUTION_DATA[timeRange];
   const barriersData = BARRIERS_DATA[timeRange];
   const heatmapData = RISK_HEATMAP_DATA[timeRange];
@@ -214,14 +219,31 @@ export const AdminDashboard: FC<AdminDashboardProps> = ({
               </div>
             </div>
 
-            {/* Outcomes by Call Type */}
+            {/* Medication Adherence Trend */}
+            <div className={styles.sectionCard}>
+              <span className={styles.sectionTitle}>Medication Adherence Trend</span>
+              <div className={styles.trendRow}>
+                <div className={styles.trendChartArea}>
+                  <MedAdherenceTrendChart data={medAdherenceData} />
+                </div>
+                <div className={styles.trendLegendSide}>
+                  <span className={styles.legendItem}>
+                    <span className={styles.legendDot} style={{ backgroundColor: CC_COLORS.positive }} />
+                    Adherence Rate
+                  </span>
+                  <span className={styles.legendItem}>
+                    <span className={styles.legendDot} style={{ backgroundColor: CC_COLORS.chartTeal }} />
+                    Refill Rate
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Combined: Outcomes by Call Type + Call Attempt Efficiency */}
             <div className={styles.sectionCard}>
               <span className={styles.sectionTitle}>Outcomes by Call Type</span>
               <OutcomesByTypeChart data={outcomeData} />
-            </div>
-
-            {/* Call Attempt Efficiency */}
-            <div className={styles.sectionCard}>
+              <div style={{ borderTop: `1px solid ${tokens.colorNeutralStroke2}`, margin: "8px 0" }} />
               <span className={styles.sectionTitle}>Call Attempt Efficiency</span>
               <CallEfficiencyChart data={efficiencyData} />
             </div>

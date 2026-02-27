@@ -138,6 +138,41 @@ export const CALL_EFFICIENCY_DATA: Record<
   "90": { firstAttempt: 54, afterRetry: 28, unresolved: 18 },
 };
 
+export const MED_ADHERENCE_TREND_DATA: Record<
+  TimeRange,
+  { label: string; adherenceRate: number; refillRate: number }[]
+> = {
+  "7": [
+    { label: "Mon", adherenceRate: 72, refillRate: 68 },
+    { label: "Tue", adherenceRate: 74, refillRate: 70 },
+    { label: "Wed", adherenceRate: 71, refillRate: 66 },
+    { label: "Thu", adherenceRate: 76, refillRate: 72 },
+    { label: "Fri", adherenceRate: 78, refillRate: 74 },
+    { label: "Sat", adherenceRate: 80, refillRate: 76 },
+    { label: "Sun", adherenceRate: 79, refillRate: 75 },
+  ],
+  "30": [
+    { label: "Wk 1", adherenceRate: 68, refillRate: 62 },
+    { label: "Wk 2", adherenceRate: 71, refillRate: 65 },
+    { label: "Wk 3", adherenceRate: 74, refillRate: 69 },
+    { label: "Wk 4", adherenceRate: 78, refillRate: 73 },
+  ],
+  "90": [
+    { label: "Jan", adherenceRate: 62, refillRate: 56 },
+    { label: "Feb", adherenceRate: 64, refillRate: 58 },
+    { label: "Mar", adherenceRate: 66, refillRate: 61 },
+    { label: "Apr", adherenceRate: 68, refillRate: 63 },
+    { label: "May", adherenceRate: 70, refillRate: 65 },
+    { label: "Jun", adherenceRate: 72, refillRate: 67 },
+    { label: "Jul", adherenceRate: 73, refillRate: 68 },
+    { label: "Aug", adherenceRate: 75, refillRate: 71 },
+    { label: "Sep", adherenceRate: 76, refillRate: 72 },
+    { label: "Oct", adherenceRate: 77, refillRate: 73 },
+    { label: "Nov", adherenceRate: 79, refillRate: 75 },
+    { label: "Dec", adherenceRate: 80, refillRate: 76 },
+  ],
+};
+
 export const BP_DISTRIBUTION_DATA: Record<
   TimeRange,
   { atGoal: number; borderline: number; uncontrolled: number; urgent: number }
