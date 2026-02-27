@@ -195,7 +195,7 @@ export const ContactListTable: FC<ContactListTableProps> = ({
     const record = item.record;
     const isPending = item.type === "active"
       ? (record.status === "in-progress" || record.status === "scheduled-for-retry" || record.status === "scheduled")
-      : ("scheduledForRetry" in record && (record.scheduledForRetry || record.scheduled));
+      : (record.contactDate === "--");
 
     if (isPending) {
       return (
