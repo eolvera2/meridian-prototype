@@ -613,21 +613,80 @@ src/components/content/careCoordinationWorklist/
 ### Week 5: Critical Priority (Care Coordination)
 
 1. ✅ **CareCoordinationDashboard.tsx** - Phase 7
-   - Extract sub-components (charts, filters, table, counters)
-   - Move inline styles to styles file
-   - Replace hardcoded colors with tokens
+   - Extracted: AdminDashboard, ContactListTable, ContactListFilters, SummaryCounters, AdherenceTrendChart
+   - Result: 1,112 → 236 lines
 
 ### Week 6: High + Medium Priority (Care Coordination)
 
 1. ✅ **AddPatientForm.tsx** - Phase 8
-   - Extract campaign config constants
-   - Extract form sections as sub-components
-   - Move inline styles and replace tokens
+   - Extracted: PatientInfoSection, CampaignSection, CampaignSettings, ClinicalFieldsSection, campaignConfig constants
+   - Extracted: usePatientAutoFill hook (115 lines), buildNewPatient utility (105 lines)
+   - Result: 810 → 299 lines ✅ Under 300-line target
 2. ✅ **CareCoordinationPatientDetail.tsx** - Phase 9
-   - Extract contact entry, outcome grid, patient info
-   - Move inline styles and replace tokens
+   - Extracted: ContactHistoryEntry, OutcomeGrid, PatientInfoGrid
+   - Result: 658 → 218 lines ✅ Under 300-line target
 3. ✅ **CareCoordinationWorklistContext.tsx** - Phase 10
-   - Extract initial data and outcome pools
+   - Extracted: initial contact records, outcome pools, interfaces to types file
+   - Result: 586 → 412 lines (interfaces and data extracted)
+4. ✅ **ContactListTable.tsx** - Phase 10b (new)
+   - Extracted: OutcomeIndicators (136 lines) with all icon maps, indicator components, SortIcon
+   - Result: 427 → 317 lines
+
+---
+
+## Current State: Care Coordination File Audit
+
+### Component Files (target: ≤300 lines)
+
+| File | Lines | Status | Next Action |
+| --- | --- | --- | --- |
+| `CareCoordinationWorklist.tsx` | 456 | 🟠 Over limit | Extract patient card rendering, search logic |
+| `CareCoordinationWorklistContext.tsx` | 412 | 🟠 Over limit | Extract action functions to custom hook |
+| `ClinicalFieldsSection.tsx` | 334 | 🟡 Slightly over | Consider splitting by call type |
+| `ContactListTable.tsx` | 317 | 🟡 Slightly over | Acceptable after indicator extraction |
+| `AdminDashboard.tsx` | 314 | 🟡 Slightly over | Acceptable — chart + stats layout |
+| `AddPatientForm.tsx` | 299 | ✅ At target | Done |
+| `CareCoordinationReviewedPanel.tsx` | 268 | ✅ Under target | Done |
+| `CareCoordinationDashboard.tsx` | 236 | ✅ Under target | Done |
+| `OutcomeGrid.tsx` | 226 | ✅ Under target | Done |
+| `AICallTranscriptModal.tsx` | 226 | ✅ Under target | Done |
+| `CareCoordinationPatientDetail.tsx` | 218 | ✅ Under target | Done |
+| All other components | <200 | ✅ Under target | Done |
+
+### Style Files (target: organized, no hard limit)
+
+| File | Lines | Notes |
+| --- | --- | --- |
+| `CareCoordinationDashboard.styles.ts` | 718 | Consider splitting by section |
+| `CareCoordinationWorklist.styles.ts` | 676 | Consider splitting by section |
+| `CareCoordinationPatientDetail.styles.ts` | 427 | Acceptable — well-organized with sections |
+
+### Data/Config Files
+
+| File | Lines | Status |
+| --- | --- | --- |
+| `outcomePools.ts` | 215 | ✅ Clean — outcome generation + templates |
+| `campaignConfig.ts` | 189 | ✅ Clean — constants and auto-fill data |
+| `CareCoordinationWorklist.types.ts` | 180 | ✅ Clean — canonical type definitions |
+| `careCoordination.constants.ts` | 142 | ✅ Clean — colors, status, sort types |
+| `OutcomeIndicators.tsx` | 136 | ✅ Clean — extracted icon components |
+| `usePatientAutoFill.ts` | 115 | ✅ Clean — extracted hook |
+| `buildNewPatient.ts` | 105 | ✅ Clean — extracted utility |
+
+### Remaining Optimization Targets (Phase 11)
+
+1. **CareCoordinationWorklist.tsx** (456 lines)
+   - Extract patient card rendering to `PatientCard.tsx`
+   - Extract sort/filter menu to `WorklistControls.tsx`
+   - Target: ~250 lines
+
+2. **CareCoordinationWorklistContext.tsx** (412 lines)
+   - Extract `callPatients` / `addPatient` / action functions to `useCareCoordinationActions.ts` hook
+   - Target: ~300 lines
+
+3. **Style file organization** (718 + 676 lines)
+   - Split `CareCoordinationDashboard.styles.ts` by section (table, filters, counters, charts)
+   - Split `CareCoordinationWorklist.styles.ts` by section (worklist, cards, header)
 
 ---
 
@@ -669,13 +728,16 @@ After each refactoring phase:
 
 ## Success Metrics
 
-| Metric                   | Before (Home) | Before (CC) | Target      |
-| ------------------------ | ------------- | ----------- | ----------- |
-| Largest file size        | 3,857 lines   | 1,112 lines | < 300 lines |
-| Files over 300 lines     | 15 files      | 7 files     | 0 files     |
-| Hardcoded color values   | ~50+          | ~32         | 0           |
-| Hardcoded spacing values | ~100+         | ~54         | 0           |
-| Code duplication         | High          | Medium      | Minimal     |
+| Metric                   | Before (Home) | Before (CC) | Current (CC) | Target      |
+| ------------------------ | ------------- | ----------- | ------------ | ----------- |
+| Largest file size        | 3,857 lines   | 1,112 lines | 456 lines    | < 300 lines |
+| Files over 300 lines     | 15 files      | 7 files     | 5 files      | 0 files     |
+| Hardcoded color values   | ~50+          | ~32         | ~15          | 0           |
+| Hardcoded spacing values | ~100+         | ~54         | ~30          | 0           |
+| Code duplication         | High          | Medium      | Low          | Minimal     |
+| Extracted components     | 0             | 0           | 14           | —           |
+| Extracted hooks          | 0             | 0           | 1            | —           |
+| Extracted utilities      | 0             | 0           | 1            | —           |
 
 ---
 
