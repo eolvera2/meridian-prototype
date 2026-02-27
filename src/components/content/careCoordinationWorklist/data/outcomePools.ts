@@ -131,7 +131,23 @@ export function buildContactEntry(
   let transcriptSummary: string;
 
   if (callType === "patient-intake") {
-    transcriptSummary = `AI-assisted pre-visit intake call completed successfully. Patient confirmed intake status as ${outcome.intakeCompleted?.value}. Known allergies were reviewed and ${outcome.allergiesConfirmed === "Confirmed" ? "confirmed by the patient with no new allergies reported" : "could not be fully confirmed and require follow-up verification at the visit"}. Red flag screening result: ${outcome.redFlag?.value}. Patient-reported symptoms: ${outcome.symptomsReported}. Medical history was collected and documented for provider review prior to the scheduled appointment. The patient was reminded of pre-visit preparation instructions and encouraged to bring a current medication list to the appointment.`;
+    const intakeStatus = outcome.intakeCompleted?.value ?? "Pending";
+    const allergies = outcome.allergiesConfirmed === "Confirmed"
+      ? "Allergies confirmed by patient"
+      : "Allergies need verification at visit";
+    const redFlag = outcome.redFlag?.value === "None"
+      ? "No red flags identified"
+      : `Red flag: ${outcome.redFlag?.value} — needs provider review`;
+    const bullets = [
+      `Intake ${intakeStatus.toLowerCase()}`,
+      allergies,
+      redFlag,
+    ];
+    if (outcome.symptomsReported && outcome.symptomsReported !== "None") {
+      bullets.push(`Reports ${outcome.symptomsReported.toLowerCase()}`);
+    }
+    bullets.push("Medical history collected and documented");
+    transcriptSummary = bullets.map(b => `• ${b}`).join("\n");
     newEntry.intakeCompleted = outcome.intakeCompleted ? { value: outcome.intakeCompleted.value, positive: !outcome.intakeCompleted.warning } : undefined;
     newEntry.allergiesConfirmed = outcome.allergiesConfirmed;
     newEntry.redFlagIdentified = outcome.redFlag ? { value: outcome.redFlag.value, positive: !outcome.redFlag.warning } : undefined;
@@ -139,10 +155,27 @@ export function buildContactEntry(
     newEntry.medicalHistoryCollected = { value: "Yes", positive: true };
   } else if (callType === "hypertension-management") {
     const bp = outcome.bpReading;
-    const bpGoalNote = outcome.bpAtGoal?.value === "Yes"
-      ? "Blood pressure is within the target range, indicating effective management with current therapy."
-      : "Blood pressure is above the target range, suggesting the need for medication adjustment or lifestyle modification counseling.";
-    transcriptSummary = `AI-assisted blood pressure management call completed. Patient reported a home BP reading of ${bp?.systolic}/${bp?.diastolic} mmHg. ${bpGoalNote} Medication adherence was assessed as ${outcome.medAdherence?.value}. The patient was counseled on the importance of consistent dosing, dietary sodium reduction, and regular physical activity. Clinical escalation status: ${outcome.escalated?.value}. The patient was advised to continue monitoring blood pressure daily and to report any new symptoms such as headaches, dizziness, or visual changes to the care team immediately.`;
+    const atGoal = outcome.bpAtGoal?.value === "Yes"
+      ? "at goal"
+      : "above target";
+    const adherence = outcome.medAdherence?.value === "Yes"
+      ? "All medications taken as prescribed"
+      : "Admitted missing doses";
+    const bullets = [
+      `BP ${bp?.systolic}/${bp?.diastolic}, ${atGoal}`,
+      adherence,
+    ];
+    if (outcome.symptomsPresent?.value && outcome.symptomsPresent.value !== "None") {
+      bullets.push(`Reports ${outcome.symptomsPresent.value.toLowerCase()}`);
+    } else {
+      bullets.push("No symptoms reported");
+    }
+    if (outcome.escalated?.value === "Yes") {
+      bullets.push("Needs immediate escalation to provider");
+    } else {
+      bullets.push("Routine follow-up appropriate");
+    }
+    transcriptSummary = bullets.map(b => `• ${b}`).join("\n");
     newEntry.bpReading = outcome.bpReading;
     newEntry.bpAtGoal = outcome.bpAtGoal ? { value: outcome.bpAtGoal.value, positive: !outcome.bpAtGoal.warning } : undefined;
     newEntry.medicationAdherence = outcome.medAdherence ? { value: outcome.medAdherence.value, positive: !outcome.medAdherence.warning } : undefined;
@@ -151,10 +184,25 @@ export function buildContactEntry(
     newEntry.sideEffects = "Not reported";
   } else {
     const sideEffectText = outcome.sideEffects?.value === "None" ? "Not reported" : (outcome.sideEffects?.value ?? "Not reported");
-    const sideEffectNote = sideEffectText === "Not reported"
-      ? "No adverse side effects were reported by the patient during the call."
-      : `The patient reported experiencing ${sideEffectText.toLowerCase()} as a side effect. This has been documented for provider review.`;
-    transcriptSummary = `AI-assisted medication adherence call completed. Medication pickup status: ${outcome.pickedUpMeds}. The patient ${outcome.takingAsRx?.value === "Yes" ? "confirmed taking medications as prescribed with no missed doses in the current reporting period" : "reported difficulty maintaining the prescribed medication schedule and may benefit from adherence support interventions"}. ${sideEffectNote} Current self-reported pain level: ${outcome.painLevel}/10. ${outcome.followUp.warning ? "A follow-up call has been flagged as needed to reassess the patient's adherence and symptom management." : "No immediate follow-up is required. The patient will continue on the current regimen with routine monitoring."} A medication reminder has been ${outcome.followUp.warning ? "recommended" : "confirmed"} to support ongoing adherence.`;
+    const pickup = outcome.pickedUpMeds === "Yes" ? "Meds picked up from pharmacy" : "Meds not picked up from pharmacy";
+    const adherent = outcome.takingAsRx?.value === "Yes"
+      ? "Taking as directed"
+      : "Not following prescribed schedule";
+    const bullets = [pickup, adherent];
+    if (sideEffectText !== "Not reported") {
+      bullets.push(`Reports ${sideEffectText.toLowerCase().replace(/ reported$/, "")}`);
+    } else {
+      bullets.push("No side effects reported");
+    }
+    if ((outcome.painLevel ?? 0) > 0) {
+      bullets.push(`Pain level ${outcome.painLevel}/10`);
+    }
+    if (outcome.followUp.warning) {
+      bullets.push("Needs nurse follow-up");
+    } else {
+      bullets.push("No immediate concerns");
+    }
+    transcriptSummary = bullets.map(b => `• ${b}`).join("\n");
     newEntry.pickedUpMedication = outcome.pickedUpMeds;
     newEntry.takingAsPrescribed = outcome.takingAsRx ? { value: outcome.takingAsRx.value, positive: !outcome.takingAsRx.warning } : undefined;
     newEntry.sideEffects = sideEffectText;

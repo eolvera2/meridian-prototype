@@ -72,7 +72,15 @@ export const ContactHistoryEntryRow: React.FC<ContactHistoryEntryProps> = ({
       {/* Transcript summary */}
       {entry.transcriptSummary && (
         <div className={styles.contactSummary}>
-          {entry.transcriptSummary}
+          {entry.transcriptSummary.includes("\n") ? (
+            <ul className={styles.summaryBullets}>
+              {entry.transcriptSummary.split("\n").map((line, i) => (
+                <li key={i}>{line.replace(/^•\s*/, "")}</li>
+              ))}
+            </ul>
+          ) : (
+            entry.transcriptSummary
+          )}
           <div className={styles.aiDisclaimer}>
             AI-generated content may be incorrect
           </div>

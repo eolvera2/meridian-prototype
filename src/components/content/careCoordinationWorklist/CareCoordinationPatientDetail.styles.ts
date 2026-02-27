@@ -285,6 +285,11 @@ export const usePatientDetailStyles = makeStyles({
     padding: "8px 12px",
     borderRadius: "6px",
   },
+  summaryBullets: {
+    margin: "0",
+    paddingLeft: "18px",
+    listStyleType: "disc",
+  },
   /** "AI-generated content may be incorrect" disclaimer. */
   aiDisclaimer: {
     fontSize: "10px",
