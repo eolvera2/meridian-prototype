@@ -16,10 +16,8 @@ export const CareCoordinationDashboard: FC = () => {
 
   // ── State ──
   const [timeRange, setTimeRange] = useState<TimeRange>("30");
-  const [statusFilter, setStatusFilter] = useState<string>("all-active");
   const [adminView, setAdminView] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [patientSearch, setPatientSearch] = useState("");
   const [sortColumn, setSortColumn] = useState<SortColumn | null>("contactDate");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
@@ -29,6 +27,10 @@ export const CareCoordinationDashboard: FC = () => {
     contactRecords,
     callTypeFilter,
     setCallTypeFilter,
+    statusFilter,
+    setStatusFilter,
+    patientSearch,
+    setPatientSearch,
   } = useCareCoordinationWorklistContext();
 
   const handleSort = (col: SortColumn) => {

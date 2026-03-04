@@ -61,6 +61,14 @@ interface CareCoordinationWorklistContextValue {
   callTypeFilter: "all" | CallType;
   /** Set the shared call type filter */
   setCallTypeFilter: (filter: "all" | CallType) => void;
+  /** Contact Status filter — persisted across navigation */
+  statusFilter: string;
+  /** Set the Contact Status filter */
+  setStatusFilter: (filter: string) => void;
+  /** Patient search text — persisted across navigation */
+  patientSearch: string;
+  /** Set the patient search text */
+  setPatientSearch: (search: string) => void;
 }
 
 const CareCoordinationWorklistContext =
@@ -84,6 +92,8 @@ export const CareCoordinationWorklistProvider: React.FC<{
   const [contactRecords, setContactRecords] = useState<ContactRecord[]>(INITIAL_CONTACT_RECORDS);
   const [activeDialerCall, setActiveDialerCall] = useState<{ name: string; phone: string; recordId: string } | null>(null);
   const [callTypeFilter, setCallTypeFilter] = useState<"all" | CallType>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all-active");
+  const [patientSearch, setPatientSearch] = useState<string>("");
 
   // Registry preserves full patient data even after patients are removed from the worklist via callPatients
   const patientRegistryRef = useRef<Map<string, CareCoordinationWorklistItem>>(
@@ -363,6 +373,10 @@ export const CareCoordinationWorklistProvider: React.FC<{
       removeFromQueue,
       callTypeFilter,
       setCallTypeFilter,
+      statusFilter,
+      setStatusFilter,
+      patientSearch,
+      setPatientSearch,
     }),
     [
       patients,
@@ -381,6 +395,8 @@ export const CareCoordinationWorklistProvider: React.FC<{
       addPatient,
       removeFromQueue,
       callTypeFilter,
+      statusFilter,
+      patientSearch,
     ]
   );
 
